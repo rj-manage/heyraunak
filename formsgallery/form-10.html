@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>10 · Expert Showcase — Rj_Manage</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Sora:wght@500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/common.css" />
+  <style>
+    body { background: radial-gradient(900px 500px at 80% -10%, rgba(168,85,247,.25), transparent 60%), radial-gradient(700px 400px at 10% 110%, rgba(236,72,153,.2), transparent 55%), #0f0a1e; color: #e9d5ff; min-height: 100vh; }
+
+    .section { padding: 84px 20px; }
+
+    .head { text-align: center; margin-bottom: 42px; }
+    .head .badge {
+      display: inline-flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 700;
+      letter-spacing: .18em; text-transform: uppercase; color: #f0abfc;
+      border: 1px solid rgba(240,171,252,.35); background: rgba(240,171,252,.08);
+      padding: 7px 16px; border-radius: 999px; margin-bottom: 18px;
+    }
+    .head .badge .pulse { width: 8px; height: 8px; border-radius: 50%; background: #f0abfc; animation: pulse 1.4s infinite; }
+    @keyframes pulse { 50% { opacity: .3; } }
+    .head h2 { font-size: clamp(28px, 5vw, 44px); letter-spacing: -.02em; color: #fff; }
+    .head h2 .grad { background: linear-gradient(90deg, #f0abfc, #a78bfa, #67e8f9); -webkit-background-clip: text; background-clip: text; color: transparent; }
+    .head p { color: #a78bfa; margin-top: 10px; font-size: 15.5px; }
+    .type-line { font-family: var(--font-display); font-weight: 600; color: #d8b4fe; min-height: 26px; margin-top: 18px; font-size: 15px; }
+    .type-line .caret { display: inline-block; width: 10px; height: 18px; background: #f0abfc; vertical-align: -3px; animation: blink 1s steps(1) infinite; margin-left: 3px; }
+    @keyframes blink { 50% { opacity: 0; } }
+
+    .x-card {
+      max-width: 720px; margin: 0 auto; border-radius: 26px; padding: 48px 52px;
+      background: rgba(255,255,255,.04); border: 1px solid rgba(240,171,252,.18);
+      backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+      box-shadow: 0 40px 100px -30px rgba(0,0,0,.7), inset 0 1px 0 rgba(255,255,255,.08);
+      position: relative; overflow: hidden;
+    }
+    .x-card::before { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+      background: linear-gradient(90deg, transparent, #f0abfc, #a78bfa, #67e8f9, transparent);
+      background-size: 200% 100%; animation: flow 3.5s linear infinite; }
+    @keyframes flow { to { background-position: -200% 0; } }
+    @media (max-width: 560px) { .x-card { padding: 32px 22px; } }
+
+    .x-form { display: grid; gap: 18px; }
+
+    .x-field label { display: flex; justify-content: space-between; align-items: baseline; font-size: 13px; font-weight: 600; color: #c4b5fd; margin-bottom: 8px; }
+    .x-field label .counter { font-size: 11.5px; font-weight: 700; color: #7dd3fc; font-family: var(--font-display); }
+    .x-field input, .x-field select, .x-field textarea {
+      width: 100%; background: rgba(255,255,255,.05); border: 1px solid rgba(196,181,253,.22);
+      color: #fff; font: inherit; font-size: 15px; padding: 14px 16px; border-radius: 13px; outline: none; resize: vertical;
+      transition: all .2s ease;
+    }
+    .x-field textarea { min-height: 110px; }
+    .x-field select option { background: #1c1333; color: #fff; }
+    .x-field input::placeholder, .x-field textarea::placeholder { color: rgba(196,181,253,.35); }
+    .x-field input:focus, .x-field select:focus, .x-field textarea:focus {
+      border-color: #f0abfc; background: rgba(255,255,255,.08);
+      box-shadow: 0 0 0 4px rgba(240,171,252,.18), 0 0 34px rgba(168,85,247,.25);
+    }
+
+    .row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    @media (max-width: 520px) { .row { grid-template-columns: 1fr; } }
+
+    .save-badge { font-size: 12px; color: #7dd3fc; display: flex; align-items: center; gap: 6px; font-weight: 600; }
+    .save-badge .dot { width: 7px; height: 7px; border-radius: 50%; background: #22c55e; }
+
+    .submit-row { display: flex; align-items: center; justify-content: space-between; gap: 14px; margin-top: 6px; flex-wrap: wrap; }
+
+    .x-btn {
+      flex: 1; min-width: 200px; font: inherit; font-weight: 800; font-size: 15.5px; color: #17082b;
+      background: linear-gradient(120deg, #f0abfc, #c084fc 55%, #a78bfa); border: none; border-radius: 14px;
+      padding: 16px 20px; cursor: pointer; position: relative; transition: transform .12s ease, box-shadow .2s ease, filter .2s ease;
+      box-shadow: 0 14px 44px -12px rgba(192,132,252,.7), inset 0 1px 0 rgba(255,255,255,.5);
+    }
+    .x-btn:hover { filter: brightness(1.07); box-shadow: 0 20px 56px -12px rgba(192,132,252,.9); }
+
+    .note { font-size: 12.5px; color: #8b7cb8; text-align: center; margin-top: 16px; }
+  </style>
+</head>
+<body>
+  <div class="toast"></div>
+  <section class="section">
+    <div class="head">
+      <span class="badge"><span class="pulse"></span> Rj_Manage · Expert Series · 010</span>
+      <h2>The <span class="grad">Final Form</span></h2>
+      <p>The full production experience — autosave, live feedback, celebration on submit.</p>
+      <div class="type-line" id="typeLine"></div>
+    </div>
+
+    <div class="x-card">
+      <form class="x-form" id="orderForm" novalidate>
+        <div class="row">
+          <div class="x-field">
+            <label for="name">Your name *</label>
+            <input id="name" type="text" placeholder="Full name" required data-field="Name" autocomplete="off" />
+          </div>
+          <div class="x-field">
+            <label for="product">Product *</label>
+            <select id="product" required data-field="Product">
+              <option value="">Choose…</option>
+              <option>Starter Kit</option>
+              <option>Pro Bundle</option>
+              <option>Team Edition</option>
+              <option>Enterprise</option>
+              <option>License</option>
+            </select>
+          </div>
+        </div>
+        <div class="x-field">
+          <label for="details">Order details <span class="counter" id="counter">0 / 300</span></label>
+          <textarea id="details" maxlength="300" placeholder="Tell us what you need…" required data-field="Details"></textarea>
+        </div>
+        <div class="submit-row">
+          <span class="save-badge"><span class="dot"></span> Autosaved locally</span>
+          <button class="x-btn" type="submit" id="xBtn">Submit & celebrate 🎉</button>
+        </div>
+        <p class="note">Your draft is saved in this browser — refresh and it's still here.</p>
+      </form>
+    </div>
+  </section>
+
+  <script src="js/common.js"></script>
+  <script>
+    const KEY = "rj-manage-order-draft";
+    const details = document.getElementById("details");
+    const counter = document.getElementById("counter");
+
+    /* Typewriter headline */
+    const phrases = [
+      "→ Every great order starts with a clear brief.",
+      "→ Get the right product. Ship it right.",
+      "→ 2 minutes now. Delivered tomorrow."
+    ];
+    let pi = 0, ci = 0, deleting = false;
+    const typeEl = document.getElementById("typeLine");
+    function tick() {
+      const word = phrases[pi];
+      typeEl.innerHTML = word.slice(0, ci) + '<span class="caret"></span>';
+      if (!deleting) {
+        if (ci < word.length) { ci++; setTimeout(tick, 32); }
+        else { deleting = true; setTimeout(tick, 1900); }
+      } else {
+        if (ci > 0) { ci--; setTimeout(tick, 14); }
+        else { deleting = false; pi = (pi + 1) % phrases.length; setTimeout(tick, 350); }
+      }
+    }
+    tick();
+
+    /* Character counter */
+    details.addEventListener("input", () => {
+      counter.textContent = details.value.length + " / 300";
+      counter.style.color = details.value.length > 270 ? "#fda4af" : "#7dd3fc";
+    });
+
+    /* Autosave to localStorage */
+    const draftFields = ["name", "product", "details"];
+    function autosave() {
+      const draft = {};
+      draftFields.forEach((id) => { draft[id] = document.getElementById(id).value; });
+      localStorage.setItem(KEY, JSON.stringify(draft));
+      const badge = document.querySelector(".save-badge");
+      badge.style.opacity = "1";
+    }
+    function restore() {
+      try {
+        const draft = JSON.parse(localStorage.getItem(KEY));
+        if (!draft) return;
+        draftFields.forEach((id) => { if (draft[id]) document.getElementById(id).value = draft[id]; });
+        counter.textContent = (draft.details || "").length + " / 300";
+      } catch (_) { /* ignore corrupted drafts */ }
+    }
+    restore();
+    draftFields.forEach((id) => document.getElementById(id).addEventListener("input", autosave));
+
+    /* Magnetic submit button */
+    const btn = document.getElementById("xBtn");
+    const card = document.querySelector(".x-card");
+    card.addEventListener("mousemove", (e) => {
+      const r = card.getBoundingClientRect();
+      const dx = (e.clientX - (r.left + r.width / 2)) * 0.06;
+      const dy = (e.clientY - (r.top + r.height / 2)) * 0.06;
+      btn.style.transform = `translate(${dx}px, ${dy}px)`;
+    });
+    card.addEventListener("mouseleave", () => { btn.style.transform = ""; });
+
+    /* Submit + confetti */
+    document.getElementById("orderForm").addEventListener("submit", (e) => {
+      e.preventDefault();
+      const form = e.target;
+      if (!form.checkValidity()) { form.reportValidity(); return; }
+      const d = collectForm(form);
+      showToast("🎉 Order placed for " + d["Name"] + "!");
+      confettiBurst();
+      form.reset();
+      counter.textContent = "0 / 300";
+      localStorage.removeItem(KEY);
+      setTimeout(() => showToast("✨ Celebration mode: active"), 900);
+    });
+
+    function confettiBurst() {
+      const colors = ["#f0abfc", "#c084fc", "#a78bfa", "#67e8f9", "#fbbf24", "#f472b6"];
+      for (let i = 0; i < 120; i++) {
+        const p = document.createElement("div");
+        p.style.cssText = `position:fixed;z-index:9999;top:-16px;left:${Math.random()*100}vw;width:${8+Math.random()*7}px;height:${8+Math.random()*7}px;background:${colors[i%colors.length]};border-radius:${Math.random()>.5?"2px":"50%"};pointer-events:none;`;
+        p.style.transform = `rotate(${Math.random()*360}deg)`;
+        document.body.appendChild(p);
+        const dur = 1800 + Math.random() * 1600;
+        const drift = (Math.random() - 0.5) * 160;
+        p.animate(
+          [
+            { transform: `translate(0, 0) rotate(0deg)`, opacity: 1 },
+            { transform: `translate(${drift}px, ${window.innerHeight + 60}px) rotate(${Math.random()>0.5?360:-360}deg)`, opacity: 0.7 }
+          ],
+          { duration: dur, easing: "cubic-bezier(.15,.6,.4,1)" }
+        ).onfinish = () => p.remove();
+      }
+    }
+  </script>
+</body>
+</html>

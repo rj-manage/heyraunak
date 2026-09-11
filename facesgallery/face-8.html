@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>08 · Pillow Finance — RJ Web Faces</title>
+  <meta name="description" content="Pillow — a soft-UI neumorphic banking app landing page: pastel canvas, dual-shadow components, an animated savings ring and round-up rules. Face 08 of the RJ Web Faces Gallery — Intermediate level." />
+  <link rel="icon" href="assets/img/RJ_Logo_Black.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Sora:wght@500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/common.css" />
+  <style>
+    /* ============================================================
+       Face 08 — Pillow · Neumorphic Finance (Intermediate)
+       ============================================================ */
+    :root {
+      --canvas: #E3E9F0;
+      --light: #F7FAFE;
+      --dark: #C3CDDA;
+      --ink: #2A3444;
+      --muted: #8C98A9;
+      --mint: #3CCF91;
+      --coral: #FF8E7F;
+      --sh-r: 10px 10px 22px var(--dark), -10px -10px 22px var(--light);
+      --sh-s: 5px 5px 9px var(--dark), -5px -5px 9px var(--light);
+      --sh-in: inset 5px 5px 10px var(--dark), inset -5px -5px 10px var(--light);
+      --sh-in-s: inset 3px 3px 6px var(--dark), inset -3px -3px 6px var(--light);
+    }
+    html { scroll-behavior: smooth; }
+    body { background: var(--canvas); color: var(--ink); overflow-x: hidden; }
+    ::selection { background: var(--mint); color: #fff; }
+    a { text-decoration: none; }
+    .mono { font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; font-variant-numeric: tabular-nums; }
+    .mini { font-size: 11px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
+
+    /* ---------- Soft primitives ---------- */
+    .soft-raised { background: var(--canvas); border-radius: 24px; box-shadow: var(--sh-r); }
+    .soft-inset { background: var(--canvas); border-radius: 24px; box-shadow: var(--sh-in); }
+    .soft-btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      font: inherit; font-weight: 700; cursor: pointer; border: none; color: #fff;
+      background: linear-gradient(145deg, #4ED7A0, #2BB87E); border-radius: 999px;
+      padding: 15px 30px; box-shadow: 7px 7px 16px #C3CDDA, -7px -7px 16px #F7FAFE;
+      transition: transform .15s ease, box-shadow .15s ease, filter .15s ease;
+    }
+    .soft-btn:hover { transform: translateY(-2px); filter: brightness(1.03); box-shadow: 9px 9px 20px #C3CDDA, -9px -9px 20px #F7FAFE; }
+    .soft-btn:active { transform: translateY(0) scale(.99); box-shadow: var(--sh-in-s); }
+    .soft-btn.ink { background: linear-gradient(145deg, #3A4760, #202B3E); }
+    .soft-chip { display: inline-flex; align-items: center; gap: 8px; font-size: 12.5px; font-weight: 700;
+      color: var(--muted); background: var(--canvas); border-radius: 999px; padding: 8px 15px; box-shadow: var(--sh-s); }
+    .soft-chip .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--mint); }
+    @keyframes floaty { from { transform: translateY(-12px); } to { transform: translateY(12px); } }
+
+    /* ---------- Nav (floating soft pill) ---------- */
+    .nav {
+      position: sticky; top: 14px; z-index: 60; width: min(1160px, 94vw); margin: 14px auto 0;
+      display: flex; align-items: center; justify-content: space-between; gap: 18px;
+      padding: 12px 22px 12px 26px; border-radius: 999px; background: var(--canvas);
+      box-shadow: var(--sh-r);
+    }
+    .brand { display: inline-flex; align-items: center; gap: 12px; }
+    .brand .logo { width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center;
+      background: var(--canvas); box-shadow: var(--sh-s); color: var(--mint); }
+    .brand .logo svg { width: 21px; height: 21px; }
+    .brand b { font-family: var(--font-display); font-size: 19px; font-weight: 800; letter-spacing: -.02em; }
+    .nav-links { display: flex; align-items: center; gap: 8px; }
+    .nav-links a { font-size: 14px; font-weight: 600; color: var(--muted); padding: 8px 15px; border-radius: 999px;
+      transition: color .18s ease, background .18s ease; }
+    .nav-links a:hover { color: var(--ink); background: rgba(255, 255, 255, .5); }
+    .nav .cta { padding: 10px 20px; font-size: 13.5px; }
+    .burger { display: none; width: 42px; height: 42px; border-radius: 50%; border: none; cursor: pointer;
+      background: var(--canvas); box-shadow: var(--sh-s); color: var(--ink); font-size: 17px; }
+    @media (max-width: 900px) {
+      .nav { flex-wrap: wrap; border-radius: 26px; padding: 12px 16px; }
+      .nav-links { order: 3; width: 100%; display: none; flex-direction: column; align-items: stretch;
+        padding: 10px 4px 6px; border-top: 1px solid rgba(60, 80, 110, .12); }
+      .nav-links.open { display: flex; }
+      .nav-links a { padding: 10px 14px; }
+      .burger { display: grid; place-items: center; }
+      .nav .cta { display: none; }
+    }
+
+    /* ---------- Hero ---------- */
+    .hero { max-width: 1160px; margin: 0 auto; padding: 70px 5vw 40px;
+      display: grid; grid-template-columns: 1.02fr .98fr; gap: 50px; align-items: center; }
+    @media (max-width: 940px) { .hero { grid-template-columns: 1fr; } }
+    .hero h1 { font-size: clamp(36px, 5vw, 58px); line-height: 1.05; letter-spacing: -.03em; font-weight: 800; }
+    .hero h1 .soft { color: var(--mint); }
+    .hero .lead { color: var(--muted); font-size: 16.5px; margin-top: 20px; max-width: 500px; }
+    .hero-cta { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 30px; }
+    .hero .rating { display: flex; align-items: center; gap: 12px; margin-top: 26px; flex-wrap: wrap; }
+    .stars { color: #F5B041; letter-spacing: 3px; font-size: 15px; text-shadow: 0 2px 6px rgba(245, 176, 65, .35); }
+    .rating span { font-size: 13px; color: var(--muted); font-weight: 600; }
+
+    /* ---------- Phone mock ---------- */
+    .phone-stage { position: relative; display: flex; justify-content: center; padding: 24px 0 30px; }
+    .drift { position: absolute; border-radius: 50%; pointer-events: none; animation: floaty 9s ease-in-out infinite alternate; }
+    .drift.d1 { width: 220px; height: 220px; left: 2%; top: 4%; border: 2px dashed rgba(60, 80, 110, .25);
+      box-shadow: inset 6px 6px 14px rgba(195, 205, 218, .5); }
+    .drift.d2 { width: 130px; height: 130px; right: 4%; bottom: 0; background: linear-gradient(145deg, rgba(255, 255, 255, .65), rgba(195, 205, 218, .35));
+      box-shadow: var(--sh-r); animation-delay: -4.5s; }
+    .phone { position: relative; width: 322px; border-radius: 48px; padding: 13px; background: linear-gradient(150deg, #D7E0EA, #EDF2F8);
+      box-shadow: 18px 22px 44px #B9C4D2, -12px -12px 30px #FFFFFF, inset 0 0 0 1px rgba(255, 255, 255, .7); }
+    .notch { position: absolute; top: 20px; left: 50%; transform: translateX(-50%); width: 96px; height: 22px;
+      border-radius: 12px; background: linear-gradient(150deg, #D7E0EA, #EDF2F8); box-shadow: var(--sh-in-s); z-index: 2; }
+    .screen { background: var(--canvas); border-radius: 36px; padding: 44px 18px 20px; display: grid; gap: 14px; }
+    .greet { display: flex; align-items: center; justify-content: space-between; padding: 2px 4px; }
+    .greet .mini { display: block; margin-bottom: 2px; }
+    .greet b { font-family: var(--font-display); font-size: 17px; letter-spacing: -.01em; }
+    .ava { width: 42px; height: 42px; border-radius: 50%; display: grid; place-items: center; font-size: 13px;
+      font-weight: 800; color: #fff; background: linear-gradient(145deg, #FFA494, #F8716A); box-shadow: var(--sh-s); }
+    .bal-box { border-radius: 26px; padding: 18px 20px; display: flex; flex-direction: column; gap: 4px; }
+    .bal-box .amt { font-size: 28px; font-weight: 800; letter-spacing: -.01em; }
+    .upchip { align-self: flex-start; font-size: 11.5px; font-weight: 700; color: #1F9D6A; background: rgba(60, 207, 145, .18);
+      padding: 4px 11px; border-radius: 999px; }
+
+    .ring-card { position: relative; border-radius: 26px; padding: 18px 16px 16px; text-align: center; }
+    .ring-wrap { position: relative; width: 168px; height: 168px; margin: 0 auto; }
+    .ring-wrap svg { width: 100%; height: 100%; transform: rotate(-90deg); }
+    .ring-track, .ring-fill { fill: none; stroke-width: 13; }
+    .ring-track { stroke: #D6DEE7; }
+    .ring-fill { stroke: url(#mintGrad); stroke-linecap: round; transition: stroke-dashoffset .9s cubic-bezier(.25, .8, .3, 1); }
+    .ring-center { position: absolute; inset: 0; display: grid; place-content: center; }
+    .ring-center b { font-family: var(--font-display); font-size: 27px; font-weight: 800; }
+    .ring-center span { font-size: 11px; color: var(--muted); font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+    .ring-card .cap { margin-top: 10px; font-size: 12px; color: var(--muted); font-weight: 600; }
+
+    .quick3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+    .qact { display: grid; justify-items: center; gap: 6px; background: none; border: none; cursor: pointer; font: inherit; }
+    .qact .qcircle { width: 50px; height: 50px; border-radius: 50%; display: grid; place-items: center;
+      background: var(--canvas); box-shadow: var(--sh-s); color: var(--ink); transition: color .18s ease; }
+    .qact:hover .qcircle { color: var(--mint); }
+    .qact .qcircle svg { width: 21px; height: 21px; }
+    .qact span { font-size: 11px; font-weight: 700; color: var(--muted); }
+
+    .bars { display: flex; align-items: flex-end; justify-content: space-between; gap: 8px; height: 92px;
+      padding: 14px 14px 10px; }
+    .bars .col { display: flex; flex-direction: column; align-items: center; gap: 6px; flex: 1; }
+    .bars .b { width: 100%; max-width: 26px; border-radius: 8px; background: linear-gradient(180deg, #7BD9B0, #3CCF91); }
+    .bars .b.coral { background: linear-gradient(180deg, #FFB3A9, #FF8E7F); }
+    .bars .lbl { font-size: 9.5px; font-weight: 700; color: var(--muted); }
+    .chart-cap { display: flex; justify-content: space-between; padding: 0 6px 12px; font-size: 11px; color: var(--muted); font-weight: 600; }
+
+    /* ---------- Sections ---------- */
+    section { padding: 70px 5vw; }
+    .wrap { max-width: 1160px; margin: 0 auto; }
+    .kicker { font-family: var(--font-display); font-size: 12px; font-weight: 700; letter-spacing: .18em;
+      text-transform: uppercase; color: var(--mint); margin-bottom: 14px; }
+    .sec-head h2 { font-size: clamp(26px, 3.4vw, 40px); letter-spacing: -.02em; line-height: 1.16; }
+    .sec-head p { color: var(--muted); margin-top: 14px; font-size: 15.5px; max-width: 560px; }
+
+    /* How it works */
+    .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 26px; margin-top: 46px; }
+    @media (max-width: 900px) { .steps { grid-template-columns: 1fr; } }
+    .step { padding: 34px 28px; text-align: left; transition: transform .2s ease; }
+    .step:hover { transform: translateY(-6px); }
+    .step .num { width: 52px; height: 52px; border-radius: 18px; display: grid; place-items: center;
+      font-family: var(--font-display); font-weight: 800; font-size: 19px; color: var(--mint);
+      background: var(--canvas); box-shadow: var(--sh-s); margin-bottom: 20px; }
+    .step h3 { font-size: 18.5px; margin-bottom: 9px; }
+    .step p { font-size: 14px; color: var(--muted); }
+
+    /* Feature splits */
+    .split { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
+    @media (max-width: 940px) { .split { grid-template-columns: 1fr; } }
+    .split .copy p { color: var(--muted); margin-top: 14px; font-size: 15.5px; }
+    .bullets { list-style: none; margin-top: 24px; display: grid; gap: 14px; }
+    .bullets li { display: flex; gap: 12px; align-items: flex-start; font-size: 14.5px; font-weight: 500; }
+    .bullets .tic { flex: none; width: 24px; height: 24px; border-radius: 50%; display: grid; place-items: center;
+      font-size: 12px; font-weight: 800; color: #1F9D6A; background: var(--canvas); box-shadow: var(--sh-s); margin-top: 2px; }
+
+    .demo-card { padding: 30px; }
+    .demo-card .dhead { display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; gap: 14px; flex-wrap: wrap; }
+    .demo-card .dhead b { font-family: var(--font-display); font-size: 17px; }
+    .goal-chips { display: flex; gap: 9px; flex-wrap: wrap; }
+    .goal-chips button { border: none; font: inherit; font-size: 12px; font-weight: 700; cursor: pointer;
+      color: var(--muted); background: var(--canvas); border-radius: 999px; padding: 8px 15px; box-shadow: var(--sh-s);
+      transition: color .18s ease, box-shadow .18s ease; }
+    .goal-chips button.active { color: #fff; background: linear-gradient(145deg, #4ED7A0, #2BB87E); box-shadow: 5px 5px 12px #C3CDDA, -5px -5px 12px #F7FAFE; }
+    .goal-row { display: grid; grid-template-columns: 170px 1fr; gap: 24px; align-items: center; }
+    @media (max-width: 520px) { .goal-row { grid-template-columns: 1fr; justify-items: center; } }
+    .goal-row .ring-wrap { width: 150px; height: 150px; }
+
+    /* Round-ups toggle */
+    .toggle-card { margin-top: 22px; padding: 20px 24px; display: flex; align-items: center; gap: 18px;
+      border-radius: 22px; background: var(--canvas); box-shadow: var(--sh-in-s); flex-wrap: wrap; }
+    .toggle-card .tinfo { flex: 1; min-width: 180px; }
+    .toggle-card b { font-size: 15px; display: block; }
+    .toggle-card p { font-size: 12.5px; color: var(--muted); margin-top: 2px; }
+    .switch { position: relative; width: 76px; height: 42px; border-radius: 999px; border: none; cursor: pointer;
+      background: var(--canvas); box-shadow: var(--sh-in); transition: box-shadow .25s ease; }
+    .switch::after { content: ""; position: absolute; top: 5px; left: 6px; width: 32px; height: 32px; border-radius: 50%;
+      background: linear-gradient(145deg, #F7FAFE, #CBD5E1); box-shadow: 3px 3px 8px rgba(120, 135, 155, .5), -2px -2px 6px #fff;
+      transition: transform .28s cubic-bezier(.3, .9, .4, 1.3); }
+    .switch.on { box-shadow: var(--sh-in-s); }
+    .switch.on::after { transform: translateX(32px); background: linear-gradient(145deg, #fff, #B9F0D8); }
+    .switch .stxt { position: absolute; top: 50%; transform: translateY(-50%); left: 42px; font-size: 9px;
+      font-weight: 800; color: var(--muted); letter-spacing: .08em; }
+    .switch.on .stxt { left: 8px; color: #1F9D6A; }
+
+    /* Smart rules slider */
+    .rule-grid { display: grid; grid-template-columns: 1fr 150px; gap: 26px; align-items: center; }
+    @media (max-width: 540px) { .rule-grid { grid-template-columns: 1fr; justify-items: center; } }
+    .rule-amnt { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; margin-bottom: 8px; }
+    .rule-amnt .big { font-family: var(--font-display); font-size: 38px; font-weight: 800; letter-spacing: -.02em; color: var(--ink); }
+    .rule-amnt .per { font-size: 15px; color: var(--muted); font-weight: 600; }
+    .range { -webkit-appearance: none; appearance: none; width: 100%; height: 14px; border-radius: 999px; outline: none;
+      background: var(--canvas); box-shadow: var(--sh-in-s); margin: 16px 0 6px; }
+    .range::-webkit-slider-thumb { -webkit-appearance: none; width: 30px; height: 30px; border-radius: 50%;
+      background: linear-gradient(145deg, #4ED7A0, #2BB87E); box-shadow: 4px 4px 10px #B9C4D2, -3px -3px 8px #fff; cursor: grab; }
+    .range::-moz-range-thumb { width: 30px; height: 30px; border: none; border-radius: 50%;
+      background: linear-gradient(145deg, #4ED7A0, #2BB87E); box-shadow: 4px 4px 10px #B9C4D2, -3px -3px 8px #fff; cursor: grab; }
+    .rule-meta { display: flex; justify-content: space-between; font-size: 12.5px; color: var(--muted); font-weight: 600; }
+    .rule-goal { margin-top: 18px; display: flex; align-items: center; gap: 10px; background: var(--canvas);
+      box-shadow: var(--sh-s); border-radius: 16px; padding: 12px 16px; font-size: 13px; font-weight: 600; }
+    .rule-goal .gdot { width: 10px; height: 10px; border-radius: 50%; background: var(--coral); }
+
+    /* Stories */
+    .stories { display: grid; grid-template-columns: repeat(3, 1fr); gap: 26px; margin-top: 46px; }
+    @media (max-width: 900px) { .stories { grid-template-columns: 1fr; } }
+    .quote-card { padding: 30px 28px; transition: transform .2s ease; }
+    .quote-card:hover { transform: translateY(-6px); }
+    .quote-card .q { font-size: 15px; line-height: 1.7; color: var(--ink); }
+    .quote-card .q::before { content: "“"; display: block; font-family: var(--font-display); font-size: 40px; line-height: 1;
+      color: var(--mint); margin-bottom: 6px; }
+    .quote-card .who { display: flex; align-items: center; gap: 12px; margin-top: 20px; }
+    .quote-card .who .ini { width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center;
+      font-size: 12px; font-weight: 800; color: #fff; }
+    .i-mint { background: linear-gradient(145deg, #4ED7A0, #2BB87E); }
+    .i-coral { background: linear-gradient(145deg, #FFA494, #F8716A); }
+    .i-ind { background: linear-gradient(145deg, #9AA5F5, #6366F1); }
+    .quote-card .who b { font-size: 13.5px; display: block; }
+    .quote-card .who span { font-size: 12px; color: var(--muted); }
+
+    /* CTA band */
+    .cta-band { border-radius: 34px; padding: 60px 8vw; display: grid; grid-template-columns: 1fr 1fr; gap: 50px; align-items: center; }
+    @media (max-width: 900px) { .cta-band { grid-template-columns: 1fr; padding: 44px 30px; } }
+    .cta-band h2 { font-size: clamp(26px, 3.2vw, 38px); letter-spacing: -.02em; line-height: 1.16; }
+    .cta-band p { color: var(--muted); margin-top: 14px; font-size: 15px; max-width: 440px; }
+    .cta-form { display: grid; gap: 14px; }
+    .cta-form .input { background: var(--canvas); border: none; box-shadow: var(--sh-in-s); border-radius: 999px;
+      padding: 16px 24px; font: inherit; font-size: 14.5px; color: var(--ink); outline: none; }
+    .cta-form .input::placeholder { color: var(--muted); }
+    .cta-form .soft-btn { width: 100%; }
+    .cta-note { font-size: 12px; color: var(--muted); text-align: center; }
+
+    /* Footer */
+    footer { padding: 30px 5vw 40px; }
+    .foot { max-width: 1160px; margin: 0 auto; }
+    .foot-main { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 18px;
+      padding: 26px 30px; }
+    .foot-main .flinks { display: flex; gap: 22px; font-size: 13.5px; color: var(--muted); flex-wrap: wrap; }
+    .foot-main .flinks a:hover { color: var(--ink); }
+    .demo-tag { margin-top: 20px; padding: 18px 8px 0; border-top: 1px solid rgba(60, 80, 110, .15);
+      display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px; font-size: 12.5px; color: var(--muted); }
+    .demo-tag a { font-weight: 700; color: var(--mint); }
+
+    @media (prefers-reduced-motion: reduce) {
+      .drift { animation: none; }
+      .ring-fill { transition: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="toast"></div>
+
+  <!-- ================= NAV ================= -->
+  <nav class="nav">
+    <a class="brand" href="index.html">
+      <span class="logo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 11c0-4 3-7 8-7s8 3 8 7c0 2.2-1 3.6-2.6 4.6"/><path d="M3 21h18M6.5 16.5c1.4-1.5 3-2.5 5-2.5s3.6 1 5 2.5"/></svg></span>
+      <b>Pillow</b>
+    </a>
+    <div class="nav-links" id="menu">
+      <a href="#how">How it works</a>
+      <a href="#save">Save</a>
+      <a href="#stories">Stories</a>
+    </div>
+    <a class="soft-btn cta" href="#join">Open an account</a>
+    <button class="burger" id="burger" aria-label="Menu">☰</button>
+  </nav>
+
+  <!-- ================= HERO ================= -->
+  <header class="hero">
+    <div class="reveal">
+      <span class="soft-chip"><span class="dot"></span> Savings, minus the guilt</span>
+      <h1 style="margin-top:20px">The <span class="soft">calm</span> way to save.</h1>
+      <p class="lead">Pillow tucks away small amounts on your terms — automatically, invisibly, and with zero willpower required. Set a rule once, then watch a goal grow while life goes on.</p>
+      <div class="hero-cta">
+        <a class="soft-btn" href="#join">Open an account</a>
+        <a class="soft-btn ink" href="#how">See how it works</a>
+      </div>
+      <div class="rating">
+        <span class="stars">★★★★★</span>
+        <span>4.9 from 40,000+ savers · 92% reach their first goal</span>
+      </div>
+    </div>
+
+    <div class="phone-stage reveal" style="transition-delay:.15s">
+      <div class="drift d1"></div>
+      <div class="drift d2"></div>
+      <div class="phone">
+        <div class="notch"></div>
+        <div class="screen">
+          <div class="greet">
+            <div><span class="mini">Tuesday · 9:41 pm</span><b>Good evening, Riya</b></div>
+            <span class="ava">RN</span>
+          </div>
+
+          <div class="bal-box soft-inset">
+            <span class="mini">Total saved</span>
+            <b class="amt mono">₹5,42,180</b>
+            <span class="upchip">▲ 8.2% this month</span>
+          </div>
+
+          <div class="ring-card soft-raised">
+            <div class="ring-wrap">
+              <svg viewBox="0 0 168 168" aria-hidden="true">
+                <defs>
+                  <linearGradient id="mintGrad" x1="0" y1="0" x2="1" y2="1">
+                    <stop offset="0" stop-color="#57D9A4" /><stop offset="1" stop-color="#2BB87E" />
+                  </linearGradient>
+                </defs>
+                <circle class="ring-track" cx="84" cy="84" r="58" />
+                <circle class="ring-fill pr-ring" id="prRing" cx="84" cy="84" r="58"
+                  stroke-dasharray="364.4" stroke-dashoffset="364.4" />
+              </svg>
+              <div class="ring-center"><b id="prPct">68%</b><span>Bali fund</span></div>
+            </div>
+            <p class="cap">₹4,48,800 of ₹6,60,000 · <b style="color:#2BB87E">on track</b></p>
+          </div>
+
+          <div class="quick3">
+            <button class="qact" type="button"><span class="qcircle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span><span>Add money</span></button>
+            <button class="qact" type="button"><span class="qcircle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="8.5"/><path d="M8 14.5a5.5 5.5 0 0 1 8 0M9.5 9.6h.01M14.5 9.6h.01"/></svg></span><span>Auto-save</span></button>
+            <button class="qact" type="button"><span class="qcircle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4.5"/><circle cx="12" cy="12" r="1"/></svg></span><span>Goals</span></button>
+          </div>
+
+          <div class="bal-box soft-inset" style="padding:12px 8px">
+            <div class="chart-cap"><span class="mini" style="padding-left:8px">Spent this week</span><span style="padding-right:8px;font-weight:800;color:var(--coral)">− ₹1,340</span></div>
+            <div class="bars">
+              <div class="col"><div class="b" style="height:34%"></div><span class="lbl">M</span></div>
+              <div class="col"><div class="b" style="height:52%"></div><span class="lbl">T</span></div>
+              <div class="col"><div class="b" style="height:28%"></div><span class="lbl">W</span></div>
+              <div class="col"><div class="b" style="height:66%"></div><span class="lbl">T</span></div>
+              <div class="col"><div class="b coral" style="height:84%"></div><span class="lbl">F</span></div>
+              <div class="col"><div class="b coral" style="height:72%"></div><span class="lbl">S</span></div>
+              <div class="col"><div class="b" style="height:40%"></div><span class="lbl">S</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ================= HOW IT WORKS ================= -->
+  <section id="how" style="padding-top:30px">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <div class="kicker">How it works</div>
+        <h2>Three soft steps to a bigger buffer.</h2>
+        <p>No spreadsheets, no guilt trips, no “you should save more” lectures. Pillow handles the boring arithmetic.</p>
+      </div>
+      <div class="steps">
+        <article class="step soft-raised reveal">
+          <span class="num">01</span>
+          <h3>Name a dream</h3>
+          <p>A trip, a laptop, a wedding, six months of rent. Give it a face and a deadline — Pillow turns it into a gentle number.</p>
+        </article>
+        <article class="step soft-raised reveal" style="transition-delay:.08s">
+          <span class="num">02</span>
+          <h3>Set one rule</h3>
+          <p>“Round up every purchase to the nearest ₹50”, “₹150 a day on payday weeks”. One rule. Pillow does the rest quietly in the background.</p>
+        </article>
+        <article class="step soft-raised reveal" style="transition-delay:.16s">
+          <span class="num">03</span>
+          <h3>Watch it drift up</h3>
+          <p>Your goal fills a soft ring that you will actually enjoy opening. Small wins, visible every single morning.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= SAVINGS GOALS + ROUND-UPS ================= -->
+  <section id="save" style="padding-top:30px">
+    <div class="wrap split">
+      <div class="copy reveal">
+        <div class="kicker">Savings goals</div>
+        <h2>Goals that feel like a treat, not a tax.</h2>
+        <p>Each goal is a separate ring with its own rules and its own gentle nudge. Tap a dream below and watch the ring obey — this is exactly how it feels in the app.</p>
+        <ul class="bullets">
+          <li><span class="tic">✓</span> Separate pockets, so spending on one dream never eats another.</li>
+          <li><span class="tic">✓</span> Deadline-aware pacing that quietly corrects itself each week.</li>
+          <li><span class="tic">✓</span> Withdraw anytime — your money is yours, no locks, no penalties.</li>
+        </ul>
+      </div>
+
+      <div class="demo-card soft-raised reveal" style="transition-delay:.12s">
+        <div class="dhead">
+          <b>Your goals</b>
+          <div class="goal-chips" id="goalChips">
+            <button type="button" data-pct="68" class="active">Bali · 68%</button>
+            <button type="button" data-pct="42">New MacBook · 42%</button>
+            <button type="button" data-pct="91">Emergency fund · 91%</button>
+          </div>
+        </div>
+        <div class="goal-row">
+          <div class="ring-wrap">
+            <svg viewBox="0 0 168 168" aria-hidden="true">
+              <circle class="ring-track" cx="84" cy="84" r="58" />
+              <circle class="ring-fill" id="goalRing" cx="84" cy="84" r="58"
+                stroke-dasharray="364.4" stroke-dashoffset="364.4" />
+            </svg>
+            <div class="ring-center"><b id="goalPct">68%</b><span id="goalName">Bali</span></div>
+          </div>
+          <div>
+            <p style="font-size:14px;color:var(--muted);font-weight:600" id="goalCap">₹4,48,800 of ₹6,60,000 saved</p>
+            <p style="font-size:13px;color:var(--muted);margin-top:8px" id="goalNote">You’ll reach this by February 2027 — 4 months early.</p>
+          </div>
+        </div>
+
+        <div class="toggle-card">
+          <div class="tinfo">
+            <b>Round-ups</b>
+            <p id="toggleMsg">Off — your spare change stays put.</p>
+          </div>
+          <button class="switch" id="roundSwitch" role="switch" aria-checked="false" aria-label="Round-ups toggle">
+            <span class="stxt" id="switchTxt">OFF</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= SMART RULES ================= -->
+  <section id="rules" style="padding-top:40px">
+    <div class="wrap split">
+      <div class="demo-card soft-raised reveal" style="order:2">
+        <div class="dhead"><b>Smart rules</b><span class="soft-chip"><span class="dot"></span> Set once, runs forever</span></div>
+        <div class="rule-grid">
+          <div>
+            <div class="rule-amnt">
+              <span class="big mono" id="ruleAmt">₹150</span>
+              <span class="per">per day</span>
+            </div>
+            <input class="range" id="ruleSlider" type="range" min="20" max="500" step="10" value="150" aria-label="Daily saving amount" />
+            <div class="rule-meta"><span>₹20 slow &amp; steady</span><span>₹500 turbo</span></div>
+            <p style="font-size:13px;color:var(--muted);margin-top:14px" id="ruleMonth">That’s about <b style="color:var(--ink)">₹4,500 a month</b> — quietly moved from your current account every morning.</p>
+            <div class="rule-goal"><span class="gdot"></span><span>Feeds into:</span><b style="color:var(--ink)">Bali fund</b></div>
+          </div>
+          <div class="ring-wrap" style="width:150px;height:150px">
+            <svg viewBox="0 0 168 168" aria-hidden="true">
+              <defs>
+                <linearGradient id="coralGrad" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0" stop-color="#FFB3A9" /><stop offset="1" stop-color="#FF8E7F" />
+                </linearGradient>
+              </defs>
+              <circle class="ring-track" cx="84" cy="84" r="58" />
+              <circle class="ring-fill" id="ruleRing" cx="84" cy="84" r="58" style="stroke:url(#coralGrad)"
+                stroke-dasharray="364.4" stroke-dashoffset="364.4" />
+            </svg>
+            <div class="ring-center"><b id="rulePct">30%</b><span>of max pace</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="copy reveal" style="order:1">
+        <div class="kicker">Smart rules</div>
+        <h2>One rule. A habit you never notice forming.</h2>
+        <p>Drag the dial and feel it respond — the ring fills the moment your daily amount rises. Rules fire only when your balance can afford them, so you are never left short before payday.</p>
+        <ul class="bullets">
+          <li><span class="tic">✓</span> Round-ups on every UPI and card purchase — nearest ₹50 by default.</li>
+          <li><span class="tic">✓</span> Pause any rule for a day, a week or forever. No penalties, no nagging.</li>
+          <li><span class="tic">✓</span> “Skip if balance dips below ₹10,000” — Pillow keeps the floor you set.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= STORIES ================= -->
+  <section id="stories" style="padding-top:40px">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <div class="kicker">Stories</div>
+        <h2>Real pillows, real progress.</h2>
+        <p>Forty thousand people are quietly filling rings. A few of them said it better than we ever could.</p>
+      </div>
+      <div class="stories">
+        <article class="quote-card soft-raised reveal">
+          <p class="q">I set the Bali ring at 15% of my salary and genuinely forgot about it. Eleven months later the app said “you can book flights now.” I cried a little on the bus.</p>
+          <div class="who"><span class="ini i-mint">PN</span><div><b>Priya Nair</b><span>Product designer · Bengaluru</span></div></div>
+        </article>
+        <article class="quote-card soft-raised reveal" style="transition-delay:.08s">
+          <p class="q">The round-ups are the killer feature. Every chai, every cab, every movie ticket adds ₹40-₹50 to the fund. My emergency ring hit its target without me ever feeling the pinch.</p>
+          <div class="who"><span class="ini i-coral">AM</span><div><b>Arjun Mehta</b><span>Teacher · Pune</span></div></div>
+        </article>
+        <article class="quote-card soft-raised reveal" style="transition-delay:.16s">
+          <p class="q">I have tried every budgeting app and deleted all of them within a fortnight. Pillow is the first one that feels like a friend rather than a spreadsheet with opinions.</p>
+          <div class="who"><span class="ini i-ind">SK</span><div><b>Sara Kapoor</b><span>Travel writer · Mumbai</span></div></div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= CTA ================= -->
+  <section id="join" style="padding-top:40px">
+    <div class="wrap">
+      <div class="cta-band soft-raised reveal">
+        <div>
+          <div class="kicker">Open an account</div>
+          <h2>Your first pillow is ready in 90 seconds.</h2>
+          <p>Enter your email and we’ll send an invite link. No credit check, no minimum balance, no fine print longer than this sentence.</p>
+        </div>
+        <form class="cta-form" id="joinForm" novalidate>
+          <div class="field">
+            <label for="email" class="mini">Email address *</label>
+            <input class="input" id="email" type="email" placeholder="you@example.com" required data-field="Email" />
+          </div>
+          <button class="soft-btn" type="submit">Send my invite</button>
+          <p class="cta-note">Backed by plain-language fees. Cancel with one tap.</p>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= FOOTER ================= -->
+  <footer>
+    <div class="foot">
+      <div class="foot-main soft-raised">
+        <a class="brand" href="index.html">
+          <span class="logo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 11c0-4 3-7 8-7s8 3 8 7c0 2.2-1 3.6-2.6 4.6"/><path d="M3 21h18M6.5 16.5c1.4-1.5 3-2.5 5-2.5s3.6 1 5 2.5"/></svg></span>
+          <b>Pillow</b>
+        </a>
+        <div class="flinks">
+          <a href="#how">How it works</a>
+          <a href="#save">Save</a>
+          <a href="#stories">Stories</a>
+          <a href="#join">Open an account</a>
+        </div>
+      </div>
+      <div class="demo-tag">
+        <span>© 2026 Pillow Finance Pvt. Ltd. · Demo page 08 of the RJ Web Faces Gallery</span>
+        <span><a href="index.html">← View all 20 faces</a></span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/common.js"></script>
+  <script>
+    // ---------- Mobile menu ----------
+    const burger = document.getElementById("burger");
+    const menu = document.getElementById("menu");
+    burger.addEventListener("click", () => menu.classList.toggle("open"));
+    menu.querySelectorAll("a").forEach((a) => a.addEventListener("click", () => menu.classList.remove("open")));
+
+    // ---------- Ring helpers ----------
+    const CIRC = 364.4; // 2 * PI * 58
+    function setRingPct(el, pct) {
+      el.style.strokeDashoffset = (CIRC * (1 - pct / 100)).toFixed(1);
+    }
+    function countTo(el, target, suffix) {
+      const start = parseFloat(el.textContent) || 0;
+      const t0 = performance.now(), dur = 650;
+      function frame(t) {
+        const p = Math.min((t - t0) / dur, 1);
+        const eased = 1 - Math.pow(1 - p, 3);
+        el.textContent = Math.round(start + (target - start) * eased) + (suffix || "");
+        if (p < 1) requestAnimationFrame(frame);
+      }
+      requestAnimationFrame(frame);
+    }
+    // Animate hero phone ring into view once revealed
+    const prRing = document.getElementById("prRing");
+    requestAnimationFrame(() => requestAnimationFrame(() => setRingPct(prRing, 68)));
+    const prPct = document.getElementById("prPct");
+    countTo(prPct, 68, "%");
+
+    // ---------- Goal chips -> ring + text ----------
+    const goals = {
+      68: { name: "Bali",  cap: "₹4,48,800 of ₹6,60,000 saved", note: "You’ll reach this by February 2027 — 4 months early." },
+      42: { name: "MacBook", cap: "₹61,000 of ₹1,45,000 saved", note: "At this pace the MacBook lands in time for Diwali." },
+      91: { name: "Safety net", cap: "₹4,55,000 of ₹5,00,000 saved", note: "Six months of rent covered — you could sleep through a monsoon of surprises." }
+    };
+    const goalRing = document.getElementById("goalRing");
+    const goalPct = document.getElementById("goalPct");
+    const goalName = document.getElementById("goalName");
+    const goalCap = document.getElementById("goalCap");
+    const goalNote = document.getElementById("goalNote");
+    document.getElementById("goalChips").addEventListener("click", (e) => {
+      const btn = e.target.closest("button");
+      if (!btn) return;
+      document.querySelectorAll("#goalChips button").forEach((b) => b.classList.remove("active"));
+      btn.classList.add("active");
+      const pct = parseInt(btn.getAttribute("data-pct"), 10);
+      const g = goals[pct];
+      setRingPct(goalRing, pct);
+      countTo(goalPct, pct, "%");
+      goalName.textContent = g.name;
+      goalCap.textContent = g.cap;
+      goalNote.textContent = g.note;
+    });
+
+    // ---------- Round-ups toggle ----------
+    const sw = document.getElementById("roundSwitch");
+    const swTxt = document.getElementById("switchTxt");
+    const tMsg = document.getElementById("toggleMsg");
+    sw.addEventListener("click", () => {
+      const on = !sw.classList.contains("on");
+      sw.classList.toggle("on", on);
+      sw.setAttribute("aria-checked", on);
+      swTxt.textContent = on ? "ON" : "OFF";
+      tMsg.textContent = on
+        ? "On — rounding every spend to the nearest ₹50 and tucking it into Bali."
+        : "Off — your spare change stays put.";
+      showToast(on ? "🟢 Round-ups ON — every purchase rounds up to the nearest ₹50." : "Round-ups OFF — spare change stays put.");
+    });
+
+    // ---------- Smart rule slider -> amount + ring ----------
+    const slider = document.getElementById("ruleSlider");
+    const amt = document.getElementById("ruleAmt");
+    const rMonth = document.getElementById("ruleMonth");
+    const ruleRing = document.getElementById("ruleRing");
+    const rulePct = document.getElementById("rulePct");
+    function renderRule() {
+      const v = parseInt(slider.value, 10);
+      const pct = Math.round((v / 500) * 100);
+      amt.textContent = "₹" + v;
+      rMonth.innerHTML = "That’s about <b style='color:var(--ink)'>₹" + (v * 30).toLocaleString("en-IN") + " a month</b> — quietly moved from your current account every morning.";
+      setRingPct(ruleRing, pct);
+      countTo(rulePct, pct, "%");
+    }
+    slider.addEventListener("input", renderRule);
+    renderRule();
+    requestAnimationFrame(() => setRingPct(ruleRing, 30));
+
+    // ---------- Quick actions on the phone (demo) ----------
+    document.querySelectorAll(".qact").forEach((b) => {
+      b.addEventListener("click", () => {
+        const label = b.querySelector("span:last-child").textContent;
+        showToast(label + " opens in the Pillow app — this screen is a live demo.");
+      });
+    });
+
+    // ---------- Join form -> toast ----------
+    document.getElementById("joinForm").addEventListener("submit", (e) => {
+      e.preventDefault();
+      const form = e.target;
+      if (!form.checkValidity()) { form.reportValidity(); return; }
+      const d = collectForm(form);
+      showToast("🛏️ Invite on its way to " + d["Email"] + " — check your inbox in a minute!");
+      form.reset();
+    });
+  </script>
+</body>
+</html>

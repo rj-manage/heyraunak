@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RJ Motion Gallery — 10 Cursor Interaction Experiments</title>
+  <meta name="description" content="A gallery of 10 mouse-driven UI interaction experiments by RJ — parallax, magnets, particles, 3D tilt, liquid distortion and more. Beginner to expert creative-development playground." />
+  <link rel="icon" href="assets/img/RJ_Logo_Black.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Sora:wght@500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/common.css" />
+  <style>
+    body { background: radial-gradient(1200px 600px at 80% -10%, #eef2ff 0%, transparent 60%), var(--paper); }
+
+    /* ---------- Nav ---------- */
+    .nav {
+      position: sticky; top: 0; z-index: 50;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 16px 32px; background: rgba(255,255,255,.8);
+      backdrop-filter: blur(12px); border-bottom: 1px solid #eef2f7;
+    }
+    .brand { display: flex; align-items: center; text-decoration: none; }
+    .brand-mark { display: block; width: 48px; height: 48px; transition: transform .2s ease; }
+    .brand-mark:hover { transform: translateY(-2px); }
+    .brand-mark img { width: 100%; height: 100%; object-fit: contain; display: block; }
+    .nav-tags { display: flex; gap: 8px; align-items: center; font-size: 13px; font-weight: 600; color: var(--ink-600); }
+    .nav-tags span { color: var(--ink-400); }
+
+    /* ---------- Hero ---------- */
+    .hero { text-align: center; padding: 84px 24px 48px; }
+    .hero .chip {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: 12.5px; font-weight: 600; color: var(--brand-600);
+      background: var(--brand-50); border: 1px solid #dfe3ff;
+      padding: 7px 16px; border-radius: 999px; margin-bottom: 22px;
+    }
+    .hero .chip .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--green-600); animation: pulse 1.6s infinite; }
+    @keyframes pulse { 50% { opacity: .35; } }
+    .hero h1 { font-size: clamp(30px, 5.5vw, 54px); line-height: 1.08; letter-spacing: -.03em; }
+    .hero h1 em { font-style: normal; background: linear-gradient(90deg, #4f46e5, #a855f7, #06b6d4); -webkit-background-clip: text; background-clip: text; color: transparent; }
+    .hero p { color: var(--ink-600); max-width: 680px; margin: 18px auto 0; font-size: 16.5px; }
+    .hero-stats { display: flex; gap: 44px; justify-content: center; margin-top: 32px; flex-wrap: wrap; }
+    .hero-stats b { display: block; font-family: var(--font-display); font-size: 24px; color: var(--ink-900); }
+    .hero-stats span { font-size: 13px; color: var(--ink-400); font-weight: 600; }
+
+    /* ---------- Category rail ---------- */
+    .rail { position: sticky; top: 72px; z-index: 40; display: flex; gap: 8px;
+      overflow-x: auto; padding: 10px 24px; background: rgba(248,250,252,.9);
+      backdrop-filter: blur(10px); border-bottom: 1px solid #eef2f7; -webkit-overflow-scrolling: touch; }
+    .rail a {
+      flex: none; font-size: 13px; font-weight: 600; color: var(--ink-600);
+      text-decoration: none; padding: 7px 14px; border-radius: 999px;
+      border: 1px solid #e5eaf1; background: #fff; transition: all .15s ease;
+    }
+    .rail a:hover { border-color: var(--brand-500); color: var(--brand-600); }
+
+    /* ---------- Sections ---------- */
+    .gallery { max-width: 1220px; margin: 0 auto; padding: 8px 24px 40px; }
+    .category { margin-top: 44px; scroll-margin-top: 130px; }
+    .category-head { display: flex; align-items: center; gap: 14px; margin-bottom: 6px; }
+    .category-head .icon {
+      width: 42px; height: 42px; border-radius: 12px; display: grid; place-items: center;
+      color: #fff; flex: none; font-size: 18px;
+      box-shadow: 0 8px 22px -8px rgba(15,23,42,.35);
+    }
+    .category-head .kicker { font-size: 11px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: var(--ink-400); }
+    .category-head h2 { font-size: 26px; letter-spacing: -.02em; line-height: 1.15; }
+    .category-head p { color: var(--ink-600); font-size: 14px; margin-top: 2px; }
+
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 24px; margin-top: 22px; }
+
+    /* ---------- Cards ---------- */
+    .card {
+      background: var(--card); border-radius: var(--radius-lg);
+      overflow: hidden; text-decoration: none; display: flex; flex-direction: column;
+      border: 1px solid #eef2f7; box-shadow: var(--shadow-card);
+      transition: transform .22s ease, box-shadow .22s ease;
+    }
+    .card:hover { transform: translateY(-6px); box-shadow: var(--shadow-pop); }
+    .card .thumb { height: 188px; display: grid; place-items: center; position: relative; overflow: hidden; }
+    .card .thumb .num { font-family: var(--font-display); font-weight: 800; font-size: 40px; opacity: .13; position: absolute; top: 6px; right: 14px; color: var(--ink-900); }
+    .card .body { padding: 18px 22px 22px; display: flex; flex-direction: column; gap: 5px; flex: 1; }
+    .card .row { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+    .card .level {
+      font-size: 10.5px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase;
+      padding: 4px 10px; border-radius: 999px; flex: none;
+    }
+    .card h3 { font-size: 19px; letter-spacing: -.01em; }
+    .card p { font-size: 13px; color: var(--ink-600); flex: 1; }
+    .card .go { font-size: 13px; font-weight: 700; color: var(--brand-600); margin-top: 6px; }
+    .card:hover .go { text-decoration: underline; }
+
+    footer { text-align: center; padding: 44px 20px 50px; color: var(--ink-400); font-size: 13.5px; border-top: 1px solid #eef2f7; }
+    footer .foot-logo { display: inline-block; height: 52px; margin-bottom: 14px; transition: transform .25s ease; }
+    footer .foot-logo:hover { transform: translateY(-4px); }
+    footer .foot-logo img { height: 100%; width: auto; display: block; }
+    footer .foot-tag { display: block; margin-bottom: 8px; font-size: 13px; font-weight: 600; color: var(--ink-600); }
+    footer b { color: var(--ink-600); }
+
+    /* ---------- Level badges ---------- */
+    .lvl { background: #eef2ff; color: #4f46e5; }
+    .lvl-s { background: #f1f5f9; color: #64748b; }
+    .lvl-m { background: #ecfdf5; color: #059669; }
+    .lvl-a { background: #fff7ed; color: #ea580c; }
+    .lvl-x { background: linear-gradient(90deg, #fef2f2, #ffe4e6); color: #e11d48; }
+
+    /* ---------- Category color themes ---------- */
+    .cat-basics .icon { background: linear-gradient(135deg, #64748b, #334155); }
+    .cat-motion .icon { background: linear-gradient(135deg, #6366f1, #06b6d4); }
+    .cat-physics .icon { background: linear-gradient(135deg, #8b5cf6, #06b6d4); }
+    .cat-3d .icon { background: linear-gradient(135deg, #0ea5e9, #6366f1); }
+    .cat-high .icon { background: linear-gradient(135deg, #d946ef, #f59e0b); }
+
+    /* ============================================================
+       CSS mini-thumbnails — each mini is a tiny live "stage" preview
+       ============================================================ */
+    .mini { width: 210px; height: 128px; display: flex; flex-direction: column; gap: 5px; padding: 9px 11px; border-radius: 10px; position: relative; overflow: hidden; }
+    .mini i, .mini span { display: block; }
+    /* shared faint dot grid, echoing the live stages */
+    .mini .dotgrid { position: absolute; inset: 0; background-image: radial-gradient(currentColor .7px, transparent 1.2px); background-size: 12px 12px; opacity: .14; -webkit-mask-image: radial-gradient(ellipse 90% 90% at 50% 50%, black, transparent 85%); mask-image: radial-gradient(ellipse 90% 90% at 50% 50%, black, transparent 85%); }
+
+    /* ===== 01 · Mouse Parallax ===== */
+    .t1 { background: linear-gradient(135deg, #eef2ff, #e4e0ff); color: #4f46e5; }
+    .t1 .mini { background: linear-gradient(160deg, #1e2033, #0f1120); color: #e9ecf8; }
+    .t1 .layer { position: absolute; border-radius: 50%; }
+    .t1 .l1 { width: 82px; height: 82px; left: 12%; top: 14%; border: 1px dashed rgba(165,180,252,.5); }
+    .t1 .l2 { width: 34px; height: 34px; right: 14%; top: 20%; background: #4f46e5; box-shadow: 0 0 14px rgba(99,102,241,.8); }
+    .t1 .l3 { width: 52px; height: 52px; right: 22%; bottom: 18%; border-radius: 6px; border: 1px solid rgba(233,236,248,.5); }
+    .t1 .l4 { width: 7px; height: 7px; left: 30%; bottom: 26%; background: #a5b4fc; }
+    .t1 .mword { position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%); font-family: var(--font-display); font-weight: 700; font-size: 26px; letter-spacing: -.02em; color: transparent; -webkit-text-stroke: 1px rgba(233,236,248,.85); }
+    .t1 .mword b { color: #4f46e5; -webkit-text-stroke: 0; }
+
+    /* ===== 02 · Magnetic Elements ===== */
+    .t2 { background: linear-gradient(135deg, #f1f5f9, #e2e8f0); color: #334155; }
+    .t2 .mini { background: #fff; box-shadow: 0 10px 24px -12px rgba(15,23,42,.4); color: #475569; gap: 12px; }
+    .t2 .mrow { width: 100%; height: 20px; border-radius: 4px; background: #f1f5f9; border: 1px solid #e2e8f0; position: relative; }
+    .t2 .mrow:nth-child(2) { transform: translateX(8px); }
+    .t2 .mrow:nth-child(3) { transform: translateX(16px); }
+    .t2 .mrow::after { content: ""; position: absolute; left: 10px; top: 50%; transform: translateY(-50%); width: 40%; height: 5px; border-radius: 3px; background: #4f46e5; }
+
+    /* ===== 03 · Cursor Follower ===== */
+    .t3 { background: radial-gradient(260px 160px at 70% 0%, rgba(99,102,241,.45), transparent 70%), linear-gradient(135deg, #14100b, #241a10); color: #22d3ee; }
+    .t3 .mini { background: rgba(20,16,11,.85); border: 1px solid rgba(34,211,238,.35); color: #cffafe; }
+    .t3 .orb { position: absolute; left: 50%; top: 50%; width: 54px; height: 54px; transform: translate(-50%,-50%); border-radius: 50%; background: radial-gradient(circle at 34% 30%, rgba(34,211,238,.8), rgba(34,211,238,.15) 55%, transparent 75%); box-shadow: 0 0 22px rgba(34,211,238,.5); }
+    .t3 .ring { position: absolute; left: 50%; top: 50%; width: 78px; height: 78px; transform: translate(-50%,-50%); border-radius: 50%; border: 1px dashed rgba(34,211,238,.5); }
+    .t3 .ghost { position: absolute; left: 50%; top: 50%; width: 30px; height: 8px; transform: translate(-50%,-50%) translateX(40px); border-radius: 6px; background: rgba(34,211,238,.4); }
+
+    /* ===== 04 · Image Reveal ===== */
+    .t4 { background: #f5f1e8; color: #111110; }
+    .t4 .mini { background: transparent; color: #191713; gap: 9px; padding-left: 4px; }
+    .t4 .rows i { height: 9px; border-radius: 2px; background: #191713; }
+    .t4 .rows i:nth-child(2) { width: 80%; }
+    .t4 .rows i:nth-child(3) { width: 88%; }
+    .t4 .rows i:nth-child(4) { width: 68%; }
+    .t4 .fig { position: absolute; right: 12px; top: 10px; width: 40px; height: 30px; border-radius: 5px; background: linear-gradient(135deg, #4f46e5, #a855f7); box-shadow: 0 0 14px rgba(79,70,229,.5); transform: rotate(6deg); }
+
+    /* ===== 05 · Spotlight ===== */
+    .t5 { background: #070708; color: #a5b4fc; }
+    .t5::after { content: ""; position: absolute; inset: 0; background: radial-gradient(120px 80px at 62% 45%, rgba(129,140,248,.9), transparent 70%); }
+    .t5 .dark { position: absolute; inset: 0; color: rgba(236,236,234,.06); }
+    .t5 .mini { background: transparent; color: rgba(236,236,234,.08); font-family: var(--font-display); font-weight: 700; font-size: 30px; letter-spacing: -.02em; line-height: 1; justify-content: center; padding-top: 30px; }
+    .t5 .lit { position: absolute; inset: 0; color: #fff; text-shadow: 0 0 18px rgba(129,140,248,.8); justify-content: center; -webkit-mask-image: radial-gradient(circle 40px at 62% 45%, black 30%, transparent 75%); mask-image: radial-gradient(circle 40px at 62% 45%, black 30%, transparent 75%); }
+
+    /* ===== 06 · Particle Field ===== */
+    .t6 { background: #e9edf2; color: #4f46e5; }
+    .t6 .mini { background: transparent; color: #232a35; }
+    .t6 .part { position: absolute; inset: 0; background-image: radial-gradient(currentColor 1px, transparent 1.4px); background-size: 12px 12px; opacity: .5; }
+    .t6 .glow { position: absolute; right: 22%; top: 22%; width: 44px; height: 44px; border-radius: 50%; background: radial-gradient(circle, rgba(79,70,229,.5), transparent 70%); filter: blur(2px); }
+
+    /* ===== 07 · 3D Tilt ===== */
+    .t7 { background: linear-gradient(135deg, #0a0f2e, #16123c 55%, #0d1f33); color: #a5b4fc; perspective: 500px; }
+    .t7 .mini { background: linear-gradient(150deg, rgba(255,255,255,.09), rgba(255,255,255,.02)); border: 1px solid rgba(255,255,255,.22); color: #e0e7ff; backdrop-filter: blur(4px); }
+    .t7 .tilt-card { width: 78px; height: 70px; margin: auto; border-radius: 10px; background: radial-gradient(120% 120% at 30% 20%, rgba(129,140,248,.5), rgba(10,15,46,.6) 60%); border: 1px solid rgba(129,140,248,.6); box-shadow: 0 14px 26px -10px rgba(0,0,0,.7); transform: rotateX(12deg) rotateY(-12deg); }
+    .t7 .tilt-card::after { content: ""; position: absolute; left: 8px; right: 8px; top: 8px; height: 3px; border-radius: 2px; background: rgba(224,231,255,.6); }
+    .t7 .float { position: absolute; width: 26px; height: 18px; border-radius: 6px; border: 1px solid rgba(224,231,255,.4); background: rgba(224,231,255,.06); }
+    .t7 .float.a { left: 6px; top: 10px; }
+    .t7 .float.b { right: 6px; bottom: 10px; border-radius: 50%; }
+
+    /* ===== 08 · Liquid Distortion ===== */
+    .t8 { background: #04050a; color: #22d3ee; }
+    .t8 .mini { background: linear-gradient(160deg, #06121a, #0a0a14 55%, #0e0a18); border: 1px solid rgba(34,211,238,.3); color: #a5f3fc; }
+    .t8 .wave { position: absolute; inset: 0; opacity: .8; background:
+      radial-gradient(20px 20px at 40% 45%, rgba(34,211,238,.35), transparent 70%),
+      radial-gradient(26px 26px at 58% 50%, rgba(168,85,247,.3), transparent 70%),
+      radial-gradient(14px 14px at 66% 58%, rgba(34,211,238,.35), transparent 70%); filter: blur(1px); animation: waveMorph 3s ease-in-out infinite alternate; }
+    @keyframes waveMorph { to { transform: scale(1.15) rotate(3deg); } }
+    .t8 .mbtn { position: absolute; left: 14px; bottom: 12px; height: 5px; width: 46%; border-radius: 3px; background: rgba(165,243,252,.5); }
+
+    /* ===== 09 · Magnetic Typography ===== */
+    .t9 { background: #fffbeb; color: #d97706; }
+    .t9 .mini { background: transparent; color: #0f172a; font-family: var(--font-display); font-weight: 800; font-size: 30px; letter-spacing: -.03em; justify-content: center; flex-direction: row; align-items: center; gap: 4px; padding: 0; }
+    .t9 .mini i:nth-child(1) { color: #0f172a; } .t9 .mini i:nth-child(2) { color: transparent; -webkit-text-stroke: 1.5px #0f172a; }
+    .t9 .mini i:nth-child(3) { color: #d97706; } .t9 .mini i:nth-child(4) { color: transparent; -webkit-text-stroke: 1.5px #0f172a; }
+    .t9 .mini i:nth-child(5) { color: #0f172a; } .t9 .mini i:nth-child(6) { color: #d97706; }
+
+    /* ===== 10 · Cursor Gravity ===== */
+    .t10 { background: radial-gradient(260px 160px at 50% 120%, #2a2350, #0a0c1e 70%); color: #a5b4fc; }
+    .t10 .mini { background: transparent; }
+    .t10 .orbit { position: absolute; left: 50%; top: 50%; width: 150px; height: 150px; transform: translate(-50%,-50%); border-radius: 50%; border: 1px dashed rgba(140,120,255,.5); }
+    .t10 .sat { position: absolute; width: 12px; height: 12px; border-radius: 50%; background: linear-gradient(135deg, #818cf8, #c084fc); box-shadow: 0 0 10px rgba(129,140,248,.9); }
+    .t10 .sat.s1 { top: 6px; left: 50%; } .t10 .sat.s2 { bottom: 12px; right: 6px; } .t10 .sat.s3 { bottom: -6px; left: 26px; } .t10 .sat.s4 { top: 40px; left: -4px; background: linear-gradient(135deg, #22d3ee, #a5f3fc); box-shadow: 0 0 10px rgba(34,211,238,.8); }
+    .t10 .core { position: absolute; left: 50%; top: 50%; width: 8px; height: 8px; transform: translate(-50%,-50%); border-radius: 50%; background: #fff; box-shadow: 0 0 16px rgba(255,255,255,.9); }
+
+    /* ============================================================
+       ANIMATIONS & EFFECTS
+       ============================================================ */
+
+    /* Scroll progress bar */
+    #progress {
+      position: fixed; top: 0; left: 0; height: 3px; z-index: 100; width: 0%;
+      background: linear-gradient(90deg, #4f46e5, #a855f7, #06b6d4);
+      box-shadow: 0 0 12px rgba(99,102,241,.7);
+    }
+
+    /* Floating aurora blobs */
+    .blob { position: fixed; border-radius: 50%; filter: blur(80px); z-index: 0; pointer-events: none; opacity: .5; }
+    .blob-a { width: 480px; height: 480px; left: -140px; top: -120px; background: #818cf8; animation: blobFloat 22s ease-in-out infinite alternate; }
+    .blob-b { width: 420px; height: 420px; right: -120px; top: 10%; background: #f0abfc; animation: blobFloat 26s ease-in-out infinite alternate-reverse; }
+    .blob-c { width: 360px; height: 360px; left: 35%; top: 30%; background: #67e8f9; opacity: .32; animation: blobFloat 30s ease-in-out infinite alternate; }
+
+    main.gallery, .hero { position: relative; z-index: 1; }
+    @keyframes blobFloat {
+      0%   { transform: translate(0,0) scale(1); }
+      50%  { transform: translate(40px, -30px) scale(1.12); }
+      100% { transform: translate(-30px, 30px) scale(.95); }
+    }
+
+    /* Hero entrance */
+    .hero .chip, .hero h1, .hero p, .hero .hero-stats { opacity: 0; animation: riseUp .8s cubic-bezier(.2,.7,.3,1) forwards; }
+    .hero .chip { animation-delay: .05s; }
+    .hero h1 { animation-delay: .15s; }
+    .hero p { animation-delay: .3s; }
+    .hero .hero-stats { animation-delay: .45s; }
+    @keyframes riseUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: none; } }
+
+    .hero h1 em { background-size: 200% 100%; animation: hueShift 8s linear infinite; }
+    @keyframes hueShift { to { background-position: -200% 0; } }
+
+    .hero .chip .dot { animation: pulse 1.6s infinite, dotGlow 2.4s ease-in-out infinite; }
+    @keyframes dotGlow { 50% { box-shadow: 0 0 10px 3px rgba(5,150,105,.5); } }
+
+    .hero-stats div { animation: statFloat 4s ease-in-out infinite; }
+    .hero-stats div:nth-child(2) { animation-delay: .4s; }
+    .hero-stats div:nth-child(3) { animation-delay: .8s; }
+    .hero-stats div:nth-child(4) { animation-delay: 1.2s; }
+    @keyframes statFloat { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+
+    /* Scroll reveal */
+    .reveal { opacity: 0; transform: translateY(34px); transition: opacity .7s ease, transform .7s cubic-bezier(.2,.7,.3,1); }
+    .reveal.in { opacity: 1; transform: none; }
+    .category-head.reveal { transition-delay: .05s; }
+    .grid .card.reveal { transition-delay: calc(var(--i, 0) * 80ms); }
+
+    /* Card hover: 3D tilt + glare + mini zoom */
+    .card { position: relative; transform-style: preserve-3d; will-change: transform; }
+    .card .spot { position: absolute; inset: 0; z-index: 2; pointer-events: none; opacity: 0; transition: opacity .25s ease;
+      background: radial-gradient(320px 180px at var(--mx,50%) var(--my,50%), rgba(255,255,255,.55), transparent 70%); }
+    .card:hover .spot { opacity: 1; }
+    .card:hover { border-color: rgba(99,102,241,.4); }
+    .card .thumb .mini { transition: transform .5s cubic-bezier(.2,.7,.3,1); }
+    .card:hover .thumb .mini { transform: scale(1.07) rotate(1deg); }
+
+    .card .go { display: inline-flex; align-items: center; gap: 6px; }
+    .card .go::after { content: ""; width: 0; height: 2px; background: var(--brand-500); transition: width .25s ease; border-radius: 2px; }
+    .card:hover .go::after { width: 18px; }
+
+    .category-head .icon { animation: iconPop .6s cubic-bezier(.2,.9,.3,1.4) both; }
+    @keyframes iconPop { from { transform: scale(0) rotate(-20deg); } }
+    .category-head:hover .icon { animation: iconWobble .6s ease; }
+    @keyframes iconWobble { 0%,100% { transform: rotate(0); } 25% { transform: rotate(-8deg) scale(1.1); } 65% { transform: rotate(8deg) scale(1.05); } }
+
+    .rail a.active { background: var(--brand-600); color: #fff; border-color: var(--brand-600); box-shadow: 0 6px 16px -6px rgba(79,70,229,.6); }
+
+    #toTop {
+      position: fixed; right: 22px; bottom: 22px; z-index: 90; width: 48px; height: 48px;
+      border-radius: 14px; border: none; cursor: pointer; display: grid; place-items: center;
+      color: #fff; font-size: 20px; opacity: 0; pointer-events: none; transform: translateY(14px);
+      background: linear-gradient(135deg, #4f46e5, #8b5cf6); box-shadow: 0 12px 30px -8px rgba(79,70,229,.7);
+      transition: opacity .3s ease, transform .3s ease;
+    }
+    #toTop.show { opacity: 1; pointer-events: auto; transform: none; }
+    #toTop:hover { filter: brightness(1.1); }
+
+    @media (prefers-reduced-motion: reduce) {
+      .blob, .brand-mark, .hero h1 em, .hero-stats div, .category-head .icon, .t8 .wave { animation: none !important; }
+    }
+  </style>
+
+  <style>
+    /* ============================================================
+       Neumorphic soft-UI theme — landing page (matches face-8).
+       Loaded last so it overrides the shared indigo theme; the
+       demo pages and css/common.css stay untouched.
+       ============================================================ */
+    :root{
+      --canvas:#E3E9F0; --light:#F7FAFE; --dark:#C3CDDA;
+      --ink:#2A3444; --muted:#8C98A9;
+      --mint:#3CCF91; --coral:#FF8E7F; --indigo:#6366F1;
+      --sh-r:10px 10px 22px var(--dark), -10px -10px 22px var(--light);
+      --sh-s:5px 5px 9px var(--dark), -5px -5px 9px var(--light);
+      --sh-in:inset 5px 5px 10px var(--dark), inset -5px -5px 10px var(--light);
+      --sh-in-s:inset 3px 3px 6px var(--dark), -3px -3px 6px var(--light);
+    }
+    body{ background:var(--canvas) !important; color:var(--ink) !important; overflow-x:hidden; }
+    .blob,.bg-scene{ display:none !important; }
+    ::selection{ background:var(--mint); color:#fff; }
+
+    /* ---------- soft primitives ---------- */
+    .soft-raised{ background:var(--canvas); border-radius:24px; box-shadow:var(--sh-r); }
+    .soft-btn{ display:inline-flex; align-items:center; justify-content:center; gap:8px; font:inherit; font-weight:700;
+      cursor:pointer; border:none; color:#fff; text-decoration:none; background:linear-gradient(145deg,#4ED7A0,#2BB87E);
+      border-radius:999px; padding:14px 26px; box-shadow:7px 7px 16px var(--dark), -7px -7px 16px var(--light);
+      transition:transform .15s ease, box-shadow .15s ease, filter .15s ease; }
+    .soft-btn:hover{ transform:translateY(-2px); filter:brightness(1.03);
+      box-shadow:9px 9px 20px var(--dark), -9px -9px 20px var(--light); }
+    .soft-btn:active{ transform:translateY(0) scale(.99); box-shadow:var(--sh-in-s); }
+    .soft-btn.ink{ background:linear-gradient(145deg,#3A4760,#202B3E); }
+    .soft-chip{ display:inline-flex; align-items:center; gap:8px; font-size:12.5px; font-weight:700; color:var(--muted);
+      background:var(--canvas); border-radius:999px; padding:8px 15px; box-shadow:var(--sh-s); }
+    .soft-chip .dot{ width:8px; height:8px; border-radius:50%; background:var(--mint); }
+
+    /* ---------- nav (floating soft pill) ---------- */
+    .nav{ position:sticky; top:14px; z-index:60; width:min(1160px,94vw); margin:14px auto 0;
+      display:flex; align-items:center; justify-content:space-between; gap:18px;
+      padding:12px 22px 12px 26px; border-radius:999px; background:var(--canvas) !important;
+      backdrop-filter:none !important; -webkit-backdrop-filter:none !important;
+      border:none !important; box-shadow:var(--sh-r); }
+    .brand{ display:inline-flex; align-items:center; gap:12px; text-decoration:none; }
+    .brand .logo{ width:44px; height:44px; flex:none; padding:8px; border-radius:50%; display:grid; place-items:center;
+      background:var(--canvas); box-shadow:var(--sh-s); }
+    .brand .logo img{ width:100%; height:100%; object-fit:contain; display:block; }
+    .brand b{ font-family:var(--font-display); font-size:18px; font-weight:800; letter-spacing:-.02em; color:var(--ink); }
+    .nav-side{ display:flex; align-items:center; gap:12px; }
+    .nav .cta{ padding:10px 20px; font-size:13.5px; }
+
+    /* ---------- hero ---------- */
+    .hero{ text-align:center; padding:64px 24px 34px; position:relative; z-index:1; }
+    .hero .chip{ display:inline-flex; align-items:center; gap:8px; font-size:12.5px; font-weight:700;
+      color:var(--muted) !important; background:var(--canvas) !important; border:none !important;
+      padding:8px 16px; border-radius:999px; margin-bottom:24px; box-shadow:var(--sh-s); }
+    .hero .chip .dot{ width:8px; height:8px; border-radius:50%; background:var(--mint) !important;
+      box-shadow:none !important; animation:softPulse 2.4s ease-in-out infinite; }
+    @keyframes softPulse{ 50%{ opacity:.45; } }
+    .hero h1{ font-size:clamp(32px,5.5vw,56px); line-height:1.06; letter-spacing:-.03em; font-weight:800; color:var(--ink); }
+    .hero h1 em{ font-style:normal; background:none !important; -webkit-background-clip:initial !important;
+      background-clip:initial !important; -webkit-text-fill-color:var(--mint); color:var(--mint) !important;
+      animation:none !important; }
+    .hero p{ color:var(--muted) !important; max-width:680px; margin:18px auto 0; font-size:16.5px; line-height:1.7; }
+    .hero-cta{ display:flex; gap:14px; justify-content:center; flex-wrap:wrap; margin-top:30px; }
+    .hero-stats{ display:flex; gap:18px; justify-content:center; margin-top:34px; flex-wrap:wrap; }
+    .hero-stats div{ background:var(--canvas); border-radius:22px; padding:16px 28px; box-shadow:var(--sh-r); min-width:124px; }
+    .hero-stats b{ display:block; font-family:var(--font-display); font-size:26px; color:var(--ink); }
+    .hero-stats span{ font-size:12px; color:var(--muted); font-weight:700; letter-spacing:.08em; text-transform:uppercase; }
+
+    /* ---------- category rail ---------- */
+    .rail{ position:sticky; top:88px; z-index:40; display:flex; gap:10px; overflow-x:auto;
+      padding:14px 24px 16px; background:var(--canvas) !important; backdrop-filter:none !important;
+      -webkit-backdrop-filter:none !important; border-bottom:none !important; -webkit-overflow-scrolling:touch; }
+    .rail a{ flex:none; font-size:13px; font-weight:700; color:var(--muted) !important; text-decoration:none;
+      padding:9px 16px; border-radius:999px; border:none !important; background:var(--canvas) !important;
+      box-shadow:var(--sh-s); transition:color .18s ease, transform .15s ease; }
+    .rail a:hover{ color:var(--ink) !important; transform:translateY(-1px); }
+    .rail a.active{ color:#fff !important; background:linear-gradient(145deg,#4ED7A0,#2BB87E) !important;
+      box-shadow:5px 5px 12px var(--dark), -5px -5px 12px var(--light) !important; }
+
+    /* ---------- gallery + cards ---------- */
+    .gallery{ max-width:1160px; margin:0 auto; padding:8px 24px 40px; position:relative; z-index:1; }
+    .category{ margin-top:56px; scroll-margin-top:150px; }
+    .category-head{ display:flex; align-items:center; gap:16px; margin-bottom:10px; }
+    .category-head .icon{ width:54px; height:54px; border-radius:18px; display:grid; place-items:center; flex:none;
+      font-size:20px; background:var(--canvas) !important; background-image:none !important; box-shadow:var(--sh-s) !important; }
+    .category-head .kicker{ font-size:11px; font-weight:800; letter-spacing:.18em; text-transform:uppercase; color:var(--mint); }
+    .category-head h2{ font-size:27px; letter-spacing:-.02em; line-height:1.15; color:var(--ink); }
+    .category-head p{ color:var(--muted); font-size:14px; margin-top:2px; }
+    .cat-classic .icon{ color:#64748B !important; }
+    .cat-modern .icon{ color:var(--indigo) !important; }
+    .cat-glass .icon{ color:#8B5CF6 !important; }
+    .cat-luxury .icon{ color:#C79A3E !important; }
+    .cat-hightech .icon{ color:#0EA5E9 !important; }
+    .cat-future .icon{ color:var(--coral) !important; }
+    .cat-soft .icon{ color:#06B6D4 !important; }
+    .cat-immersive .icon{ color:#A855F7 !important; }
+    .cat-synth .icon{ color:#EC4899 !important; }
+    .cat-basics .icon{ color:#64748B !important; }
+    .cat-motion .icon{ color:var(--indigo) !important; }
+    .cat-physics .icon{ color:#8B5CF6 !important; }
+    .cat-3d .icon{ color:#0EA5E9 !important; }
+    .cat-high .icon{ color:var(--coral) !important; }
+
+    .grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:24px; margin-top:24px; }
+    .card{ background:var(--canvas) !important; border-radius:26px; overflow:hidden; text-decoration:none;
+      display:flex; flex-direction:column; border:none !important; box-shadow:var(--sh-r) !important;
+      transition:transform .25s ease, box-shadow .25s ease; }
+    .card:hover{ border-color:transparent !important;
+      box-shadow:14px 14px 30px var(--dark), -12px -12px 28px var(--light) !important; }
+    .card .thumb{ margin:16px 16px 0; height:176px; border-radius:20px; display:grid; place-items:center;
+      position:relative; overflow:hidden; background:var(--canvas) !important; box-shadow:var(--sh-in-s); }
+    .card .thumb .num{ font-family:var(--font-display); font-weight:800; font-size:38px; opacity:.12;
+      position:absolute; top:3px; right:14px; color:var(--ink); }
+    .card .body{ padding:18px 22px 24px; display:flex; flex-direction:column; gap:6px; flex:1; }
+    .card .row{ display:flex; align-items:center; justify-content:space-between; gap:10px; }
+    .card h3{ font-size:19px; letter-spacing:-.01em; color:var(--ink); }
+    .card p{ font-size:13px; color:var(--muted); flex:1; line-height:1.6; }
+    .card .level{ font-size:10.5px; font-weight:800; letter-spacing:.1em; text-transform:uppercase; flex:none;
+      padding:5px 12px; border-radius:999px; background:var(--canvas) !important; box-shadow:var(--sh-in-s); }
+    .lvl{ color:var(--indigo) !important; }
+    .lvl-s{ color:#64748B !important; }
+    .lvl-m{ color:#1F9D6A !important; }
+    .lvl-a{ color:#EA580C !important; }
+    .lvl-x{ color:#E11D48 !important; }
+    .card .go{ font-size:13px; font-weight:800; color:var(--mint) !important; margin-top:8px; }
+    .card:hover .go{ text-decoration:none; }
+    .card .go::after{ background:var(--mint) !important; }
+
+    /* ---------- footer ---------- */
+    footer{ padding:40px 5vw 46px; color:var(--muted); font-size:13.5px; border-top:none !important; text-align:left; }
+    .foot-main{ max-width:1160px; margin:0 auto; display:flex; flex-wrap:wrap; align-items:center;
+      justify-content:space-between; gap:18px; padding:26px 30px; }
+    .foot-main .flinks{ display:flex; gap:20px; font-size:13.5px; flex-wrap:wrap; }
+    .foot-main .flinks a{ color:var(--muted); text-decoration:none; }
+    .foot-main .flinks a:hover{ color:var(--ink); }
+    .demo-tag{ max-width:1160px; margin:18px auto 0; padding:16px 8px 0; border-top:1px solid rgba(60,80,110,.15);
+      display:flex; flex-wrap:wrap; justify-content:space-between; gap:10px; font-size:12.5px; color:var(--muted); }
+    .demo-tag b{ color:var(--ink); }
+
+    /* ---------- scroll progress + back-to-top ---------- */
+    #progress{ position:fixed; top:0; left:0; height:4px; z-index:100; width:0%;
+      background:linear-gradient(90deg,#57D9A4,#2BB87E) !important; box-shadow:0 0 12px rgba(60,207,145,.55) !important; }
+    #toTop{ position:fixed; right:24px; bottom:24px; z-index:90; width:54px; height:54px; border-radius:50%;
+      border:none; cursor:pointer; display:grid; place-items:center; color:var(--mint); font-size:20px;
+      background:var(--canvas) !important; background-image:none !important; box-shadow:var(--sh-r) !important;
+      opacity:0; pointer-events:none; transform:translateY(14px);
+      transition:opacity .3s ease, transform .3s ease, color .2s ease; }
+    #toTop.show{ opacity:1; pointer-events:auto; transform:none; }
+    #toTop:hover{ color:var(--ink); }
+
+    @media (max-width:860px){
+      .nav{ flex-wrap:wrap; border-radius:26px; padding:12px 16px; }
+      .nav-side{ width:100%; justify-content:space-between; }
+      .nav .cta{ display:none; }
+      .rail{ position:static; }
+    }
+    @media (prefers-reduced-motion:reduce){
+      .soft-chip .dot,.hero .chip .dot{ animation:none !important; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Decorative animated background -->
+  <div class="blob blob-a"></div>
+  <div class="blob blob-b"></div>
+  <div class="blob blob-c"></div>
+  <div id="progress"></div>
+  <button id="toTop" aria-label="Back to top">↑</button>
+
+  <nav class="nav">
+    <a class="brand" href="index.html">
+      <span class="logo"><img src="assets/img/RJ_Logo_Black.png" alt="RJ logo" /></span>
+      <b>RJ Motion Gallery</b>
+    </a>
+    <div class="nav-side">
+      <span class="soft-chip"><span class="dot"></span> 10 experiments · 4 categories</span>
+      <a class="soft-btn cta" href="#cat-basics">Browse the gallery</a>
+    </div>
+  </nav>
+
+  <header class="hero">
+    <span class="chip"><span class="dot"></span> 10 mouse-driven interaction experiments</span>
+    <h1>Every kind of cursor magic.<br /><em>From simple parallax to liquid physics.</em></h1>
+    <p>Explore ten full interaction demos by <b>RJ</b> - a spectrum of mouse-driven UI from magnetic buttons and particle fields to 3D tilting cards, liquid WebGL distortion and a tiny orbiting solar system. Every demo is a live, hand-built page.</p>
+    <div class="hero-cta">
+      <a class="soft-btn" href="#cat-basics">Explore all 10 experiments</a>
+      <a class="soft-btn ink" href="#cat-high">Jump to the finale</a>
+    </div>
+    <div class="hero-stats">
+      <div><b>10</b><span>Experiments</span></div>
+      <div><b>5</b><span>Categories</span></div>
+      <div><b>5</b><span>Skill levels</span></div>
+      <div><b>100%</b><span>Interactive</span></div>
+    </div>
+  </header>
+
+  <!-- Category rail -->
+  <nav class="rail" aria-label="Experiment categories">
+    <a href="#cat-basics">Basics &amp; Motion</a>
+    <a href="#cat-physics">Physics &amp; Particles</a>
+    <a href="#cat-3d">3D &amp; Depth</a>
+    <a href="#cat-high">High-Tech &amp; Field</a>
+  </nav>
+
+  <main class="gallery">
+
+    <!-- ============ CATEGORY 01: Basics & Motion ============ -->
+    <section class="category cat-basics" id="cat-basics">
+      <div class="category-head reveal">
+        <span class="icon">▤</span>
+        <div>
+          <div class="kicker">Category 01</div>
+          <h2>Basics &amp; Motion</h2>
+          <p>The foundations every cursor interaction starts with — depth, magnetism and follow.</p>
+        </div>
+      </div>
+      <div class="grid reveal">
+
+        <a class="card reveal" href="experiment-1.html">
+          <div class="thumb t1">
+            <span class="spot"></span><span class="num">01</span>
+            <div class="mini">
+              <span class="dotgrid"></span>
+              <span class="layer l1"></span><span class="layer l2"></span><span class="layer l3"></span><span class="layer l4"></span>
+              <span class="mword">Depth<b>.</b></span>
+            </div>
+          </div>
+          <div class="body">
+            <div class="row"><h3>Mouse Parallax</h3><span class="level lvl-s">Starter</span></div>
+            <p>A layered composition — background, shapes and typography — each plane drifting at its own depth. Subtle 3D from nothing but cursor position.</p>
+            <span class="go">Open demo →</span>
+          </div>
+        </a>
+
+        <a class="card reveal" href="experiment-2.html">
+          <div class="thumb t2">
+            <span class="spot"></span><span class="num">02</span>
+            <div class="mini">
+              <span class="mrow"></span><span class="mrow"></span><span class="mrow"></span>
+            </div>
+          </div>
+          <div class="body">
+            <div class="row"><h3>Magnetic Elements</h3><span class="level lvl">Beginner</span></div>
+            <p>Buttons lean toward the pointer the closer it gets, then spring back to rest the moment you leave. Organic, elastic, alive.</p>
+            <span class="go">Open demo →</span>
+          </div>
+        </a>
+
+        <a class="card reveal" href="experiment-3.html">
+          <div class="thumb t3">
+            <span class="spot"></span><span class="num">03</span>
+            <div class="mini">
+              <span class="dotgrid"></span>
+              <span class="ring"></span><span class="orb"></span><span class="ghost"></span>
+            </div>
+          </div>
+          <div class="body">
+            <div class="row"><h3>Cursor Follower</h3><span class="level lvl">Beginner</span></div>
+            <p>One object with real weight: lag, momentum and rotation. The orb chases the cursor the way a physical body chases a target.</p>
+            <span class="go">Open demo →</span>
+          </div>
+        </a>
+
+      </div>
+    </section>
+
+    <!-- ============ CATEGORY 02: Physics & Particles ============ -->
+    <section class="category cat-physics" id="cat-physics">
+      <div class="category-head reveal">
+        <span class="icon">✦</span>
+        <div>
+          <div class="kicker">Category 02</div>
+          <h2>Physics &amp; Particles</h2>
+          <p>Systems with real behaviour — reveal, light, and fields that react to your touch.</p>
+        </div>
+      </div>
+      <div class="grid reveal">
+
+        <a class="card reveal" href="experiment-4.html">
+          <div class="thumb t4">
+            <span class="spot"></span><span class="num">04</span>
+            <div class="mini">
+              <span class="fig"></span>
+              <div class="rows"><i></i><i></i><i></i><i></i></div>
+            </div>
+          </div>
+          <div class="body">
+            <div class="row"><h3>Image Reveal</h3><span class="level lvl-m">Intermediate</span></div>
+            <p>Hover a project row and a figure detaches from the list, trailing your cursor with a soft rotation — attached, never glued.</p>
+            <span class="go">Open demo →</span>
+          </div>
+        </a>
+
+        <a class="card reveal" href="experiment-5.html">
+          <div class="thumb t5">
+            <span class="spot"></span><span class="num">05</span>
+            <div class="mini">
+              <span class="dotgrid"></span>
+              <span class="lit">Light</span>
+              <span class="dark">Light</span>
+            </div>
+          </div>
+          <div class="body">
+            <div class="row"><h3>Spotlight</h3><span class="level lvl-m">Intermediate</span></div>
+            <p>The stage is dark until the pointer arrives. A soft cone of light reveals hidden typography and leaves a trail of glow behind it.</p>
+            <span class="go">Open demo →</span>
+          </div>
+        </a>
+
+        <a class="card reveal" href="experiment-6.html">
+          <div class="thumb t6">
+            <span class="spot"></span><span class="num">06</span>
+            <div class="mini">
+              <span class="part"></span><span class="glow"></span>
+            </div>
+          </div>
+          <div class="body">
+            <div class="row"><h3>Particle Field</h3><span class="level lvl-m">Intermediate</span></div>
+            <p>A quiet grid of points wakes up as you pass: pushed aside, tinted with the accent colour, then springing back to their posts.</p>
+            <span class="go">Open demo →</span>
+          </div>
+        </a>
+
+      </div>
+    </section>
+
+    <!-- ============ CATEGORY 03: 3D & Depth ============ -->
+    <section class="category cat-3d" id="cat-3d">
+      <div class="category-head reveal">
+        <span class="icon">◈</span>
+        <div>
+          <div class="kicker">Category 03</div>
+          <h2>3D &amp; Depth</h2>
+          <p>Real perspective and dimension — cards that lean and surfaces that flow in three dimensions.</p>
+        </div>
+      </div>
+      <div class="grid reveal">
+
+        <a class="card reveal" href="experiment-7.html">
+          <div class="thumb t7">
+            <span class="spot"></span><span class="num">07</span>
+            <div class="mini">
+              <span class="dotgrid"></span>
+              <span class="float a"></span><span class="float b"></span>
+              <span class="tilt-card"></span>
+            </div>
+          </div>
+          <div class="body">
+            <div class="row"><h3>3D Tilt</h3><span class="level lvl-a">Advanced</span></div>
+            <p>A glass card that leans into the pointer in real 3D — perspective, dynamic highlight and floating layers at different depths.</p>
+            <span class="go">Open demo →</span>
+          </div>
+        </a>
+
+        <a class="card reveal" href="experiment-8.html">
+          <div class="thumb t8">
+            <span class="spot"></span><span class="num">08</span>
+            <div class="mini">
+              <span class="dotgrid"></span>
+              <span class="wave"></span>
+              <span class="mbtn"></span>
+            </div>
+          </div>
+          <div class="body">
+            <div class="row"><h3>Liquid Distortion</h3><span class="level lvl-a">Advanced</span></div>
+            <p>A WebGL surface that flows around the cursor like syrup — the pattern bends, ripples and settles as you stir the canvas.</p>
+            <span class="go">Open demo →</span>
+          </div>
+        </a>
+
+      </div>
+    </section>
+
+    <!-- ============ CATEGORY 04: High-Tech & Field ============ -->
+    <section class="category cat-high" id="cat-high">
+      <div class="category-head reveal">
+        <span class="icon">✺</span>
+        <div>
+          <div class="kicker">Category 04 · The finale</div>
+          <h2>High-Tech &amp; Field</h2>
+          <p>Typography with personality and a whole solar system attracted to a single point — the cursor.</p>
+        </div>
+      </div>
+      <div class="grid reveal">
+
+        <a class="card reveal" href="experiment-9.html">
+          <div class="thumb t9">
+            <span class="spot"></span><span class="num">09</span>
+            <div class="mini">
+              <i>C</i><i>U</i><i>R</i><i>S</i><i>O</i><i>R</i>
+            </div>
+          </div>
+          <div class="body">
+            <div class="row"><h3>Magnetic Typography</h3><span class="level lvl-x">Expert</span></div>
+            <p>Every letter of the word reacts on its own. Each one leans toward you with a different strength, as if the type is curious about your cursor.</p>
+            <span class="go">Open demo →</span>
+          </div>
+        </a>
+
+        <a class="card reveal" href="experiment-10.html">
+          <div class="thumb t10">
+            <span class="spot"></span><span class="num">10</span>
+            <div class="mini">
+              <span class="orbit"><span class="sat s1"></span><span class="sat s2"></span><span class="sat s3"></span><span class="sat s4"></span></span>
+              <span class="core"></span>
+            </div>
+          </div>
+          <div class="body">
+            <div class="row"><h3>Cursor Gravity</h3><span class="level lvl-x">Expert</span></div>
+            <p>A tiny solar system of shapes, chips and cards. Your cursor is the sun — objects orbit it by mass, some eager, some indifferent.</p>
+            <span class="go">Open demo →</span>
+          </div>
+        </a>
+
+        <a class="card reveal" href="index.html">
+          <div class="thumb" style="background: linear-gradient(135deg, #eef2ff, #e4e0ff);">
+            <span class="spot"></span><span class="num" style="opacity:.1">RJ</span>
+            <div class="mini" style="background: linear-gradient(135deg,#1e2033,#0f1120);color:#e9ecf8;align-items:center;justify-content:center;gap:0;">
+              <span style="font-family:var(--font-display);font-weight:800;font-size:34px;letter-spacing:-.03em;background:linear-gradient(90deg,#4f46e5,#a855f7);-webkit-background-clip:text;background-clip:text;color:transparent;">RJ</span>
+              <span class="mono" style="color:#94a3b8;font-size:8px;letter-spacing:.3em;">MOTION GALLERY</span>
+            </div>
+          </div>
+          <div class="body">
+            <div class="row"><h3>All 10 Experiments</h3><span class="level lvl">Home</span></div>
+            <p>Back to the full collection — a gallery of every mouse-driven interaction by RJ, from Starter to Expert.</p>
+            <span class="go">Go to index →</span>
+          </div>
+        </a>
+
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <div class="foot-main soft-raised">
+      <a class="brand" href="index.html">
+        <span class="logo"><img src="assets/img/RJ_Logo_Black.png" alt="RJ logo" /></span>
+        <b>RJ Motion Gallery</b>
+      </a>
+      <div class="flinks">
+        <a href="#cat-basics">Basics &amp; Motion</a>
+        <a href="#cat-physics">Physics &amp; Particles</a>
+        <a href="#cat-3d">3D &amp; Depth</a>
+        <a href="#cat-high">High-Tech &amp; Field</a>
+      </div>
+    </div>
+    <div class="demo-tag">
+      <span><b>RJ</b> · 10 cursor experiments across 4 categories · Beginner to Expert</span>
+      <span>2026 · Built with HTML, CSS &amp; vanilla JS</span>
+    </div>
+  </footer>
+
+  <script>
+    /* ---------- Scroll reveal with staggered cards ---------- */
+    const revealObs = new IntersectionObserver((entries) => {
+      entries.forEach((en) => {
+        if (!en.isIntersecting) return;
+        if (en.target.classList.contains('card')) {
+          const siblings = [...en.target.parentElement.querySelectorAll('.card')];
+          const i = siblings.indexOf(en.target);
+          en.target.style.transitionDelay = (i % 4) * 80 + 'ms';
+        }
+        en.target.classList.add('in');
+        revealObs.unobserve(en.target);
+      });
+    }, { threshold: 0.12 });
+    document.querySelectorAll('.reveal').forEach((el) => revealObs.observe(el));
+
+    /* ---------- Scroll progress bar ---------- */
+    const progress = document.getElementById('progress');
+    function onScroll() {
+      const h = document.documentElement;
+      const scrollable = h.scrollHeight - h.clientHeight;
+      const pct = scrollable > 0 ? (h.scrollTop / scrollable) * 100 : 0;
+      progress.style.width = pct + '%';
+    }
+
+    /* ---------- Back to top ---------- */
+    const toTop = document.getElementById('toTop');
+    function onScrollBtns() {
+      if (window.scrollY > 500) toTop.classList.add('show'); else toTop.classList.remove('show');
+    }
+    toTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+    window.addEventListener('scroll', () => { onScroll(); onScrollBtns(); }, { passive: true });
+    onScroll(); onScrollBtns();
+
+    /* ---------- Card 3D tilt + spotlight ---------- */
+    document.querySelectorAll('.card').forEach((card) => {
+      const spot = card.querySelector('.spot');
+      if (!spot) return;
+      card.addEventListener('mousemove', (e) => {
+        const r = card.getBoundingClientRect();
+        const px = (e.clientX - r.left) / r.width;
+        const py = (e.clientY - r.top) / r.height;
+        const rx = (0.5 - py) * 8;
+        const ry = (px - 0.5) * 10;
+        card.style.transform = `translateY(-6px) perspective(900px) rotateX(${rx}deg) rotateY(${ry}deg)`;
+        spot.style.setProperty('--mx', (px * 100) + '%');
+        spot.style.setProperty('--my', (py * 100) + '%');
+      });
+      card.addEventListener('mouseleave', () => {
+        card.style.transform = '';
+      });
+    });
+
+    /* ---------- Scrollspy: highlight active category in rail ---------- */
+    const railLinks = document.querySelectorAll('.rail a');
+    const sections = [...railLinks].map((a) => document.querySelector(a.getAttribute('href')));
+    const spy = new IntersectionObserver((entries) => {
+      entries.forEach((en) => {
+        if (en.isIntersecting) {
+          railLinks.forEach((a) => a.classList.remove('active'));
+          const link = document.querySelector('.rail a[href="#' + en.target.id + '"]');
+          if (link) link.classList.add('active');
+        }
+      });
+    }, { rootMargin: '-40% 0px -55% 0px' });
+    sections.forEach((s) => s && spy.observe(s));
+  </script>
+</body>
+</html>

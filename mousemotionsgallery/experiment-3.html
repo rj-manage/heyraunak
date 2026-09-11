@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>03 · Cursor Follower — RJ Motion Gallery</title>
+  <meta name="description" content="An object with real weight — lag, momentum and rotation as the orb chases the cursor. Experiment 03 of the RJ Motion Gallery — Beginner level." />
+  <link rel="icon" href="assets/img/RJ_Logo_Black.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Sora:wght@500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/common.css" />
+  <style>
+    :root { --ink:#0f172a; --slate:#475569; --muted:#94a3b8; --line:#e5eaf1; --accent:#06b6d4; }
+    body { background: radial-gradient(1200px 600px at 80% -10%, #ecfeff 0%, transparent 60%), var(--paper); }
+    .nav { position: sticky; top: 0; z-index: 60; display: flex; align-items: center; justify-content: space-between; padding: 14px 6vw; background: rgba(255,255,255,.85); backdrop-filter: blur(12px); border-bottom: 1px solid var(--line); }
+    .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+    .brand .logo { width: 36px; height: 36px; }
+    .brand .logo img { width: 100%; height: 100%; object-fit: contain; }
+    .brand b { font-family: var(--font-display); font-size: 16px; color: var(--ink); letter-spacing: -.01em; }
+    .brand small { color: var(--muted); font-weight: 600; }
+    .nav-links { display: flex; gap: 24px; align-items: center; }
+    .nav-links a { text-decoration: none; color: var(--slate); font-size: 14px; font-weight: 600; }
+    .nav-links a:hover { color: var(--accent); }
+    .nav-links .btn { font-size: 13.5px; padding: 9px 16px; border-radius: 999px; }
+    .hero { padding: 60px 6vw 34px; max-width: 1220px; margin: 0 auto; }
+    .hero .kicker { display: inline-flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: #0891b2; background: #ecfeff; border: 1px solid #cffafe; padding: 6px 13px; border-radius: 999px; margin-bottom: 16px; }
+    .hero h1 { font-size: clamp(30px, 4.6vw, 46px); line-height: 1.08; letter-spacing: -.03em; color: var(--ink); }
+    .hero h1 em { font-style: normal; color: var(--accent); }
+    .hero p { color: var(--slate); font-size: 16px; margin-top: 14px; max-width: 640px; }
+    .hero .meta { display: flex; gap: 20px; flex-wrap: wrap; margin-top: 18px; font-size: 12.5px; font-weight: 600; color: var(--muted); }
+    .hero .meta b { color: var(--accent); }
+    .stage-wrap { max-width: 1220px; margin: 0 auto; padding: 0 6vw; }
+    .stage { position: relative; height: clamp(400px, 62vh, 580px); background: linear-gradient(160deg, #14100b, #241a10); border: 1px solid rgba(6,182,212,.25); border-radius: 22px; overflow: hidden; box-shadow: 0 40px 80px -40px rgba(15,23,42,.6); }
+    .stage__tag { position: absolute; top: 16px; right: 18px; z-index: 20; font-family: var(--font-mono); font-size: 10px; letter-spacing: .22em; text-transform: uppercase; color: rgba(207,250,254,.5); pointer-events: none; user-select: none; }
+    .stage__controls { position: absolute; left: 50%; bottom: 16px; transform: translateX(-50%); z-index: 20; display: flex; gap: 8px; align-items: center; }
+    .stage__controls .btn { padding: 8px 16px; font-size: 10px; border-radius: 999px; border: 1px solid rgba(207,250,254,.25); color: rgba(207,250,254,.85); background: rgba(10,10,10,.4); backdrop-filter: blur(6px); letter-spacing: .14em; }
+    .stage__controls .btn:hover { border-color: var(--accent); color: var(--accent); }
+    .stage__controls .btn.paused { color: #082f34; background: var(--accent); border-color: var(--accent); }
+
+    .fl { position: absolute; inset: 0; overflow: hidden; user-select: none; }
+    .fl__sweep { position: absolute; inset: 0; background: radial-gradient(120% 90% at 50% 120%, rgba(6,182,212,.08), transparent 60%), repeating-linear-gradient(0deg, transparent 0 63px, rgba(207,250,254,.03) 63px 64px); }
+    .dotgrid { position: absolute; inset: 0; background-image: radial-gradient(rgba(207,250,254,.06) 1px, transparent 1.5px); background-size: 30px 30px; -webkit-mask-image: radial-gradient(ellipse 90% 90% at 50% 50%, black, transparent 85%); mask-image: radial-gradient(ellipse 90% 90% at 50% 50%, black, transparent 85%); pointer-events: none; }
+    .fl__body { position: absolute; left: 0; top: 0; will-change: transform; pointer-events: none; }
+    .fl__orb { position: relative; width: 168px; height: 168px; border-radius: 50%; will-change: transform; }
+    .fl__orb::before { content: ""; position: absolute; inset: 0; border-radius: 50%; background: radial-gradient(circle at 34% 30%, rgba(34,211,238,.65), rgba(34,211,238,.12) 46%, transparent 72%); box-shadow: 0 0 90px rgba(34,211,238,.18), inset -14px -18px 44px rgba(0,0,0,.55); }
+    .fl__orb::after { content: ""; position: absolute; left: 18%; top: 14%; width: 26%; height: 26%; border-radius: 50%; background: rgba(255,255,255,.5); filter: blur(5px); }
+    .fl__ghost { position: absolute; left: 0; top: 0; width: 168px; height: 168px; border-radius: 50%; border: 1px solid rgba(34,211,238,.16); opacity: 0; transform: translate(-50%,-50%) scale(1.12); transition: opacity .4s ease; }
+    .fl__ring { position: absolute; left: 0; top: 0; width: 168px; height: 168px; border-radius: 50%; border: 1px solid rgba(207,250,254,.14); opacity: 0; transform: translate(-50%,-50%) scale(1.55); transition: opacity .4s ease; }
+    .fl__anchor { position: absolute; width: 22px; height: 22px; transform: translate(-50%,-50%); opacity: 0; color: var(--accent); transition: opacity .3s ease; pointer-events: none; }
+    .fl__anchor::before, .fl__anchor::after { content: ""; position: absolute; background: currentColor; }
+    .fl__anchor::before { left: 50%; top: 0; bottom: 0; width: 1px; }
+    .fl__anchor::after { top: 50%; left: 0; right: 0; height: 1px; }
+    .fl__tag { position: absolute; left: 0; top: 0; transform: translateY(calc(100% + 18px)); font-family: var(--font-mono); font-size: 9px; letter-spacing: .22em; text-transform: uppercase; color: rgba(207,250,254,.6); white-space: nowrap; display: flex; align-items: center; gap: 8px; }
+    .fl__tag i { color: var(--accent); }
+    .fl__hintlabel { position: absolute; right: 4%; bottom: 5%; font-family: var(--font-mono); font-size: 9px; letter-spacing: .24em; color: rgba(207,250,254,.25); text-transform: uppercase; pointer-events: none; }
+
+    section { padding: 64px 6vw; max-width: 1220px; margin: 0 auto; }
+    .sec-head { max-width: 640px; margin-bottom: 34px; }
+    .sec-head .kicker { font-size: 12px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--accent); margin-bottom: 10px; }
+    .sec-head h2 { font-size: clamp(24px, 3.2vw, 34px); color: var(--ink); letter-spacing: -.02em; }
+    .sec-head p { color: var(--slate); margin-top: 10px; font-size: 15.5px; }
+    .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
+    @media (max-width: 820px) { .grid2 { grid-template-columns: 1fr; } }
+    .card { background: #fff; border: 1px solid var(--line); border-radius: 16px; padding: 26px; }
+    .card .ico { width: 42px; height: 42px; border-radius: 12px; display: grid; place-items: center; font-size: 18px; color: #fff; margin-bottom: 14px; background: linear-gradient(135deg, var(--accent), #8b5cf6); }
+    .card h3 { font-size: 17px; color: var(--ink); margin-bottom: 6px; }
+    .card p { font-size: 14px; color: var(--slate); }
+    .card code { font-family: var(--font-mono); font-size: 12px; color: #0891b2; background: #ecfeff; padding: 2px 6px; border-radius: 6px; }
+
+    footer { border-top: 1px solid var(--line); background: #fbfcfe; padding: 40px 6vw 46px; }
+    .foot { max-width: 1220px; margin: 0 auto; display: flex; justify-content: space-between; gap: 30px; flex-wrap: wrap; align-items: center; }
+    .foot .brand b { font-size: 16px; }
+    .foot-links { display: flex; gap: 22px; font-size: 13.5px; color: var(--slate); }
+    .foot-links a { text-decoration: none; }
+    .foot-links a:hover { color: var(--accent); }
+    .foot-copy { max-width: 1220px; margin: 22px auto 0; padding-top: 18px; border-top: 1px solid var(--line); font-size: 12.5px; color: var(--muted); display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+    .foot-copy a { color: var(--accent); text-decoration: none; font-weight: 600; }
+  </style>
+</head>
+<body>
+  <div class="toast"></div>
+
+  <nav class="nav" id="nav">
+    <a class="brand" href="index.html">
+      <span class="logo"><img src="assets/img/RJ_Logo_Black.png" alt="RJ logo" /></span>
+      <b>RJ Motion <small>· Gallery</small></b>
+    </a>
+    <div class="nav-links" id="menu">
+      <a href="#explain">How it works</a>
+      <a href="#more">More demos</a>
+      <a class="btn btn-primary" href="index.html">← All experiments</a>
+    </div>
+  </nav>
+
+  <header class="hero reveal">
+    <span class="kicker"><span style="width:7px;height:7px;border-radius:50%;background:var(--green-600);display:inline-block;animation:pulse 1.8s infinite;"></span> Experiment 03 · Beginner</span>
+    <h1>Cursor <em>Follower</em> — an object with weight.</h1>
+    <p>One object with real mass: lag, momentum and rotation. The orb chases the cursor the way a physical body chases a target — and squashes as it moves.</p>
+    <div class="meta">
+      <span>Technique · <b>Lerped cursor follow</b></span>
+      <span>Hint · <b>Sweep your pointer</b></span>
+      <span>Level · <b>03</b> / 10</span>
+    </div>
+  </header>
+
+  <div class="stage-wrap">
+    <div class="stage reveal">
+      <span class="stage__tag">Demo 03 · Cursor Follower</span>
+      <div class="fl" id="demo">
+        <div class="fl__sweep" aria-hidden="true"></div>
+        <div class="dotgrid" aria-hidden="true"></div>
+        <div class="fl__body">
+          <div class="fl__orb"></div>
+          <div class="fl__ghost"></div>
+          <div class="fl__ring"></div>
+          <div class="fl__tag"><i>●</i> lerp 0.08 · mass heavy</div>
+        </div>
+        <div class="fl__anchor"></div>
+        <div class="fl__hintlabel">lag · momentum · rotation</div>
+      </div>
+      <div class="stage__controls">
+        <button class="btn" id="pauseBtn">Pause</button>
+        <button class="btn" id="resetBtn">Reset</button>
+      </div>
+    </div>
+  </div>
+
+  <section id="explain">
+    <div class="sec-head reveal">
+      <div class="kicker">Technique</div>
+      <h2>Three easing layers and a velocity-driven squash</h2>
+      <p>The core orb, the trailing ghost and the outer ring each smooth toward the target at a different rate — creating a layered sense of mass and drag.</p>
+    </div>
+    <div class="grid2">
+      <article class="card reveal">
+        <span class="ico">◔</span>
+        <h3>Rotation by direction</h3>
+        <p>The orb's rotation eases toward the heading of travel (<code>atan2</code> of velocity), so the highlight glides as you change direction.</p>
+      </article>
+      <article class="card reveal">
+        <span class="ico">⇅</span>
+        <h3>Squash &amp; stretch</h3>
+        <p>Velocity scales the orb up to <code>1.14×</code> as it moves fast and relaxes back to rest — the classic anticipation-and-follow of animation.<br /><br />Only transforms are written each frame — no layout reads.</p>
+      </article>
+    </div>
+  </section>
+
+  <section id="more" style="padding-top:10px">
+    <div class="sec-head reveal">
+      <div class="kicker">Keep exploring</div>
+      <h2>More motion experiments</h2>
+      <div class="meta" style="display:flex;gap:18px;flex-wrap:wrap;font-size:13px;font-weight:600;color:var(--muted);margin-top:14px;">
+        <a href="experiment-2.html" style="color:var(--accent);text-decoration:none;">02 · Magnetic Elements →</a>
+        <a href="experiment-4.html" style="color:var(--accent);text-decoration:none;">04 · Image Reveal →</a>
+        <a href="index.html" style="color:var(--accent);text-decoration:none;">All 10 →</a>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="foot">
+      <a class="brand" href="index.html">
+        <span class="logo"><img src="assets/img/RJ_Logo_Black.png" alt="RJ logo" /></span>
+        <b>RJ Motion Gallery</b>
+      </a>
+      <div class="foot-links">
+        <a href="experiment-2.html">Prev: Magnets</a>
+        <a href="experiment-4.html">Next: Image Reveal</a>
+        <a href="index.html">All 10 experiments</a>
+      </div>
+    </div>
+    <div class="foot-copy">
+      <span>© 2026 RJ Motion Gallery · Experiment 03 of 10 — Cursor Follower</span>
+      <span><a href="index.html">← View all 10 experiments</a></span>
+    </div>
+  </footer>
+
+  <script src="js/common.js"></script>
+  <script>
+    (function () {
+      "use strict";
+      const host = document.getElementById("demo");
+      const body = host.querySelector(".fl__body");
+      const orb = host.querySelector(".fl__orb");
+      const ghost = host.querySelector(".fl__ghost");
+      const ring = host.querySelector(".fl__ring");
+      const anchor = host.querySelector(".fl__anchor");
+      const s = { tx:0, ty:0, x:0, y:0, gx:0, gy:0, rx:0, ry:0, rot:0, prevX:0, prevY:0, speed:0, scale:1, inside:false, init:false, w:1, h:1 };
+
+      function measure() {
+        const r = host.getBoundingClientRect();
+        s.w = r.width; s.h = r.height;
+        if (!s.init) {
+          s.x = s.y = s.tx = s.ty = s.gx = s.gy = s.rx = s.ry = r.width / 2;
+          s.prevX = r.width / 2; s.prevY = r.height / 2;
+          s.init = true;
+        }
+        paint(true);
+      }
+      function paint(all) {
+        body.style.transform = "translate3d(" + s.x.toFixed(2) + "px, " + s.y.toFixed(2) + "px, 0)";
+        orb.style.transform = "translate(-50%, -50%) rotate(" + (all ? s.rot : 0).toFixed(3) + "rad) scale(" + s.scale.toFixed(3) + ")";
+        ghost.style.transform = "translate3d(" + (s.gx - s.x).toFixed(2) + "px, " + (s.gy - s.y).toFixed(2) + "px, 0) translate(-50%, -50%) scale(1.12)";
+        ghost.style.opacity = (all && s.inside) ? "0.5" : "0";
+        ring.style.transform = "translate3d(" + (s.rx - s.x).toFixed(2) + "px, " + (s.ry - s.y).toFixed(2) + "px, 0) translate(-50%, -50%) scale(1.55)";
+        ring.style.opacity = (all && s.inside) ? "0.7" : "0";
+        anchor.style.transform = "translate3d(" + s.tx.toFixed(2) + "px, " + s.ty.toFixed(2) + "px, 0) translate(-50%, -50%)";
+        anchor.style.opacity = s.inside ? "0.9" : "0";
+      }
+
+      let running = !prefersReducedMotion;
+      document.getElementById("pauseBtn").addEventListener("click", function () {
+        running = !running; this.textContent = running ? "Pause" : "Resume"; this.classList.toggle("paused", !running);
+      });
+      document.getElementById("resetBtn").addEventListener("click", function () {
+        const r = host.getBoundingClientRect();
+        s.x = s.y = s.gx = s.gy = s.rx = s.ry = r.width / 2;
+        s.tx = s.ty = r.width / 2; s.prevX = s.x; s.prevY = s.y; s.rot = 0; s.speed = 0; s.scale = 1; s.inside = false; s.init = true;
+        paint(true);
+      });
+
+      host.addEventListener("pointerenter", (e) => { measure(); const r = host.getBoundingClientRect(); s.inside = true; s.tx = e.clientX - r.left; s.ty = e.clientY - r.top; });
+      host.addEventListener("pointermove", (e) => { const r = host.getBoundingClientRect(); s.tx = e.clientX - r.left; s.ty = e.clientY - r.top; });
+      host.addEventListener("pointerleave", () => { s.inside = false; });
+      window.addEventListener("resize", measure);
+      measure();
+
+      (function loop(t, last) {
+        const dt = Math.min(0.05, (t - last) / 1000);
+        if (running) {
+          const targetX = s.inside ? s.tx : s.w / 2;
+          const targetY = s.inside ? s.ty : s.h / 2;
+          const prevX = s.x, prevY = s.y;
+          s.x = damp(s.x, targetX, 7.5, dt);
+          s.y = damp(s.y, targetY, 7.5, dt);
+          s.gx = damp(s.gx, targetX, 3.2, dt);
+          s.gy = damp(s.gy, targetY, 3.2, dt);
+          s.rx = damp(s.rx, targetX, 1.8, dt);
+          s.ry = damp(s.ry, targetY, 1.8, dt);
+          const vx = (s.x - prevX) / Math.max(dt, 1e-4);
+          const vy = (s.y - prevY) / Math.max(dt, 1e-4);
+          s.speed = Math.hypot(vx, vy);
+          const heading = Math.atan2(vy, vx);
+          s.rot = damp(s.rot, heading * 0.55, 6, dt);
+          s.scale = damp(s.scale, 1 + clamp(s.speed * 0.006, 0, 0.14), 8, dt);
+          paint(true);
+        }
+        requestAnimationFrame((nt) => loop(nt, t));
+      })(performance.now(), performance.now());
+
+      window.addEventListener("scroll", () => document.getElementById("nav").classList.toggle("scrolled", scrollY > 10), { passive: true });
+    })();
+  </script>
+</body>
+</html>

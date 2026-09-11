@@ -1,0 +1,21 @@
+# ---------------------------------------------------------------
+# Local tooling / session data — never part of the published site
+# ---------------------------------------------------------------
+.commandcode/
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# ---------------------------------------------------------------
+# Assets that are NOT used at runtime.
+# They stay on disk locally but are left out of the repository so the
+# published site stays small and every page deploys completely.
+# ---------------------------------------------------------------
+/Default Assets/
+/Errors/
+/portfolio/RJ_Walk_Final/*.jpg
+/portfolio/Log_Intro.MP4
+/portfolio/Log_Intro_Inverted_web.mp4
+/formsgallery/assets/Frame_Fin_Video_WEBP_500_frames.zip
+/formsgallery/assets/videos/

@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>07 · Neon Cyber — Rj_Manage</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Sora:wght@500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/common.css" />
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+
+    body { background: #020617; color: #cbd5e1; overflow-x: hidden; }
+
+    /* scanlines overlay */
+    body::after {
+      content: ""; position: fixed; inset: 0; pointer-events: none; z-index: 5;
+      background: repeating-linear-gradient(0deg, rgba(0,0,0,.22) 0 1px, transparent 1px 3px);
+      mix-blend-mode: multiply; opacity: .5;
+    }
+
+    .grid-bg { position: fixed; inset: 0; z-index: 0; pointer-events: none;
+      background-image: linear-gradient(rgba(34,211,238,.05) 1px, transparent 1px), linear-gradient(90deg, rgba(34,211,238,.05) 1px, transparent 1px);
+      background-size: 44px 44px;
+      mask-image: radial-gradient(700px 500px at 50% 20%, #000, transparent 80%);
+    }
+
+    .section { padding: 80px 20px; position: relative; z-index: 1; }
+
+    .terminal-head {
+      max-width: 680px; margin: 0 auto 26px; border-radius: 14px; overflow: hidden;
+      border: 1px solid rgba(34,211,238,.35);
+      background: rgba(2,6,23,.85); box-shadow: 0 0 40px rgba(34,211,238,.15);
+      font-family: "Share Tech Mono", monospace;
+    }
+    .terminal-bar { display: flex; align-items: center; gap: 8px; padding: 10px 16px; background: rgba(34,211,238,.08); border-bottom: 1px solid rgba(34,211,238,.25); font-size: 12.5px; color: #22d3ee; }
+    .terminal-bar .dot { width: 11px; height: 11px; border-radius: 50%; }
+    .terminal-bar .d1 { background: #f43f5e; } .terminal-bar .d2 { background: #f59e0b; } .terminal-bar .d3 { background: #22c55e; }
+    .terminal-bar .title { margin: 0 auto; }
+    .terminal-body { padding: 20px 22px 26px; font-family: "Share Tech Mono", monospace; }
+    .terminal-body .prompt-line { font-size: 14px; color: #67e8f9; margin-bottom: 16px; }
+    .terminal-body .prompt-line .cursor { display: inline-block; width: 9px; height: 16px; background: #22d3ee; vertical-align: -3px; animation: blink 1s steps(1) infinite; }
+    @keyframes blink { 50% { opacity: 0; } }
+
+    .neon-card { border-radius: 16px; padding: 34px 38px; position: relative; }
+    @media (max-width: 540px) { .neon-card { padding: 26px 20px; } }
+    .neon-card::before {
+      content: ""; position: absolute; inset: 0; border-radius: 16px; padding: 1.5px;
+      background: linear-gradient(130deg, rgba(34,211,238,.7), rgba(168,85,247,.7));
+      -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+      -webkit-mask-composite: xor; mask-composite: exclude;
+      pointer-events: none;
+    }
+    .neon-card form { display: grid; gap: 22px; }
+
+    .cyber-field label { display: block; font-family: "Share Tech Mono", monospace; font-size: 13px; letter-spacing: .12em; text-transform: uppercase; color: #67e8f9; margin-bottom: 9px; }
+    .cyber-field label .tag { color: #a78bfa; }
+    .cyber-field input, .cyber-field select, .cyber-field textarea {
+      width: 100%; background: rgba(8, 15, 34, .9); border: 1px solid rgba(34,211,238,.35);
+      color: #e2e8f0; font: inherit; font-size: 14.5px; font-family: "Share Tech Mono", monospace;
+      padding: 13px 16px; border-radius: 10px; outline: none; resize: vertical;
+      transition: border-color .18s ease, box-shadow .18s ease, background .18s ease;
+    }
+    .cyber-field textarea { min-height: 100px; }
+    .cyber-field input:focus, .cyber-field select:focus, .cyber-field textarea:focus {
+      border-color: #22d3ee;
+      background: rgba(8, 15, 34, 1);
+      box-shadow: 0 0 0 3px rgba(34,211,238,.18), 0 0 24px rgba(34,211,238,.35);
+    }
+    .cyber-field select { appearance: none; -webkit-appearance: none; }
+    .cyber-field select option { background: #0b1226; color: #e2e8f0; }
+
+    .row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    @media (max-width: 500px) { .row { grid-template-columns: 1fr; } }
+
+    .neon-btn {
+      font-family: "Share Tech Mono", monospace; font-size: 15px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase;
+      color: #020617; background: #22d3ee; border: none; border-radius: 10px; padding: 15px; cursor: pointer;
+      text-shadow: 0 0 8px rgba(255,255,255,.6);
+      box-shadow: 0 0 24px rgba(34,211,238,.55), inset 0 0 12px rgba(255,255,255,.25);
+      transition: transform .15s ease, box-shadow .15s ease;
+    }
+    .neon-btn:hover { transform: translateY(-2px); box-shadow: 0 0 40px rgba(34,211,238,.8), inset 0 0 12px rgba(255,255,255,.3); }
+
+    .status { text-align: center; font-family: "Share Tech Mono", monospace; font-size: 12.5px; color: #475569; letter-spacing: .08em; margin-top: 6px; }
+    .status .ok { color: #22c55e; }
+
+    .corner-tag { position: fixed; top: 18px; right: 24px; z-index: 6; font-family: "Share Tech Mono", monospace; font-size: 12px; letter-spacing: .18em; color: #22d3ee; text-transform: uppercase; opacity: .8; }
+    @media (max-width: 720px) { .corner-tag { display: none; } }
+  </style>
+</head>
+<body>
+  <div class="grid-bg"></div>
+  <div class="corner-tag">Rj_Manage · SYSTEM v2.6</div>
+  <div class="toast"></div>
+
+  <section class="section">
+    <div class="terminal-head">
+      <div class="terminal-bar">
+        <span class="dot d1"></span><span class="dot d2"></span><span class="dot d3"></span>
+        <span class="title">access://rj-manage</span>
+      </div>
+      <div class="terminal-body">
+        <div class="prompt-line">&gt; INITIALIZE_ACCESS <span class="cursor"></span></div>
+        <form id="accessForm" novalidate>
+          <div class="row">
+            <div class="cyber-field">
+              <label for="username"><span class="tag">&gt;_</span> OPERATOR / USER</label>
+              <input id="username" type="text" placeholder="ENTER_NAME" required data-field="Username" />
+            </div>
+            <div class="cyber-field">
+              <label for="email"><span class="tag">&gt;_</span> IDENTIFIER / EMAIL</label>
+              <input id="email" type="email" placeholder="USER@NET" required data-field="Email" />
+            </div>
+          </div>
+          <div class="row">
+            <div class="cyber-field">
+              <label for="level"><span class="tag">&gt;_</span> CLEARANCE / LEVEL</label>
+              <select id="level" required data-field="Level">
+                <option value="">SELECT_LEVEL…</option>
+                <option>Standard User</option>
+                <option>Power User</option>
+                <option>Admin</option>
+                <option>Root</option>
+              </select>
+            </div>
+            <div class="cyber-field">
+              <label for="network"><span class="tag">&gt;_</span> NODE / NETWORK</label>
+              <select id="network" required data-field="Network">
+                <option value="">SELECT_NODE…</option>
+                <option>Internal</option>
+                <option>Partner</option>
+                <option>Public</option>
+                <option>Air-gapped</option>
+              </select>
+            </div>
+          </div>
+          <div class="cyber-field">
+            <label for="purpose"><span class="tag">&gt;_</span> PURPOSE / NOTES</label>
+            <textarea id="purpose" placeholder="LOG_ACCESS_REASON…" required data-field="Purpose"></textarea>
+          </div>
+          <button class="neon-btn" type="submit">⏎ Request Access</button>
+          <p class="status">[ <span class="ok">SECURE</span> ] · encrypted channel · Rj_Manage grid</p>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <script src="js/common.js"></script>
+  <script>
+    document.getElementById("accessForm").addEventListener("submit", (e) => {
+      e.preventDefault();
+      const form = e.target;
+      if (!form.checkValidity()) { form.reportValidity(); return; }
+      const d = collectForm(form);
+      showToast("✅ ACCESS: request queued for " + d["Username"]);
+      form.reset();
+    });
+  </script>
+</body>
+</html>

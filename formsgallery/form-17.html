@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>17 · Flip Card — Rj_Manage</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Sora:wght@500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/common.css" />
+  <style>
+    body { background: linear-gradient(135deg, #500724, #be123c, #3f0d1a); min-height: 100vh; }
+    .section { min-height: 100vh; display: grid; place-items: center; padding: 80px 20px; }
+
+    .head { text-align: center; margin-bottom: 30px; }
+    .head h2 { color: #fff; font-size: clamp(26px, 4vw, 38px); letter-spacing: -.02em; }
+    .head .sub { color: #fecdd3; font-size: 15px; margin-top: 8px; }
+
+    .flip-scene { perspective: 1600px; width: 100%; max-width: 680px; margin: 0 auto; }
+    .flip-inner {
+      position: relative; width: 100%; min-height: 560px; transform-style: preserve-3d;
+      transition: transform .8s cubic-bezier(.45,.05,.3,1);
+    }
+    .flip-scene.flipped .flip-inner { transform: rotateY(180deg); }
+
+    .face {
+      position: absolute; inset: 0; width: 100%; min-height: 560px; backface-visibility: hidden;
+      -webkit-backface-visibility: hidden; border-radius: 28px; overflow: hidden;
+      border: 1px solid rgba(255,255,255,.22);
+      backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+      box-shadow: 0 40px 110px -30px rgba(0,0,0,.6);
+    }
+    .face-front {
+      background: linear-gradient(160deg, rgba(255,255,255,.18), rgba(255,255,255,.06));
+      color: #fff; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 50px 40px; cursor: pointer;
+    }
+    .face-back {
+      transform: rotateY(180deg);
+      background: rgba(15,4,9,.72); color: #fff; padding: 44px 48px;
+    }
+    @media (max-width: 540px) { .face-back { padding: 30px 22px; } }
+
+    .face-front .big { font-size: 64px; margin-bottom: 20px; animation: bob 3s ease-in-out infinite; }
+    @keyframes bob { 50% { transform: translateY(-8px); } }
+    .face-front h3 { font-size: 30px; letter-spacing: -.01em; margin-bottom: 10px; }
+    .face-front p { color: #fecdd3; max-width: 340px; font-size: 15px; margin-bottom: 26px; }
+    .face-front .flip-cta {
+      background: #fff; color: #9f1239; font-weight: 800; padding: 14px 34px; border-radius: 999px;
+      box-shadow: 0 10px 30px -8px rgba(0,0,0,.4); transition: transform .15s ease;
+    }
+    .face-front:hover .flip-cta { transform: translateY(-2px); }
+    .face-front .hint { font-size: 12px; color: #fda4af; margin-top: 18px; letter-spacing: .06em; }
+
+    .back-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 26px; }
+    .back-head h3 { font-size: 24px; letter-spacing: -.01em; }
+    .back-head .flip-back { background: transparent; border: 1px solid rgba(255,255,255,.3); color: #fda4af; font: inherit; font-size: 13px; font-weight: 700; padding: 9px 16px; border-radius: 999px; cursor: pointer; transition: all .15s ease; }
+    .back-head .flip-back:hover { border-color: #fff; color: #fff; }
+
+    .flip-form { display: grid; gap: 16px; }
+    .f-field label { display: block; font-size: 12.5px; font-weight: 600; color: #fda4af; margin-bottom: 7px; }
+    .f-field input, .f-field select {
+      width: 100%; background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.2);
+      color: #fff; font: inherit; font-size: 15px; padding: 12px 15px; border-radius: 12px; outline: none;
+      transition: all .2s ease;
+    }
+    .f-field select { appearance: none; cursor: pointer;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%23fda4af' stroke-width='2.4'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 15px center; }
+    .f-field select option { background: #2c0716; color: #fff; }
+    .f-field input:focus, .f-field select:focus {
+      border-color: #f472b6; box-shadow: 0 0 0 4px rgba(244,114,182,.18);
+    }
+    .row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    @media (max-width: 480px) { .row { grid-template-columns: 1fr; } }
+
+    .flip-submit {
+      font: inherit; font-weight: 800; font-size: 15px; color: #4c0519;
+      background: linear-gradient(120deg, #fda4af, #fb7185); border: none; border-radius: 12px;
+      padding: 15px; cursor: pointer;
+      box-shadow: 0 12px 40px -10px rgba(244,114,182,.6);
+      transition: transform .15s ease, box-shadow .2s ease, filter .2s ease;
+    }
+    .flip-submit:hover { filter: brightness(1.08); transform: translateY(-2px); }
+  </style>
+</head>
+<body>
+  <div class="toast"></div>
+  <section class="section">
+    <div style="width:100%;max-width:680px">
+      <div class="head">
+        <h2>Flip to register</h2>
+        <p class="sub">Tap the card — it flips around to the registration form.</p>
+      </div>
+
+      <div class="flip-scene" id="flipScene">
+        <div class="flip-inner">
+          <!-- FRONT -->
+          <div class="face face-front" id="faceFront">
+            <span class="big">🎟️</span>
+            <h3>Design Conf 2026</h3>
+            <p>Two days of talks, workshops and community. Grab your seat before it's gone.</p>
+            <span class="flip-cta">Register now →</span>
+            <p class="hint">click anywhere on the card</p>
+          </div>
+          <!-- BACK -->
+          <div class="face face-back">
+            <div class="back-head">
+              <h3>Registration</h3>
+              <button type="button" class="flip-back" id="flipBack">← Flip back</button>
+            </div>
+            <form class="flip-form" id="regForm" novalidate>
+              <div class="row">
+                <div class="f-field">
+                  <label for="name">Full name *</label>
+                  <input id="name" type="text" placeholder="Full name" required data-field="Name" />
+                </div>
+                <div class="f-field">
+                  <label for="email">Email *</label>
+                  <input id="email" type="email" placeholder="you@example.com" required data-field="Email" />
+                </div>
+              </div>
+              <div class="row">
+                <div class="f-field">
+                  <label for="ticket">Ticket type *</label>
+                  <select id="ticket" required data-field="Ticket">
+                    <option value="">Select…</option>
+                    <option>Standard — $149</option>
+                    <option>VIP — $349</option>
+                    <option>Student — $79</option>
+                  </select>
+                </div>
+                <div class="f-field">
+                  <label for="meal">Meal preference</label>
+                  <select id="meal" data-field="Meal">
+                    <option value="">Select…</option>
+                    <option>Veg</option>
+                    <option>Vegan</option>
+                    <option>Non-veg</option>
+                    <option>No preference</option>
+                  </select>
+                </div>
+              </div>
+              <button class="flip-submit" type="submit">Complete registration →</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script src="js/common.js"></script>
+  <script>
+    const scene = document.getElementById("flipScene");
+    const front = document.getElementById("faceFront");
+    const backBtn = document.getElementById("flipBack");
+    function flip() { scene.classList.toggle("flipped"); }
+    front.addEventListener("click", flip);
+    backBtn.addEventListener("click", flip);
+
+    document.getElementById("regForm").addEventListener("submit", (e) => {
+      e.preventDefault();
+      const form = e.target;
+      if (!form.checkValidity()) { form.reportValidity(); return; }
+      const d = collectForm(form);
+      showToast("🎉 Registered " + d["Name"] + " — " + d["Ticket"]);
+      form.reset();
+      scene.classList.remove("flipped");
+    });
+  </script>
+</body>
+</html>

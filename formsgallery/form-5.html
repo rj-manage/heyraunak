@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>05 · Glassmorphism — Rj_Manage</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Sora:wght@500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/common.css" />
+  <style>
+    body { background: #05070f; overflow-x: hidden; }
+    .section { padding: 80px 20px; position: relative; z-index: 1; }
+
+    /* Aurora blobs */
+    .blob { position: fixed; border-radius: 50%; filter: blur(90px); opacity: .55; pointer-events: none; z-index: 0; }
+    .b1 { width: 520px; height: 520px; background: #4f46e5; top: -140px; left: -120px; animation: drift1 14s ease-in-out infinite alternate; }
+    .b2 { width: 460px; height: 460px; background: #a855f7; bottom: -160px; right: -100px; animation: drift2 16s ease-in-out infinite alternate; }
+    .b3 { width: 380px; height: 380px; background: #06b6d4; top: 40%; left: 55%; opacity: .3; animation: drift3 18s ease-in-out infinite alternate; }
+    @keyframes drift1 { to { transform: translate(70px, 50px) scale(1.1); } }
+    @keyframes drift2 { to { transform: translate(-60px, -70px) scale(1.15); } }
+    @keyframes drift3 { to { transform: translate(-90px, 60px) scale(.9); } }
+
+    .glass {
+      background: rgba(255, 255, 255, .07);
+      border: 1px solid rgba(255, 255, 255, .16);
+      backdrop-filter: blur(22px);
+      -webkit-backdrop-filter: blur(22px);
+      border-radius: 26px;
+      box-shadow: 0 30px 80px -20px rgba(0, 0, 0, .6), inset 0 1px 0 rgba(255, 255, 255, .18);
+    }
+
+    .head { text-align: center; margin-bottom: 40px; }
+    .head .logo {
+      width: 56px; height: 56px; margin: 0 auto 18px; border-radius: 16px;
+      background: linear-gradient(135deg, rgba(99,102,241,.9), rgba(168,85,247,.9));
+      display: grid; place-items: center; font-family: var(--font-display); font-weight: 800; font-size: 18px; color: #fff;
+      box-shadow: 0 0 40px rgba(129, 140, 248, .5);
+    }
+    .head h2 { color: #fff; font-size: clamp(26px, 4vw, 36px); letter-spacing: -.02em; }
+    .head p { color: rgba(226, 232, 240, .75); margin-top: 8px; font-size: 15px; }
+
+    .card { max-width: 660px; margin: 0 auto; padding: 42px 46px; }
+    @media (max-width: 540px) { .card { padding: 30px 24px; } }
+    .card form { display: grid; gap: 18px; }
+
+    .glass-field { position: relative; }
+    .glass-field input, .glass-field select, .glass-field textarea {
+      width: 100%; background: rgba(255, 255, 255, .06);
+      border: 1px solid rgba(255, 255, 255, .14); border-radius: 14px;
+      color: #fff; font: inherit; font-size: 15px; padding: 14px 16px;
+      outline: none; transition: all .2s ease;
+    }
+    .glass-field textarea { resize: vertical; min-height: 100px; }
+    .glass-field input::placeholder, .glass-field textarea::placeholder { color: rgba(226, 232, 240, .45); }
+    .glass-field select { appearance: none; -webkit-appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%23a5b4fc' stroke-width='2.4'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 16px center; }
+    .glass-field select option { color: #0f172a; background: #fff; }
+    .glass-field input:focus, .glass-field select:focus, .glass-field textarea:focus {
+      border-color: rgba(129, 140, 248, .7); background: rgba(255, 255, 255, .1);
+      box-shadow: 0 0 0 4px rgba(99, 102, 241, .25), 0 0 30px rgba(99, 102, 241, .18);
+    }
+    .glass-field label { position: absolute; left: 16px; top: 14px; font-size: 15px; color: rgba(226,232,240,.55); pointer-events: none; transition: all .18s ease; }
+    .glass-field input:focus + label, .glass-field input:not(:placeholder-shown) + label,
+    .glass-field textarea:focus + label, .glass-field textarea:not(:placeholder-shown) + label,
+    .glass-field select:focus + label, .glass-field select:has(option:checked:not(:first-child)) + label {
+      top: -9px; left: 12px; font-size: 11.5px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; color: #a5b4fc;
+      background: #0b1024; padding: 0 8px; border-radius: 6px;
+    }
+
+    .row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    @media (max-width: 520px) { .row { grid-template-columns: 1fr; } }
+
+    .glow-btn {
+      background: linear-gradient(135deg, #6366f1, #a855f7);
+      border: none; color: #fff; font: inherit; font-weight: 700; font-size: 15.5px;
+      padding: 15px; border-radius: 14px; cursor: pointer; letter-spacing: .01em;
+      box-shadow: 0 12px 40px -8px rgba(139, 92, 246, .65);
+      transition: transform .15s ease, box-shadow .15s ease, filter .15s ease;
+    }
+    .glow-btn:hover { transform: translateY(-2px); filter: brightness(1.1); box-shadow: 0 18px 50px -8px rgba(139, 92, 246, .8); }
+    .fine { text-align: center; color: rgba(226, 232, 240, .5); font-size: 12.5px; margin-top: 4px; }
+  </style>
+</head>
+<body>
+  <div class="blob b1"></div>
+  <div class="blob b2"></div>
+  <div class="blob b3"></div>
+  <div class="toast"></div>
+
+  <section class="section">
+    <div class="head">
+      <div class="logo">RJ</div>
+      <h2>Share your feedback</h2>
+      <p>Rj_Manage · Glassmorphism feedback experience</p>
+    </div>
+
+    <div class="glass card">
+      <form id="fbForm" novalidate>
+        <div class="glass-field">
+          <input id="name" type="text" placeholder=" " required data-field="Name" />
+          <label for="name">Your name</label>
+        </div>
+        <div class="row">
+          <div class="glass-field">
+            <select id="topic" required data-field="Topic">
+              <option value="" selected></option>
+              <option>Product</option>
+              <option>Support</option>
+              <option>Website</option>
+              <option>Billing</option>
+              <option>Other</option>
+            </select>
+            <label for="topic">Feedback topic</label>
+          </div>
+          <div class="glass-field">
+            <select id="rating" required data-field="Rating">
+              <option value="" selected></option>
+              <option>⭐ Excellent</option>
+              <option>⭐⭐ Good</option>
+              <option>⭐⭐⭐ Okay</option>
+              <option>⭐⭐⭐⭐ Poor</option>
+            </select>
+            <label for="rating">Overall rating</label>
+          </div>
+        </div>
+        <div class="glass-field">
+          <textarea id="message" placeholder=" " required data-field="Message"></textarea>
+          <label for="message">Tell us more. What can we improve?</label>
+        </div>
+        <button class="glow-btn" type="submit">Send feedback ✨</button>
+        <p class="fine">Encrypted & anonymous · Rj_Manage 2026</p>
+      </form>
+    </div>
+  </section>
+
+  <script src="js/common.js"></script>
+  <script>
+    document.getElementById("fbForm").addEventListener("submit", (e) => {
+      e.preventDefault();
+      const form = e.target;
+      if (!form.checkValidity()) { form.reportValidity(); return; }
+      const d = collectForm(form);
+      showToast("✅ Feedback sent from " + d["Name"] + " — " + d["Topic"]);
+      form.reset();
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>18 · Stepper Flow — Rj_Manage</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Sora:wght@500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/common.css" />
+  <style>
+    body { background: linear-gradient(180deg, #e0f2fe 0%, #eef2ff 40%, #f8fafc 100%); }
+    .section { padding: 80px 20px; }
+
+    .head { text-align: center; margin-bottom: 34px; }
+    .head h2 { font-size: clamp(26px, 4vw, 36px); letter-spacing: -.02em; }
+    .head p { color: #64748b; margin-top: 8px; font-size: 15px; }
+
+    .stepper-card {
+      max-width: 660px; margin: 0 auto; background: #fff; border-radius: 24px;
+      padding: 44px 50px; box-shadow: 0 30px 80px -30px rgba(14,165,233,.35);
+      border: 1px solid #eef2ff;
+    }
+    @media (max-width: 540px) { .stepper-card { padding: 30px 22px; } }
+
+    /* animated stepper */
+    .steps { display: flex; align-items: center; justify-content: center; margin-bottom: 34px; }
+    .step-item { display: flex; flex-direction: column; align-items: center; gap: 7px; }
+    .step-dot {
+      width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center;
+      font-weight: 800; font-size: 15px; color: #94a3b8; position: relative;
+      background: #e2e8f0; transition: all .35s ease;
+    }
+    .step-dot::after { content: ""; position: absolute; inset: -5px; border-radius: 50%;
+      border: 2px solid transparent; transition: all .35s ease; }
+    .step-item.active .step-dot { background: linear-gradient(135deg, #0ea5e9, #6366f1); color: #fff; box-shadow: 0 8px 20px -6px rgba(14,165,233,.6); }
+    .step-item.active .step-dot::after { border-color: #0ea5e9; animation: spin 3s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .step-item.done .step-dot { background: #059669; color: #fff; }
+    .step-label { font-size: 12px; font-weight: 700; color: #94a3b8; letter-spacing: .04em; text-transform: uppercase; }
+    .step-item.active .step-label { color: #0ea5e9; }
+    .step-item.done .step-label { color: #059669; }
+    .step-connector { flex: 1; height: 3px; border-radius: 3px; background: #e2e8f0; margin: 0 14px; position: relative; overflow: hidden; max-width: 70px; }
+    .step-connector::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, #0ea5e9, #6366f1); transform: scaleX(0); transform-origin: left; transition: transform .5s ease; }
+    .step-connector.fill::after { transform: scaleX(1); }
+
+    .pane { display: none; animation: fadeUp .35s ease; }
+    .pane.active { display: block; }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(12px); } }
+
+    .pane h3 { font-size: 22px; letter-spacing: -.02em; margin-bottom: 4px; }
+    .pane .hint { color: #64748b; font-size: 14px; margin-bottom: 24px; }
+    .pane .p-form { display: grid; gap: 16px; }
+    .pane .row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    @media (max-width: 480px) { .pane .row { grid-template-columns: 1fr; } }
+
+    .s-field label { display: block; font-size: 13px; font-weight: 600; color: #475569; margin-bottom: 7px; }
+    .s-field .ctrl { position: relative; overflow: hidden; border-radius: 12px; }
+    .s-field input, .s-field select {
+      width: 100%; background: #f8fafc; border: 1.5px solid #e2e8f0; color: #0f172a; font: inherit;
+      font-size: 15px; padding: 13px 15px; border-radius: 12px; outline: none; transition: all .2s ease;
+    }
+    .s-field select { appearance: none; cursor: pointer;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%230ea5e9' stroke-width='2.4'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 15px center; }
+    .s-field input:focus, .s-field select:focus {
+      border-color: #0ea5e9; background: #fff;
+      box-shadow: 0 0 0 4px rgba(14,165,233,.15);
+    }
+
+    .nav-btns { display: flex; justify-content: space-between; margin-top: 26px; }
+    .btn-ghost { border-radius: 10px; }
+    .btn-primary { border-radius: 10px; }
+
+    .success { text-align: center; padding: 20px 0; }
+    .success .check { width: 64px; height: 64px; margin: 0 auto 16px; border-radius: 50%; background: linear-gradient(135deg,#059669,#10b981); display: grid; place-items: center; color: #fff; font-size: 30px; animation: pop .5s cubic-bezier(.2,.9,.3,1.4); }
+    @keyframes pop { from { transform: scale(0); } }
+  </style>
+</head>
+<body>
+  <div class="toast"></div>
+  <section class="section">
+    <div class="head">
+      <h2>Onboard in a few steps</h2>
+      <p>Rj_Manage · animated stepper onboarding flow</p>
+    </div>
+
+    <div class="stepper-card">
+      <div class="steps" id="steps">
+        <div class="step-item active" data-step="1"><span class="step-dot">1</span><span class="step-label">Profile</span></div>
+        <div class="step-connector"></div>
+        <div class="step-item" data-step="2"><span class="step-dot">2</span><span class="step-label">Workspace</span></div>
+        <div class="step-connector"></div>
+        <div class="step-item" data-step="3"><span class="step-dot">3</span><span class="step-label">Done</span></div>
+      </div>
+
+      <!-- Step 1 -->
+      <div class="pane active" data-pane="1">
+        <h3>Tell us about you</h3>
+        <p class="hint">This builds your personal profile.</p>
+        <form class="p-form" onsubmit="return false">
+          <div class="s-field">
+            <label for="st-name">Full name *</label>
+            <input id="st-name" type="text" placeholder="e.g. Riya Kapoor" required data-field="Name" />
+          </div>
+          <div class="row">
+            <div class="s-field">
+              <label for="st-email">Work email *</label>
+              <input id="st-email" type="email" placeholder="you@company.com" required data-field="Email" />
+            </div>
+            <div class="s-field">
+              <label for="st-role">Role *</label>
+              <select id="st-role" required data-field="Role">
+                <option value="">Select…</option>
+                <option>Individual</option>
+                <option>Team lead</option>
+                <option>Manager</option>
+                <option>Executive</option>
+              </select>
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <!-- Step 2 -->
+      <div class="pane" data-pane="2">
+        <h3>Set up your workspace</h3>
+        <p class="hint">Pick a name and your primary use case.</p>
+        <form class="p-form" onsubmit="return false">
+          <div class="s-field">
+            <label for="st-ws">Workspace name *</label>
+            <input id="st-ws" type="text" placeholder="e.g. Acme Studio" required data-field="Workspace" />
+          </div>
+          <div class="s-field">
+            <label for="st-use">Primary use case *</label>
+            <select id="st-use" required data-field="Use Case">
+              <option value="">Select…</option>
+              <option>Project management</option>
+              <option>Team collaboration</option>
+              <option>Client work</option>
+              <option>Personal productivity</option>
+            </select>
+          </div>
+        </form>
+      </div>
+
+      <!-- Step 3 -->
+      <div class="pane" data-pane="3">
+        <div class="success">
+          <div class="check">✓</div>
+          <h3 style="margin-bottom:6px">You're all set!</h3>
+          <p class="hint">Review your details and finish onboarding.</p>
+        </div>
+        <form class="p-form" onsubmit="return false">
+          <div class="s-field">
+            <label for="st-confirm">Anything else we should know?</label>
+            <input id="st-confirm" type="text" placeholder="Optional" data-field="Extra" />
+          </div>
+        </form>
+      </div>
+
+      <div class="nav-btns">
+        <button class="btn btn-ghost" id="stBack" type="button" style="visibility:hidden">← Back</button>
+        <button class="btn btn-primary" id="stNext" type="button">Continue →</button>
+      </div>
+    </div>
+  </section>
+
+  <script src="js/common.js"></script>
+  <script>
+    let current = 1;
+    const total = 3;
+    const panes = document.querySelectorAll("[data-pane]");
+    const items = document.querySelectorAll("[data-step]");
+    const connectors = document.querySelectorAll(".step-connector");
+    const stBack = document.getElementById("stBack");
+    const stNext = document.getElementById("stNext");
+
+    function sync() {
+      stBack.style.visibility = current === 1 ? "hidden" : "visible";
+      stNext.textContent = current === total ? "Finish ✓" : "Continue →";
+      panes.forEach((p) => p.classList.toggle("active", +p.dataset.pane === current));
+      items.forEach((it) => {
+        const n = +it.dataset.step;
+        it.classList.toggle("active", n === current);
+        it.classList.toggle("done", n < current);
+      });
+      connectors.forEach((c, i) => c.classList.toggle("fill", i < current - 1));
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function validatePane() {
+      const pane = document.querySelector(`[data-pane="${current}"]`);
+      for (const f of pane.querySelectorAll("input, select")) {
+        if (!f.checkValidity()) { f.reportValidity(); return false; }
+      }
+      return true;
+    }
+
+    stNext.addEventListener("click", () => {
+      if (current < total) {
+        if (!validatePane()) return;
+        current++;
+      } else {
+        const d = {};
+        document.querySelectorAll("[data-field]").forEach((el) => { d[el.dataset.field] = el.value.trim(); });
+        showToast("🎉 Onboarding complete for " + (d["Name"] || "you") + "!");
+        document.querySelectorAll(".pane input, .pane select").forEach((f) => { f.value = ""; });
+        current = 1;
+      }
+      sync();
+    });
+
+    stBack.addEventListener("click", () => { if (current > 1) { current--; sync(); } });
+    sync();
+  </script>
+</body>
+</html>

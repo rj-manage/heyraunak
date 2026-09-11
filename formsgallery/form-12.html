@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>12 · Particle Constellation — Rj_Manage</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Sora:wght@500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/common.css" />
+  <style>
+    body { background: #0a0718; overflow: hidden; height: 100vh; }
+    canvas#net { position: fixed; inset: 0; z-index: 0; }
+    .section { position: relative; z-index: 2; height: 100vh; display: grid; place-items: center; padding: 40px 20px; }
+
+    .cons-card {
+      width: 100%; max-width: 640px; border-radius: 26px; padding: 46px 50px;
+      background: rgba(16,12,36,.72); border: 1px solid rgba(167,139,250,.28);
+      backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+      box-shadow: 0 40px 100px -30px rgba(0,0,0,.7), inset 0 1px 0 rgba(255,255,255,.08);
+      position: relative;
+    }
+    @media (max-width: 560px) { .cons-card { padding: 32px 22px; } }
+
+    .cons-head { text-align: center; margin-bottom: 30px; }
+    .cons-head h2 { color: #ede9fe; font-size: clamp(26px, 4vw, 36px); letter-spacing: -.02em; }
+    .cons-head .sub { color: #a78bfa; font-size: 14.5px; margin-top: 8px; }
+    .cons-head .icon { font-size: 30px; display: block; margin-bottom: 8px; }
+
+    .cons-form { display: grid; gap: 22px; }
+
+    .c-field { position: relative; }
+    .c-field label { display: block; font-size: 12.5px; font-weight: 600; letter-spacing: .04em; color: #c4b5fd; margin-bottom: 8px; }
+    .c-field input, .c-field select, .c-field textarea {
+      width: 100%; background: rgba(10,8,26,.55); border: 1px solid rgba(167,139,250,.25);
+      color: #fff; font: inherit; font-size: 15px; padding: 14px 16px; border-radius: 13px; outline: none; resize: vertical;
+      transition: all .25s ease;
+    }
+    .c-field textarea { min-height: 100px; }
+    .c-field select option { background: #150f30; color: #fff; }
+    .c-field input::placeholder, .c-field textarea::placeholder { color: rgba(148,163,184,.4); }
+    .c-field input:focus, .c-field select:focus, .c-field textarea:focus {
+      border-color: #a78bfa; background: rgba(10,8,26,.8);
+      box-shadow: 0 0 0 4px rgba(167,139,250,.18), 0 0 30px rgba(139,92,246,.3);
+    }
+
+    .row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    @media (max-width: 520px) { .row { grid-template-columns: 1fr; } }
+
+    .cons-btn {
+      font: inherit; font-weight: 800; font-size: 15.5px; color: #1a0f33;
+      background: linear-gradient(120deg, #a78bfa, #7c3aed); border: none; border-radius: 13px;
+      padding: 15px 16px; cursor: pointer; position: relative; overflow: hidden;
+      box-shadow: 0 12px 38px -10px rgba(139,92,246,.7), inset 0 1px 0 rgba(255,255,255,.4);
+      transition: transform .15s ease, box-shadow .2s ease, filter .2s ease;
+    }
+    .cons-btn:hover { filter: brightness(1.08); transform: translateY(-2px); box-shadow: 0 18px 50px -10px rgba(139,92,246,.9); }
+  </style>
+</head>
+<body>
+  <canvas id="net"></canvas>
+  <div class="toast"></div>
+  <section class="section">
+    <div class="cons-card">
+      <div class="cons-head">
+        <span class="icon">✦</span>
+        <h2>Connect with us</h2>
+        <p class="sub">Rj_Manage · a constellation of nodes, just like you.</p>
+      </div>
+      <form class="cons-form" id="consForm" novalidate>
+        <div class="row">
+          <div class="c-field">
+            <label for="name">Name *</label>
+            <input id="name" type="text" placeholder="Full name" required data-field="Name" />
+          </div>
+          <div class="c-field">
+            <label for="email">Email *</label>
+            <input id="email" type="email" placeholder="you@example.com" required data-field="Email" />
+          </div>
+        </div>
+        <div class="row">
+          <div class="c-field">
+            <label for="team">Role *</label>
+            <select id="team" required data-field="Role">
+              <option value="">Select…</option>
+              <option>Founder</option>
+              <option>Developer</option>
+              <option>Designer</option>
+              <option>Student</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <div class="c-field">
+            <label for="region">Region *</label>
+            <select id="region" required data-field="Region">
+              <option value="">Select…</option>
+              <option>Asia / Pacific</option>
+              <option>Europe</option>
+              <option>North America</option>
+              <option>South America</option>
+              <option>Africa / Middle East</option>
+            </select>
+          </div>
+        </div>
+        <div class="c-field">
+          <label for="message">Message *</label>
+          <textarea id="message" placeholder="Drop us a line…" required data-field="Message"></textarea>
+        </div>
+        <button class="cons-btn" type="submit">Send into the constellation →</button>
+      </form>
+    </div>
+  </section>
+
+  <script src="js/common.js"></script>
+  <script>
+    /* Particle constellation background */
+    const canvas = document.getElementById("net");
+    const ctx = canvas.getContext("2d");
+    let W, H, particles;
+    const COLORS = ["#a78bfa", "#7dd3fc", "#f0abfc", "#818cf8"];
+    function resize() {
+      W = canvas.width = canvas.offsetWidth = window.innerWidth;
+      H = canvas.height = canvas.offsetHeight = window.innerHeight;
+    }
+    function init() {
+      resize();
+      const count = Math.min(120, Math.floor(window.innerWidth / 14));
+      particles = Array.from({ length: count }, () => ({
+        x: Math.random() * W, y: Math.random() * H,
+        vx: (Math.random() - .5) * .5, vy: (Math.random() - .5) * .5,
+        r: 1.5 + Math.random() * 2.5,
+        c: COLORS[Math.floor(Math.random() * COLORS.length)]
+      }));
+    }
+    let raf;
+    function draw() {
+      ctx.clearRect(0, 0, W, H);
+      // connections
+      ctx.lineWidth = 0.6;
+      for (let i = 0; i < particles.length; i++) {
+        for (let j = i + 1; j < particles.length; j++) {
+          const a = particles[i], b = particles[j];
+          const d = Math.hypot(a.x - b.x, a.y - b.y);
+          if (d < 130) {
+            ctx.strokeStyle = `rgba(167,139,250,${(1 - d / 130) * .4})`;
+            ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke();
+          }
+        }
+      }
+      // particles
+      for (const p of particles) {
+        p.x += p.vx; p.y += p.vy;
+        if (p.x < 0 || p.x > W) p.vx *= -1;
+        if (p.y < 0 || p.y > H) p.vy *= -1;
+        ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fillStyle = p.c; ctx.globalAlpha = .8; ctx.fill();
+      }
+      ctx.globalAlpha = 1;
+      raf = requestAnimationFrame(draw);
+    }
+    init(); draw();
+    window.addEventListener("resize", init);
+
+    /* Mouse interaction: attract nearby particles */
+    const mouse = { x: null, y: null, radius: 140 };
+    window.addEventListener("mousemove", (e) => { mouse.x = e.clientX; mouse.y = e.clientY; });
+
+    document.getElementById("consForm").addEventListener("submit", (e) => {
+      e.preventDefault();
+      const form = e.target;
+      if (!form.checkValidity()) { form.reportValidity(); return; }
+      const d = collectForm(form);
+      showToast("✦ Message received from " + d["Name"] + "!");
+      form.reset();
+    });
+  </script>
+</body>
+</html>

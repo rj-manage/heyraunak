@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>05 · Restaurant — RJ Web Faces</title>
+  <meta name="description" content="Tandoor Nights — a modern Indian kitchen in firelight. Dark, brass-lit restaurant site with filterable signature dishes, a working reservation form and a chef's welcome. Face 05 of the RJ Web Faces Gallery — Intermediate level." />
+  <link rel="icon" href="assets/img/RJ_Logo_Black.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/common.css" />
+  <style>
+    :root {
+      --bg: #14100B;
+      --panel: #1E1710;
+      --panel-2: #241B12;
+      --brass: #E8A33D;
+      --brass-soft: rgba(232, 163, 61, .55);
+      --cream: #F6EAD8;
+      --cream-dim: rgba(246, 234, 216, .62);
+      --cream-faint: rgba(246, 234, 216, .38);
+      --sage: #A8B38E;
+      --line: rgba(246, 234, 216, .12);
+      --serif: "Playfair Display", Georgia, serif;
+    }
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--cream); font-family: "Inter", sans-serif; }
+    h1, h2, h3, .brand, .dish-name, .quote { font-family: var(--serif); }
+    .kicker-s { font-family: "Sora"; font-size: 11.5px; font-weight: 600; letter-spacing: .24em; text-transform: uppercase; color: var(--brass); }
+    ::selection { background: var(--brass); color: #14100B; }
+    .wrap { max-width: 1140px; margin: 0 auto; padding: 0 24px; }
+    section { scroll-margin-top: 96px; }
+
+    /* ---------- Top bar ---------- */
+    .topbar { border-bottom: 1px solid var(--line); background: #0F0B07; }
+    .topbar .in { max-width: 1140px; margin: 0 auto; padding: 9px 24px; display: flex; justify-content: space-between; gap: 18px; font-size: 12px; color: var(--cream-faint); letter-spacing: .03em; flex-wrap: wrap; }
+    .topbar b { color: var(--brass); font-weight: 600; }
+
+    /* ---------- Nav ---------- */
+    .nav { position: sticky; top: 0; z-index: 60; background: rgba(20, 16, 11, .9); backdrop-filter: blur(12px); border-bottom: 1px solid var(--line); }
+    .nav .in { max-width: 1140px; margin: 0 auto; padding: 14px 24px; display: flex; align-items: center; justify-content: space-between; gap: 20px; }
+    .brand { font-size: 25px; font-weight: 700; letter-spacing: .01em; color: var(--cream); text-decoration: none; }
+    .brand small { display: block; font-family: "Sora"; font-size: 8.5px; letter-spacing: .42em; text-transform: uppercase; color: var(--brass); font-weight: 600; margin-top: -2px; }
+    .nav-links { display: flex; align-items: center; gap: 30px; }
+    .nav-links a { color: var(--cream-dim); text-decoration: none; font-size: 13.5px; font-weight: 500; }
+    .nav-links a:hover { color: var(--brass); }
+    .reserve-btn {
+      background: var(--brass); color: #14100B !important; font-weight: 700; font-size: 13px;
+      padding: 10px 20px; border-radius: 999px; transition: transform .15s, background .15s, box-shadow .15s;
+      box-shadow: 0 10px 24px -10px rgba(232, 163, 61, .7);
+    }
+    .reserve-btn:hover { transform: translateY(-1px); background: #F2B353; color: #14100B !important; }
+    .burger { display: none; background: none; border: 1px solid var(--line); border-radius: 8px; padding: 7px 11px; font-size: 16px; cursor: pointer; color: var(--cream); }
+    @media (max-width: 800px) {
+      .nav-links { position: fixed; top: 62px; left: 0; right: 0; background: #14100B; flex-direction: column; align-items: stretch; gap: 2px; padding: 10px 24px 22px; border-bottom: 1px solid var(--line); display: none; }
+      .nav-links.open { display: flex; }
+      .nav-links a, .nav-links .reserve-btn { padding: 12px 0; text-align: center; }
+      .burger { display: block; }
+    }
+
+    /* ---------- Hero ---------- */
+    .hero { position: relative; overflow: hidden; background: radial-gradient(720px 430px at 24% 26%, rgba(232,163,61,.16), transparent 62%), radial-gradient(900px 520px at 88% 74%, rgba(160,74,26,.22), transparent 60%), var(--bg); padding: 96px 0 110px; }
+    .hero::before { content: ""; position: absolute; inset: 0; background-image: radial-gradient(rgba(246,234,216,.05) 1px, transparent 1px); background-size: 26px 26px; mask-image: linear-gradient(180deg, rgba(0,0,0,.7), transparent 80%); pointer-events: none; }
+    .hero .in { position: relative; display: grid; grid-template-columns: 1.05fr .95fr; gap: 40px; align-items: center; }
+    @media (max-width: 860px) { .hero { padding: 70px 0 84px; } .hero .in { grid-template-columns: 1fr; } }
+    .hero .kicker-s { display: flex; align-items: center; gap: 14px; }
+    .hero .kicker-s::before { content: ""; width: 34px; height: 1px; background: var(--brass); }
+    .hero h1 { font-size: clamp(44px, 7vw, 84px); line-height: 1.02; letter-spacing: -.01em; margin: 22px 0 0; }
+    .hero h1 .thin { font-weight: 600; color: var(--brass); }
+    .hero h1 .small { display: block; font-size: .52em; letter-spacing: .02em; margin-top: 6px; }
+    .hero p { color: var(--cream-dim); font-size: 16px; max-width: 460px; line-height: 1.7; margin: 24px 0 0; }
+    .hero p b { color: var(--cream); font-weight: 600; }
+    .hero-cta { display: flex; gap: 14px; margin-top: 34px; flex-wrap: wrap; }
+    .btn-a { display: inline-flex; align-items: center; gap: 8px; text-decoration: none; font: inherit; font-weight: 700; font-size: 14px; padding: 14px 26px; border-radius: 999px; cursor: pointer; transition: transform .15s, filter .15s, background .15s; }
+    .btn-brass { background: var(--brass); color: #14100B; box-shadow: 0 14px 30px -12px rgba(232,163,61,.65); }
+    .btn-brass:hover { transform: translateY(-2px); filter: brightness(1.08); }
+    .btn-ghost-d { background: transparent; color: var(--cream); border: 1px solid rgba(246,234,216,.28); }
+    .btn-ghost-d:hover { border-color: var(--brass); color: var(--brass); }
+    .hero .note { margin-top: 22px; font-size: 12.5px; color: var(--cream-faint); }
+    .hero .note b { color: var(--sage); }
+
+    /* Plated dish — pure CSS art */
+    .dish-art { position: relative; display: flex; justify-content: center; padding: 26px 0 10px; }
+    .steam { position: absolute; top: 6px; left: 50%; }
+    .steam i { position: absolute; width: 7px; height: 34px; border-radius: 50%; background: linear-gradient(180deg, transparent, rgba(246,234,216,.5)); filter: blur(3px); animation: rise 3.4s ease-out infinite; }
+    .steam i:nth-child(1) { left: -26px; animation-delay: 0s; }
+    .steam i:nth-child(2) { left: -4px; animation-delay: 1.1s; height: 44px; }
+    .steam i:nth-child(3) { left: 20px; animation-delay: 2s; }
+    @keyframes rise { 0% { transform: translateY(10px) scaleX(1); opacity: 0; } 25% { opacity: .8; } 100% { transform: translateY(-46px) translateX(6px) scaleX(1.6); opacity: 0; } }
+    .plate {
+      position: relative; width: min(300px, 72vw); aspect-ratio: 1; border-radius: 50%;
+      background: radial-gradient(circle at 34% 28%, #6E5B46, #4A3B2B 58%, #33291E 100%);
+      box-shadow: 0 34px 70px -30px rgba(0,0,0,.9), inset 0 0 0 10px rgba(246,234,216,.05);
+    }
+    .plate .inner {
+      position: absolute; inset: 11%; border-radius: 50%;
+      background: radial-gradient(circle at 38% 30%, #B34A24, #7E2E14 58%, #4F1D0B 100%);
+      box-shadow: inset 0 0 30px rgba(0,0,0,.55);
+    }
+    .plate .gravy {
+      position: absolute; inset: 22%; border-radius: 50%;
+      background: radial-gradient(circle at 40% 34%, #E89A3D, #C46A22 60%, #8E4615);
+      box-shadow: inset -8px -10px 24px rgba(90,40,8,.6);
+    }
+    .plate .kebab { position: absolute; width: 34%; height: 15%; border-radius: 999px; background: linear-gradient(90deg, #2E1709, #6E3413 30%, #F2C078 50%, #6E3413 72%, #2E1709); box-shadow: 0 4px 10px rgba(0,0,0,.5); }
+    .plate .k1 { left: 19%; top: 38%; transform: rotate(-16deg); }
+    .plate .k2 { right: 18%; top: 50%; transform: rotate(14deg); }
+    .plate .garnish { position: absolute; border-radius: 50% 0 50% 0; background: #4E6E2F; box-shadow: 0 3px 6px rgba(0,0,0,.4); }
+    .plate .g1 { width: 18px; height: 18px; left: 26%; bottom: 26%; transform: rotate(-24deg); }
+    .plate .g2 { width: 13px; height: 13px; right: 27%; top: 30%; transform: rotate(30deg); }
+    .plate .saffron { position: absolute; top: 33%; right: 33%; width: 4px; height: 4px; border-radius: 50%; background: #E4572E; box-shadow: 0 0 0 3px rgba(228,87,46,.25); }
+    .plate .sparkle { position: absolute; border-radius: 50%; background: rgba(246,234,216,.55); animation: twinkle 2.6s ease-in-out infinite; }
+    .plate .sparkle.s1 { width: 5px; height: 5px; left: 32%; top: 24%; }
+    .plate .sparkle.s2 { width: 3px; height: 3px; right: 30%; bottom: 30%; animation-delay: 1.3s; }
+    @keyframes twinkle { 50% { opacity: .25; } }
+    .dish-caption { position: absolute; bottom: -6px; left: 50%; transform: translateX(-50%); width: 62%; text-align: center; font-family: "Sora"; font-size: 10px; letter-spacing: .2em; text-transform: uppercase; color: var(--cream-faint); border: 1px solid var(--line); background: rgba(20,16,11,.75); padding: 8px 0; border-radius: 999px; backdrop-filter: blur(4px); }
+    .dish-caption b { color: var(--brass); font-weight: 600; }
+
+    /* ---------- Signature dishes ---------- */
+    .dishes { padding: 96px 0; background: radial-gradient(600px 300px at 90% 0%, rgba(232,163,61,.07), transparent 60%), var(--bg); }
+    .sec-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 26px; margin-bottom: 40px; flex-wrap: wrap; }
+    .sec-head h2 { font-size: clamp(32px, 4.4vw, 48px); letter-spacing: -.01em; margin-top: 12px; }
+    .sec-head h2 em { font-style: italic; color: var(--brass); }
+    .sec-head p { color: var(--cream-dim); max-width: 400px; font-size: 14.5px; line-height: 1.65; }
+    .tabs { display: flex; gap: 8px; flex-wrap: wrap; }
+    .tab { font: inherit; font-size: 13px; font-weight: 600; color: var(--cream-dim); background: var(--panel); border: 1px solid var(--line); padding: 9px 18px; border-radius: 999px; cursor: pointer; transition: all .2s; }
+    .tab:hover { color: var(--brass); border-color: var(--brass-soft); }
+    .tab.on { background: var(--brass); color: #14100B; border-color: var(--brass); font-weight: 700; }
+    .dish-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; }
+    @media (max-width: 1020px) { .dish-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 560px) { .dish-grid { grid-template-columns: 1fr; } }
+    .dish { background: linear-gradient(180deg, var(--panel-2), var(--panel)); border: 1px solid var(--line); border-radius: 18px; overflow: hidden; transition: transform .22s, box-shadow .22s, border-color .22s, opacity .28s ease; }
+    .dish:hover { transform: translateY(-6px); border-color: var(--brass-soft); box-shadow: 0 26px 50px -26px rgba(0,0,0,.9), 0 0 0 1px rgba(232,163,61,.12); }
+    .dish.hide { display: none; }
+    .dish.fade { opacity: 0; transform: translateY(10px); }
+    .dish .food {
+      height: 128px; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden;
+    }
+    .food .plate-sm { width: 78px; height: 78px; border-radius: 50%; background: radial-gradient(circle at 34% 30%, #5A4A38, #33291E 70%); box-shadow: inset 0 0 0 5px rgba(246,234,216,.04); display: grid; place-items: center; position: relative; }
+    .food .plate-sm::after { content: ""; position: absolute; inset: 16%; border-radius: 50%; background: var(--fill, #C46A22); box-shadow: inset 0 -6px 12px rgba(0,0,0,.45); }
+    .dish .body { padding: 18px 20px 20px; border-top: 1px solid rgba(246,234,216,.06); }
+    .dish-name { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; font-size: 19px; font-weight: 600; }
+    .dish-name .price { font-family: "Sora"; font-size: 15px; font-weight: 700; color: var(--brass); white-space: nowrap; }
+    .dish .desc { color: var(--cream-dim); font-size: 13px; line-height: 1.6; margin-top: 7px; }
+    .dish .tags { display: flex; gap: 7px; margin-top: 13px; flex-wrap: wrap; }
+    .tag-pill { font-size: 10.5px; font-weight: 600; letter-spacing: .04em; color: var(--sage); border: 1px solid rgba(168,179,142,.4); background: rgba(168,179,142,.08); padding: 3px 10px; border-radius: 999px; }
+    .tag-pill.fire { color: var(--brass); border-color: var(--brass-soft); background: rgba(232,163,61,.08); }
+    .menu-note { margin-top: 22px; font-size: 13px; color: var(--cream-faint); }
+    .menu-note b { color: var(--brass); }
+
+    /* ---------- Chef quote ---------- */
+    .quote-band { border-block: 1px solid var(--line); background: radial-gradient(700px 300px at 50% 120%, rgba(232,163,61,.12), transparent 70%), var(--panel); padding: 84px 24px; text-align: center; position: relative; overflow: hidden; }
+    .quote-band::before { content: "❝"; font-family: var(--serif); font-size: 120px; line-height: 1; color: rgba(232,163,61,.25); position: absolute; top: 8px; left: 50%; transform: translateX(-50%); }
+    .quote { max-width: 760px; margin: 0 auto; font-size: clamp(24px, 3.4vw, 36px); font-style: italic; line-height: 1.35; color: var(--cream); }
+    .quote b { color: var(--brass); font-weight: 600; }
+    .quote-band .who { margin-top: 26px; font-family: "Sora"; font-size: 12px; letter-spacing: .3em; text-transform: uppercase; color: var(--brass); font-weight: 600; }
+    .quote-band .role { font-size: 12.5px; color: var(--cream-faint); margin-top: 8px; }
+
+    /* ---------- About ---------- */
+    .about { padding: 96px 0; }
+    .about .in { display: grid; grid-template-columns: 1.05fr .95fr; gap: 64px; align-items: center; }
+    @media (max-width: 860px) { .about .in { grid-template-columns: 1fr; gap: 40px; } }
+    .about h2 { font-size: clamp(30px, 3.8vw, 44px); margin: 14px 0 20px; letter-spacing: -.01em; }
+    .about h2 em { font-style: italic; color: var(--brass); }
+    .about p { color: var(--cream-dim); font-size: 15px; line-height: 1.75; margin-bottom: 14px; }
+    .about p b { color: var(--cream); font-weight: 600; }
+    .about p .flame { color: var(--brass); }
+    .about .pulse { display: inline-flex; align-items: center; gap: 8px; margin-top: 8px; font-size: 13px; color: var(--sage); font-weight: 500; }
+    .about .pulse::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--brass); box-shadow: 0 0 0 0 rgba(232,163,61,.5); animation: pulse-dot 2s infinite; }
+    @keyframes pulse-dot { 70% { box-shadow: 0 0 0 9px rgba(232,163,61,0); } 100% { box-shadow: 0 0 0 0 rgba(232,163,61,0); } }
+    .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+    .stat { background: var(--panel); border: 1px solid var(--line); border-radius: 16px; padding: 22px 12px; text-align: center; }
+    .stat b { font-family: var(--serif); font-size: 30px; color: var(--brass); display: block; line-height: 1.1; }
+    .stat span { font-size: 10.5px; letter-spacing: .16em; text-transform: uppercase; color: var(--cream-faint); font-weight: 600; display: block; margin-top: 8px; }
+    .stat small { display: block; font-size: 11px; color: var(--sage); margin-top: 6px; font-weight: 500; }
+
+    /* ---------- Reserve ---------- */
+    .reserve { padding: 96px 0; background: radial-gradient(700px 380px at 12% 10%, rgba(232,163,61,.1), transparent 60%), var(--panel); border-block: 1px solid var(--line); }
+    .reserve .in { display: grid; grid-template-columns: .9fr 1.1fr; gap: 60px; align-items: center; }
+    @media (max-width: 900px) { .reserve .in { grid-template-columns: 1fr; } }
+    .reserve h2 { font-size: clamp(30px, 3.8vw, 46px); margin: 14px 0 18px; letter-spacing: -.01em; }
+    .reserve h2 em { font-style: italic; color: var(--brass); }
+    .reserve .lead { color: var(--cream-dim); font-size: 15px; line-height: 1.7; max-width: 400px; }
+    .reserve ul { list-style: none; margin-top: 26px; display: grid; gap: 13px; }
+    .reserve li { display: flex; gap: 11px; align-items: flex-start; font-size: 14px; color: var(--cream-dim); }
+    .reserve li .ti { width: 20px; height: 20px; flex: none; border-radius: 50%; background: rgba(232,163,61,.15); color: var(--brass); display: grid; place-items: center; font-size: 12px; margin-top: 1px; }
+    form.r-form { background: rgba(20,16,11,.55); border: 1px solid var(--line); border-radius: 20px; padding: 30px; display: grid; grid-template-columns: 1fr 1fr; gap: 16px; backdrop-filter: blur(6px); }
+    @media (max-width: 560px) { form.r-form { grid-template-columns: 1fr; } }
+    .r-form .full { grid-column: 1 / -1; }
+    .r-form label { display: block; font-size: 12px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--cream-faint); margin-bottom: 7px; }
+    .r-form input, .r-form select {
+      width: 100%; padding: 12px 14px; background: #181209; border: 1px solid rgba(246,234,216,.16); border-radius: 11px;
+      color: var(--cream); font: inherit; font-size: 14.5px; outline: none; transition: border-color .18s, box-shadow .18s;
+    }
+    .r-form input:focus, .r-form select:focus { border-color: var(--brass); box-shadow: 0 0 0 3px rgba(232,163,61,.16); }
+    .r-form input::-webkit-calendar-picker-indicator { filter: invert(.8) sepia(1) saturate(3) hue-rotate(-15deg); cursor: pointer; }
+    .r-form select { appearance: none; background-image: linear-gradient(45deg, transparent 50%, var(--brass) 50%), linear-gradient(135deg, var(--brass) 50%, transparent 50%); background-position: calc(100% - 20px) 50%, calc(100% - 15px) 50%; background-size: 5px 5px; background-repeat: no-repeat; cursor: pointer; }
+    .r-form option { background: #181209; color: var(--cream); }
+    .r-form .btn-brass { width: 100%; justify-content: center; border: none; font-size: 15px; padding: 15px; }
+    .r-form .micro { font-size: 11.5px; color: var(--cream-faint); text-align: center; margin-top: 4px; }
+    .r-form .micro b { color: var(--sage); font-weight: 600; }
+
+    /* ---------- Visit ---------- */
+    .visit { padding: 96px 0; }
+    .visit .in { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; align-items: stretch; }
+    @media (max-width: 900px) { .visit .in { grid-template-columns: 1fr; } }
+    .visit h2 { font-size: clamp(30px, 3.8vw, 44px); margin: 14px 0 24px; letter-spacing: -.01em; }
+    .visit h2 em { font-style: italic; color: var(--brass); }
+    .v-addr { display: flex; gap: 16px; margin-bottom: 20px; align-items: flex-start; }
+    .v-addr .ic { width: 42px; height: 42px; flex: none; border-radius: 12px; background: rgba(232,163,61,.12); color: var(--brass); display: grid; place-items: center; }
+    .v-addr b { display: block; font-family: "Sora"; font-size: 14px; letter-spacing: .02em; }
+    .v-addr span { color: var(--cream-dim); font-size: 13.5px; line-height: 1.6; display: block; margin-top: 3px; }
+    .hours { border: 1px solid var(--line); border-radius: 14px; overflow: hidden; max-width: 380px; }
+    .hours .h-row { display: flex; justify-content: space-between; padding: 12px 18px; font-size: 13.5px; border-bottom: 1px solid rgba(246,234,216,.08); }
+    .hours .h-row:last-child { border-bottom: none; }
+    .hours .h-row span { color: var(--cream-dim); }
+    .hours .h-row b { color: var(--cream); font-weight: 500; }
+    .hours .h-row.today { background: rgba(232,163,61,.1); }
+    .hours .h-row.today span, .hours .h-row.today b { color: var(--brass); }
+    /* stylised CSS map */
+    .map { position: relative; border-radius: 20px; border: 1px solid var(--line); background: #191209; min-height: 340px; overflow: hidden; }
+    .map .streets { position: absolute; inset: 0; background-image:
+      linear-gradient(rgba(232,163,61,.06) 2px, transparent 2px), linear-gradient(90deg, rgba(232,163,61,.06) 2px, transparent 2px);
+      background-size: 64px 52px, 76px 58px; }
+    .map .avenue { position: absolute; left: 0; right: 0; top: 44%; height: 16px; background: rgba(246,234,216,.1); transform: rotate(-8deg); }
+    .map .block { position: absolute; background: #241B12; border: 1px solid rgba(246,234,216,.05); }
+    .map .b1 { width: 22%; height: 16%; left: 8%; top: 14%; border-radius: 6px; }
+    .map .b2 { width: 16%; height: 12%; right: 14%; top: 12%; border-radius: 6px; }
+    .map .b3 { width: 26%; height: 15%; left: 20%; bottom: 14%; border-radius: 6px; }
+    .map .park { position: absolute; right: 9%; bottom: 12%; width: 17%; height: 22%; border-radius: 50%; background: radial-gradient(circle at 40% 30%, #2C3522, #1A2013); }
+    .pin { position: absolute; left: 56%; top: 40%; transform: translate(-50%, -100%); z-index: 3; text-align: center; }
+    .pin .ring { width: 46px; height: 46px; border-radius: 50%; background: var(--brass); display: grid; place-items: center; box-shadow: 0 0 0 0 rgba(232,163,61,.45); animation: pulse-dot 2.2s infinite; position: relative; }
+    .pin .ring::after { content: ""; position: absolute; left: 50%; top: 100%; border: 7px solid transparent; border-top-color: var(--brass); transform: translateX(-50%); }
+    .pin .ring svg { position: relative; z-index: 2; }
+    .pin small { position: absolute; top: 62px; left: 50%; transform: translateX(-50%); width: max-content; background: rgba(20,16,11,.92); border: 1px solid var(--brass-soft); color: var(--cream); font-size: 11px; padding: 6px 12px; border-radius: 999px; white-space: nowrap; }
+    .map .tag { position: absolute; right: 16px; bottom: 14px; font-size: 10px; letter-spacing: .18em; text-transform: uppercase; color: var(--cream-faint); font-family: "Sora"; }
+
+    /* ---------- Footer ---------- */
+    footer { border-top: 1px solid var(--line); background: #0F0B07; padding: 64px 0 36px; }
+    .foot-grid { display: grid; grid-template-columns: 1.4fr 1fr 1fr; gap: 40px; }
+    @media (max-width: 780px) { .foot-grid { grid-template-columns: 1fr; gap: 30px; } }
+    .foot-brand p { color: var(--cream-dim); font-size: 13.5px; max-width: 300px; margin-top: 14px; line-height: 1.7; }
+    .socials { display: flex; gap: 12px; margin-top: 18px; }
+    .socials a { width: 36px; height: 36px; border-radius: 50%; border: 1px solid var(--line); display: grid; place-items: center; color: var(--cream-dim); text-decoration: none; font-size: 14px; transition: all .2s; }
+    .socials a:hover { border-color: var(--brass); color: var(--brass); transform: translateY(-2px); }
+    .foot-col h4 { font-family: "Sora"; font-size: 11.5px; letter-spacing: .22em; text-transform: uppercase; color: var(--brass); margin-bottom: 16px; font-weight: 600; }
+    .foot-col a { display: block; color: var(--cream-dim); text-decoration: none; font-size: 13.5px; padding: 4px 0; }
+    .foot-col a:hover { color: var(--cream); }
+    .foot-col p { color: var(--cream-dim); font-size: 13px; line-height: 1.8; }
+    .foot-bottom { border-top: 1px solid var(--line); margin-top: 44px; padding-top: 22px; display: flex; justify-content: space-between; gap: 14px; flex-wrap: wrap; font-size: 12.5px; color: var(--cream-faint); }
+    .foot-bottom a { color: var(--brass); text-decoration: none; font-weight: 600; }
+
+    @media (prefers-reduced-motion: reduce) {
+      .steam i { animation: none; opacity: 0; }
+      .plate .sparkle, .about .pulse::before, .pin .ring { animation: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="toast"></div>
+
+  <!-- ================= TOP BAR ================= -->
+  <div class="topbar">
+    <div class="in">
+      <span>Open tonight · <b>5:30 – 10:30 PM</b></span>
+      <span>Ember Lane, Shoreditch, London — <b>walk-ins welcome</b></span>
+    </div>
+  </div>
+
+  <!-- ================= NAV ================= -->
+  <nav class="nav" id="nav">
+    <div class="in">
+      <a class="brand" href="#top">Tandoor Nights<small>modern indian kitchen</small></a>
+      <div class="nav-links" id="navMenu">
+        <a href="#menu">Menu</a>
+        <a href="#about">About</a>
+        <a href="#visit">Visit</a>
+        <a class="reserve-btn" href="#reserve">Reserve a table</a>
+      </div>
+      <button class="burger" id="burger" aria-label="Menu">☰</button>
+    </div>
+  </nav>
+
+  <!-- ================= HERO ================= -->
+  <header class="hero" id="top">
+    <div class="wrap in">
+      <div class="reveal">
+        <span class="kicker-s">Est. 2011 · Live-fire kitchen</span>
+        <h1>Fire. Smoke.<br /><span class="thin">Flavour.</span><span class="small">The tandoor, honoured nightly</span></h1>
+        <p>Since 2011 we have cooked the way <b>North India does at its best</b> — charcoal, clay and patience. Our tandoor is fed all evening, our curries simmer for a full day, and nothing on the menu has ever seen a freezer.</p>
+        <div class="hero-cta">
+          <a class="btn-a btn-brass" href="#reserve">Reserve a table</a>
+          <a class="btn-a btn-ghost-d" href="#menu">View menu ↓</a>
+        </div>
+        <p class="note">Fully halal · Vegetarian &amp; vegan menus available · <b>★ 4.8</b> from 3,400+ guests</p>
+      </div>
+      <div class="dish-art reveal" style="transition-delay:.15s">
+        <div class="steam" aria-hidden="true"><i></i><i></i><i></i></div>
+        <div class="plate" aria-hidden="true">
+          <div class="inner"><div class="gravy">
+            <span class="kebab k1"></span><span class="kebab k2"></span>
+            <span class="garnish g1"></span><span class="garnish g2"></span>
+            <span class="saffron"></span>
+          </div></div>
+          <span class="sparkle s1"></span><span class="sparkle s2"></span>
+        </div>
+        <div class="dish-caption">Tonight's tandoor <b>· charcoal platter</b></div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ================= SIGNATURE DISHES ================= -->
+  <section class="dishes" id="menu">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <div>
+          <span class="kicker-s">The menu</span>
+          <h2>Signature <em>dishes</em></h2>
+          <p>Dishes our regulars refuse to let us take off the menu. Every one leaves the pass in under twelve minutes — hot, honest and finished with fire.</p>
+        </div>
+        <div class="tabs" role="group" aria-label="Filter dishes">
+          <button class="tab on" data-filter="all">All</button>
+          <button class="tab" data-filter="starters">Starters</button>
+          <button class="tab" data-filter="mains">Mains</button>
+          <button class="tab" data-filter="desserts">Desserts</button>
+        </div>
+      </div>
+
+      <div class="dish-grid" id="dishGrid">
+        <!-- Starters -->
+        <article class="dish reveal" data-cat="starters" style="transition-delay:.02s">
+          <div class="food" style="--fill: radial-gradient(circle at 38% 32%, #7A4A20, #4E2A0E 70%)"><div class="plate-sm"></div></div>
+          <div class="body">
+            <h3 class="dish-name"><span>Smoked Paneer Tikka</span><span class="price">$14</span></h3>
+            <p class="desc">Charcoal-grilled cottage cheese in a hung-yogurt marinade, mint chutney, pickled onion.</p>
+            <div class="tags"><span class="tag-pill">Vegetarian</span><span class="tag-pill fire">Smoky</span></div>
+          </div>
+        </article>
+        <article class="dish reveal" data-cat="starters" style="transition-delay:.06s">
+          <div class="food" style="--fill: radial-gradient(circle at 40% 34%, #B08A4E, #6E4A1E 72%)"><div class="plate-sm"></div></div>
+          <div class="body">
+            <h3 class="dish-name"><span>Lahori Fish Amritsari</span><span class="price">$16</span></h3>
+            <p class="desc">River sole in a crisp gram-flour crust with ajwain, tamarind slaw and a squeeze of lime.</p>
+            <div class="tags"><span class="tag-pill fire">Chef's pick</span></div>
+          </div>
+        </article>
+        <!-- Mains -->
+        <article class="dish reveal" data-cat="mains" style="transition-delay:.1s">
+          <div class="food" style="--fill: radial-gradient(circle at 38% 30%, #E89A3D, #B25E18 72%)"><div class="plate-sm"></div></div>
+          <div class="body">
+            <h3 class="dish-name"><span>Butter Chicken '24hr'</span><span class="price">$22</span></h3>
+            <p class="desc">Our slow-braised tomato-and-cashew gravy, rested a full day for depth. Charcoal chicken, cultured butter.</p>
+            <div class="tags"><span class="tag-pill fire">Signature</span></div>
+          </div>
+        </article>
+        <article class="dish reveal" data-cat="mains" style="transition-delay:.14s">
+          <div class="food" style="--fill: radial-gradient(circle at 40% 32%, #B3401F, #6E1D0B 74%)"><div class="plate-sm"></div></div>
+          <div class="body">
+            <h3 class="dish-name"><span>Lamb Rogan Josh</span><span class="price">$24</span></h3>
+            <p class="desc">Kashmiri chillies, star anise and hand-ground spices, braised low and slow until the lamb surrenders.</p>
+            <div class="tags"><span class="tag-pill">Slow-cooked</span></div>
+          </div>
+        </article>
+        <article class="dish reveal" data-cat="mains" style="transition-delay:.18s">
+          <div class="food" style="--fill: radial-gradient(circle at 40% 34%, #D8C9A0, #8A7A55 74%)"><div class="plate-sm"></div></div>
+          <div class="body">
+            <h3 class="dish-name"><span>Dal Makhani, 18 hrs</span><span class="price">$18</span></h3>
+            <p class="desc">Black lentils simmered overnight over embers, finished with smoked butter and a whisper of cream.</p>
+            <div class="tags"><span class="tag-pill">Vegetarian</span><span class="tag-pill fire">Chef's pick</span></div>
+          </div>
+        </article>
+        <article class="dish reveal" data-cat="mains" style="transition-delay:.22s">
+          <div class="food" style="--fill: radial-gradient(circle at 40% 30%, #8A5A24, #4A2C0E 76%)"><div class="plate-sm"></div></div>
+          <div class="body">
+            <h3 class="dish-name"><span>Charcoal Chicken Biryani</span><span class="price">$21</span></h3>
+            <p class="desc">Smoked basmati layered with charcoal chicken, saffron and fried onion. Sealed, steamed, served with raita.</p>
+            <div class="tags"><span class="tag-pill fire">Signature</span></div>
+          </div>
+        </article>
+        <!-- Desserts -->
+        <article class="dish reveal" data-cat="desserts" style="transition-delay:.26s">
+          <div class="food" style="--fill: radial-gradient(circle at 40% 34%, #C98A5A, #8A5428 74%)"><div class="plate-sm"></div></div>
+          <div class="body">
+            <h3 class="dish-name"><span>Gulab Jamun Crème Brûlée</span><span class="price">$11</span></h3>
+            <p class="desc">Warm gulab jamun under a crackling sugar crust, rose-cardamom custard, crushed pistachio.</p>
+            <div class="tags"><span class="tag-pill">Vegetarian</span></div>
+          </div>
+        </article>
+        <article class="dish reveal" data-cat="desserts" style="transition-delay:.3s">
+          <div class="food" style="--fill: radial-gradient(circle at 40% 32%, #B9C9D4, #6E8A99 74%)"><div class="plate-sm"></div></div>
+          <div class="body">
+            <h3 class="dish-name"><span>Saffron Kulfi Falooda</span><span class="price">$10</span></h3>
+            <p class="desc">Hand-churned saffron kulfi, rose syrup, vermicelli, basil seeds and toasted pistachio.</p>
+            <div class="tags"><span class="tag-pill">Vegetarian</span><span class="tag-pill">GF</span></div>
+          </div>
+        </article>
+      </div>
+      <p class="menu-note reveal" id="menuNote">Showing <b>all 8 signature dishes</b> · full à-la-carte menu changes with the seasons.</p>
+    </div>
+  </section>
+
+  <!-- ================= CHEF QUOTE ================= -->
+  <div class="quote-band reveal">
+    <p class="quote">"The tandoor doesn't negotiate. It is <b>900 degrees</b> of honesty — you learn to respect the fire, or the fire teaches you."</p>
+    <p class="who">Chef Rohan Kapoor</p>
+    <p class="role">Founder &amp; head chef — trained in Delhi, Amritsar &amp; the London fire kitchens</p>
+  </div>
+
+  <!-- ================= ABOUT ================= -->
+  <section class="about" id="about">
+    <div class="wrap in">
+      <div class="reveal">
+        <span class="kicker-s">Our story</span>
+        <h2>Fourteen years of <em>live fire.</em></h2>
+        <p>Rohan Kapoor opened Tandoor Nights in 2011 with one clay oven, two cooks and a stubborn belief: <b>Indian food deserves the same respect as any grand cuisine</b> — precise technique, honest ingredients and no shortcuts.</p>
+        <p>Today the same recipes — and the same stubbornness — run three kitchens across <span class="flame">London, Mumbai and New York</span>. Our gravies still rest overnight, our breads are still slapped onto the tandoor wall by hand, and the fire is still lit fresh every single afternoon.</p>
+        <p>We cook for the neighbourhood first and the guidebooks second. That order has never changed.</p>
+        <span class="pulse">Now booking — tonight's fire is already lit</span>
+      </div>
+      <div class="stats reveal" style="transition-delay:.1s">
+        <div class="stat"><b>14</b><span>Years of fire</span><small>Est. 2011 · Ember Lane</small></div>
+        <div class="stat"><b>3</b><span>Cities</span><small>London · Mumbai · NYC</small></div>
+        <div class="stat"><b>21</b><span>Awards &amp; listings</span><small>Michelin Guide · AA Rosettes</small></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= RESERVE ================= -->
+  <section class="reserve" id="reserve">
+    <div class="wrap in">
+      <div class="reveal">
+        <span class="kicker-s">Reservations</span>
+        <h2>Claim a seat by <em>the fire.</em></h2>
+        <p class="lead">Friday and Saturday tables go quickly — book ahead and we'll keep the corner banquette warm. For parties of nine or more, call the restaurant directly and we'll plan something proper.</p>
+        <ul>
+          <li><span class="ti">✓</span> Confirmations by email within minutes, never hours</li>
+          <li><span class="ti">✓</span> Free cancellation up to 2 hours before your booking</li>
+          <li><span class="ti">✓</span> Chef's tasting counter seats for up to 6 guests nightly</li>
+        </ul>
+      </div>
+      <form class="r-form reveal" id="reserveForm" novalidate style="transition-delay:.1s">
+        <div class="full">
+          <label for="rname">Your name *</label>
+          <input id="rname" type="text" placeholder="e.g. Aditya Menon" required data-field="Name" />
+        </div>
+        <div>
+          <label for="rdate">Date *</label>
+          <input id="rdate" type="date" required data-field="Date" />
+        </div>
+        <div>
+          <label for="rtime">Time *</label>
+          <select id="rtime" required data-field="Time">
+            <option value="" disabled selected>Select time</option>
+            <option>5:30 PM</option><option>6:00 PM</option><option>6:30 PM</option>
+            <option>7:00 PM</option><option>7:30 PM</option><option>8:00 PM</option>
+            <option>8:30 PM</option><option>9:00 PM</option><option>9:30 PM</option>
+          </select>
+        </div>
+        <div>
+          <label for="rguests">Guests *</label>
+          <select id="rguests" required data-field="Guests">
+            <option value="" disabled selected>How many?</option>
+            <option>1</option><option>2</option><option>3</option><option>4</option>
+            <option>5</option><option>6</option><option>7</option><option>8</option><option value="8+">8+</option>
+          </select>
+        </div>
+        <div class="full">
+          <label for="rphone">Phone (optional)</label>
+          <input id="rphone" type="tel" placeholder="+44 … — for last-minute changes" data-field="Phone" />
+        </div>
+        <div class="full">
+          <button class="btn-a btn-brass" type="submit">Reserve my table</button>
+          <p class="micro" style="margin-top:10px">No prepayment · <b>2-hour free cancellation</b> · We'll confirm by email</p>
+        </div>
+      </form>
+    </div>
+  </section>
+
+  <!-- ================= VISIT ================= -->
+  <section class="visit" id="visit">
+    <div class="wrap in">
+      <div class="reveal">
+        <span class="kicker-s">Find us</span>
+        <h2>On <em>Ember Lane</em>, where the smoke smells best.</h2>
+        <div class="v-addr">
+          <span class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 21s7-5.5 7-11a7 7 0 1 0-14 0c0 5.5 7 11 7 11Z" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="10" r="2.6" stroke="currentColor" stroke-width="1.8"/></svg></span>
+          <div><b>14 Ember Lane, Shoreditch</b><span>London E2 8HT · Two minutes from Old Street station,<br />behind the red-brick arches — follow the glow.</span></div>
+        </div>
+        <div class="v-addr">
+          <span class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 1 1 16 0Z" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="10" r="3" stroke="currentColor" stroke-width="1.8"/></svg></span>
+          <div><b>Also in</b><span>Mumbai — Colaba Causeway · New York — Nolita (spring 2026)</span></div>
+        </div>
+        <div class="hours">
+          <div class="h-row today"><span>Tonight · Mon – Thu</span><b>5:30 – 10:30 PM</b></div>
+          <div class="h-row"><span>Friday &amp; Saturday</span><b>5:30 – 11:30 PM</b></div>
+          <div class="h-row"><span>Sunday</span><b>5:00 – 10:00 PM</b></div>
+          <div class="h-row"><span>Kitchen last orders</span><b>45 min before close</b></div>
+        </div>
+      </div>
+      <div class="map reveal" style="transition-delay:.12s">
+        <div class="streets"></div>
+        <div class="avenue"></div>
+        <span class="block b1"></span><span class="block b2"></span><span class="block b3"></span>
+        <div class="park"></div>
+        <div class="pin">
+          <span class="ring"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 1 1 16 0Z" fill="#14100B"/><circle cx="12" cy="10" r="3.2" fill="#E8A33D"/></svg></span>
+          <small>Tandoor Nights · Ember Lane</small>
+        </div>
+        <span class="tag">Map demo · not to scale</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= FOOTER ================= -->
+  <footer>
+    <div class="wrap">
+      <div class="foot-grid">
+        <div class="foot-brand">
+          <a class="brand" href="#top">Tandoor Nights<small>modern indian kitchen</small></a>
+          <p>A live-fire Indian kitchen serving London since 2011. Charcoal, clay and patience — every single night.</p>
+          <div class="socials">
+            <a href="#top" aria-label="Instagram">◎</a>
+            <a href="#top" aria-label="X">✕</a>
+            <a href="#top" aria-label="Facebook">ƒ</a>
+            <a href="#top" aria-label="TikTok">♪</a>
+          </div>
+        </div>
+        <div class="foot-col">
+          <h4>Explore</h4>
+          <a href="#menu">Signature menu</a>
+          <a href="#about">Our story</a>
+          <a href="#reserve">Reservations</a>
+          <a href="#visit">Find us</a>
+        </div>
+        <div class="foot-col">
+          <h4>Contact</h4>
+          <p>14 Ember Lane, Shoreditch<br />London E2 8HT</p>
+          <p>+44 (0)20 7946 0148<br />table@tandoor-nights.co.uk</p>
+        </div>
+      </div>
+      <div class="foot-bottom">
+        <span>© 2026 Tandoor Nights · Demo page 05 of the RJ Web Faces Gallery</span>
+        <span><a href="index.html">← View all 20 faces</a></span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/common.js"></script>
+  <script>
+    // Mobile menu
+    const burger = document.getElementById("burger");
+    const menu = document.getElementById("navMenu");
+    burger.addEventListener("click", () => menu.classList.toggle("open"));
+    menu.querySelectorAll("a").forEach((a) => a.addEventListener("click", () => menu.classList.remove("open")));
+
+    // ---------- Date minimum = today (set in JS) ----------
+    const dateEl = document.getElementById("rdate");
+    const today = new Date();
+    const iso = today.getFullYear() + "-" + String(today.getMonth() + 1).padStart(2, "0") + "-" + String(today.getDate()).padStart(2, "0");
+    dateEl.min = iso;
+    dateEl.placeholder = "Tonight or any night ahead";
+
+    // ---------- Reservation form ----------
+    document.getElementById("reserveForm").addEventListener("submit", (e) => {
+      e.preventDefault();
+      const form = e.target;
+      if (!form.checkValidity()) { form.reportValidity(); return; }
+      const d = collectForm(form);
+      const guests = d["Guests"];
+      let dateText = d["Date"];
+      const parsed = new Date(d["Date"] + "T00:00:00");
+      if (!isNaN(parsed)) {
+        dateText = parsed.toLocaleDateString("en-GB", { weekday: "long", day: "numeric", month: "long" });
+      }
+      const time = d["Time"] || "";
+      showToast("✅ Table reserved for " + guests + " on " + dateText + (time ? " at " + time : "") + " — see you at the fire!");
+      form.reset();
+    });
+
+    // ---------- Dish filter tabs ----------
+    const tabs = [...document.querySelectorAll(".tab")];
+    const dishes = [...document.querySelectorAll(".dish")];
+    const note = document.getElementById("menuNote");
+    const labelFor = { all: "all 8", starters: "2 starters", mains: "4 mains", desserts: "2 desserts" };
+
+    tabs.forEach((tab) => {
+      tab.addEventListener("click", () => {
+        tabs.forEach((t) => t.classList.remove("on"));
+        tab.classList.add("on");
+        const f = tab.dataset.filter;
+        dishes.forEach((dish, i) => {
+          clearTimeout(dish._hideTimer); // cancel a pending hide when re-filtering quickly
+          const match = f === "all" || dish.dataset.cat === f;
+          if (match) {
+            dish.classList.remove("hide");
+            requestAnimationFrame(() => requestAnimationFrame(() => dish.classList.remove("fade")));
+            dish.style.transitionDelay = (i * 0.04) + "s";
+          } else {
+            dish.classList.add("fade");
+            dish._hideTimer = setTimeout(() => dish.classList.add("hide"), 300);
+          }
+        });
+        note.innerHTML = "Showing <b>" + labelFor[f] + " signature dishes</b> · full à-la-carte menu changes with the seasons.";
+      });
+    });
+  </script>
+</body>
+</html>

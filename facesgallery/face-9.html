@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>09 · Lumen Boards — RJ Web Faces</title>
+  <meta name="description" content="Lumen — a creative canvas for teams, wrapped in an aurora parallax journey from soft indigo day to deep night with layered glass and drag-scroll boards. Face 09 of the RJ Web Faces Gallery — Advanced level." />
+  <link rel="icon" href="assets/img/RJ_Logo_Black.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Sora:wght@500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/common.css" />
+  <style>
+    /* ============================================================
+       Face 09 — Lumen · Aurora Parallax Deep Glass (Advanced)
+       ============================================================ */
+    :root {
+      --tx-dark: #232E5C;
+      --mut-dark: #5E6A96;
+      --tx-light: #EDF1FF;
+      --mut-light: #B9C2EA;
+    }
+    html { scroll-behavior: smooth; }
+    body { background: #0B1026; color: var(--tx-dark); overflow-x: hidden; }
+    ::selection { background: #818CF8; color: #fff; }
+    a { text-decoration: none; }
+    h1, h2, h3 { letter-spacing: -.02em; }
+    .mono { font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; font-variant-numeric: tabular-nums; }
+
+    /* ---------- Fixed aurora overlay (hue shifts with scroll; screen-blended over content) ---------- */
+    .sky { position: fixed; inset: 0; z-index: 2; pointer-events: none; overflow: hidden;
+      mix-blend-mode: screen; }
+    .sky .blob { position: absolute; border-radius: 50%; filter: blur(70px); opacity: .5; will-change: transform; }
+    .sky .sb1 { width: 46vw; height: 46vw; left: -10vw; top: -8vw; background: radial-gradient(circle, rgba(129, 140, 248, .95), transparent 65%); animation: skyDrift 24s ease-in-out infinite alternate; }
+    .sky .sb2 { width: 40vw; height: 40vw; right: -9vw; top: 16vh; background: radial-gradient(circle, rgba(192, 132, 252, .9), transparent 65%); animation: skyDrift 30s ease-in-out infinite alternate-reverse; }
+    .sky .sb3 { width: 52vw; height: 52vw; left: 16vw; bottom: -20vw; background: radial-gradient(circle, rgba(34, 211, 238, .55), transparent 65%); animation: skyDrift 36s ease-in-out infinite alternate; }
+    @keyframes skyDrift { to { transform: translate3d(6vw, -4vh, 0) scale(1.1); } }
+
+    /* ---------- Zone scaffolding (light -> night journey) ---------- */
+    .main { position: relative; z-index: 1; }
+    section, .zone { position: relative; }
+    .z-light { background: linear-gradient(180deg, #EAF0FF, #E6EBFE); }
+    .z-light2 { background: linear-gradient(180deg, #E6EBFE, #DCE3FF); }
+    .bridge-a { height: 210px; background: linear-gradient(180deg, #DCE3FF, #8B9BE2); }
+    .z-dusk { background: linear-gradient(180deg, #8B9BE2, #6779C8); }
+    .bridge-b { height: 150px; background: linear-gradient(180deg, #6779C8, #394A93); }
+    .z-night { background: linear-gradient(180deg, #394A93, #1B2558); }
+    .bridge-c { height: 150px; background: linear-gradient(180deg, #1B2558, #141C49); }
+    .z-deep { background: linear-gradient(180deg, #141C49, #0B1026); }
+    .wrap { max-width: 1160px; margin: 0 auto; padding: 0 5vw; }
+
+    .kicker { font-family: var(--font-display); font-size: 12px; font-weight: 700; letter-spacing: .2em;
+      text-transform: uppercase; display: inline-flex; align-items: center; gap: 10px; }
+    .kicker::before { content: ""; width: 30px; height: 1.5px; }
+    .z-light .kicker, .z-light2 .kicker { color: #6366F1; }
+    .z-light .kicker::before, .z-light2 .kicker::before { background: linear-gradient(90deg, #6366F1, transparent); }
+    .z-dusk .kicker, .z-night .kicker, .z-deep .kicker { color: #A5F3E6; }
+    .z-dusk .kicker::before, .z-night .kicker::before, .z-deep .kicker::before { background: linear-gradient(90deg, #A5F3E6, transparent); }
+
+    /* ---------- Glass primitives (adapt per zone) ---------- */
+    .glass {
+      border-radius: 22px; backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px);
+      background: rgba(255, 255, 255, .5); border: 1px solid rgba(255, 255, 255, .7);
+      box-shadow: 0 24px 50px -28px rgba(60, 80, 170, .35), inset 0 1px 0 rgba(255, 255, 255, .8);
+    }
+    .gd {
+      background: rgba(255, 255, 255, .08); border: 1px solid rgba(255, 255, 255, .16);
+      box-shadow: 0 24px 60px -30px rgba(0, 0, 0, .55), inset 0 1px 0 rgba(255, 255, 255, .12);
+    }
+    .btn-lumen {
+      display: inline-flex; align-items: center; gap: 9px; padding: 14px 26px; border-radius: 999px;
+      font: inherit; font-weight: 700; font-size: 15px; cursor: pointer; border: none; color: #fff;
+      background: linear-gradient(135deg, #6366F1, #8B5CF6); box-shadow: 0 16px 34px -14px rgba(99, 102, 241, .6);
+      transition: transform .18s ease, filter .18s ease;
+    }
+    .btn-lumen:hover { transform: translateY(-2px); filter: brightness(1.07); }
+    .btn-lumen.ghosty { background: rgba(255, 255, 255, .1); border: 1px solid rgba(255, 255, 255, .35); box-shadow: none; }
+
+    /* ---------- Nav (light glass that turns dark on scroll) ---------- */
+    .nav { position: sticky; top: 0; z-index: 70; display: flex; align-items: center; justify-content: space-between;
+      gap: 18px; padding: 13px 5vw; transition: background .3s ease, border-color .3s ease;
+      background: rgba(255, 255, 255, .55); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px);
+      border-bottom: 1px solid rgba(255, 255, 255, .6); }
+    .nav.dark { background: rgba(11, 16, 38, .6); border-bottom: 1px solid rgba(255, 255, 255, .14); }
+    .brand { display: inline-flex; align-items: center; gap: 10px; color: var(--tx-dark); }
+    .nav.dark .brand { color: #fff; }
+    .brand .mark { width: 34px; height: 34px; border-radius: 10px; display: grid; place-items: center;
+      background: linear-gradient(135deg, #6366F1, #EC4899); box-shadow: 0 8px 18px -6px rgba(99, 102, 241, .55); }
+    .brand .mark svg { width: 19px; height: 19px; }
+    .brand b { font-family: var(--font-display); font-size: 19px; font-weight: 800; }
+    .nav-links { display: flex; align-items: center; gap: 26px; }
+    .nav-links a { font-size: 14px; font-weight: 600; color: var(--mut-dark); transition: color .2s ease; }
+    .nav.dark .nav-links a { color: #B9C2EA; }
+    .nav-links a:hover { color: #6366F1; }
+    .nav.dark .nav-links a:hover { color: #fff; }
+    .nav .btn-lumen { padding: 10px 19px; font-size: 13.5px; }
+    .burger { display: none; background: none; border: 1px solid rgba(80, 100, 180, .35); color: var(--tx-dark);
+      border-radius: 10px; padding: 7px 11px; font-size: 17px; cursor: pointer; }
+    .nav.dark .burger { color: #fff; border-color: rgba(255, 255, 255, .3); }
+    @media (max-width: 880px) {
+      .nav-links { position: fixed; top: 60px; left: 0; right: 0; flex-direction: column; gap: 4px;
+        background: rgba(255, 255, 255, .92); backdrop-filter: blur(18px); padding: 14px 6vw 22px;
+        border-bottom: 1px solid rgba(255, 255, 255, .6); display: none; }
+      .nav.dark .nav-links { background: rgba(11, 16, 38, .94); border-bottom-color: rgba(255, 255, 255, .14); }
+      .nav-links.open { display: flex; }
+      .nav-links a, .nav-links .btn-lumen { width: 100%; padding: 11px 8px; }
+      .burger { display: block; }
+    }
+
+    /* ---------- Hero (day) ---------- */
+    .hero { padding: 108px 5vw 120px; text-align: center; }
+    .hero .wrap { position: relative; }
+    .hero h1 { font-size: clamp(38px, 6.2vw, 74px); font-weight: 800; line-height: 1.04; letter-spacing: -.035em;
+      color: var(--tx-dark); position: relative; }
+    .hero h1 .grad { background: linear-gradient(92deg, #6366F1, #A855F7 45%, #EC4899); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+    .hero .sub { max-width: 620px; margin: 22px auto 0; color: var(--mut-dark); font-size: 17px; }
+    .hero-cta { display: flex; justify-content: center; flex-wrap: wrap; gap: 14px; margin-top: 32px; }
+    .hero .proof { display: flex; justify-content: center; gap: 26px; flex-wrap: wrap; margin-top: 34px;
+      font-size: 13px; font-weight: 600; color: var(--mut-dark); }
+    .hero .proof b { color: var(--tx-dark); font-family: var(--font-display); }
+
+    /* floating parallax glass cards at 3 depths */
+    .px { will-change: transform; }
+    .float { animation: bob 7s ease-in-out infinite alternate; }
+    .float.f2 { animation-duration: 8.5s; animation-delay: -3s; }
+    .float.f3 { animation-duration: 10s; animation-delay: -1.5s; }
+    @keyframes bob { from { transform: translateY(-10px) rotate(-.6deg); } to { transform: translateY(10px) rotate(.6deg); } }
+    .px-card { position: absolute; width: 210px; padding: 14px 16px; text-align: left; border-radius: 18px; }
+    .px-card .pt { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+    .px-card .pt .mdot { width: 8px; height: 8px; border-radius: 50%; background: #34D399; }
+    .px-card .pt span { font-size: 10.5px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; color: var(--mut-dark); }
+    .px-card b { font-size: 13px; display: block; color: var(--tx-dark); }
+    .px-card small { color: var(--mut-dark); font-size: 11px; }
+    .px-card .bar { height: 6px; border-radius: 99px; margin-top: 9px; background: rgba(99, 102, 241, .14); overflow: hidden; }
+    .px-card .bar i { display: block; height: 100%; border-radius: 99px; background: linear-gradient(90deg, #6366F1, #EC4899); }
+    .pc1 { left: 2%; top: 26px; }
+    .pc2 { right: 3%; top: 120px; }
+    .pc3 { left: 8%; bottom: -20px; }
+    @media (max-width: 1000px) { .px-card { display: none; } }
+
+    /* ---------- Boards (drag-scroll carousel) ---------- */
+    .boards-sec { padding: 96px 0 110px; }
+    .boards-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; flex-wrap: wrap; margin-bottom: 40px; }
+    .boards-head h2 { font-size: clamp(28px, 4vw, 46px); color: var(--tx-dark); }
+    .boards-head p { color: var(--mut-dark); margin-top: 12px; max-width: 540px; }
+    .nav-arrows { display: flex; gap: 10px; }
+    .arr { width: 46px; height: 46px; border-radius: 50%; border: none; cursor: pointer; font-size: 17px;
+      color: var(--tx-dark); background: rgba(255, 255, 255, .55); backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, .7); box-shadow: 0 14px 30px -16px rgba(60, 80, 170, .4);
+      transition: transform .15s ease, background .15s ease; }
+    .arr:hover { transform: translateY(-2px); background: #fff; }
+    .shell { overflow-x: auto; -webkit-mask-image: linear-gradient(90deg, transparent, #000 4%, #000 96%, transparent);
+      mask-image: linear-gradient(90deg, transparent, #000 4%, #000 96%, transparent);
+      scrollbar-width: none; }
+    .shell::-webkit-scrollbar { display: none; }
+    .track { display: flex; gap: 22px; width: max-content; padding: 10px 6vw 26px;
+      scroll-snap-type: x mandatory; cursor: grab; user-select: none; }
+    .track.dragging { scroll-snap-type: none; cursor: grabbing; }
+    .b-card { width: 300px; flex: none; scroll-snap-align: center; border-radius: 24px; padding: 12px;
+      transform-style: preserve-3d; transition: transform .18s ease-out, box-shadow .18s ease; will-change: transform; }
+    .b-card:hover { box-shadow: 0 34px 70px -30px rgba(60, 80, 170, .55); }
+    .art { height: 180px; border-radius: 16px; position: relative; overflow: hidden; }
+    .art::after { content: ""; position: absolute; inset: 0; background:
+      radial-gradient(100% 100% at 50% 110%, rgba(255, 255, 255, .35), transparent 55%); }
+    .art .chip-a { position: absolute; top: 12px; right: 12px; z-index: 2; font-size: 10px; font-weight: 800;
+      letter-spacing: .1em; text-transform: uppercase; color: #fff; background: rgba(15, 20, 45, .35);
+      backdrop-filter: blur(6px); border-radius: 999px; padding: 5px 10px; }
+    .a1 { background: radial-gradient(62% 62% at 22% 28%, rgba(129, 140, 248, .95), transparent 70%),
+            radial-gradient(55% 55% at 82% 72%, rgba(236, 72, 153, .9), transparent 70%),
+            radial-gradient(70% 70% at 58% 18%, rgba(34, 211, 238, .85), transparent 70%), #4C5BB8; }
+    .a2 { background: radial-gradient(60% 60% at 78% 24%, rgba(34, 211, 238, .9), transparent 70%),
+            radial-gradient(60% 60% at 20% 78%, rgba(99, 102, 241, .95), transparent 70%),
+            radial-gradient(50% 50% at 55% 45%, rgba(255, 255, 255, .55), transparent 70%), #5A6BD0; }
+    .a3 { background: radial-gradient(55% 55% at 25% 70%, rgba(236, 72, 153, .95), transparent 70%),
+            radial-gradient(65% 65% at 80% 30%, rgba(168, 85, 247, .95), transparent 70%),
+            radial-gradient(60% 60% at 45% 20%, rgba(255, 205, 120, .7), transparent 70%), #6E5BB8; }
+    .a4 { background: radial-gradient(60% 60% at 50% 25%, rgba(103, 232, 249, .9), transparent 70%),
+            radial-gradient(55% 55% at 22% 80%, rgba(96, 165, 250, .95), transparent 70%),
+            radial-gradient(45% 45% at 82% 65%, rgba(129, 140, 248, .95), transparent 70%), #3E5AA8; }
+    .a5 { background: radial-gradient(58% 58% at 78% 76%, rgba(34, 211, 238, .85), transparent 70%),
+            radial-gradient(60% 60% at 22% 30%, rgba(168, 85, 247, .9), transparent 70%),
+            radial-gradient(48% 48% at 60% 60%, rgba(236, 72, 153, .75), transparent 70%), #4B4FA0; }
+    .a6 { background: radial-gradient(62% 62% at 30% 24%, rgba(255, 205, 120, .85), transparent 70%),
+            radial-gradient(58% 58% at 76% 70%, rgba(236, 72, 153, .85), transparent 70%),
+            radial-gradient(70% 70% at 45% 80%, rgba(129, 140, 248, .8), transparent 70%), #5F4C9C; }
+    .b-meta { padding: 14px 6px 6px; display: flex; align-items: center; gap: 10px; }
+    .b-meta .avs { display: flex; }
+    .b-meta .avs i { width: 26px; height: 26px; border-radius: 50%; border: 2px solid rgba(255, 255, 255, .8);
+      display: grid; place-items: center; font-style: normal; font-size: 9px; font-weight: 800; color: #fff; }
+    .b-meta .avs i + i { margin-left: -9px; }
+    .b-meta b { font-size: 15px; color: var(--tx-dark); display: block; }
+    .b-meta span { font-size: 11.5px; color: var(--mut-dark); }
+    .hint { text-align: center; font-size: 12.5px; color: var(--mut-dark); font-weight: 600; margin-top: 6px; }
+
+    /* ---------- Features (dusk) ---------- */
+    .feat-sec { padding: 104px 0 96px; }
+    .feat-sec .sec-h { max-width: 620px; margin-bottom: 46px; }
+    .feat-sec h2 { font-size: clamp(28px, 4vw, 46px); color: var(--tx-light); }
+    .feat-sec .sec-h p { color: var(--mut-light); margin-top: 14px; font-size: 15.5px; }
+    .grid6 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+    @media (max-width: 980px) { .grid6 { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 640px) { .grid6 { grid-template-columns: 1fr; } }
+    .feat { padding: 28px 26px; transition: transform .22s ease, border-color .22s ease; }
+    .feat:hover { transform: translateY(-6px); border-color: rgba(255, 255, 255, .4); }
+    .feat .fico { width: 46px; height: 46px; border-radius: 14px; display: grid; place-items: center; margin-bottom: 16px;
+      background: rgba(255, 255, 255, .12); border: 1px solid rgba(255, 255, 255, .2); }
+    .feat .fico svg { width: 22px; height: 22px; stroke: #CDE7FF; }
+    .feat h3 { font-size: 17px; color: #fff; margin-bottom: 7px; }
+    .feat p { font-size: 13.5px; color: var(--mut-light); }
+
+    /* ---------- Story (night) ---------- */
+    .story-sec { padding: 110px 5vw; }
+    .quote-glass { max-width: 780px; margin: 0 auto; padding: 54px 60px; text-align: center; position: relative; }
+    .quote-glass .big-q { font-family: var(--font-display); font-size: clamp(24px, 3.4vw, 38px); line-height: 1.4;
+      color: #fff; font-weight: 600; letter-spacing: -.01em; }
+    .quote-glass .big-q::before { content: "“"; display: block; font-size: 90px; line-height: .4; margin: 20px 0 26px;
+      background: linear-gradient(90deg, #22D3EE, #A855F7); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+    .quote-glass .who { margin-top: 30px; display: flex; align-items: center; justify-content: center; gap: 14px; }
+    .quote-glass .who .ini { width: 46px; height: 46px; border-radius: 50%; display: grid; place-items: center;
+      font-size: 13px; font-weight: 800; color: #fff; background: linear-gradient(135deg, #6366F1, #EC4899); }
+    .quote-glass .who b { color: #fff; display: block; font-size: 14.5px; }
+    .quote-glass .who span { color: var(--mut-light); font-size: 12.5px; }
+    @media (max-width: 640px) { .quote-glass { padding: 40px 26px; } }
+
+    /* ---------- CTA + footer (deep night) ---------- */
+    .cta-sec { padding: 90px 5vw 120px; }
+    .cta-glass { max-width: 900px; margin: 0 auto; padding: 60px 5vw; border-radius: 30px; text-align: center;
+      position: relative; overflow: hidden; }
+    .cta-glass::before { content: ""; position: absolute; inset: 0; pointer-events: none;
+      background: radial-gradient(70% 90% at 50% 0%, rgba(129, 140, 248, .3), transparent 60%); }
+    .cta-glass h2 { font-size: clamp(28px, 4vw, 44px); color: #fff; position: relative; }
+    .cta-glass p { color: var(--mut-light); max-width: 460px; margin: 14px auto 0; font-size: 15px; position: relative; }
+    .cta-form { margin: 34px auto 0; max-width: 560px; position: relative; }
+    .inrow { display: flex; gap: 10px; flex-wrap: wrap; }
+    .cta-form .input { flex: 1; min-width: 220px; background: rgba(255, 255, 255, .08); border: 1px solid rgba(255, 255, 255, .18);
+      color: #fff; border-radius: 999px; padding: 15px 22px; font: inherit; font-size: 14.5px; outline: none;
+      transition: border-color .18s ease, box-shadow .18s ease; }
+    .cta-form .input::placeholder { color: #8fa0cf; }
+    .cta-form .input:focus { border-color: #818CF8; box-shadow: 0 0 0 4px rgba(129, 140, 248, .2); }
+    .cta-form .btn-lumen { border-radius: 999px; }
+    .cta-form .note { font-size: 12px; color: #8fa0cf; margin-top: 12px; }
+
+    footer { padding: 40px 5vw 46px; color: #8fa0cf; }
+    .foot { max-width: 1160px; margin: 0 auto; display: flex; flex-wrap: wrap; align-items: center;
+      justify-content: space-between; gap: 16px; font-size: 13.5px; }
+    .foot a { color: #B9C2EA; }
+    .foot a:hover { color: #fff; }
+    .demo-tag { width: 100%; margin-top: 20px; padding-top: 16px; border-top: 1px solid rgba(255, 255, 255, .12);
+      display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px; font-size: 12.5px; }
+    .demo-tag a { font-weight: 700; color: #A5F3E6; }
+
+    @media (prefers-reduced-motion: reduce) {
+      .sky .blob, .float { animation: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="toast"></div>
+
+  <!-- Fixed aurora sky (hue driven by scroll in JS) -->
+  <div class="sky" id="sky">
+    <div class="blob sb1"></div>
+    <div class="blob sb2"></div>
+    <div class="blob sb3"></div>
+  </div>
+
+  <!-- ================= NAV ================= -->
+  <nav class="nav" id="nav">
+    <a class="brand" href="index.html">
+      <span class="mark"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linejoin="round"><path d="M12 3 21 20H3Z"/><path d="M12 3v17"/></svg></span>
+      <b>Lumen</b>
+    </a>
+    <div class="nav-links" id="menu">
+      <a href="#boards">Boards</a>
+      <a href="#features">Features</a>
+      <a href="#story">Stories</a>
+      <a href="#join">Get started</a>
+    </div>
+    <a class="btn-lumen" href="#join">Start a board</a>
+    <button class="burger" id="burger" aria-label="Menu">☰</button>
+  </nav>
+
+  <main class="main">
+
+    <!-- ================= HERO (day) ================= -->
+    <div class="z-light">
+      <header class="hero">
+        <div class="wrap">
+          <div class="px" data-depth="0.32"><div class="px-card glass float pc1"><div class="pt"><span class="mdot"></span><span>Strategy · live</span></div><b>Q3 launch — 14/22 items done</b><small>Maya, Rohan + 3 more are editing</small><div class="bar"><i style="width:64%"></i></div></div></div>
+          <div class="px" data-depth="0.5"><div class="px-card glass float f2 pc2"><div class="pt"><span class="mdot" style="background:#EC4899"></span><span>Brand moodboard</span></div><b>12 references pinned this week</b><small>Last note 4 min ago</small></div></div>
+          <div class="px" data-depth="0.2"><div class="px-card glass float f3 pc3"><div class="pt"><span class="mdot" style="background:#22D3EE"></span><span>Design system</span></div><b>Tokens v2 — needs review</b><small>2 comments open</small></div></div>
+
+          <div class="reveal">
+            <span class="kicker" style="justify-content:center">The creative canvas for teams</span>
+            <h1 style="margin-top:18px">Ideas gather on boards,<br />and <span class="grad">depth makes them move.</span></h1>
+            <p class="sub">Lumen is a shared canvas where strategy, moodboards and plans float at their own pace. Every layer has a place — scroll with us from first light to deep focus.</p>
+            <div class="hero-cta">
+              <a class="btn-lumen" href="#join">Start a free board</a>
+              <a class="btn-lumen ghosty" href="#boards">See the boards ↓</a>
+            </div>
+            <div class="proof">
+              <span><b>120k+</b> teams</span>
+              <span><b>4.8★</b> average rating</span>
+              <span><b>0.9s</b> median time-to-first-draw</span>
+            </div>
+          </div>
+        </div>
+      </header>
+    </div>
+
+    <!-- ================= BOARDS (late day) ================= -->
+    <div class="z-light2">
+      <section class="boards-sec" id="boards">
+        <div class="wrap">
+          <div class="boards-head reveal">
+            <div>
+              <span class="kicker">Boards</span>
+              <h2 style="margin-top:10px">A gallery of live canvases.</h2>
+              <p>Grab any board and drag it sideways — each one is a real working space with its own little universe of colour and motion.</p>
+            </div>
+            <div class="nav-arrows">
+              <button class="arr" id="arrL" aria-label="Scroll left">←</button>
+              <button class="arr" id="arrR" aria-label="Scroll right">→</button>
+            </div>
+          </div>
+        </div>
+        <div class="shell reveal" id="shell">
+          <div class="track" id="track">
+            <article class="b-card glass" data-tilt>
+              <div class="art a1"><span class="chip-a">Live</span></div>
+              <div class="b-meta"><div class="avs"><i style="background:#6366F1">MK</i><i style="background:#EC4899">RV</i><i style="background:#22D3EE">AS</i></div>
+                <div><b>Q3 Strategy Jam</b><span>14 items · Maya Krishnan</span></div></div>
+            </article>
+            <article class="b-card glass" data-tilt>
+              <div class="art a2"><span class="chip-a">Research</span></div>
+              <div class="b-meta"><div class="avs"><i style="background:#F59E0B">JT</i><i style="background:#10B981">NK</i></div>
+                <div><b>Customer interview maps</b><span>23 notes · João Teixeira</span></div></div>
+            </article>
+            <article class="b-card glass" data-tilt>
+              <div class="art a3"><span class="chip-a">Brand</span></div>
+              <div class="b-meta"><div class="avs"><i style="background:#8B5CF6">PN</i><i style="background:#6366F1">SK</i><i style="background:#EC4899">AL</i></div>
+                <div><b>Spring moodboard</b><span>41 pins · Priya Nair</span></div></div>
+            </article>
+            <article class="b-card glass" data-tilt>
+              <div class="art a4"><span class="chip-a">Team</span></div>
+              <div class="b-meta"><div class="avs"><i style="background:#22D3EE">RC</i></div>
+                <div><b>Lisbon offsite plan</b><span>9 items · Rui Costa</span></div></div>
+            </article>
+            <article class="b-card glass" data-tilt>
+              <div class="art a5"><span class="chip-a">Launch</span></div>
+              <div class="b-meta"><div class="avs"><i style="background:#EC4899">AH</i><i style="background:#F59E0B">DG</i><i style="background:#10B981">MW</i><i style="background:#6366F1">ZN</i></div>
+                <div><b>v2.0 launch checklist</b><span>38 items · Amara H.</span></div></div>
+            </article>
+            <article class="b-card glass" data-tilt>
+              <div class="art a6"><span class="chip-a">Design</span></div>
+              <div class="b-meta"><div class="avs"><i style="background:#8B5CF6">TK</i></div>
+                <div><b>Token library notes</b><span>16 notes · Tom K.</span></div></div>
+            </article>
+          </div>
+        </div>
+        <p class="hint">↔ Drag the boards, or use the arrows</p>
+      </section>
+    </div>
+
+    <!-- bridges: dusk -->
+    <div class="bridge-a" aria-hidden="true"></div>
+
+    <!-- ================= FEATURES (dusk) ================= -->
+    <div class="z-dusk">
+      <section class="feat-sec" id="features">
+        <div class="wrap">
+          <div class="sec-h reveal">
+            <span class="kicker">Why Lumen</span>
+            <h2 style="margin-top:12px">One canvas, built for the whole mess of making.</h2>
+            <p>Whiteboards died because ideas outgrew them. Lumen is infinite in every direction — including the ones you have not thought of yet.</p>
+          </div>
+          <div class="grid6">
+            <article class="feat gd reveal">
+              <span class="fico"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v18M3 12h18M12 3l-3 3M12 3l3 3M12 21l-3-3M12 21l3-3M3 12l3-3M3 12l3 3M21 12l-3-3M21 12l-3 3"/></svg></span>
+              <h3>Infinite canvas</h3>
+              <p>Pan forever in any direction. Frames, notes and sketches coexist at scale — zoom out and the whole plan appears like a city at night.</p>
+            </article>
+            <article class="feat gd reveal" style="transition-delay:.05s">
+              <span class="fico"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="8.5" cy="8.5" r="3.5"/><circle cx="17" cy="9.5" r="2.2"/><circle cx="13" cy="17" r="3"/></svg></span>
+              <h3>Real-time together</h3>
+              <p>Cursors glide beside yours while teammates draw, comment and re-arrange. Cursor avatars appear in under a second, anywhere on Earth.</p>
+            </article>
+            <article class="feat gd reveal" style="transition-delay:.1s">
+              <span class="fico"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h16"/><path d="M6 20V9l6-5 6 5v11"/><path d="M10 20v-5h4v5"/></svg></span>
+              <h3>Template library</h3>
+              <p>Retrospectives, roadmaps, moodboards and wedding-planning grids — 200+ canvases your team can fork in one click and make their own.</p>
+            </article>
+            <article class="feat gd reveal" style="transition-delay:.15s">
+              <span class="fico"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.4 8.9 8.9 0 0 1-3.7-.8L3 21l1.9-5.1a8.3 8.3 0 0 1-1-4 8.4 8.4 0 0 1 9-8.6 8.4 8.4 0 0 1 8.1 8.2Z"/><path d="M8.5 10.5h.01M12 10.5h.01M15.5 10.5h.01"/></svg></span>
+              <h3>Comments that land</h3>
+              <p>Pin a thought to any pixel. Mention a teammate, resolve threads, and turn decisions into tasks without leaving the canvas once.</p>
+            </article>
+            <article class="feat gd reveal" style="transition-delay:.2s">
+              <span class="fico"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="10" rx="2"/><path d="M7 11V7.5a5 5 0 0 1 9.9-1"/></svg></span>
+              <h3>Works offline</h3>
+              <p>Flight mode is not an emergency. Keep drawing on the train; every change syncs the instant you are back, with zero merge drama.</p>
+            </article>
+            <article class="feat gd reveal" style="transition-delay:.25s">
+              <span class="fico"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 1 0 10 10"/><path d="M12 6v6l4 2"/><circle cx="12" cy="12" r="1.2"/></svg></span>
+              <h3>Restores itself</h3>
+              <p>Version history keeps every cursor stroke for 30 days. A bad afternoon of rearranging is one “restore this morning” away.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- bridges: night -->
+    <div class="bridge-b" aria-hidden="true"></div>
+
+    <!-- ================= STORY (night) ================= -->
+    <div class="z-night">
+      <section class="story-sec" id="story">
+        <div class="wrap">
+          <div class="quote-glass gd reveal">
+            <p class="big-q">We replaced three tools — a whiteboard app, a docs editor and a slide deck — with one Lumen board that the whole company actually opens every morning.</p>
+            <div class="who">
+              <span class="ini">MK</span>
+              <div style="text-align:left"><b>Maya Krishnan</b><span>Head of Design · Northbeam</span></div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- bridges: deep night -->
+    <div class="bridge-c" aria-hidden="true"></div>
+
+    <!-- ================= CTA (deep night) ================= -->
+    <div class="z-deep">
+      <section class="cta-sec" id="join">
+        <div class="wrap">
+          <div class="cta-glass gd reveal">
+            <span class="kicker" style="justify-content:center">Begin tonight</span>
+            <h2 style="margin-top:14px">Your first board is 30 seconds away.</h2>
+            <p>Free for up to ten boards. Bring a team, a sketchpad and an unreasonable idea — we will handle the rest.</p>
+            <form class="cta-form" id="joinForm" novalidate>
+              <div class="inrow">
+                <input class="input" type="email" placeholder="Work email" required data-field="Email" aria-label="Work email" />
+                <button class="btn-lumen" type="submit">Create my board</button>
+              </div>
+              <p class="note">No credit card · invite your team later · delete anytime</p>
+            </form>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= FOOTER ================= -->
+      <footer>
+        <div class="foot">
+          <a class="brand" href="index.html" style="color:#fff">
+            <span class="mark"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linejoin="round"><path d="M12 3 21 20H3Z"/><path d="M12 3v17"/></svg></span>
+            <b>Lumen</b>
+          </a>
+          <div class="foot-links" style="display:flex;gap:22px;flex-wrap:wrap">
+            <a href="#boards">Boards</a>
+            <a href="#features">Features</a>
+            <a href="#story">Stories</a>
+            <a href="#join">Get started</a>
+          </div>
+        </div>
+        <div class="demo-tag">
+          <span>© 2026 Lumen Systems · Demo page 09 of the RJ Web Faces Gallery</span>
+          <span><a href="index.html">← View all 20 faces</a></span>
+        </div>
+      </footer>
+    </div>
+  </main>
+
+  <script src="js/common.js"></script>
+  <script>
+    // ---------- Mobile menu ----------
+    const burger = document.getElementById("burger");
+    const menu = document.getElementById("menu");
+    burger.addEventListener("click", () => menu.classList.toggle("open"));
+    menu.querySelectorAll("a").forEach((a) => a.addEventListener("click", () => menu.classList.remove("open")));
+
+    const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    // ---------- Nav turns dark once we cross into the dusk zones ----------
+    const nav = document.getElementById("nav");
+    const darkNavAt = () => {
+      const dusk = document.querySelector(".z-dusk");
+      nav.classList.toggle("dark", scrollY + innerHeight * .4 > dusk.offsetTop);
+    };
+    addEventListener("scroll", darkNavAt, { passive: true });
+
+    // ---------- Scroll-driven parallax + aurora hue (rAF-throttled) ----------
+    const layers = Array.from(document.querySelectorAll("[data-depth]"));
+    const sky = document.getElementById("sky");
+    let ticking = false;
+    function onScroll() {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        const y = scrollY;
+        const vh = innerHeight;
+        layers.forEach((el) => {
+          const speed = parseFloat(el.getAttribute("data-depth"));
+          const baseY = parseFloat(el.dataset.base || 0) || 0;
+          const delta = baseY - (y + vh * .62);
+          let ty = Math.max(-190, Math.min(190, delta * speed));
+          el.style.transform = "translate3d(0," + ty + "px,0)";
+        });
+        // aurora hue drifts with the scroll journey
+        const doc = document.documentElement;
+        const ratio = Math.min(y / Math.max(doc.scrollHeight - vh, 1), 1);
+        sky.style.filter = "hue-rotate(" + (ratio * -55).toFixed(1) + "deg)";
+        ticking = false;
+      });
+    }
+    // record untransformed base positions (rect.top + scrollY) once
+    function measure() {
+      layers.forEach((el) => { el.dataset.base = el.getBoundingClientRect().top + scrollY; });
+    }
+    if (!reduceMotion) {
+      addEventListener("scroll", onScroll, { passive: true });
+      addEventListener("resize", measure, { passive: true });
+      measure();
+      onScroll();
+    }
+
+    // ---------- Boards: arrows, drag-scroll & snap, tilt ----------
+    const shell = document.getElementById("shell");
+    const track = document.getElementById("track");
+    document.getElementById("arrL").addEventListener("click", () =>
+      shell.scrollBy({ left: -330, behavior: "smooth" }));
+    document.getElementById("arrR").addEventListener("click", () =>
+      shell.scrollBy({ left: 330, behavior: "smooth" }));
+
+    let down = false, startX = 0, startL = 0;
+    track.addEventListener("pointerdown", (e) => {
+      down = true; startX = e.clientX; startL = shell.scrollLeft;
+      track.classList.add("dragging");
+    });
+    addEventListener("pointermove", (e) => {
+      if (!down) return;
+      shell.scrollLeft = startL - (e.clientX - startX);
+    });
+    addEventListener("pointerup", () => { down = false; track.classList.remove("dragging"); });
+
+    // tilt toward cursor (skip when reduced motion)
+    if (!reduceMotion && matchMedia("(pointer: fine)").matches) {
+      document.querySelectorAll("[data-tilt]").forEach((card) => {
+        card.addEventListener("pointermove", (e) => {
+          const r = card.getBoundingClientRect();
+          const dx = (e.clientX - r.left) / r.width - .5;
+          const dy = (e.clientY - r.top) / r.height - .5;
+          card.style.transform = "perspective(900px) rotateY(" + (dx * 7) + "deg) rotateX(" + (-dy * 7) + "deg)";
+        });
+        card.addEventListener("pointerleave", () => { card.style.transform = ""; });
+      });
+    }
+
+    // ---------- Join form -> toast ----------
+    document.getElementById("joinForm").addEventListener("submit", (e) => {
+      e.preventDefault();
+      const form = e.target;
+      if (!form.checkValidity()) { form.reportValidity(); return; }
+      const d = collectForm(form);
+      showToast("✨ Board created for " + d["Email"] + " — we emailed your invite link!");
+      form.reset();
+    });
+  </script>
+</body>
+</html>

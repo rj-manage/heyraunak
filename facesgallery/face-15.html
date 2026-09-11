@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>15 · ORBITAL AI Operations — RJ Web Faces</title>
+  <meta name="description" content="ORBITAL — AI operations for deep tech: a live particle-constellation hero, count-up metrics and a real terminal demo of autonomous remediation. Face 15 of the RJ Web Faces Gallery — Expert level." />
+  <link rel="icon" href="assets/img/RJ_Logo_Black.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Sora:wght@500;600;700;800&family=Share+Tech+Mono&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/common.css" />
+  <style>
+    :root {
+      --bg: #05070F;
+      --cyan: #5EE7FF;
+      --peri: #7C9CFF;
+      --violet: #B7A6FF;
+      --tx: #DCE6FF;
+      --dim: #8A97C0;
+      --line: rgba(124, 156, 255, .16);
+      --mono: "Share Tech Mono", ui-monospace, "SF Mono", monospace;
+    }
+    body { background: var(--bg); color: var(--tx); overflow-x: hidden; }
+    h1, h2, h3 { font-family: "Sora", var(--font-body); }
+    ::selection { background: var(--cyan); color: #04060C; }
+    a { text-decoration: none; }
+
+    .toast { background: #0B1022; color: var(--tx); border: 1px solid var(--cyan); box-shadow: 0 0 20px rgba(94,231,255,.35); font-family: var(--mono); font-size: 13.5px; letter-spacing: .03em; }
+
+    /* faint grid backdrop on dark sections */
+    .grid-bg::before { content: ""; position: absolute; inset: 0; pointer-events: none;
+      background: linear-gradient(rgba(124,156,255,.05) 1px, transparent 1px), linear-gradient(90deg, rgba(124,156,255,.05) 1px, transparent 1px);
+      background-size: 58px 58px; -webkit-mask-image: radial-gradient(ellipse at 50% 0%, #000 30%, transparent 80%); mask-image: radial-gradient(ellipse at 50% 0%, #000 30%, transparent 80%); }
+
+    /* ---------- nav ---------- */
+    .nav { position: sticky; top: 0; z-index: 90; background: rgba(5,7,15,.75); backdrop-filter: blur(12px); border-bottom: 1px solid var(--line); }
+    .nav-in { max-width: 1220px; margin: 0 auto; padding: 0 4vw; height: 66px; display: flex; align-items: center; gap: 32px; }
+    .brand-o { font-family: "Sora", sans-serif; font-weight: 800; font-size: 16px; letter-spacing: .34em; color: var(--tx); }
+    .brand-o i { font-style: normal; color: var(--cyan); }
+    .brand-o .orb { display: inline-block; width: 9px; height: 9px; border-radius: 50%; background: var(--peri); box-shadow: 0 0 10px var(--cyan); margin-right: 10px; animation: orbPulse 3.4s ease-in-out infinite; vertical-align: 1px; }
+    @keyframes orbPulse { 0%, 100% { transform: scale(1); opacity: 1; } 50% { transform: scale(.7); opacity: .6; } }
+    .nav-links { display: flex; gap: 28px; margin-left: auto; }
+    .nav-links a { color: var(--dim); font-size: 14px; font-weight: 500; transition: color .2s; }
+    .nav-links a:hover { color: var(--cyan); }
+    .btn-acc { background: linear-gradient(90deg, var(--cyan), var(--peri)); color: #04060C; font-weight: 700; font-size: 13.5px; padding: 10px 18px; border-radius: 8px; box-shadow: 0 8px 22px -8px rgba(94,231,255,.6); }
+    .btn-acc:hover { filter: brightness(1.08); }
+    .btn-ghost-b { border: 1px solid var(--line); color: var(--tx); font-weight: 600; font-size: 14px; padding: 12px 20px; border-radius: 8px; }
+    .btn-ghost-b:hover { border-color: var(--cyan); color: var(--cyan); }
+    .burger { display: none; background: none; border: 1px solid var(--line); color: var(--cyan); border-radius: 8px; padding: 6px 10px; font-size: 16px; margin-left: auto; cursor: pointer; }
+    @media (max-width: 880px) {
+      .burger { display: block; } .nav .btn-acc { display: none; }
+      .nav-links { position: fixed; inset: 66px 0 auto 0; flex-direction: column; gap: 0; background: rgba(6,8,18,.97); padding: 8px 6vw 16px; border-bottom: 1px solid var(--line); display: none; }
+      .nav-links.open { display: flex; }
+      .nav-links a { padding: 11px 0; }
+    }
+
+    /* ---------- hero with canvas ---------- */
+    .hero { position: relative; min-height: 92vh; overflow: hidden; display: grid; place-items: center; padding: 110px 6vw 120px; }
+    #field { position: absolute; inset: 0; width: 100%; height: 100%; }
+    .hero::after { content: ""; position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 120%, rgba(94,231,255,.08), transparent 55%), radial-gradient(ellipse at 50% -20%, rgba(183,166,255,.12), transparent 55%); pointer-events: none; }
+    /* HUD corner brackets */
+    .hud { position: absolute; z-index: 5; pointer-events: none; }
+    .hud.tl { top: 18px; left: 18px; } .hud.tr { top: 18px; right: 18px; } .hud.bl { bottom: 18px; left: 18px; } .hud.br { bottom: 18px; right: 18px; }
+    .hud::before, .hud::after { content: ""; position: absolute; width: 26px; height: 26px; border-color: rgba(124,156,255,.55); border-style: solid; }
+    .hud.tl::before { top: 0; left: 0; border-width: 1.5px 0 0 1.5px; }
+    .hud.tr::before { top: 0; right: 0; border-width: 1.5px 1.5px 0 0; }
+    .hud.bl::before { bottom: 0; left: 0; border-width: 0 0 1.5px 1.5px; }
+    .hud.br::before { bottom: 0; right: 0; border-width: 0 1.5px 1.5px 0; }
+    .hud .lab { position: absolute; font-family: var(--mono); font-size: 10px; letter-spacing: .22em; color: var(--dim); }
+    .hud.tl .lab { top: -18px; left: 34px; } .hud.br .lab { bottom: -18px; right: 34px; }
+    @media (max-width: 720px) { .hud { display: none; } }
+    .hero-in { position: relative; z-index: 4; max-width: 880px; text-align: center; }
+    .kicker { font-family: var(--mono); font-size: 13px; letter-spacing: .34em; text-transform: uppercase; color: var(--cyan); margin-bottom: 20px; }
+    .kicker::before, .kicker::after { content: "— "; color: var(--dim); }
+    .hero h1 { font-size: clamp(38px, 6.6vw, 78px); line-height: 1.03; font-weight: 700; letter-spacing: -.025em; background: linear-gradient(180deg, #FFFFFF 20%, #B9C8F5 70%); -webkit-background-clip: text; background-clip: text; color: transparent; }
+    .hero h1 .grad { background: linear-gradient(100deg, var(--cyan), var(--peri) 55%, var(--violet)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+    .hero p.sub { color: var(--dim); font-size: 17px; margin: 20px auto 0; max-width: 620px; }
+    .hero p.sub b { color: var(--tx); font-weight: 600; }
+    .cta-row { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; margin-top: 30px; }
+    .cta-row .btn-acc { padding: 13px 26px; font-size: 14.5px; border-radius: 9px; }
+    .trust { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-top: 26px; }
+    .trust span { font-family: var(--mono); font-size: 11.5px; color: var(--dim); border: 1px solid var(--line); padding: 5px 11px; letter-spacing: .1em; }
+    .trust span i { color: var(--cyan); font-style: normal; }
+
+    /* ---------- stats ---------- */
+    .stats { position: relative; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); padding: 54px 6vw; overflow: hidden; }
+    .stats-in { max-width: 1080px; margin: 0 auto; display: grid; grid-template-columns: repeat(4, 1fr); gap: 26px; text-align: center; }
+    @media (max-width: 900px) { .stats-in { grid-template-columns: 1fr 1fr; gap: 40px 20px; } }
+    .stat .n { font-family: "Sora", sans-serif; font-weight: 800; font-size: clamp(30px, 4.4vw, 46px); letter-spacing: -.02em; background: linear-gradient(100deg, var(--tx), var(--peri)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+    .stat .n sup { font-size: .55em; font-family: var(--mono); }
+    .stat .l { font-family: var(--mono); font-size: 11.5px; letter-spacing: .2em; text-transform: uppercase; color: var(--dim); margin-top: 6px; }
+
+    /* ---------- sections ---------- */
+    section { padding: 96px 6vw; position: relative; }
+    .wrap { max-width: 1180px; margin: 0 auto; position: relative; }
+    .sec-head { margin-bottom: 48px; }
+    .sec-head .kicker { margin-bottom: 12px; font-size: 12px; }
+    .sec-head .kicker::before, .sec-head .kicker::after { content: ""; }
+    .sec-head h2 { font-size: clamp(28px, 4vw, 44px); letter-spacing: -.015em; }
+    .sec-head h2 .grad { background: linear-gradient(100deg, var(--cyan), var(--violet)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+    .sec-head p { color: var(--dim); max-width: 620px; margin-top: 12px; font-size: 15.5px; }
+
+    /* capabilities */
+    .caps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+    @media (max-width: 980px) { .caps { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 640px) { .caps { grid-template-columns: 1fr; } }
+    .cap { border: 1px solid var(--line); background: rgba(11,16,34,.55); padding: 26px 24px; position: relative; overflow: hidden; transition: transform .22s ease, border-color .22s ease, box-shadow .22s ease; }
+    .cap::after { content: ""; position: absolute; inset: 0; background: radial-gradient(280px 120px at var(--mx, 50%) 0%, rgba(94,231,255,.12), transparent 70%); opacity: 0; transition: opacity .25s; pointer-events: none; }
+    .cap:hover { transform: translateY(-4px); border-color: rgba(94,231,255,.5); box-shadow: 0 0 30px rgba(94,231,255,.12); }
+    .cap:hover::after { opacity: 1; }
+    .cap svg { width: 40px; height: 40px; margin-bottom: 16px; }
+    .cap h3 { font-size: 17.5px; margin-bottom: 7px; }
+    .cap p { color: var(--dim); font-size: 13.5px; line-height: 1.6; }
+    .cap .tag { display: inline-block; margin-top: 12px; font-family: var(--mono); font-size: 11px; letter-spacing: .12em; color: var(--cyan); border: 1px solid rgba(94,231,255,.3); padding: 3px 8px; }
+
+    /* terminal mock */
+    .term-sec { padding-top: 20px; }
+    .term-shell { border: 1px solid var(--line); background: #070B18; box-shadow: 0 40px 90px -50px rgba(94,231,255,.25); position: relative; overflow: hidden; }
+    .term-shell::after { content: ""; position: absolute; inset: 0; pointer-events: none; box-shadow: inset 0 0 80px rgba(94,231,255,.03); }
+    .term-bar { display: flex; align-items: center; gap: 8px; padding: 11px 16px; border-bottom: 1px solid var(--line); font-family: var(--mono); font-size: 12px; color: var(--dim); }
+    .term-bar .dots { display: flex; gap: 6px; }
+    .term-bar .dots i { width: 10px; height: 10px; border-radius: 50%; border: 1px solid rgba(124,156,255,.4); }
+    .term-bar .dots i:nth-child(1) { background: rgba(255,120,120,.8); } .term-bar .dots i:nth-child(2) { background: rgba(255,200,120,.8); } .term-bar .dots i:nth-child(3) { background: rgba(120,255,170,.8); }
+    .term-bar .ttl { margin-left: 8px; letter-spacing: .06em; }
+    .term-bar .st { margin-left: auto; color: var(--cyan); }
+    .term-body { padding: 18px 20px 20px; font-family: var(--mono); font-size: 13px; line-height: 1.65; min-height: 250px; }
+    .term-body .cmdline { color: #E8F0FF; white-space: pre-wrap; }
+    .term-body .cmdline .p1 { color: var(--cyan); } .term-body .cmdline .p2 { color: var(--dim); }
+    .term-body .out { color: #A9B6DE; }
+    .term-body .ok { color: #7CF7C0; } .term-body .warn { color: #FFD97A; }
+    .tcursor { display: inline-block; width: 8px; height: 15px; background: var(--cyan); vertical-align: -2px; animation: tblink .85s steps(1) infinite; box-shadow: 0 0 8px rgba(94,231,255,.8); }
+    @keyframes tblink { 50% { opacity: 0; } }
+    .term-foot { display: flex; gap: 24px; flex-wrap: wrap; padding: 12px 20px; border-top: 1px solid var(--line); font-family: var(--mono); font-size: 11.5px; color: var(--dim); letter-spacing: .08em; }
+    .term-foot b { color: var(--cyan); font-weight: 400; }
+    .term-foot .r { color: #7CF7C0; }
+
+    /* case study quote */
+    .case { margin-top: 90px; display: grid; grid-template-columns: 1fr 1fr; gap: 30px; align-items: center; }
+    @media (max-width: 900px) { .case { grid-template-columns: 1fr; } }
+    .case-quote { border-left: 2px solid var(--cyan); background: rgba(11,16,34,.55); border: 1px solid var(--line); border-left-width: 3px; padding: 34px 30px; }
+    .case-quote .big { font-size: 20px; line-height: 1.5; font-weight: 500; }
+    .case-quote .big em { font-style: normal; color: var(--cyan); }
+    .case-quote cite { display: block; margin-top: 18px; font-style: normal; font-size: 13.5px; color: var(--dim); }
+    .case-quote cite b { color: var(--tx); }
+    .case-fig { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .cf { border: 1px solid var(--line); padding: 18px; background: rgba(11,16,34,.4); }
+    .cf .v { font-family: "Sora", sans-serif; font-size: 30px; font-weight: 800; color: var(--cyan); }
+    .cf .t { font-size: 12.5px; color: var(--dim); margin-top: 4px; }
+    .cf .spark { height: 34px; margin-top: 10px; display: flex; align-items: flex-end; gap: 3px; }
+    .cf .spark i { flex: 1; background: linear-gradient(180deg, var(--cyan), rgba(94,231,255,.15)); border-radius: 1px; }
+
+    /* access band */
+    .access { border-top: 1px solid var(--line); background: radial-gradient(700px 320px at 20% 0%, rgba(124,156,255,.1), transparent 60%); }
+    .access-in { max-width: 1080px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 50px; align-items: center; }
+    @media (max-width: 900px) { .access-in { grid-template-columns: 1fr; } }
+    .access h2 { font-size: clamp(26px, 3.4vw, 38px); letter-spacing: -.015em; }
+    .access h2 .grad { background: linear-gradient(100deg, var(--cyan), var(--violet)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+    .access p { color: var(--dim); margin-top: 14px; font-size: 15px; max-width: 46ch; }
+    .access ul { list-style: none; margin-top: 20px; display: grid; gap: 9px; }
+    .access li { font-size: 14px; color: var(--tx); }
+    .access li::before { content: "◇ "; color: var(--cyan); }
+    .access form { background: rgba(11,16,34,.7); border: 1px solid var(--line); padding: 26px; display: grid; gap: 14px; }
+    .field label { color: var(--dim); font-family: var(--mono); font-size: 11.5px; letter-spacing: .18em; text-transform: uppercase; }
+    .input { background: #060A16; border: 1.5px solid rgba(124,156,255,.25); color: var(--tx); border-radius: 8px; font-size: 14.5px; }
+    .input:focus { border-color: var(--cyan); box-shadow: 0 0 0 3px rgba(94,231,255,.14); }
+    .input::placeholder { color: #4A557E; }
+    .access form .btn-acc { padding: 13px; width: 100%; font-size: 14px; border-radius: 8px; border: none; cursor: pointer; }
+    .fine { font-family: var(--mono); font-size: 11px; color: #4A557E; text-align: center; }
+
+    /* footer */
+    footer { border-top: 1px solid var(--line); padding: 48px 6vw 28px; }
+    .foot-in { max-width: 1180px; margin: 0 auto; display: flex; justify-content: space-between; gap: 30px; flex-wrap: wrap; }
+    .foot-in .brand-o { font-size: 13px; }
+    .foot-in p { color: var(--dim); font-size: 12.5px; margin-top: 6px; }
+    .foot-links { display: flex; gap: 24px; }
+    .foot-links a { color: var(--dim); font-size: 13.5px; }
+    .foot-links a:hover { color: var(--cyan); }
+    .foot-bottom { max-width: 1180px; margin: 30px auto 0; padding-top: 16px; border-top: 1px solid var(--line); display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; font-size: 12px; color: #55618A; font-family: var(--mono); }
+    .foot-bottom a { color: var(--cyan); }
+  </style>
+</head>
+<body>
+  <div class="toast"></div>
+
+  <!-- ================= NAV ================= -->
+  <nav class="nav">
+    <div class="nav-in">
+      <a class="brand-o" href="#top"><span class="orb"></span>ORBITAL</a>
+      <div class="nav-links" id="menu">
+        <a href="#stats">Metrics</a>
+        <a href="#capabilities">Capabilities</a>
+        <a href="#product">Platform</a>
+        <a href="#customers">Customers</a>
+      </div>
+      <a class="btn-acc" href="#access">Request access</a>
+      <button class="burger" id="burger" aria-label="Menu">☰</button>
+    </div>
+  </nav>
+
+  <!-- ================= HERO ================= -->
+  <header class="hero" id="top">
+    <canvas id="field" aria-hidden="true"></canvas>
+    <span class="hud tl"><span class="lab">SYS.LNK 04</span></span>
+    <span class="hud tr"></span>
+    <span class="hud bl"></span>
+    <span class="hud br"><span class="lab">ORB-7 · 40.2°N 74.0°W</span></span>
+    <div class="hero-in">
+      <p class="kicker">AI operations for deep tech</p>
+      <h1>Orchestrate every system.<br /><span class="grad">Ship with certainty.</span></h1>
+      <p class="sub">ORBITAL watches every deployment, learns what <b>normal</b> looks like for your fleet, and fixes the abnormal before anyone has to wake up. One control plane for infrastructure, releases and incidents.</p>
+      <div class="cta-row">
+        <a class="btn-acc" href="#access">Request access</a>
+        <a class="btn-ghost-b" href="#product">See the platform</a>
+      </div>
+      <div class="trust"><span><i>◆</i> SOC 2 TYPE II</span><span><i>◆</i> ISO 27001</span><span><i>◆</i> 99.99% TARGET</span><span><i>◆</i> EU + INDIA REGIONS</span></div>
+    </div>
+  </header>
+
+  <!-- ================= STATS ================= -->
+  <section class="stats grid-bg" id="stats">
+    <div class="stats-in">
+      <div class="stat reveal"><div class="n"><span class="cnt" data-to="2.1" data-dec="1">0</span><sup>B</sup></div><div class="l">Events processed / day</div></div>
+      <div class="stat reveal" style="transition-delay:.05s"><div class="n"><span class="cnt" data-to="99.99" data-dec="2">0</span><sup>%</sup></div><div class="l">Fleet uptime, last 12 mo</div></div>
+      <div class="stat reveal" style="transition-delay:.1s"><div class="n"><span class="cnt" data-to="40" data-dec="0">0</span><sup>ms</sup></div><div class="l">P95 detect → remediate</div></div>
+      <div class="stat reveal" style="transition-delay:.15s"><div class="n"><span class="cnt" data-to="900" data-dec="0">0</span><sup>+</sup></div><div class="l">Teams on the platform</div></div>
+    </div>
+  </section>
+
+  <!-- ================= CAPABILITIES ================= -->
+  <section id="capabilities">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <p class="kicker">Capabilities</p>
+        <h2>Six muscles, one <span class="grad">nervous system</span></h2>
+        <p>Everything runs through a single learned model of your estate — so the anomaly detector knows your traffic, and the remediator knows your rollback policy.</p>
+      </div>
+      <div class="caps">
+        <article class="cap reveal">
+          <svg viewBox="0 0 40 40" fill="none" stroke="#5EE7FF" stroke-width="2" aria-hidden="true"><path d="M4 22s6-10 16-10 16 10 16 10-6 10-16 10S4 22 4 22z"/><circle cx="20" cy="22" r="4.5"/><path d="M20 4v4M33 9l-3 3M7 9l3 3" opacity=".6"/></svg>
+          <h3>Anomaly detection</h3>
+          <p>Models your baselines per service and flags drift in latency, error rate or spend — before your pager would even have a number.</p>
+          <span class="tag">learns in ~2 weeks</span>
+        </article>
+        <article class="cap reveal" style="transition-delay:.05s">
+          <svg viewBox="0 0 40 40" fill="none" stroke="#7C9CFF" stroke-width="2" aria-hidden="true"><path d="M20 4l14 7v10c0 8-6 13-14 15-8-2-14-7-14-15V11l14-7z"/><path d="M14 20l4.5 4.5L27 15" stroke="#B7A6FF"/></svg>
+          <h3>Auto-remediation</h3>
+          <p>Runbooks become decisions. ORBITAL rolls back bad deploys, drains hot nodes and scales stalled queues — each action logged and reversible.</p>
+          <span class="tag">human-in-the-loop modes</span>
+        </article>
+        <article class="cap reveal" style="transition-delay:.1s">
+          <svg viewBox="0 0 40 40" fill="none" stroke="#5EE7FF" stroke-width="2" aria-hidden="true"><rect x="3" y="15" width="8" height="10" rx="1.5"/><rect x="29" y="15" width="8" height="10" rx="1.5"/><rect x="16" y="5" width="8" height="10" rx="1.5"/><path d="M11 20h5M24 20h5M20 15v5M20 20v8" opacity=".8"/><circle cx="20" cy="30" r="2.4" fill="#7C9CFF" stroke="none"/></svg>
+          <h3>Delivery pipelines</h3>
+          <p>Canary, blue-green and progressive delivery with automatic gate analysis — ships keep moving while the safety checks run.</p>
+          <span class="tag">Git-native YAML</span>
+        </article>
+        <article class="cap reveal" style="transition-delay:.15s">
+          <svg viewBox="0 0 40 40" fill="none" stroke="#7C9CFF" stroke-width="2" aria-hidden="true"><path d="M4 30V22h6v8h6v-14h6v14h6v-6h6v10H4z" opacity=".9"/><path d="M4 30h32" stroke="#B7A6FF"/></svg>
+          <h3>Observability</h3>
+          <p>Traces, logs and metrics unified under one query language — and one AI that reads the whole graph instead of grep-ing one box.</p>
+          <span class="tag">OTel-native</span>
+        </article>
+        <article class="cap reveal" style="transition-delay:.2s">
+          <svg viewBox="0 0 40 40" fill="none" stroke="#5EE7FF" stroke-width="2" aria-hidden="true"><path d="M14 14h14v12H14z"/><path d="M18 14V8h8v6M18 26v6h8v-6" opacity=".8"/><path d="M16 20h12M20 16v8" opacity=".5"/></svg>
+          <h3>Security posture</h3>
+          <p>Continuous drift detection against your policies — public buckets, exposed secrets, privilege creep — patched or quarantined automatically.</p>
+          <span class="tag">policy-as-code</span>
+        </article>
+        <article class="cap reveal" style="transition-delay:.25s">
+          <svg viewBox="0 0 40 40" fill="none" stroke="#7C9CFF" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="3"/><circle cx="28" cy="12" r="3"/><circle cx="20" cy="28" r="3"/><path d="M13.8 14.2L18.5 25M26.2 14.2L21.5 25" opacity=".9"/></svg>
+          <h3>Integrations</h3>
+          <p>Two hundred connectors out of the box — cloud, SaaS, chat, ticketing and your home-grown internal APIs via a typed SDK.</p>
+          <span class="tag">REST + gRPC + events</span>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= PLATFORM / TERMINAL ================= -->
+  <section class="term-sec" id="product" style="padding-top:20px">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <p class="kicker">Platform · live demo</p>
+        <h2>The console, <span class="grad">actually running</span></h2>
+        <p>A real terminal session against a simulated fleet — type your own deploy, or watch ORBITAL catch a slow burn on its own.</p>
+      </div>
+      <div class="term-shell reveal">
+        <div class="term-bar">
+          <span class="dots"><i></i><i></i><i></i></span>
+          <span class="ttl">orbital://prod — operator console</span>
+          <span class="st" id="termState">● CONNECTED</span>
+        </div>
+        <div class="term-body">
+          <div id="termLog"></div>
+          <div class="cmdline"><span class="p1">operator@orbital</span><span class="p2">:~$</span> <span id="typedCmd"></span><span class="tcursor"></span></div>
+        </div>
+        <div class="term-foot">
+          <span>FLEET <b id="tFleet">—</b></span>
+          <span>REMEDIATIONS <b class="r" id="tFix">—</b></span>
+          <span>MTTR <b id="tMttr">—</b></span>
+          <span>SESSION <b id="tUp">—</b></span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= CASE STUDY ================= -->
+  <section id="customers" style="padding-top:60px">
+    <div class="wrap case">
+      <div class="case-quote reveal">
+        <p class="big">“We cut on-call toil by <em>70%</em> in one quarter. ORBITAL found the memory leak two weeks before our own SRE team would have — and rolled back the release itself, with a perfect audit trail.”</p>
+        <cite><b>Priya Nair</b> — VP Platform Engineering, Meridian Pay</cite>
+      </div>
+      <div class="case-fig reveal" style="transition-delay:.1s">
+        <div class="cf"><div class="v">70%</div><div class="t">Less on-call paging</div><div class="spark" id="sp1"></div></div>
+        <div class="cf"><div class="v">2.4×</div><div class="t">Deploy frequency</div><div class="spark" id="sp2"></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= ACCESS ================= -->
+  <section class="access" id="access">
+    <div class="access-in">
+      <div class="reveal">
+        <p class="kicker">Get in</p>
+        <h2>Request <span class="grad">early access</span></h2>
+        <p>We onboard four new teams a week, in order of request. Most are live in under two days — bring one noisy service and we'll prove it on your own traffic.</p>
+        <ul>
+          <li>Free pilot on up to 5 services</li>
+          <li>White-glove setup with an engineer</li>
+          <li>No credit card — cancel any time</li>
+        </ul>
+      </div>
+      <form id="accForm" novalidate class="reveal" style="transition-delay:.08s">
+        <div class="field">
+          <label for="aname">Full name *</label>
+          <input class="input" id="aname" type="text" placeholder="e.g. Aarav Mehta" required data-field="Name" />
+        </div>
+        <div class="field">
+          <label for="aemail">Work email *</label>
+          <input class="input" id="aemail" type="email" placeholder="you@company.com" required data-field="Email" />
+        </div>
+        <div class="field">
+          <label for="acompany">Company *</label>
+          <input class="input" id="acompany" type="text" placeholder="Company name" required data-field="Company" />
+        </div>
+        <button class="btn-acc" type="submit">Request access</button>
+        <p class="fine">We'll reply within one working day · no spam, ever</p>
+      </form>
+    </div>
+  </section>
+
+  <!-- ================= FOOTER ================= -->
+  <footer>
+    <div class="foot-in">
+      <div>
+        <a class="brand-o" href="#top"><span class="orb"></span>ORBITAL</a>
+        <p>AI operations for deep tech. Built in Bengaluru &amp; London.</p>
+      </div>
+      <div class="foot-links">
+        <a href="#capabilities">Capabilities</a>
+        <a href="#product">Platform</a>
+        <a href="#customers">Customers</a>
+        <a href="#access">Request access</a>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© 2026 Orbital Systems Inc. · Demo page 15 of the RJ Web Faces Gallery</span>
+      <span><a href="index.html">← View all 20 faces</a></span>
+    </div>
+  </footer>
+
+  <script src="js/common.js"></script>
+  <script>
+    // ---------- mobile menu ----------
+    const burger = document.getElementById("burger");
+    const menu = document.getElementById("menu");
+    burger.addEventListener("click", () => menu.classList.toggle("open"));
+    menu.querySelectorAll("a").forEach((a) => a.addEventListener("click", () => menu.classList.remove("open")));
+
+    // ---------- access form ----------
+    document.getElementById("accForm").addEventListener("submit", (e) => {
+      e.preventDefault();
+      const form = e.target;
+      if (!form.checkValidity()) { form.reportValidity(); return; }
+      const d = collectForm(form);
+      showToast("✅ Access request received — " + d["Name"] + " · " + d["Company"]);
+      form.reset();
+    });
+
+    // ---------- count-up stats on scroll ----------
+    const cntEls = document.querySelectorAll(".cnt");
+    const fmtCnt = (el, v) => {
+      const dec = +el.dataset.dec;
+      el.textContent = dec ? v.toFixed(dec) : Math.round(v).toLocaleString("en-IN");
+    };
+    const runCount = (el) => {
+      const to = parseFloat(el.dataset.to), dec = +el.dataset.dec;
+      const t0 = performance.now(), dur = 1500;
+      const step = (t) => {
+        const p = Math.min(1, (t - t0) / dur);
+        const eased = 1 - Math.pow(1 - p, 3);
+        fmtCnt(el, to * eased);
+        if (p < 1) requestAnimationFrame(step);
+      };
+      requestAnimationFrame(step);
+    };
+    const cObs = new IntersectionObserver((ents) => ents.forEach((en) => {
+      if (en.isIntersecting) { runCount(en.target); cObs.unobserve(en.target); }
+    }), { threshold: .5 });
+    cntEls.forEach((el) => cObs.observe(el));
+
+    // ---------- sparkline fill for case figures ----------
+    [["sp1", 70, 10], ["sp2", 30, 24]].forEach(([id, bars, seed]) => {
+      const box = document.getElementById(id);
+      for (let i = 0; i < 10; i++) {
+        const b = document.createElement("i");
+        const h = Math.min(96, Math.max(18, (seed * Math.sin(i * 1.7 + id.length) + 40 + Math.random() * 12)));
+        box.appendChild(b);
+        setTimeout(() => { b.style.height = h + "%"; }, i * 120 + (id === "sp1" ? 500 : 1100));
+      }
+    });
+
+    // ---------- particle constellation canvas ----------
+    const canvas = document.getElementById("field");
+    const ctx = canvas.getContext("2d");
+    const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+    let W = 0, H = 0, dpr = 1, nodes = [], running = false, raf = 0, mouse = { x: -1e4, y: -1e4 };
+
+    function resize() {
+      const r = canvas.getBoundingClientRect();
+      W = r.width; H = r.height;
+      dpr = Math.min(2, window.devicePixelRatio || 1);
+      canvas.width = W * dpr; canvas.height = H * dpr;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      const count = W < 640 ? 64 : W < 1000 ? 92 : 120;
+      nodes = [];
+      for (let i = 0; i < count; i++) nodes.push({
+        x: Math.random() * W, y: Math.random() * H,
+        vx: (Math.random() - .5) * .32, vy: (Math.random() - .5) * .32,
+        r: Math.random() * 1.7 + 1.1
+      });
+      if (reduced) { draw(); running = false; }
+      else if (!running) { running = true; cancelAnimationFrame(raf); loop(); }
+    }
+    const LINK = 128, PUSH = 150;
+
+    function step() {
+      for (const n of nodes) {
+        n.x += n.vx; n.y += n.vy;
+        // gentle cursor repulsion
+        const dx = n.x - mouse.x, dy = n.y - mouse.y;
+        const d2 = dx * dx + dy * dy;
+        if (d2 < PUSH * PUSH && d2 > 1) {
+          const d = Math.sqrt(d2), f = (PUSH - d) / PUSH * .5;
+          n.x += (dx / d) * f; n.y += (dy / d) * f;
+        }
+        if (n.x < -20) n.x = W + 20; else if (n.x > W + 20) n.x = -20;
+        if (n.y < -20) n.y = H + 20; else if (n.y > H + 20) n.y = -20;
+      }
+    }
+    function draw() {
+      ctx.clearRect(0, 0, W, H);
+      for (const n of nodes) {
+        const dc = Math.hypot(n.x - mouse.x, n.y - mouse.y);
+        const glow = Math.max(0, 1 - dc / 260) * .9;
+        ctx.beginPath(); ctx.arc(n.x, n.y, n.r, 0, 7);
+        ctx.fillStyle = glow > .1 ? "#EAF6FF" : "#7C9CFF";
+        ctx.globalAlpha = .55 + glow * .45;
+        ctx.fill();
+        if (glow > .1) { ctx.beginPath(); ctx.arc(n.x, n.y, n.r * 3.2, 0, 7); ctx.fillStyle = "#5EE7FF"; ctx.globalAlpha = glow * .25; ctx.fill(); }
+      }
+      ctx.globalAlpha = 1;
+      for (let i = 0; i < nodes.length; i++) {
+        const a = nodes[i];
+        for (let j = i + 1; j < nodes.length; j++) {
+          const b = nodes[j];
+          const dx = a.x - b.x, dy = a.y - b.y, d = Math.hypot(dx, dy);
+          if (d < LINK) {
+            let alpha = (1 - d / LINK) * .3;
+            const dm = Math.min(Math.hypot(a.x - mouse.x, a.y - mouse.y), Math.hypot(b.x - mouse.x, b.y - mouse.y));
+            alpha += Math.max(0, 1 - dm / 240) * .35;
+            ctx.strokeStyle = dm < 240 ? "#8FE9FF" : "#7C9CFF";
+            ctx.globalAlpha = alpha;
+            ctx.lineWidth = .7;
+            ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke();
+          }
+        }
+      }
+      ctx.globalAlpha = 1;
+    }
+    function loop() { if (!running) return; step(); draw(); raf = requestAnimationFrame(loop); }
+    function toggleRun() {
+      if (document.hidden) { running = false; cancelAnimationFrame(raf); }
+      else if (!reduced && !running) { running = true; loop(); }
+    }
+    addEventListener("resize", resize);
+    document.addEventListener("visibilitychange", toggleRun);
+    // track pointer over the hero only
+    canvas.parentElement.addEventListener("pointermove", (e) => {
+      const r = canvas.getBoundingClientRect();
+      mouse.x = e.clientX - r.left; mouse.y = e.clientY - r.top;
+    });
+    canvas.parentElement.addEventListener("pointerleave", () => { mouse.x = -1e4; mouse.y = -1e4; });
+    resize();
+    if (reduced) draw(); // static constellation under reduced motion
+
+    // ---------- terminal: typed commands + live logs ----------
+    const termLog = document.getElementById("termLog");
+    const typedCmd = document.getElementById("typedCmd");
+    const tState = document.getElementById("termState");
+    const tFleet = document.getElementById("tFleet");
+    const tFix = document.getElementById("tFix");
+    const tMttr = document.getElementById("tMttr");
+    const tUp = document.getElementById("tUp");
+
+    const logLine = (cls, txt) => {
+      const d = document.createElement("div");
+      d.className = "out " + (cls || "");
+      d.textContent = txt;
+      termLog.appendChild(d);
+      while (termLog.children.length > 26) termLog.removeChild(termLog.firstChild);
+      termLog.scrollTop = termLog.scrollHeight;
+    };
+
+    const cmdSeq = [
+      "orbital deploy --svc=payments-gw --strategy=canary --canary=10%",
+      ["✓ canary healthy: err_rate 0.02% < gate 0.50%", "→ promoted to 100% · revision a4f21c9", "✓ payments-gw deploy complete (41s)"],
+      "orbital inspect --svc=cart-api --since=1h",
+      ["◈ latency p95 rising: 212ms → 340ms (delta +60%)", "⚡ auto-remediation: rolling back cart-api r7e1 — rev b09a12c", "✓ rollback clean · fleet nominal", "• opened incident #3182 · assigned: ORB-7 · pager: none (auto) "],
+      "orbital scale --svc=ingest --to=24 --reason=traffic+38%",
+      ["✓ scaled 18 → 24 replicas in 22s", "◆ regional split: mumbai-1 ×10 · frankfurt-2 ×8 · singapore-1 ×6"],
+      "orbital status --fleet",
+      ["4 / 4 regions healthy · 0 pages · MTTR this week: 4m 40s"]
+    ];
+    let seqIdx = 0, logIdx = 0, typeTimer = null;
+
+    function typeCmd(str, done) {
+      typedCmd.textContent = "";
+      let i = 0;
+      const t = setInterval(() => {
+        typedCmd.textContent = str.slice(0, ++i);
+        if (i >= str.length) { clearInterval(t); setTimeout(done, 700); }
+      }, 24);
+    }
+    function appendCmdLogs(lines, done) {
+      if (logIdx >= lines.length) { setTimeout(done, 900); return; }
+      logLine("", lines[logIdx++]);
+      setTimeout(() => appendCmdLogs(lines, done), 640);
+    }
+    function runNextCmd() {
+      const [cmd, lines] = cmdSeq[seqIdx % cmdSeq.length];
+      seqIdx++;
+      logIdx = 0;
+      typeCmd(cmd, () => appendCmdLogs(lines, runNextCmd));
+    }
+
+    // ambient fleet chatter between commands
+    const chatter = [
+      ["ok", "✓ probe sweep: 1,204 endpoints · 0 failures"],
+      ["", "◇ telemetry cadence normalizing after deploy window"],
+      ["ok", "✓ backup window closed · snapshot or-2026-02-11t03z verified"],
+      ["", "◆ autoscaler: queue depth steady across all shards"],
+      ["warn", "△ slow query on analytics-db (2.1s) — optimizer pass queued"]
+    ];
+    let chatIdx = 0, chatterOn = false;
+    setInterval(() => {
+      if (chatterOn || document.hidden) return;
+      chatterOn = true;
+      const [cls, txt] = chatter[chatIdx++ % chatter.length];
+      logLine(cls, txt);
+      setTimeout(() => { chatterOn = false; }, 4000);
+    }, 5200);
+
+    const t0 = Date.now();
+    setInterval(() => {
+      const up = Math.floor((Date.now() - t0) / 1000);
+      tUp.textContent = String(Math.floor(up / 60)).padStart(2, "0") + ":" + String(up % 60).padStart(2, "0");
+    }, 1000);
+    tFleet.textContent = "412 services"; tFix.textContent = "18 this wk"; tMttr.textContent = "4m 40s"; tUp.textContent = "00:00";
+
+    setTimeout(() => { runNextCmd(); }, 1200);
+    setTimeout(() => { logLine("ok", "✓ welcome to ORBITAL console — demo fleet attached"); tState.textContent = "● CONNECTED"; }, 300);
+  </script>
+</body>
+</html>

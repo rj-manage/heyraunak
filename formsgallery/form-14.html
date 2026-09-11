@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>14 · Deep Glass Layers — Rj_Manage</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Sora:wght@500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/common.css" />
+  <style>
+    body { background: #062a3a; overflow-x: hidden; }
+    .section { padding: 90px 20px; position: relative; }
+
+    /* each layer parallaxes at a different speed on scroll */
+    .layer { position: absolute; inset: 0; pointer-events: none; will-change: transform; }
+    .layer.l1 { z-index: 1; }
+    .layer.l2 { z-index: 2; }
+    .layer.l3 { z-index: 3; }
+    .layer .block {
+      position: absolute; border-radius: 24px; backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(103,232,249,.25); background: rgba(8,145,178,.12);
+      box-shadow: 0 30px 60px -20px rgba(0,0,0,.5);
+    }
+    .layer.l1 .block { width: 240px; height: 300px; top: 8%; right: 6%; }
+    .layer.l2 .block { width: 200px; height: 380px; bottom: 6%; left: 8%; }
+    .layer.l3 .block { width: 300px; height: 220px; top: 20%; left: 18%; opacity: .7; }
+
+    .glass-stack {
+      position: relative; z-index: 4; max-width: 680px; margin: 0 auto;
+      border-radius: 30px; padding: 52px 56px;
+      background: rgba(8,47,60,.6); border: 1px solid rgba(103,232,249,.3);
+      backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+      box-shadow: 0 50px 120px -30px rgba(0,0,0,.7), inset 0 1px 0 rgba(255,255,255,.12);
+    }
+    @media (max-width: 560px) { .glass-stack { padding: 34px 22px; } }
+
+    .head { text-align: center; margin-bottom: 30px; }
+    .head h2 { color: #ecfeff; font-size: clamp(26px, 4vw, 38px); letter-spacing: -.02em; }
+    .head .sub { color: #67e8f9; font-size: 14.5px; margin-top: 8px; }
+    .head .sub em { font-style: normal; opacity: .7; }
+
+    .stack-form { display: grid; gap: 20px; }
+    .s-field label { display: block; font-size: 13px; font-weight: 600; color: #a5f3fc; margin-bottom: 8px; }
+    .s-field input, .s-field select, .s-field textarea {
+      width: 100%; background: rgba(8,47,60,.4); border: 1px solid rgba(103,232,249,.22);
+      color: #ecfeff; font: inherit; font-size: 15px; padding: 14px 16px; border-radius: 14px; outline: none; resize: vertical;
+      transition: all .25s ease;
+    }
+    .s-field textarea { min-height: 100px; }
+    .s-field select option { background: #0b2e3b; color: #ecfeff; }
+    .s-field input::placeholder, .s-field textarea::placeholder { color: rgba(103,232,249,.35); }
+    .s-field input:focus, .s-field select:focus, .s-field textarea:focus {
+      border-color: #67e8f9; background: rgba(8,47,60,.65);
+      box-shadow: 0 0 0 4px rgba(103,232,249,.16), 0 0 34px rgba(34,211,238,.25);
+    }
+
+    .row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    @media (max-width: 520px) { .row { grid-template-columns: 1fr; } }
+
+    .cyan-btn {
+      font: inherit; font-weight: 800; font-size: 15.5px; color: #05202a;
+      background: linear-gradient(120deg, #67e8f9, #22d3ee); border: none; border-radius: 14px;
+      padding: 16px; cursor: pointer;
+      box-shadow: 0 14px 44px -12px rgba(34,211,238,.7), inset 0 1px 0 rgba(255,255,255,.5);
+      transition: transform .15s ease, box-shadow .2s ease, filter .2s ease;
+    }
+    .cyan-btn:hover { filter: brightness(1.06); transform: translateY(-2px); box-shadow: 0 20px 58px -12px rgba(34,211,238,.9); }
+    .fine { text-align: center; color: rgba(165,243,252,.5); font-size: 12.5px; margin-top: 2px; }
+  </style>
+</head>
+<body>
+  <div class="layer l1"><div class="block"></div></div>
+  <div class="layer l2"><div class="block"></div></div>
+  <div class="layer l3"><div class="block"></div></div>
+  <div class="toast"></div>
+
+  <section class="section" id="stack">
+    <div class="glass-stack" id="stackCard">
+      <div class="head">
+        <h2>Enroll in the program</h2>
+        <p class="sub">Deep glass layers recede as you scroll · <em>Rj_Manage Academy</em></p>
+      </div>
+      <form class="stack-form" id="enrollForm" novalidate>
+        <div class="row">
+          <div class="s-field">
+            <label for="name">Full name *</label>
+            <input id="name" type="text" placeholder="e.g. Meera Joshi" required data-field="Name" />
+          </div>
+          <div class="s-field">
+            <label for="email">Email *</label>
+            <input id="email" type="email" placeholder="you@example.com" required data-field="Email" />
+          </div>
+        </div>
+        <div class="s-field">
+          <label for="course">Choose a course *</label>
+          <select id="course" required data-field="Course">
+            <option value="">Select…</option>
+            <option>UI/UX Design Bootcamp</option>
+            <option>Full-Stack Development</option>
+            <option>Data Science & AI</option>
+            <option>Product Management</option>
+            <option>Cloud & DevOps</option>
+          </select>
+        </div>
+        <div class="row">
+          <div class="s-field">
+            <label for="track">Track *</label>
+            <select id="track" required data-field="Track">
+              <option value="">Select…</option>
+              <option>Part-time</option>
+              <option>Full-time</option>
+              <option>Self-paced</option>
+            </select>
+          </div>
+          <div class="s-field">
+            <label for="start">Start *</label>
+            <select id="start" required data-field="Start">
+              <option value="">Select…</option>
+              <option>Next cohort</option>
+              <option>This month</option>
+              <option>Next month</option>
+            </select>
+          </div>
+        </div>
+        <div class="s-field">
+          <label for="goals">Learning goals *</label>
+          <textarea id="goals" placeholder="What do you want to build?" required data-field="Goals"></textarea>
+        </div>
+        <button class="cyan-btn" type="submit">Enroll & begin →</button>
+        <p class="fine">Rolling admissions · scholarships available</p>
+      </form>
+    </div>
+  </section>
+
+  <script src="js/common.js"></script>
+  <script>
+    /* Parallax the glass layers on scroll */
+    const layers = [document.querySelector(".l1"), document.querySelector(".l2"), document.querySelector(".l3")];
+    const speeds = [-0.12, 0.18, -0.08];
+    window.addEventListener("scroll", () => {
+      const y = window.scrollY;
+      layers.forEach((l, i) => { l.style.transform = `translateY(${y * speeds[i]}px)`; });
+    }, { passive: true });
+
+    document.getElementById("enrollForm").addEventListener("submit", (e) => {
+      e.preventDefault();
+      const form = e.target;
+      if (!form.checkValidity()) { form.reportValidity(); return; }
+      const d = collectForm(form);
+      showToast("🎓 Enrollment confirmed for " + d["Name"] + " — " + d["Course"]);
+      form.reset();
+    });
+  </script>
+</body>
+</html>

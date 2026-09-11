@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>19 · MIDNIGHT FM — RJ Web Faces</title>
+  <meta name="description" content="MIDNIGHT FM — a synthwave radio station built in pure CSS: striped sun, perspective grid floor, neon sign, spinning vinyl and live listener counts. Face 19 of the RJ Web Faces Gallery — Expert level." />
+  <link rel="icon" href="assets/img/RJ_Logo_Black.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Sora:wght@600;700;800&family=Share+Tech+Mono&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/common.css" />
+  <style>
+    :root {
+      --dusk1: #160A33; --dusk2: #2B0F4E;
+      --sunA: #FFD93B; --sunB: #FF5EA8;
+      --grid: #FF2BD6; --cyan: #00E5FF; --pink: #FF5EA8;
+      --txt: #F0F4FF; --dim: #A89FC7;
+      --panel: rgba(16, 6, 42, .72);
+      --mono: "Share Tech Mono", ui-monospace, "SF Mono", Menlo, monospace;
+    }
+    html { scroll-behavior: smooth; }
+    body { background: #12062b; color: var(--txt); overflow-x: hidden; }
+    ::selection { background: var(--cyan); color: #12062b; }
+    a { text-decoration: none; color: inherit; }
+    h1, h2, h3 { font-family: "Sora", var(--font-body); }
+    section { scroll-margin-top: 76px; }
+
+    .toast { background: #0b0420; color: var(--txt); border: 1px solid var(--cyan); box-shadow: 0 0 20px rgba(0,229,255,.4), 0 12px 34px -8px rgba(0,0,0,.7); font-family: var(--mono); letter-spacing: .04em; }
+
+    /* ================= NAV ================= */
+    .nav { position: sticky; top: 0; z-index: 90; display: flex; align-items: center; justify-content: space-between; gap: 18px; padding: 12px 5.5vw; background: rgba(18,6,43,.7); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-bottom: 1px solid rgba(255,94,168,.25); }
+    .brand { display: flex; align-items: center; gap: 10px; font-family: "Sora"; font-weight: 800; font-size: 15px; letter-spacing: .2em; }
+    .brand .logo { width: 34px; height: 34px; }
+    .brand .logo img { width: 100%; height: 100%; object-fit: contain; }
+    .brand em { font-style: normal; color: var(--cyan); text-shadow: 0 0 12px rgba(0,229,255,.8); }
+    .nav-links { display: flex; align-items: center; gap: 24px; }
+    .nav-links a { font-size: 13px; font-weight: 600; letter-spacing: .08em; color: var(--dim); transition: color .2s; }
+    .nav-links a:hover { color: var(--cyan); }
+    .btnr { display: inline-flex; align-items: center; gap: 8px; border: 1px solid var(--pink); background: rgba(255,94,168,.12); color: var(--pink); font-family: "Sora"; font-weight: 700; font-size: 13px; letter-spacing: .1em; text-transform: uppercase; padding: 10px 18px; border-radius: 999px; cursor: pointer; transition: all .2s; box-shadow: 0 0 16px rgba(255,94,168,.25), inset 0 0 12px rgba(255,94,168,.1); }
+    .btnr:hover { background: var(--pink); color: #160A33; box-shadow: 0 0 26px rgba(255,94,168,.6); }
+    .btnr.on { background: var(--cyan); border-color: var(--cyan); color: #052a33; box-shadow: 0 0 24px rgba(0,229,255,.55); }
+    .burger { display: none; background: none; border: 1px solid rgba(255,255,255,.2); color: var(--txt); border-radius: 8px; padding: 7px 11px; font-size: 16px; cursor: pointer; }
+    @media (max-width: 900px) {
+      .nav-links { position: fixed; inset: 57px 0 auto 0; flex-direction: column; align-items: flex-start; gap: 4px; background: rgba(16,6,38,.97); padding: 14px 5.5vw 20px; border-bottom: 1px solid rgba(255,94,168,.3); display: none; }
+      .nav-links.open { display: flex; }
+      .nav-links a { padding: 8px 0; width: 100%; }
+      .burger { display: block; }
+    }
+
+    /* ================= HERO SCENE ================= */
+    .hero { position: relative; min-height: 100svh; overflow: hidden; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 130px 20px 250px; }
+    .scene { position: absolute; inset: 0; pointer-events: none; }
+    .scene::before { content: ""; position: absolute; inset: 0; z-index: 1; background: linear-gradient(180deg, #1b0c40 0%, var(--dusk1) 28%, #3d1460 62%, #571468 84%, #6a1270 100%); }
+    .stars { position: absolute; inset: 0; z-index: 2; background-image:
+      radial-gradient(1.6px 1.6px at 12% 18%, rgba(255,255,255,.9) 50%, transparent 51%),
+      radial-gradient(1.4px 1.4px at 34% 8%, rgba(255,255,255,.7) 50%, transparent 51%),
+      radial-gradient(1.8px 1.8px at 58% 22%, rgba(255,255,255,.85) 50%, transparent 51%),
+      radial-gradient(1.2px 1.2px at 76% 12%, rgba(255,255,255,.6) 50%, transparent 51%),
+      radial-gradient(1.5px 1.5px at 90% 30%, rgba(255,255,255,.8) 50%, transparent 51%),
+      radial-gradient(1.3px 1.3px at 22% 38%, rgba(255,214,248,.8) 50%, transparent 51%),
+      radial-gradient(1.7px 1.7px at 66% 34%, rgba(255,255,255,.7) 50%, transparent 51%),
+      radial-gradient(1.2px 1.2px at 45% 27%, rgba(0,229,255,.9) 50%, transparent 51%);
+      background-size: 700px 620px, 900px 760px, 640px 700px, 820px 680px, 760px 640px, 900px 700px, 700px 780px, 640px 660px; opacity: .8; animation: twinkle 5s ease-in-out infinite; }
+    @keyframes twinkle { 0%, 100% { opacity: .35; } 50% { opacity: .9; } }
+    /* far ridge, then sun, then near ridge */
+    .mtn-far { position: absolute; left: 0; right: 0; bottom: 40%; height: 26%; z-index: 3; background: linear-gradient(180deg, rgba(74,35,138,.65), rgba(46,20,96,0)); clip-path: polygon(0 100%, 0 46%, 7% 32%, 15% 52%, 24% 26%, 33% 48%, 42% 20%, 52% 46%, 63% 30%, 72% 52%, 82% 24%, 100% 40%, 100% 100%); }
+    .sun { position: absolute; left: 50%; top: 30%; width: min(64vmin, 56vw); aspect-ratio: 1; z-index: 4; transform: translateX(-50%); border-radius: 50%;
+      background: repeating-linear-gradient(90deg, var(--sunA) 0 2.6vmin, var(--sunB) 2.6vmin 5.2vmin);
+      box-shadow: 0 0 80px 14px rgba(255,94,168,.35); }
+    .sun::after { content: ""; position: absolute; inset: 0; border-radius: 50%; background: radial-gradient(circle at 50% 42%, rgba(255,255,255,.4), transparent 46%), radial-gradient(circle at 50% 130%, rgba(255,217,59,.55), transparent 60%); }
+    .mtn-near { position: absolute; left: 0; right: 0; bottom: 40%; height: 20%; z-index: 5; background: linear-gradient(180deg, #24104f, #0e0526 120%); clip-path: polygon(0 100%, 0 58%, 10% 44%, 20% 70%, 30% 34%, 42% 74%, 52% 40%, 63% 72%, 74% 30%, 86% 66%, 100% 46%, 100% 100%); }
+    .horizon-glow { position: absolute; left: 0; right: 0; bottom: 40%; height: 10px; z-index: 6; background: linear-gradient(90deg, transparent, rgba(255,94,168,.9), rgba(255,217,59,.8), rgba(255,94,168,.9), transparent); filter: blur(1px); box-shadow: 0 0 24px rgba(255,94,168,.8); }
+    /* perspective grid floor */
+    .grid-wrap { position: absolute; left: 0; right: 0; bottom: -3%; height: 44%; z-index: 7; perspective: 460px; perspective-origin: 50% -40%; overflow: hidden; }
+    .grid-plane { position: absolute; left: -45%; top: 0; width: 190%; height: 300%; transform-origin: 50% 0; transform: rotateX(63deg);
+      background-image:
+        repeating-linear-gradient(90deg, rgba(255,43,214,.6) 0 2px, transparent 2px 94px),
+        repeating-linear-gradient(180deg, rgba(255,43,214,.65) 0 2px, transparent 2px 50px);
+      animation: gridFlow 1s linear infinite; }
+    @keyframes gridFlow { to { background-position: 0 50px; } }
+    .grid-wrap::after { content: ""; position: absolute; inset: 0; z-index: 1; background: linear-gradient(180deg, rgba(255,43,214,0) 30%, rgba(255,43,214,.18) 55%, rgba(10,2,26,.55)); }
+    /* neon sign */
+    .sign { position: absolute; left: 6%; bottom: 52%; z-index: 8; transform: rotate(-3deg); padding: 12px 22px; border: 3px solid var(--pink); border-radius: 14px; background: rgba(10,2,30,.35); box-shadow: 0 0 10px var(--pink), 0 0 24px var(--pink), inset 0 0 12px rgba(255,94,168,.6); animation: neonFlicker 6s linear infinite; }
+    .sign span { font-family: "Sora"; font-weight: 800; font-size: clamp(14px, 2vw, 22px); letter-spacing: .18em; color: var(--cyan); text-shadow: 0 0 6px var(--cyan), 0 0 18px rgba(0,229,255,.9); white-space: nowrap; }
+    .sign .freq { font-family: var(--mono); display: block; font-size: 10px; letter-spacing: .4em; color: var(--pink); margin-top: 3px; text-shadow: 0 0 8px rgba(255,94,168,.9); }
+    @keyframes neonFlicker { 0%, 100% { opacity: 1; } 89% { opacity: 1; } 90% { opacity: .4; } 91% { opacity: 1; } 93% { opacity: .55; } 94%, 100% { opacity: 1; } }
+
+    /* hero text + DJ deck */
+    .hero-inner { position: relative; z-index: 9; display: flex; flex-direction: column; align-items: center; }
+    .freq-chip { font-family: var(--mono); font-size: 12px; letter-spacing: .34em; color: var(--cyan); border: 1px solid rgba(0,229,255,.4); background: rgba(0,229,255,.08); border-radius: 999px; padding: 8px 16px; box-shadow: 0 0 18px rgba(0,229,255,.25); margin-bottom: 20px; }
+    .hero h1 { font-size: clamp(46px, 11vw, 130px); font-weight: 800; letter-spacing: .02em; line-height: .95; text-shadow: 0 0 30px rgba(255,94,168,.45), 0 0 70px rgba(255,43,214,.3); }
+    .hero h1 em { font-style: normal; color: transparent; -webkit-text-stroke: 2px var(--pink); }
+    @media (max-width: 600px) { .hero h1 em { -webkit-text-stroke-width: 1.4px; } }
+    .hero .tag { color: var(--dim); font-size: clamp(14px, 1.9vw, 17px); max-width: 560px; margin: 16px auto 0; font-family: var(--mono); }
+    .deck { margin-top: 30px; display: flex; align-items: center; gap: 18px; padding: 16px 22px; border-radius: 22px; background: var(--panel); border: 1px solid rgba(255,94,168,.4); box-shadow: 0 20px 50px -18px rgba(0,0,0,.7), 0 0 26px rgba(255,94,168,.2); backdrop-filter: blur(8px); flex-wrap: wrap; justify-content: center; }
+    .live-badge { font-family: var(--mono); font-size: 11px; letter-spacing: .24em; padding: 7px 13px; border-radius: 999px; border: 1px solid rgba(255,255,255,.25); color: var(--dim); }
+    .deck.live .live-badge { color: #052a33; background: var(--cyan); border-color: var(--cyan); box-shadow: 0 0 18px rgba(0,229,255,.7); animation: blink 1.4s ease-in-out infinite; }
+    @keyframes blink { 50% { opacity: .5; } }
+    .deck-eq { display: flex; align-items: center; gap: 4px; height: 30px; }
+    .deck-eq i { width: 4px; border-radius: 2px; background: linear-gradient(180deg, var(--cyan), var(--grid)); transform-origin: bottom; animation: dq 0.8s ease-in-out infinite; animation-play-state: paused; }
+    .deck.live .deck-eq i { animation-play-state: running; }
+    .deck-eq i:nth-child(1) { height: 40%; animation-delay: 0s; }
+    .deck-eq i:nth-child(2) { height: 80%; animation-delay: -.3s; }
+    .deck-eq i:nth-child(3) { height: 55%; animation-delay: -.6s; }
+    .deck-eq i:nth-child(4) { height: 95%; animation-delay: -.15s; }
+    .deck-eq i:nth-child(5) { height: 65%; animation-delay: -.45s; }
+    @keyframes dq { 0%, 100% { transform: scaleY(.35); } 50% { transform: scaleY(1); } }
+    .disc { width: 74px; height: 74px; border-radius: 50%; flex: none; position: relative; background: repeating-radial-gradient(circle at 50% 50%, #120425 0 2px, #31104f 2px 5px); box-shadow: 0 6px 18px rgba(0,0,0,.6), inset 0 0 0 2px rgba(255,255,255,.06); animation: spinDisc 2.6s linear infinite; animation-play-state: paused; }
+    .deck.live .disc { animation-play-state: running; }
+    .disc::before { content: ""; position: absolute; inset: -4px; border-radius: 50%; background: conic-gradient(from 0deg, transparent 0 140deg, rgba(255,255,255,.5) 180deg, transparent 220deg); animation: spinDisc 2.6s linear infinite reverse; animation-play-state: paused; }
+    .deck.live .disc::before { animation-play-state: running; }
+    .disc::after { content: ""; position: absolute; inset: 0; margin: auto; width: 26px; height: 26px; border-radius: 50%; background: radial-gradient(circle at 32% 30%, var(--sunA), var(--sunB)); border: 2px solid #14042c; }
+    @keyframes spinDisc { to { transform: rotate(360deg); } }
+
+    /* ================= SECTIONS ================= */
+    section { padding: 96px 5.5vw; position: relative; }
+    .wrap { max-width: 1200px; margin: 0 auto; }
+    .sec-head { max-width: 640px; margin-bottom: 46px; }
+    .sec-head .kick { font-family: var(--mono); font-size: 12px; letter-spacing: .3em; color: var(--cyan); text-transform: uppercase; margin-bottom: 10px; }
+    .sec-head h2 { font-size: clamp(28px, 4vw, 44px); font-weight: 800; }
+    .sec-head p { color: var(--dim); margin-top: 12px; font-size: 15px; font-family: var(--mono); }
+    .kickerline { font-family: var(--mono); letter-spacing: .28em; text-transform: uppercase; font-size: 12px; color: var(--cyan); }
+
+    /* Now playing rail */
+    #now { background: linear-gradient(180deg, #180a3a, #140731); border-block: 1px solid rgba(255,94,168,.2); }
+    .rail-head { display: flex; align-items: center; justify-content: space-between; gap: 18px; flex-wrap: wrap; margin-bottom: 30px; }
+    .rail { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(250px, 300px); gap: 16px; overflow-x: auto; padding: 6px 4px 18px; scroll-snap-type: x proximity; scrollbar-width: thin; scrollbar-color: rgba(255,94,168,.6) transparent; }
+    .track { scroll-snap-align: start; background: linear-gradient(165deg, rgba(255,255,255,.05), rgba(255,255,255,.01)); border: 1px solid rgba(255,255,255,.14); border-radius: 18px; overflow: hidden; transition: transform .25s ease, border-color .25s ease, box-shadow .25s ease; }
+    .track:hover { transform: translateY(-6px); border-color: rgba(0,229,255,.55); box-shadow: 0 20px 40px -18px rgba(255,43,214,.4); }
+    .track .art { height: 120px; position: relative; display: grid; place-items: center; }
+    .track .art .bars { display: flex; gap: 3px; align-items: flex-end; height: 40px; }
+    .track .art .bars i { width: 4px; border-radius: 2px; background: linear-gradient(180deg, #fff, var(--sunA)); transform-origin: bottom; animation: dq .7s ease-in-out infinite; animation-play-state: paused; }
+    .track:hover .art .bars i { animation-play-state: running; }
+    .track .art .bars i:nth-child(1) { height: 100%; animation-delay: 0s; }
+    .track .art .bars i:nth-child(2) { height: 55%; animation-delay: -.4s; }
+    .track .art .bars i:nth-child(3) { height: 85%; animation-delay: -.2s; }
+    .track .art .bars i:nth-child(4) { height: 40%; animation-delay: -.55s; }
+    .track .art .bars i:nth-child(5) { height: 70%; animation-delay: -.33s; }
+    .art-1 { background: linear-gradient(180deg, #0b2b45 0 70%, #571468 71%); }
+    .art-1::before { content: ""; position: absolute; left: 50%; top: 16px; width: 66px; height: 66px; transform: translateX(-50%); border-radius: 50%; background: repeating-linear-gradient(90deg, var(--sunA) 0 9px, var(--sunB) 9px 18px); box-shadow: 0 0 26px rgba(255,94,168,.7); }
+    .art-1::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 26%; background: repeating-linear-gradient(180deg, rgba(255,94,168,.4) 0 2px, transparent 2px 10px); }
+    .art-2 { background: linear-gradient(180deg, #31104f, #0e0526); }
+    .art-2::before { content: ""; position: absolute; inset: 0; background: radial-gradient(circle at 80% 30%, rgba(0,229,255,.5), transparent 45%); }
+    .art-3 { background: repeating-linear-gradient(45deg, rgba(255,43,214,.25) 0 2px, transparent 2px 12px), linear-gradient(180deg, #12062b, #3d0f55); }
+    .art-4 { background: linear-gradient(180deg, #022c33, #0a1240); }
+    .art-4::before { content: ""; position: absolute; inset: 0; background: radial-gradient(circle at 30% 80%, rgba(255,217,59,.5), transparent 40%); }
+    .art-5 { background: linear-gradient(180deg, #40103f, #0e0526); }
+    .art-5::before { content: ""; position: absolute; inset: 0; background: repeating-linear-gradient(180deg, rgba(255,94,168,.35) 0 2px, transparent 2px 18px); }
+    .art-6 { background: linear-gradient(180deg, #10304d, #05202e); }
+    .art-6::before { content: ""; position: absolute; left: 50%; bottom: -14px; width: 110px; height: 110px; transform: translateX(-50%); border-radius: 50%; background: radial-gradient(circle at 50% 30%, #ffd9a0, var(--sunB)); }
+    .track .meta { padding: 14px 16px 16px; }
+    .track .meta b { display: block; font-family: "Sora"; font-size: 15.5px; letter-spacing: -.01em; }
+    .track .meta .art-l { color: var(--dim); font-size: 12.5px; font-family: var(--mono); }
+    .track .meta .bpm { display: inline-block; margin-top: 10px; font-family: var(--mono); font-size: 11px; letter-spacing: .18em; color: var(--cyan); border: 1px solid rgba(0,229,255,.4); padding: 4px 9px; border-radius: 999px; }
+    .request { display: flex; align-items: center; justify-content: center; gap: 12px; flex-wrap: wrap; margin-top: 26px; font-family: var(--mono); }
+    .request .rq-input { display: flex; align-items: center; gap: 0; background: rgba(255,255,255,.05); border: 1px solid rgba(255,94,168,.45); border-radius: 999px; padding: 5px 5px 5px 20px; transition: box-shadow .2s, border-color .2s; }
+    .request .rq-input:focus-within { border-color: var(--cyan); box-shadow: 0 0 16px rgba(0,229,255,.25); }
+    .request input { background: none; border: none; outline: none; color: var(--txt); font: inherit; font-size: 14px; width: 240px; }
+    .request .req-btn { font-family: "Sora"; font-weight: 700; font-size: 13px; letter-spacing: .06em; background: linear-gradient(90deg, var(--grid), var(--pink)); color: #fff; border: none; padding: 11px 20px; border-radius: 999px; cursor: pointer; transition: filter .2s, transform .15s; }
+    .request .req-btn:hover { filter: brightness(1.15); transform: translateY(-1px); }
+    .request .hint { color: var(--dim); font-size: 12px; width: 100%; text-align: center; }
+
+    /* Channels */
+    .chan-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+    @media (max-width: 900px) { .chan-grid { grid-template-columns: 1fr; } }
+    .chan { position: relative; border-radius: 20px; overflow: hidden; border: 1px solid rgba(255,255,255,.14); padding: 26px 22px 22px; min-height: 220px; display: flex; flex-direction: column; justify-content: flex-end; transition: transform .25s ease, box-shadow .25s ease; }
+    .chan:hover { transform: translateY(-6px); box-shadow: 0 24px 50px -20px rgba(255,43,214,.5); }
+    .chan .artbg { position: absolute; inset: 0; opacity: .8; }
+    .chan .body { position: relative; z-index: 2; background: linear-gradient(180deg, transparent, rgba(6,2,22,.88)); margin: -26px -22px -22px; padding: 60px 22px 20px; }
+    .chan h3 { font-size: 21px; letter-spacing: .02em; }
+    .chan .desc { color: var(--dim); font-size: 13px; font-family: var(--mono); margin: 8px 0 12px; }
+    .chan .now-l { font-family: var(--mono); font-size: 11.5px; letter-spacing: .1em; color: var(--cyan); }
+    .chan .listeners { font-family: var(--mono); font-size: 11.5px; color: var(--pink); display: flex; align-items: center; gap: 8px; margin-top: 12px; }
+    .chan .listeners .l-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--grid); box-shadow: 0 0 10px var(--grid); animation: blink 1.6s infinite; }
+    .ch-bg1 { background: linear-gradient(140deg, #ff2bd6, #ff5ea8 55%, #ffd93b), repeating-linear-gradient(45deg, transparent 0 10px, rgba(255,255,255,.06) 10px 12px); }
+    .ch-bg2 { background: linear-gradient(140deg, #0b2b45, #0f5c7a 60%, #00e5ff); }
+    .ch-bg3 { background: linear-gradient(140deg, #12062b, #31104f 55%, #ff5ea8); }
+
+    /* Schedule table */
+    #schedule { background: linear-gradient(180deg, #140731, #170a3b); border-top: 1px solid rgba(0,229,255,.18); }
+    table.dj { width: 100%; border-collapse: collapse; font-family: var(--mono); font-size: 14.5px; }
+    table.dj th { text-align: left; font-size: 11px; letter-spacing: .3em; text-transform: uppercase; color: var(--cyan); border-bottom: 2px solid var(--grid); padding: 12px 14px; text-shadow: 0 0 10px rgba(0,229,255,.6); }
+    table.dj td { padding: 14px; border-bottom: 1px solid rgba(255,43,214,.35); color: var(--dim); }
+    table.dj td:first-child { color: var(--sunA); }
+    table.dj tr:hover td { background: rgba(255,43,214,.07); color: var(--txt); }
+    table.dj td b { color: var(--txt); font-weight: 600; }
+    @media (max-width: 640px) { table.dj thead { display: none; } table.dj, table.dj tbody, table.dj tr, table.dj td { display: block; width: 100%; } table.dj td { border: none; border-bottom: 1px solid rgba(255,43,214,.35); padding: 8px 14px; } table.dj tr { border: 1px solid rgba(255,43,214,.4); margin-bottom: 10px; border-radius: 8px; } }
+
+    /* Newsletter */
+    .club { border: 1px solid rgba(255,94,168,.4); border-radius: 26px; background: linear-gradient(150deg, rgba(255,94,168,.12), rgba(0,229,255,.06)); padding: 54px clamp(24px, 6vw, 80px); display: grid; grid-template-columns: 1.2fr 1fr; gap: 50px; align-items: center; box-shadow: 0 30px 80px -30px rgba(255,43,214,.4); }
+    @media (max-width: 860px) { .club { grid-template-columns: 1fr; } }
+    .club h2 { font-size: clamp(26px, 3.6vw, 40px); margin: 10px 0 12px; }
+    .club p { color: var(--dim); font-family: var(--mono); font-size: 14px; }
+    .club form { display: flex; gap: 10px; flex-wrap: wrap; }
+    .club form .mail { flex: 1; min-width: 220px; background: rgba(255,255,255,.06); border: 1px solid rgba(0,229,255,.4); border-radius: 12px; padding: 14px 16px; color: var(--txt); font: inherit; font-family: var(--mono); font-size: 14px; outline: none; }
+    .club form .mail:focus { box-shadow: 0 0 0 4px rgba(0,229,255,.15); }
+    .tape { font-size: 30px; filter: drop-shadow(0 0 12px rgba(255,94,168,.6)); }
+
+    /* ================= FOOTER ================= */
+    footer { border-top: 1px solid rgba(255,94,168,.3); background: #0d0422; padding: 40px 5.5vw 46px; }
+    .foot { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; gap: 22px; flex-wrap: wrap; align-items: center; font-family: var(--mono); font-size: 13px; color: var(--dim); }
+    .foot b { color: var(--txt); }
+    .foot .go { color: var(--cyan); }
+    .foot .go:hover { text-shadow: 0 0 10px rgba(0,229,255,.8); }
+
+    /* ================= REDUCED MOTION ================= */
+    @media (max-width: 1100px) { .sign { display: none; } }
+    @media (prefers-reduced-motion: reduce) {
+      .grid-plane, .disc, .disc::before, .deck-eq i { animation: none !important; }
+      .sign, .stars, .chan .listeners .l-dot { animation: none; }
+      .grid-plane { transform: rotateX(63deg); }
+      .deck-eq i, .track .art .bars i { animation-play-state: paused; }
+    }
+  </style>
+</head>
+<body>
+  <div class="toast"></div>
+
+  <!-- ================= NAV ================= -->
+  <nav class="nav" id="nav">
+    <a class="brand" href="index.html"><span class="logo"><img src="assets/img/RJ_Logo.png" alt="RJ logo" /></span>MIDNIGHT <em>FM</em></a>
+    <div class="nav-links" id="menu">
+      <a href="#now">Now playing</a>
+      <a href="#channels">Channels</a>
+      <a href="#schedule">Schedule</a>
+      <a href="#club">Cassette club</a>
+      <button class="btnr" id="navTune">▶ Tune in</button>
+    </div>
+    <button class="burger" id="burger" aria-label="Menu">☰</button>
+  </nav>
+
+  <!-- ================= HERO / RETRO SCENE ================= -->
+  <header class="hero">
+    <div class="scene" aria-hidden="true">
+      <div class="stars"></div>
+      <div class="mtn-far"></div>
+      <div class="sun"></div>
+      <div class="mtn-near"></div>
+      <div class="horizon-glow"></div>
+      <div class="grid-wrap"><div class="grid-plane"></div></div>
+      <div class="sign"><span>MIDNIGHT FM — 87.7</span><span class="freq">NEON GRID · LIVE</span></div>
+    </div>
+    <div class="hero-inner">
+      <span class="freq-chip reveal">✦ 87.7 MHZ — THE NEON GRID ✦</span>
+      <h1 class="reveal" style="transition-delay:.05s">MIDNIGHT<em>FM</em></h1>
+      <p class="tag reveal" style="transition-delay:.12s">Radio for people who live after dark. Synthwave, dreamwave &amp; dark disco —<br />broadcast from a parking garage in 1986, forever.</p>
+      <div class="deck reveal" id="deck" style="transition-delay:.2s">
+        <span class="live-badge" id="liveBadge">○ OFF AIR</span>
+        <div class="deck-eq" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
+        <div class="disc" title="MIDNIGHT FM — spinning vinyl"></div>
+        <button class="btnr" id="tuneBtn" style="border-radius:999px">▶ Tune in</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ================= NOW PLAYING ================= -->
+  <section id="now">
+    <div class="wrap">
+      <div class="rail-head">
+        <div class="sec-head" style="margin-bottom:0">
+          <div class="kick">Now spinning</div>
+          <h2>The midnight rotation</h2>
+        </div>
+        <p class="kickerline" style="max-width:260px">Hover a card to peek at the waveform</p>
+      </div>
+      <div class="rail" id="rail">
+        <article class="track">
+          <div class="art art-1"><div class="bars"><i></i><i></i><i></i><i></i><i></i></div></div>
+          <div class="meta"><b>Nightdrive 87</b><span class="art-l">Cassetter · Outrun</span><br /><span class="bpm">112 BPM</span></div>
+        </article>
+        <article class="track">
+          <div class="art art-2"><div class="bars"><i></i><i></i><i></i><i></i><i></i></div></div>
+          <div class="meta"><b>Palm Static</b><span class="art-l">Neon Vesper · Dreamwave</span><br /><span class="bpm">96 BPM</span></div>
+        </article>
+        <article class="track">
+          <div class="art art-3"><div class="bars"><i></i><i></i><i></i><i></i><i></i></div></div>
+          <div class="meta"><b>Dusk ROM</b><span class="art-l">VHS Monsoon · Dark synth</span><br /><span class="bpm">118 BPM</span></div>
+        </article>
+        <article class="track">
+          <div class="art art-4"><div class="bars"><i></i><i></i><i></i><i></i><i></i></div></div>
+          <div class="meta"><b>Chrome Horizon</b><span class="art-l">Arcade Cloud · Outrun</span><br /><span class="bpm">124 BPM</span></div>
+        </article>
+        <article class="track">
+          <div class="art art-5"><div class="bars"><i></i><i></i><i></i><i></i><i></i></div></div>
+          <div class="meta"><b>Midnight Taxi</b><span class="art-l">The Grid Riders · Dark synth</span><br /><span class="bpm">108 BPM</span></div>
+        </article>
+        <article class="track">
+          <div class="art art-6"><div class="bars"><i></i><i></i><i></i><i></i><i></i></div></div>
+          <div class="meta"><b>Analog Hearts</b><span class="art-l">Sunset Cove · Dreamwave</span><br /><span class="bpm">88 BPM</span></div>
+        </article>
+      </div>
+      <form class="request reveal" id="reqForm" novalidate>
+        <span class="kickerline">Request a track</span>
+        <div class="rq-input">
+          <input type="text" id="reqTitle" placeholder="Title — artist" required data-field="Track" maxlength="48" />
+          <button class="req-btn" type="submit">Queue it →</button>
+        </div>
+        <span class="hint">Your request jumps straight to the top of the rotation. The DJ is watching.</span>
+      </form>
+    </div>
+  </section>
+
+  <!-- ================= CHANNELS ================= -->
+  <section id="channels">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <div class="kick">Channels</div>
+        <h2>Three lanes of neon</h2>
+        <p>Pick a mood and let the signal carry you — listener counts tick up in real time.</p>
+      </div>
+      <div class="chan-grid">
+        <article class="chan reveal">
+          <div class="artbg ch-bg1"></div>
+          <div class="body">
+            <h3>Outrun</h3>
+            <p class="desc">Racing down an empty highway at 3 a.m., windows down.</p>
+            <p class="now-l">Now: Nightdrive 87 — Cassetter</p>
+            <p class="listeners"><span class="l-dot"></span><span data-count="1284">1,284</span> listening</p>
+          </div>
+        </article>
+        <article class="chan reveal" style="transition-delay:.08s">
+          <div class="artbg ch-bg2"></div>
+          <div class="body">
+            <h3>Dreamwave</h3>
+            <p class="desc">Soft synths and slow-motion sunsets over a digital sea.</p>
+            <p class="now-l">Now: Analog Hearts — Sunset Cove</p>
+            <p class="listeners"><span class="l-dot"></span><span data-count="847">847</span> listening</p>
+          </div>
+        </article>
+        <article class="chan reveal" style="transition-delay:.16s">
+          <div class="artbg ch-bg3"></div>
+          <div class="body">
+            <h3>Dark Synth</h3>
+            <p class="desc">Heavy bass, minor keys, rain on the window of a diner.</p>
+            <p class="now-l">Now: Dusk ROM — VHS Monsoon</p>
+            <p class="listeners"><span class="l-dot"></span><span data-count="2093">2,093</span> listening</p>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= SCHEDULE ================= -->
+  <section id="schedule">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <div class="kick">Tonight on MIDNIGHT FM</div>
+        <h2>DJ line-up, 21:00 → 04:00</h2>
+        <p>All times station time (it is always 1986 somewhere).</p>
+      </div>
+      <table class="dj reveal">
+        <thead><tr><th>Time</th><th>DJ</th><th>Show</th><th>Lane</th></tr></thead>
+        <tbody>
+          <tr><td>21:00</td><td><b>Dr. Cassetter</b></td><td>Night Drive Prelude</td><td>Outrun</td></tr>
+          <tr><td>22:30</td><td><b>Neon Vesper</b></td><td>Chrome Horizons</td><td>Dreamwave</td></tr>
+          <tr><td>00:00</td><td><b>VHS Monsoon</b></td><td>Analog Dreamwave</td><td>Dark Synth</td></tr>
+          <tr><td>01:30</td><td><b>The Grid Riders</b></td><td>Outrun Excess</td><td>Outrun</td></tr>
+          <tr><td>03:00</td><td><b>Sunset Cove</b></td><td>Slow Dusk</td><td>Dreamwave</td></tr>
+          <tr><td>04:00</td><td><b>Static Rain</b></td><td>The Quiet Hour</td><td>Dark Synth</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ================= CASSETTE CLUB ================= -->
+  <section id="club" style="padding-top:40px">
+    <div class="wrap">
+      <div class="club reveal">
+        <div>
+          <span class="tape">📼</span>
+          <h2>Join the Cassette Club</h2>
+          <p>One free mixtape every month, dubbed in real time by a real DJ. No spam — just magnetic tape and good intentions.</p>
+        </div>
+        <form id="clubForm" novalidate>
+          <input class="mail" type="email" placeholder="your@email.com" required data-field="Email" />
+          <button class="btnr on" type="submit" style="border-radius:12px">Subscribe</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= FOOTER ================= -->
+  <footer>
+    <div class="foot">
+      <span>© 2026 MIDNIGHT FM Broadcast Co. · <b>Demo page 19 of the RJ Web Faces Gallery</b></span>
+      <a class="go" href="index.html">← View all 20 faces</a>
+    </div>
+  </footer>
+
+  <script src="js/common.js"></script>
+  <script>
+    // ---------- Mobile menu ----------
+    const nav = document.querySelector(".nav");
+    const burger = document.getElementById("burger");
+    const menu = document.getElementById("menu");
+    burger.addEventListener("click", () => menu.classList.toggle("open"));
+    menu.querySelectorAll("a, button").forEach((el) => el.addEventListener("click", () => menu.classList.remove("open")));
+    addEventListener("scroll", () => nav.classList.toggle("scrolled", scrollY > 8), { passive: true });
+
+    // ---------- Tune in / tune out ----------
+    const deck = document.getElementById("deck");
+    const tuneBtn = document.getElementById("tuneBtn");
+    const navTune = document.getElementById("navTune");
+    const liveBadge = document.getElementById("liveBadge");
+    let live = false;
+    function setLive(v) {
+      live = v;
+      deck.classList.toggle("live", v);
+      tuneBtn.innerHTML = v ? "⏹ Tune out" : "▶ Tune in";
+      tuneBtn.classList.toggle("on", v);
+      navTune.innerHTML = v ? "⏹ Tune out" : "▶ Tune in";
+      navTune.classList.toggle("on", v);
+      liveBadge.textContent = v ? "● LIVE — 87.7" : "○ OFF AIR";
+      if (v) showToast("📡 You're on air — MIDNIGHT FM, 87.7 MHz");
+    }
+    tuneBtn.addEventListener("click", () => setLive(!live));
+    navTune.addEventListener("click", () => setLive(!live));
+
+    // ---------- Request a track -> add card to top of rail ----------
+    const rail = document.getElementById("rail");
+    const reqForm = document.getElementById("reqForm");
+    const reqTitle = document.getElementById("reqTitle");
+    const ART = ["art-1", "art-2", "art-3", "art-4", "art-5", "art-6"];
+    function makeCard(title, artist, bpm) {
+      const c = document.createElement("article");
+      c.className = "track reveal in";
+      c.style.transitionDelay = "0s";
+      c.innerHTML =
+        '<div class="art ' + ART[Math.floor(Math.random() * ART.length)] + '"><div class="bars"><i></i><i></i><i></i><i></i><i></i></div></div>' +
+        '<div class="meta"><b>' + title + '</b><span class="art-l">' + artist + ' · Your request</span><br /><span class="bpm">' + bpm + ' BPM</span></div>';
+      return c;
+    }
+    reqForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      if (!reqForm.checkValidity()) { reqForm.reportValidity(); return; }
+      const title = reqTitle.value.trim();
+      rail.prepend(makeCard(title, "MIDNIGHT FM", 90 + Math.floor(Math.random() * 40)));
+      rail.scrollTo({ left: 0, behavior: "smooth" });
+      showToast("✅ Request queued — " + title);
+      reqForm.reset();
+    });
+
+    // ---------- Listener counts tick ----------
+    const counters = [...document.querySelectorAll("[data-count]")];
+    setInterval(() => {
+      counters.forEach((el) => {
+        const n = parseInt(el.dataset.count, 10) + (Math.random() < 0.5 ? 1 : -1) * (1 + Math.floor(Math.random() * 3));
+        el.dataset.count = String(Math.max(10, n));
+        el.textContent = n.toLocaleString("en-US");
+      });
+    }, 4000);
+  </script>
+</body>
+</html>

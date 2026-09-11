@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>06 · Analytics Dashboard — RJ Web Faces</title>
+  <meta name="description" content="Pulse — a soft-UI team analytics workspace: collapsible sidebar, live KPI cards, switchable revenue/users chart and a time filter that really updates the numbers. Face 06 of the RJ Web Faces Gallery — Intermediate level." />
+  <link rel="icon" href="assets/img/RJ_Logo_Black.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/common.css" />
+  <style>
+    :root {
+      --canvas: #E9EDF2;
+      --card: #F4F7FA;
+      --card-2: #FBFCFE;
+      --ink: #232A35;
+      --ink-60: rgba(35, 42, 53, .6);
+      --muted: #7A8699;
+      --line: rgba(35, 42, 53, .08);
+      --accent: #4F7DF9;
+      --accent-soft: rgba(79, 125, 249, .12);
+      --success: #2FB57A;
+      --success-soft: rgba(47, 181, 122, .13);
+      --danger: #EF6A6A;
+      --danger-soft: rgba(239, 106, 106, .13);
+      --amber: #F2B24B;
+      --violet: #8B7CF6;
+      --shadow-soft: 7px 7px 16px rgba(35, 42, 53, .07), -7px -7px 16px rgba(255, 255, 255, .92);
+      --shadow-inset: inset 3px 3px 8px rgba(35, 42, 53, .06), inset -3px -3px 8px rgba(255,255,255,.9);
+    }
+    body { background: var(--canvas); color: var(--ink); font-family: "Inter", sans-serif; overflow-x: hidden; }
+    h1, h2, h3, .num, .logo b { font-family: "Sora", sans-serif; }
+    .num { font-variant-numeric: tabular-nums; }
+    ::selection { background: var(--accent); color: #fff; }
+    button { font: inherit; cursor: pointer; }
+    .toast { z-index: 1200; }
+
+    /* ==================== APP LAYOUT ==================== */
+    .app { display: flex; min-height: 100vh; }
+    .backdrop { display: none; }
+
+    /* ---------- Sidebar ---------- */
+    .sidebar {
+      width: 236px; flex: none; position: sticky; top: 0; height: 100vh; z-index: 90;
+      background: linear-gradient(180deg, #EEF2F7, #E7EBF1);
+      border-right: 1px solid var(--line);
+      display: flex; flex-direction: column; padding: 20px 16px 16px;
+      transition: width .28s cubic-bezier(.4,0,.2,1);
+      overflow: hidden;
+    }
+    .s-head { display: flex; align-items: center; gap: 10px; padding: 2px 6px 18px; white-space: nowrap; }
+    .logo { display: inline-flex; align-items: center; gap: 10px; text-decoration: none; color: var(--ink); }
+    .logo .mark {
+      width: 36px; height: 36px; flex: none; border-radius: 12px; background: linear-gradient(135deg, #4F7DF9, #8B7CF6);
+      display: grid; place-items: center; box-shadow: 0 8px 18px -6px rgba(79,125,249,.8);
+    }
+    .logo b { font-size: 17px; letter-spacing: -.02em; white-space: nowrap; }
+    .logo b i { font-style: normal; color: var(--accent); }
+    .s-sec { font-size: 9.5px; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: var(--muted); padding: 12px 10px 8px; white-space: nowrap; }
+    .s-nav { display: grid; gap: 4px; }
+    .s-link {
+      display: flex; align-items: center; gap: 12px; text-decoration: none; color: var(--ink-60);
+      font-size: 13.5px; font-weight: 500; padding: 10px 12px; border-radius: 11px; white-space: nowrap;
+      transition: background .18s, color .18s, box-shadow .18s;
+    }
+    .s-link svg { flex: none; }
+    .s-link:hover { color: var(--ink); background: rgba(255,255,255,.55); }
+    .s-link.active { color: var(--accent); font-weight: 600; background: linear-gradient(90deg, rgba(79,125,249,.14), rgba(255,255,255,.6)); box-shadow: var(--shadow-inset); }
+    .s-link .lbl { transition: opacity .2s; }
+    .s-foot { margin-top: auto; padding-top: 14px; border-top: 1px solid var(--line); display: flex; align-items: center; gap: 10px; }
+    .user { display: flex; align-items: center; gap: 10px; min-width: 0; flex: 1; }
+    .user .lbl { min-width: 0; white-space: nowrap; transition: opacity .2s; }
+    .user .lbl b { font-size: 12.5px; display: block; }
+    .user .lbl span { font-size: 11px; color: var(--muted); }
+    .coll-btn {
+      flex: none; width: 30px; height: 30px; border-radius: 9px; border: 1px solid var(--line);
+      background: rgba(255,255,255,.7); color: var(--muted); display: grid; place-items: center;
+      transition: transform .25s, color .2s;
+    }
+    .coll-btn:hover { color: var(--accent); }
+    .app.collapsed .sidebar { width: 78px; }
+    .app.collapsed .lbl, .app.collapsed .s-sec, .app.collapsed .user .lbl { opacity: 0; }
+    .app.collapsed .s-head { justify-content: center; padding-inline: 0; }
+    .app.collapsed .s-link { justify-content: center; padding-inline: 0; }
+    .app.collapsed .s-foot { justify-content: center; }
+    .app.collapsed .coll-btn { transform: rotate(180deg); }
+    @media (max-width: 940px) {
+      .sidebar { position: fixed; left: 0; top: 0; bottom: 0; width: 250px; transform: translateX(-105%); transition: transform .28s ease; box-shadow: none; }
+      .app.open .sidebar { transform: none; box-shadow: 30px 0 60px -30px rgba(35,42,53,.4); }
+      .app.collapsed .sidebar { width: 250px; }
+      .app.collapsed .lbl, .app.collapsed .s-sec, .app.collapsed .user .lbl { opacity: 1; }
+      .app.collapsed .s-head, .app.collapsed .s-link, .app.collapsed .s-foot { justify-content: flex-start; padding-inline: inherit; }
+      .app.collapsed .s-head { padding-inline: 6px; }
+      .app.collapsed .s-link { padding-inline: 12px; }
+      .app.collapsed .s-foot { justify-content: flex-start; }
+      .backdrop { display: block; position: fixed; inset: 0; background: rgba(35,42,53,.4); opacity: 0; pointer-events: none; transition: opacity .28s; z-index: 80; }
+      .app.open .backdrop { opacity: 1; pointer-events: auto; }
+    }
+
+    /* ---------- Main column ---------- */
+    .main { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+    .topbar {
+      position: sticky; top: 0; z-index: 60; display: flex; align-items: center; gap: 16px;
+      padding: 13px 24px; background: rgba(233,237,242,.86); backdrop-filter: blur(10px); border-bottom: 1px solid var(--line);
+    }
+    .burger { display: none; width: 36px; height: 36px; border-radius: 10px; border: 1px solid var(--line); background: var(--card); color: var(--ink); place-items: center; }
+    .crumb { font-size: 13px; color: var(--muted); font-weight: 500; }
+    .crumb b { color: var(--ink); font-weight: 600; }
+    .tb-right { margin-left: auto; display: flex; align-items: center; gap: 12px; }
+    .search { display: flex; align-items: center; gap: 8px; background: var(--card); border: 1px solid var(--line); border-radius: 11px; padding: 8px 13px; color: var(--muted); box-shadow: var(--shadow-inset); }
+    .search input { border: none; background: none; outline: none; font: inherit; font-size: 13px; color: var(--ink); width: 150px; }
+    .search input::placeholder { color: var(--muted); }
+    @media (max-width: 640px) { .search { display: none; } }
+    .icon-btn { position: relative; width: 38px; height: 38px; border-radius: 11px; border: 1px solid var(--line); background: var(--card); color: var(--ink-60); display: grid; place-items: center; transition: color .2s, transform .15s; }
+    .icon-btn:hover { color: var(--accent); transform: translateY(-1px); }
+    .export-btn { display: inline-flex; align-items: center; gap: 8px; border: none; background: linear-gradient(135deg, #4F7DF9, #6A8DFB); color: #fff; font-size: 13px; font-weight: 600; padding: 10px 16px; border-radius: 11px; box-shadow: 0 10px 20px -8px rgba(79,125,249,.8); transition: transform .15s, filter .15s; }
+    .export-btn:hover { filter: brightness(1.06); transform: translateY(-1px); }
+    .bell .badge { position: absolute; top: -4px; right: -4px; background: var(--danger); color: #fff; font-size: 9px; font-weight: 700; width: 15px; height: 15px; border-radius: 50%; display: grid; place-items: center; box-shadow: 0 0 0 2px var(--canvas); }
+    .avatar { width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center; font-weight: 700; font-size: 12px; color: #fff; flex: none; }
+    @media (max-width: 940px) { .burger { display: grid; } .crumb { display: none; } }
+
+    /* ---------- Content ---------- */
+    .content { padding: 26px 24px 40px; max-width: 1280px; width: 100%; margin: 0 auto; }
+    .phead { display: flex; justify-content: space-between; align-items: flex-end; gap: 20px; flex-wrap: wrap; margin-bottom: 22px; }
+    .phead h1 { font-size: clamp(22px, 3vw, 30px); letter-spacing: -.02em; }
+    .phead p { color: var(--muted); font-size: 13.5px; margin-top: 4px; }
+    .range-wrap { display: flex; align-items: center; gap: 9px; }
+    .range-wrap label { font-size: 12.5px; color: var(--muted); font-weight: 600; }
+    .range-sel {
+      border: 1px solid var(--line); background: var(--card); color: var(--ink); border-radius: 11px;
+      font: inherit; font-size: 13px; font-weight: 600; padding: 9px 32px 9px 13px; outline: none;
+      appearance: none; cursor: pointer;
+      background-image: linear-gradient(45deg, transparent 50%, var(--muted) 50%), linear-gradient(135deg, var(--muted) 50%, transparent 50%);
+      background-position: calc(100% - 17px) 50%, calc(100% - 12px) 50%; background-size: 5px 5px; background-repeat: no-repeat;
+      box-shadow: var(--shadow-soft);
+    }
+
+    /* ---------- Cards & KPI ---------- */
+    .card { background: var(--card); border: 1px solid var(--line); border-radius: 18px; padding: 20px; box-shadow: var(--shadow-soft); }
+    .card h3 { font-size: 14px; letter-spacing: -.01em; font-weight: 600; }
+    .card .sub { color: var(--muted); font-size: 12px; margin-top: 2px; }
+    .kpis { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 16px; }
+    @media (max-width: 1080px) { .kpis { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 520px) { .kpis { grid-template-columns: 1fr; } }
+    .kpi { padding: 16px 18px; position: relative; overflow: hidden; }
+    .kpi .k-top { display: flex; align-items: center; gap: 8px; }
+    .kpi .k-dot { width: 8px; height: 8px; border-radius: 50%; flex: none; }
+    .kpi .k-label { font-size: 12px; font-weight: 600; color: var(--muted); letter-spacing: .02em; }
+    .trend { margin-left: auto; display: inline-flex; align-items: center; gap: 3px; font-size: 11px; font-weight: 700; padding: 3px 9px; border-radius: 999px; font-variant-numeric: tabular-nums; }
+    .trend.good { background: var(--success-soft); color: #1E9B64; }
+    .trend.bad { background: var(--danger-soft); color: #D95050; }
+    .kpi .big { font-size: clamp(22px, 2.6vw, 30px); font-weight: 700; letter-spacing: -.02em; margin: 10px 0 6px; }
+    .kpi .spark { display: block; width: 100%; height: 30px; }
+
+    .rows { display: grid; gap: 16px; margin-top: 16px; }
+    .row2 { display: grid; grid-template-columns: repeat(12, 1fr); gap: 16px; }
+    .row2 > * { min-width: 0; }
+    .chart-card { grid-column: span 7; }
+    .donut-card { grid-column: span 5; }
+    .proj-card { grid-column: span 7; }
+    .feed-card { grid-column: span 5; }
+    @media (max-width: 1080px) { .row2 > * { grid-column: span 12; } }
+    .c-head { display: flex; align-items: center; justify-content: space-between; gap: 14px; margin-bottom: 8px; flex-wrap: wrap; }
+    .c-head .note { font-size: 11.5px; color: var(--muted); }
+
+    /* chart */
+    .m-tabs { display: flex; gap: 4px; background: rgba(35,42,53,.05); border-radius: 10px; padding: 3px; }
+    .m-tab { border: none; background: none; font-size: 12px; font-weight: 600; color: var(--muted); padding: 7px 15px; border-radius: 8px; transition: all .2s; }
+    .m-tab.active { background: var(--card-2); color: var(--ink); box-shadow: 0 4px 10px -4px rgba(35,42,53,.25); }
+    .chart-cap { font-size: 11px; color: var(--muted); margin: 10px 2px 0; }
+    .plot { position: relative; height: 208px; margin-top: 8px; }
+    .gl { position: absolute; left: 0; right: 0; border-top: 1px dashed rgba(35,42,53,.09); }
+    .axis-max { position: absolute; right: 0; top: -3px; font-size: 10px; color: var(--muted); font-variant-numeric: tabular-nums; z-index: 2; }
+    .bwrap { position: absolute; inset: 14px 0 0 0; display: flex; align-items: flex-end; gap: 6px; }
+    .bar {
+      flex: 1; min-width: 4px; border-radius: 6px 6px 0 0; height: 0;
+      transition: height .65s cubic-bezier(.22,.8,.3,1);
+    }
+    .xlab { display: flex; gap: 6px; margin-top: 2px; }
+    .xl { flex: 1; text-align: center; font-size: 9.5px; color: var(--muted); white-space: nowrap; }
+
+    /* donut */
+    .donut-flex { display: flex; align-items: center; gap: 22px; margin-top: 6px; flex-wrap: wrap; }
+    .donut-svg { width: 148px; height: 148px; flex: none; transform: rotate(-90deg); }
+    .donut-svg circle.seg { fill: none; stroke-width: 20; transition: stroke-dasharray .5s ease; }
+    .d-center { font-family: "Sora"; font-weight: 700; font-size: 23px; fill: var(--ink); }
+    .d-sub { font-size: 8.5px; fill: var(--muted); font-family: "Inter", sans-serif; font-weight: 600; letter-spacing: .06em; }
+    .d-legend { flex: 1; min-width: 150px; display: grid; gap: 11px; }
+    .d-row { display: grid; grid-template-columns: 8px 1fr auto auto; gap: 9px; align-items: center; font-size: 12.5px; }
+    .d-row .dot { width: 8px; height: 8px; border-radius: 3px; }
+    .d-row b { font-size: 12px; font-weight: 600; }
+    .d-row .pc { color: var(--muted); font-weight: 600; width: 38px; text-align: right; font-variant-numeric: tabular-nums; }
+
+    /* projects */
+    .proj { padding: 13px 2px; border-bottom: 1px solid var(--line); }
+    .proj:last-child { border-bottom: none; }
+    .proj .p-top { display: flex; align-items: center; gap: 11px; }
+    .p-ic { width: 34px; height: 34px; flex: none; border-radius: 10px; display: grid; place-items: center; color: #fff; font-size: 13px; font-weight: 700; }
+    .proj .p-name b { font-size: 13.5px; display: block; }
+    .proj .p-name span { font-size: 11.5px; color: var(--muted); }
+    .proj .p-pct { margin-left: auto; font-size: 13px; font-weight: 700; font-variant-numeric: tabular-nums; }
+    .pbar { height: 7px; border-radius: 99px; background: rgba(35,42,53,.07); margin-top: 10px; overflow: hidden; }
+    .pbar i { display: block; height: 100%; width: 0; border-radius: 99px; transition: width 1.1s cubic-bezier(.22,.8,.3,1); }
+
+    /* activity feed */
+    .feed { list-style: none; margin-top: 6px; }
+    .feed li { display: flex; gap: 12px; padding: 11px 2px; border-bottom: 1px solid var(--line); align-items: flex-start; }
+    .feed li:last-child { border-bottom: none; }
+    .feed .f-dot { width: 9px; height: 9px; border-radius: 50%; margin-top: 6px; flex: none; }
+    .feed .f-txt { font-size: 13px; line-height: 1.5; }
+    .feed .f-txt b { font-weight: 600; }
+    .feed .f-time { display: block; font-size: 11px; color: var(--muted); margin-top: 2px; }
+
+    /* ---------- Footer strip ---------- */
+    .foot-strip { border-top: 1px solid var(--line); padding: 18px 24px; font-size: 12.5px; color: var(--muted); display: flex; justify-content: space-between; gap: 14px; flex-wrap: wrap; background: rgba(233,237,242,.5); }
+    .foot-strip a { color: var(--accent); text-decoration: none; font-weight: 600; }
+
+    @media (prefers-reduced-motion: reduce) {
+      .bar { transition: none; }
+      .pbar i { transition: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="toast"></div>
+
+  <div class="app" id="app">
+    <div class="backdrop" id="backdrop"></div>
+
+    <!-- ================= SIDEBAR ================= -->
+    <aside class="sidebar" id="sidebar">
+      <div class="s-head">
+        <a class="logo" href="#app" aria-label="Pulse home">
+          <span class="mark"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3 12h4l2.2-6 4.4 12 2.2-6H21" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          <b>Pul<i>se</i></b>
+        </a>
+      </div>
+      <div class="s-sec">Workspace</div>
+      <nav class="s-nav" id="sNav">
+        <a class="s-link active" href="#app" data-view="Overview">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3" y="3" width="7.5" height="7.5" rx="2" stroke="currentColor" stroke-width="1.8"/><rect x="13.5" y="3" width="7.5" height="7.5" rx="2" stroke="currentColor" stroke-width="1.8"/><rect x="3" y="13.5" width="7.5" height="7.5" rx="2" stroke="currentColor" stroke-width="1.8"/><rect x="13.5" y="13.5" width="7.5" height="7.5" rx="2" fill="currentColor" opacity=".85"/></svg>
+          <span class="lbl">Overview</span>
+        </a>
+        <a class="s-link" href="#app" data-view="Projects">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3 7h18M3 12h18M3 17h18" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+          <span class="lbl">Projects</span>
+        </a>
+        <a class="s-link" href="#app" data-view="Team">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="9" cy="8" r="3.2" stroke="currentColor" stroke-width="1.8"/><path d="M2.8 19c.7-3.2 3.2-5 6.2-5s5.5 1.8 6.2 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><circle cx="17.5" cy="9" r="2.4" stroke="currentColor" stroke-width="1.8"/><path d="M17.6 14.2c2.3.3 3.6 1.9 4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+          <span class="lbl">Team</span>
+        </a>
+        <a class="s-link" href="#app" data-view="Billing">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3" y="6" width="18" height="12" rx="2.5" stroke="currentColor" stroke-width="1.8"/><path d="M3 10h18" stroke="currentColor" stroke-width="1.8"/><path d="M7 15h4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+          <span class="lbl">Billing</span>
+        </a>
+        <a class="s-link" href="#app" data-view="Settings">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="3.2" stroke="currentColor" stroke-width="1.8"/><path d="M19 12a7 7 0 0 0-.1-1.2l2-1.6-2-3.4-2.4 1a7 7 0 0 0-2-1.2L14 3h-4l-.4 2.6a7 7 0 0 0-2.1 1.2l-2.4-1-2 3.4 2 1.6A7 7 0 0 0 5 12c0 .4 0 .8.1 1.2l-2 1.6 2 3.4 2.4-1a7 7 0 0 0 2 1.2L10 21h4l.4-2.6a7 7 0 0 0 2-1.2l2.4 1 2-3.4-2-1.6c.1-.4.2-.8.2-1.2Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
+          <span class="lbl">Settings</span>
+        </a>
+      </nav>
+      <div class="s-foot">
+        <span class="avatar" style="background:linear-gradient(135deg,#4F7DF9,#8B7CF6)">RK</span>
+        <div class="lbl"><b>Rhea Kapoor</b><span>Workspace owner</span></div>
+        <button class="coll-btn" id="collBtn" aria-label="Collapse sidebar" title="Collapse">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M14 6l-6 6 6 6" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </div>
+    </aside>
+
+    <!-- ================= MAIN ================= -->
+    <main class="main">
+      <header class="topbar">
+        <button class="burger" id="burger" aria-label="Open menu">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>
+        </button>
+        <span class="crumb">Pulse <b>/</b> Overview</span>
+        <div class="tb-right">
+          <label class="search">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2"/><path d="m20 20-3.5-3.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+            <input type="search" placeholder="Search anything…" aria-label="Search" id="searchIn" />
+          </label>
+          <button class="export-btn" id="exportBtn">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v12m0 0 4-4m-4 4-4-4M5 21h14" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Export
+          </button>
+          <button class="icon-btn bell" id="bellBtn" aria-label="Notifications">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 9a6 6 0 1 1 12 0c0 5 2 6 2 6H4s2-1 2-6Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M10 19a2 2 0 0 0 4 0" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+            <span class="badge">3</span>
+          </button>
+          <span class="avatar" style="background:linear-gradient(135deg,#F2B24B,#EF6A6A)">RK</span>
+        </div>
+      </header>
+
+      <div class="content">
+        <div class="phead">
+          <div>
+            <h1>Workspace overview</h1>
+            <p id="todayStr">Loading today's date…</p>
+          </div>
+          <div class="range-wrap">
+            <label for="rangeSel">Showing</label>
+            <select class="range-sel" id="rangeSel" aria-label="Time range">
+              <option value="7d">Last 7 days</option>
+              <option value="30d">Last 30 days</option>
+              <option value="90d">Last 90 days</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- KPI cards -->
+        <div class="kpis">
+          <article class="card kpi" data-k="revenue">
+            <div class="k-top"><span class="k-dot" style="background:#4F7DF9"></span><span class="k-label">Revenue</span><span class="trend" id="t-revenue"></span></div>
+            <div class="big num" id="v-revenue">—</div>
+            <svg class="spark" id="s-revenue" preserveAspectRatio="none" viewBox="0 0 100 30" aria-hidden="true"></svg>
+          </article>
+          <article class="card kpi" data-k="users">
+            <div class="k-top"><span class="k-dot" style="background:#2FB57A"></span><span class="k-label">Active users</span><span class="trend" id="t-users"></span></div>
+            <div class="big num" id="v-users">—</div>
+            <svg class="spark" id="s-users" preserveAspectRatio="none" viewBox="0 0 100 30" aria-hidden="true"></svg>
+          </article>
+          <article class="card kpi" data-k="conv">
+            <div class="k-top"><span class="k-dot" style="background:#F2B24B"></span><span class="k-label">Conversion rate</span><span class="trend" id="t-conv"></span></div>
+            <div class="big num" id="v-conv">—</div>
+            <svg class="spark" id="s-conv" preserveAspectRatio="none" viewBox="0 0 100 30" aria-hidden="true"></svg>
+          </article>
+          <article class="card kpi" data-k="churn">
+            <div class="k-top"><span class="k-dot" style="background:#7A8699"></span><span class="k-label">Churn rate</span><span class="trend" id="t-churn"></span></div>
+            <div class="big num" id="v-churn">—</div>
+            <svg class="spark" id="s-churn" preserveAspectRatio="none" viewBox="0 0 100 30" aria-hidden="true"></svg>
+          </article>
+        </div>
+
+        <!-- Chart + donut -->
+        <div class="row2">
+          <section class="card chart-card">
+            <div class="c-head">
+              <div><h3 id="chartTitle">Revenue</h3><p class="sub">How the selected window splits across buckets</p></div>
+              <div class="m-tabs" role="tablist" aria-label="Chart metric">
+                <button class="m-tab active" data-metric="revenue" role="tab" aria-selected="true">Revenue</button>
+                <button class="m-tab" data-metric="users" role="tab" aria-selected="false">Users</button>
+              </div>
+            </div>
+            <p class="chart-cap" id="chartCap">Daily totals · last 7 days</p>
+            <div class="plot" id="plot">
+              <div class="gl" style="top:0"></div>
+              <div class="gl" style="top:25%"></div>
+              <div class="gl" style="top:50%"></div>
+              <div class="gl" style="top:75%"></div>
+              <span class="axis-max" id="axisMax">—</span>
+              <div class="bwrap" id="bwrap"></div>
+            </div>
+            <div class="xlab" id="xlab"></div>
+          </section>
+
+          <section class="card donut-card">
+            <div class="c-head"><div><h3>Where the week goes</h3><p class="sub">Team time · tracked automatically</p></div></div>
+            <div class="donut-flex">
+              <svg class="donut-svg" viewBox="0 0 160 160" id="donut" aria-hidden="true"></svg>
+              <div class="d-legend" id="dLegend"></div>
+            </div>
+          </section>
+        </div>
+
+        <!-- Projects + activity -->
+        <div class="row2">
+          <section class="card proj-card">
+            <div class="c-head">
+              <div><h3>Active projects</h3><p class="sub">Progress against sprint plan</p></div>
+              <span class="note">4 in flight</span>
+            </div>
+            <div class="proj">
+              <div class="p-top">
+                <span class="p-ic" style="background:linear-gradient(135deg,#4F7DF9,#6A8DFB)">PD</span>
+                <div class="p-name"><b>Pulse dashboard v2</b><span>Design · sprint 14 · due in 6 days</span></div>
+                <span class="p-pct num" style="color:#4F7DF9">78%</span>
+              </div>
+              <div class="pbar"><i data-w="78" style="background:linear-gradient(90deg,#4F7DF9,#6A8DFB)"></i></div>
+            </div>
+            <div class="proj">
+              <div class="p-top">
+                <span class="p-ic" style="background:linear-gradient(135deg,#2FB57A,#5CD9A0)">MO</span>
+                <div class="p-name"><b>Mobile app 2.0</b><span>Engineering · due in 3 weeks</span></div>
+                <span class="p-pct num" style="color:#2FB57A">64%</span>
+              </div>
+              <div class="pbar"><i data-w="64" style="background:linear-gradient(90deg,#2FB57A,#5CD9A0)"></i></div>
+            </div>
+            <div class="proj">
+              <div class="p-top">
+                <span class="p-ic" style="background:linear-gradient(135deg,#F2B24B,#F7C978)">OB</span>
+                <div class="p-name"><b>Onboarding flow revamp</b><span>Product · due in 9 days</span></div>
+                <span class="p-pct num" style="color:#E19A2E">52%</span>
+              </div>
+              <div class="pbar"><i data-w="52" style="background:linear-gradient(90deg,#F2B24B,#F7C978)"></i></div>
+            </div>
+            <div class="proj">
+              <div class="p-top">
+                <span class="p-ic" style="background:linear-gradient(135deg,#EF6A6A,#F59595)">Q3</span>
+                <div class="p-name"><b>Q3 planning docs</b><span>Operations · due in 2 days</span></div>
+                <span class="p-pct num" style="color:#D95050">31%</span>
+              </div>
+              <div class="pbar"><i data-w="31" style="background:linear-gradient(90deg,#EF6A6A,#F59595)"></i></div>
+            </div>
+          </section>
+
+          <section class="card feed-card">
+            <div class="c-head"><div><h3>Activity</h3><p class="sub">Latest across the workspace</p></div></div>
+            <ul class="feed">
+              <li>
+                <span class="f-dot" style="background:#4F7DF9"></span>
+                <div class="f-txt"><b>Sami</b> pushed “fix revenue axis” to <b>pulse-dashboard</b><span class="f-time">4 minutes ago</span></div>
+              </li>
+              <li>
+                <span class="f-dot" style="background:#8B7CF6"></span>
+                <div class="f-txt"><b>Priya</b> left a comment on <b>Mobile app 2.0</b>: “love the new empty states”<span class="f-time">26 minutes ago</span></div>
+              </li>
+              <li>
+                <span class="f-dot" style="background:#F2B24B"></span>
+                <div class="f-txt"><b>You</b> exported <b>report.csv</b> (May revenue)<span class="f-time">1 hour ago</span></div>
+              </li>
+              <li>
+                <span class="f-dot" style="background:#2FB57A"></span>
+                <div class="f-txt">Deploy <b>v2.4.1 → production</b> completed · 0 errors<span class="f-time">2 hours ago</span></div>
+              </li>
+              <li>
+                <span class="f-dot" style="background:#7A8699"></span>
+                <div class="f-txt">Invoice <b>#INV-2048</b> paid — $240.00<span class="f-time">3 hours ago</span></div>
+              </li>
+            </ul>
+          </section>
+        </div>
+      </div>
+
+      <footer class="foot-strip">
+        <span>© 2026 Pulse Analytics · Demo page 06 of the RJ Web Faces Gallery</span>
+        <span><a href="index.html">← View all 20 faces</a></span>
+      </footer>
+    </main>
+  </div>
+
+  <script src="js/common.js"></script>
+  <script>
+    // ============================================================
+    // DATA — every number below is deliberately consistent:
+    // bar weights per range sum to 1.000, donut segments sum to 100.
+    // ============================================================
+    const TOTALS = {
+      revenue: { "7d": 48213, "30d": 186920, "90d": 523600 },
+      users:   { "7d": 18290, "30d": 76400,  "90d": 212600 }
+    };
+    const WEIGHTS = {
+      revenue: { "7d": [.108,.127,.120,.154,.143,.178,.170], "30d": [.082,.089,.096,.101,.098,.107,.104,.110,.108,.105], "90d": [.060,.066,.070,.074,.078,.082,.086,.090,.094,.098,.102,.100] },
+      users:   { "7d": [.118,.112,.106,.132,.142,.160,.230], "30d": [.086,.092,.098,.104,.096,.110,.102,.098,.108,.106], "90d": [.058,.064,.070,.066,.074,.080,.076,.084,.090,.096,.110,.132] }
+    };
+    const XLAB = {
+      "7d": ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"],
+      "30d": ["1–3","4–6","7–9","10–12","13–15","16–18","19–21","22–24","25–27","28–30"],
+      "90d": ["W1","W2","W3","W4","W5","W6","W7","W8","W9","W10","W11","W12"]
+    };
+    const CAPTION = { "7d": "Daily totals · last 7 days", "30d": "3-day buckets · last 30 days", "90d": "Weekly totals · last 12 weeks" };
+    const BAR_BG = {
+      revenue: "linear-gradient(180deg,#7C9BFB,#4F7DF9)",
+      users:   "linear-gradient(180deg,#5CD9A0,#2FB57A)"
+    };
+    const KPI_DATA = {
+      "7d": {
+        revenue: { v: 48213, t: "+4.2%", up: 1, good: 1, spark: [41,43.5,44,46,46.8,47.5,48.2] },
+        users:   { v: 18290, t: "+8.4%", up: 1, good: 1, spark: [16.4,16.9,17.1,17.6,17.4,17.9,18.3] },
+        conv:    { v: 3.42,  t: "+0.3%", up: 1, good: 1, spark: [3.1,3.18,3.22,3.3,3.36,3.4,3.42] },
+        churn:   { v: 2.31,  t: "−0.2%", up: 0, good: 1, spark: [2.6,2.55,2.5,2.46,2.42,2.36,2.31] }
+      },
+      "30d": {
+        revenue: { v: 186920, t: "+7.9%", up: 1, good: 1, spark: [168,171,174,178,177,181,183,186.9] },
+        users:   { v: 76400,  t: "+12.1%", up: 1, good: 1, spark: [68,70,71.5,73,74,75.4,76.4] },
+        conv:    { v: 3.51,   t: "+0.1%", up: 1, good: 1, spark: [3.3,3.38,3.44,3.4,3.46,3.48,3.51] },
+        churn:   { v: 2.24,   t: "−0.1%", up: 0, good: 1, spark: [2.5,2.44,2.4,2.34,2.3,2.26,2.24] }
+      },
+      "90d": {
+        revenue: { v: 523600, t: "+13.4%", up: 1, good: 1, spark: [452,460,468,478,490,505,515,523.6] },
+        users:   { v: 212600, t: "−1.2%", up: 0, good: 0, spark: [226,223,220,219,217,214,212.6] },
+        conv:    { v: 3.36,   t: "−0.2%", up: 0, good: 0, spark: [3.52,3.48,3.45,3.42,3.39,3.37,3.36] },
+        churn:   { v: 2.35,   t: "+0.1%", up: 1, good: 0, spark: [2.2,2.24,2.28,2.3,2.32,2.34,2.35] }
+      }
+    };
+    const KPI_META = {
+      revenue: { fmt: (n) => "$" + n.toLocaleString("en-US") },
+      users:   { fmt: (n) => n.toLocaleString("en-US") },
+      conv:    { fmt: (n) => n.toFixed(2) + "%" },
+      churn:   { fmt: (n) => n.toFixed(2) + "%" }
+    };
+    const KPI_COLOR = { revenue: "#4F7DF9", users: "#2FB57A", conv: "#F2B24B", churn: "#7A8699" };
+    // donut: hours & percentages sum consistently (34 h tracked, 100 %)
+    const SEGMENTS = [
+      { label: "Focused deep work", h: 16.3, pct: 48, color: "#4F7DF9" },
+      { label: "Meetings & calls",  h: 7.5,  pct: 22, color: "#F2B24B" },
+      { label: "Async reviews",     h: 6.1,  pct: 18, color: "#2FB57A" },
+      { label: "Admin & misc",      h: 4.1,  pct: 12, color: "#C7CFDC" }
+    ];
+
+    const app = document.getElementById("app");
+    const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+    let range = "7d";
+    let metric = "revenue";
+    const prev = {};   // last rendered KPI values for count-ups
+
+    // ============================================================
+    // SIDEBAR
+    // ============================================================
+    const collBtn = document.getElementById("collBtn");
+    collBtn.addEventListener("click", () => app.classList.toggle("collapsed"));
+    const burger = document.getElementById("burger");
+    const backdrop = document.getElementById("backdrop");
+    function closeDrawer() { app.classList.remove("open"); }
+    burger.addEventListener("click", () => app.classList.add("open"));
+    backdrop.addEventListener("click", closeDrawer);
+    document.querySelectorAll("#sNav .s-link").forEach((link) => {
+      link.addEventListener("click", (e) => {
+        e.preventDefault();
+        document.querySelectorAll("#sNav .s-link").forEach((l) => l.classList.remove("active"));
+        link.classList.add("active");
+        closeDrawer();
+        const view = link.dataset.view;
+        if (view !== "Overview") showToast("✳️ " + view + " opens in the full app — this face demos Overview.");
+      });
+    });
+
+    // ============================================================
+    // TOP BAR
+    // ============================================================
+    document.getElementById("exportBtn").addEventListener("click", () => showToast("✅ Export ready — report.csv queued"));
+    document.getElementById("bellBtn").addEventListener("click", () => showToast("🔔 3 unread notifications — 2 mentions, 1 deploy"));
+    document.getElementById("searchIn").addEventListener("keydown", (e) => {
+      if (e.key === "Enter" && e.target.value.trim()) {
+        showToast("🔍 “" + e.target.value.trim() + "” — demo search across the workspace");
+      }
+    });
+
+    // ============================================================
+    // KPI helpers
+    // ============================================================
+    function sparkPath(pts) {
+      const n = pts.length;
+      const min = Math.min(...pts), max = Math.max(...pts);
+      const span = (max - min) || 1;
+      return pts.map((p, i) => {
+        const x = (i / (n - 1)) * 100;
+        const y = 27 - ((p - min) / span) * 22;
+        return (i ? "L" : "M") + x.toFixed(2) + " " + y.toFixed(2);
+      }).join(" ");
+    }
+    function animateValue(el, key, target) {
+      const fmt = KPI_META[key].fmt;
+      if (reduced || prev[key] === undefined) { el.textContent = fmt(target); prev[key] = target; return; }
+      const from = prev[key];
+      const t0 = performance.now(), dur = 500;
+      (function tick(now) {
+        const p = Math.min((now - t0) / dur, 1);
+        const eased = 1 - Math.pow(1 - p, 3);
+        el.textContent = fmt(from + (target - from) * eased);
+        if (p < 1) requestAnimationFrame(tick);
+        else prev[key] = target;
+      })(t0);
+    }
+    function renderSpark(key, pts) {
+      const svg = document.getElementById("s-" + key);
+      svg.innerHTML = '<path d="' + sparkPath(pts) + '" fill="none" stroke="' + KPI_COLOR[key] + '" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" opacity=".9"/>';
+    }
+
+    // ============================================================
+    // RANGE FILTER — genuinely swaps KPI values, trends & sparks
+    // ============================================================
+    function applyRange(r) {
+      range = r;
+      const data = KPI_DATA[r];
+      Object.keys(data).forEach((key) => {
+        const d = data[key];
+        animateValue(document.getElementById("v-" + key), key, d.v);
+        const chip = document.getElementById("t-" + key);
+        chip.textContent = (d.up ? "▲ " : "▼ ") + d.t;
+        chip.className = "trend " + (d.good ? "good" : "bad");
+        renderSpark(key, d.spark);
+      });
+      buildChart();
+    }
+    document.getElementById("rangeSel").addEventListener("change", (e) => applyRange(e.target.value));
+
+    // ============================================================
+    // CHART — bar heights animate on every metric/range change
+    // ============================================================
+    function fmtAxis(v, isMoney) {
+      if (v >= 1000) {
+        const k = (v / 1000).toFixed(1).replace(/\.0$/, "");
+        return (isMoney ? "$" : "") + k + "k";
+      }
+      return (isMoney ? "$" : "") + Math.round(v);
+    }
+    function buildChart() {
+      const weights = WEIGHTS[metric][range];
+      const total = TOTALS[metric][range];
+      const values = weights.map((w) => w * total);
+      const isMoney = metric === "revenue";
+      const max = Math.max(...values);
+      document.getElementById("chartTitle").textContent = isMoney ? "Revenue" : "Active users";
+      document.getElementById("chartCap").textContent = CAPTION[range];
+      document.getElementById("axisMax").textContent = "max " + fmtAxis(max, isMoney);
+
+      const bwrap = document.getElementById("bwrap");
+      bwrap.innerHTML = "";
+      values.forEach((v) => {
+        const bar = document.createElement("div");
+        bar.className = "bar";
+        bar.style.background = BAR_BG[metric];
+        bar.title = (isMoney ? "$" : "") + Math.round(v).toLocaleString("en-US");
+        bwrap.appendChild(bar);
+      });
+      const xlab = document.getElementById("xlab");
+      xlab.innerHTML = "";
+      XLAB[range].forEach((l) => {
+        const s = document.createElement("span");
+        s.className = "xl";
+        s.textContent = l;
+        xlab.appendChild(s);
+      });
+      // animate: 0 -> target height
+      const bars = bwrap.querySelectorAll(".bar");
+      const heights = values.map((v) => (v / max) * 100);
+      bars.forEach((b) => (b.style.height = "0%"));
+      requestAnimationFrame(() => requestAnimationFrame(() => {
+        bars.forEach((b, i) => {
+          if (reduced) { b.style.transition = "none"; }
+          b.style.height = heights[i] + "%";
+        });
+      }));
+    }
+    document.querySelectorAll(".m-tab").forEach((tab) => {
+      tab.addEventListener("click", () => {
+        document.querySelectorAll(".m-tab").forEach((t) => { t.classList.remove("active"); t.setAttribute("aria-selected", "false"); });
+        tab.classList.add("active");
+        tab.setAttribute("aria-selected", "true");
+        metric = tab.dataset.metric;
+        buildChart();
+      });
+    });
+
+    // ============================================================
+    // DONUT — drawn from SEGMENTS (sums to 100%)
+    // ============================================================
+    function renderDonut() {
+      const svg = document.getElementById("donut");
+      const R = 58, C = 2 * Math.PI * R;
+      svg.innerHTML = "";
+      let acc = 0;
+      SEGMENTS.forEach((seg) => {
+        const len = (seg.pct / 100) * C;
+        const c = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+        c.setAttribute("class", "seg");
+        c.setAttribute("cx", "80"); c.setAttribute("cy", "80"); c.setAttribute("r", String(R));
+        c.setAttribute("stroke", seg.color);
+        c.setAttribute("stroke-dasharray", len + " " + (C - len));
+        c.setAttribute("stroke-dashoffset", String(-acc));
+        svg.appendChild(c);
+        acc += len;
+      });
+      const cx = document.createElementNS("http://www.w3.org/2000/svg", "g");
+      cx.setAttribute("transform", "rotate(90 80 80)");
+      cx.innerHTML = '<text class="d-center" x="80" y="76" text-anchor="middle">34h</text><text class="d-sub" x="80" y="92" text-anchor="middle">tracked</text>';
+      svg.appendChild(cx);
+      const legend = document.getElementById("dLegend");
+      legend.innerHTML = "";
+      SEGMENTS.forEach((seg) => {
+        const row = document.createElement("div");
+        row.className = "d-row";
+        row.innerHTML = '<span class="dot" style="background:' + seg.color + '"></span><b>' + seg.label + '</b><b class="num">' + seg.h.toFixed(1) + 'h</b><span class="pc">' + seg.pct + '%</span>';
+        legend.appendChild(row);
+      });
+    }
+
+    // ============================================================
+    // PROGRESS BARS — animate to their target width on load
+    // ============================================================
+    const bars = document.querySelectorAll(".pbar i");
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+      bars.forEach((b, i) => {
+        const w = b.dataset.w;
+        if (reduced) b.style.transition = "none";
+        setTimeout(() => { b.style.width = w + "%"; }, 150 + i * 140);
+      });
+    }));
+
+    // ============================================================
+    // INIT
+    // ============================================================
+    document.getElementById("todayStr").textContent = new Date().toLocaleDateString("en-US", { weekday: "long", year: "numeric", month: "long", day: "numeric" });
+    renderDonut();
+    applyRange("7d");
+  </script>
+</body>
+</html>

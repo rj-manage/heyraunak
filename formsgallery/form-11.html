@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>11 · Holographic UI — Rj_Manage</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Sora:wght@500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/common.css" />
+  <style>
+    :root {
+      --hue: 230;
+      --hue2: 320;
+    }
+    body { background: #0a0a14; overflow-x: hidden; }
+    .section { padding: 80px 20px; position: relative; z-index: 2; }
+
+    /* shifting ambient gradient driven by hue vars */
+    body::before {
+      content: ""; position: fixed; inset: 0; z-index: 0; pointer-events: none;
+      background: radial-gradient(900px 500px at 80% -10%, hsla(var(--hue), 90%, 60%, .25), transparent 60%),
+                  radial-gradient(700px 400px at 10% 110%, hsla(var(--hue2), 90%, 60%, .22), transparent 55%);
+      transition: background .4s ease; filter: blur(30px);
+    }
+
+    .head { text-align: center; margin-bottom: 40px; }
+    .head .badge {
+      display: inline-flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 700;
+      letter-spacing: .18em; text-transform: uppercase; color: #c7d2fe;
+      border: 1px solid hsla(var(--hue), 90%, 70%, .4); background: hsla(var(--hue), 90%, 60%, .1);
+      padding: 7px 16px; border-radius: 999px; margin-bottom: 18px; transition: all .4s ease;
+    }
+    .head h2 {
+      font-size: clamp(28px, 5vw, 44px); letter-spacing: -.02em; color: #fff;
+      background: linear-gradient(90deg, hsl(var(--hue),85%,70%), hsl(var(--hue2),85%,70%), hsl(var(--hue),85%,70%));
+      background-size: 200% 100%; -webkit-background-clip: text; background-clip: text; color: transparent;
+      animation: hueFlow 6s linear infinite;
+    }
+    @keyframes hueFlow { to { background-position: 200% 0; } }
+    .head p { color: #94a3b8; margin-top: 10px; font-size: 15.5px; }
+
+    /* floating holographic particles */
+    .holo-particle { position: fixed; border-radius: 50%; pointer-events: none; z-index: 1;
+      background: radial-gradient(circle, hsla(var(--hue),90%,75%,.7), transparent 70%); filter: blur(1px); animation: float 12s linear infinite; }
+    @keyframes float { 0% { transform: translateY(100vh) scale(.6); opacity: 0; } 20% { opacity: .7; } 80% { opacity: .5; } 100% { transform: translateY(-20vh) scale(1.3); opacity: 0; } }
+
+    .holo-card {
+      max-width: 680px; margin: 0 auto; border-radius: 26px; padding: 46px 52px;
+      position: relative; overflow: hidden; transition: all .4s ease;
+      background: linear-gradient(160deg, hsla(var(--hue),80%,70%,.16), rgba(255,255,255,.04) 45%);
+      border: 1px solid hsla(var(--hue),80%,70%,.35);
+      box-shadow: 0 30px 90px -30px hsla(var(--hue),80%,60%,.4), inset 0 1px 0 rgba(255,255,255,.18);
+      backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px);
+    }
+    /* animated rainbow border */
+    .holo-card::before {
+      content: ""; position: absolute; inset: 0; border-radius: 26px; padding: 1.5px;
+      background: linear-gradient(90deg, hsl(var(--hue),90%,70%), hsl(var(--hue2),90%,70%), hsl(calc(var(--hue) + 80),90%,70%), hsl(var(--hue),90%,70%));
+      background-size: 300% 100%; animation: shimmer 6s linear infinite;
+      -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+      -webkit-mask-composite: xor; mask-composite: exclude; pointer-events: none;
+    }
+    @keyframes shimmer { to { background-position: -300% 0; } }
+    @media (max-width: 560px) { .holo-card { padding: 32px 22px; } }
+
+    .holo-form { display: grid; gap: 20px; position: relative; z-index: 2; }
+
+    .holo-field { position: relative; }
+    .holo-field label { display: block; font-size: 13px; font-weight: 600; color: #cbd5e1; margin-bottom: 8px; }
+    .holo-field input, .holo-field select, .holo-field textarea {
+      width: 100%; background: rgba(10,10,30,.5); border: 1px solid hsla(var(--hue),60%,70%,.3);
+      color: #fff; font: inherit; font-size: 15px; padding: 14px 16px; border-radius: 14px; outline: none; resize: vertical;
+      transition: all .25s ease;
+    }
+    .holo-field textarea { min-height: 100px; }
+    .holo-field select option { background: #12122a; color: #fff; }
+    .holo-field input::placeholder, .holo-field textarea::placeholder { color: rgba(148,163,184,.5); }
+    .holo-field input:focus, .holo-field select:focus, .holo-field textarea:focus {
+      border-color: hsla(var(--hue),90%,75%,.9); background: rgba(10,10,30,.7);
+      box-shadow: 0 0 0 4px hsla(var(--hue),80%,70%,.2), 0 0 36px hsla(var(--hue),80%,60%,.3);
+    }
+
+    .row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    @media (max-width: 520px) { .row { grid-template-columns: 1fr; } }
+
+    .holo-btn {
+      font: inherit; font-weight: 800; font-size: 15.5px; color: #0a0a14;
+      background: linear-gradient(120deg, hsl(var(--hue),90%,70%), hsl(var(--hue2),90%,70%));
+      border: none; border-radius: 14px; padding: 16px; cursor: pointer;
+      box-shadow: 0 14px 40px -10px hsla(var(--hue),80%,60%,.7), inset 0 1px 0 rgba(255,255,255,.5);
+      transition: transform .15s ease, box-shadow .2s ease, filter .2s ease;
+    }
+    .holo-btn:hover { filter: brightness(1.08); transform: translateY(-2px); box-shadow: 0 20px 54px -10px hsla(var(--hue),80%,60%,.9); }
+    .fine { text-align: center; color: #64748b; font-size: 13px; margin-top: 4px; }
+  </style>
+</head>
+<body>
+  <div class="toast"></div>
+  <section class="section">
+    <div class="head">
+      <span class="badge">✦ Rj_Manage · Holographic Series</span>
+      <h2>Register free</h2>
+      <p>Move your cursor across the page — the interface shifts hue like a hologram.</p>
+    </div>
+
+    <div class="holo-card">
+      <form class="holo-form" id="holoForm" novalidate>
+        <div class="row">
+          <div class="holo-field">
+            <label for="name">Full name *</label>
+            <input id="name" type="text" placeholder="e.g. Ananya Rao" required data-field="Name" />
+          </div>
+          <div class="holo-field">
+            <label for="email">Email *</label>
+            <input id="email" type="email" placeholder="you@example.com" required data-field="Email" />
+          </div>
+        </div>
+        <div class="row">
+          <div class="holo-field">
+            <label for="interest">Interest *</label>
+            <select id="interest" required data-field="Interest">
+              <option value="">Select…</option>
+              <option>Design</option>
+              <option>Development</option>
+              <option>Product</option>
+              <option>Marketing</option>
+              <option>Data</option>
+            </select>
+          </div>
+          <div class="holo-field">
+            <label for="level">Experience *</label>
+            <select id="level" required data-field="Level">
+              <option value="">Select…</option>
+              <option>New to the field</option>
+              <option>1 – 3 years</option>
+              <option>3 – 7 years</option>
+              <option>7+ years</option>
+            </select>
+          </div>
+        </div>
+        <div class="holo-field">
+          <label for="about">About you *</label>
+          <textarea id="about" placeholder="A few lines about what you're building…" required data-field="About"></textarea>
+        </div>
+        <button class="holo-btn" type="submit" id="holoBtn">Create account ✦</button>
+        <p class="fine">Free forever · no card required</p>
+      </form>
+    </div>
+  </section>
+
+  <script src="js/common.js"></script>
+  <script>
+    /* Holographic hue shift + magnetic button */
+    const root = document.documentElement;
+    const btn = document.getElementById("holoBtn");
+    const card = document.querySelector(".holo-card");
+    document.addEventListener("mousemove", (e) => {
+      root.style.setProperty("--hue", 200 + (e.clientX / window.innerWidth) * 140);
+      root.style.setProperty("--hue2", 300 + (e.clientY / window.innerHeight) * 60);
+    });
+    card.addEventListener("mousemove", (e) => {
+      const r = card.getBoundingClientRect();
+      const dx = (e.clientX - (r.left + r.width / 2)) * 0.08;
+      const dy = (e.clientY - (r.top + r.height / 2)) * 0.08;
+      btn.style.background = `linear-gradient(120deg, hsl(${root.style.getPropertyValue("--hue")},90%,70%), hsl(${root.style.getPropertyValue("--hue2")},90%,70%))`;
+      btn.style.transform = `translate(${dx}px, ${dy}px)`;
+    });
+    card.addEventListener("mouseleave", () => { btn.style.transform = ""; });
+
+    /* Floating holographic particles */
+    for (let i = 0; i < 22; i++) {
+      const p = document.createElement("span");
+      p.className = "holo-particle";
+      const s = 3 + Math.random() * 6;
+      p.style.width = s + "px"; p.style.height = s + "px";
+      p.style.left = Math.random() * 100 + "vw";
+      p.style.animationDuration = 9 + Math.random() * 14 + "s";
+      p.style.animationDelay = -Math.random() * 20 + "s";
+      document.body.appendChild(p);
+    }
+
+    document.getElementById("holoForm").addEventListener("submit", (e) => {
+      e.preventDefault();
+      const form = e.target;
+      if (!form.checkValidity()) { form.reportValidity(); return; }
+      const d = collectForm(form);
+      showToast("✦ Account created for " + d["Name"] + "!");
+      form.reset();
+    });
+  </script>
+</body>
+</html>

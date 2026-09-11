@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>04 · Step Wizard — Rj_Manage</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Sora:wght@500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/common.css" />
+  <style>
+    body { background: linear-gradient(180deg, #eef2ff 0%, #f8fafc 40%); }
+    .section { padding: 70px 20px; }
+
+    .card { max-width: 640px; margin: 0 auto; background: #fff; border-radius: 20px; box-shadow: var(--shadow-card); padding: 40px 42px 44px; border: 1px solid #eef2f7; }
+    @media (max-width: 520px) { .card { padding: 28px 22px; } }
+
+    .steps { display: flex; align-items: center; justify-content: space-between; margin-bottom: 34px; }
+    .step { display: flex; align-items: center; gap: 10px; }
+    .step .dot {
+      width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center;
+      background: #eef2f7; color: #94a3b8; font-size: 13.5px; font-weight: 700;
+      transition: all .3s ease; flex: none;
+    }
+    .step .lbl { font-size: 13px; font-weight: 600; color: #94a3b8; }
+    .step.done .dot { background: #059669; color: #fff; }
+    .step.done .lbl { color: #059669; }
+    .step.active .dot { background: #4f46e5; color: #fff; box-shadow: 0 0 0 5px rgba(79,70,229,.16); }
+    .step.active .lbl { color: #4f46e5; }
+    .step-line { flex: 1; height: 2px; background: #e2e8f0; margin: 0 12px; border-radius: 2px; position: relative; overflow: hidden; }
+    .step-line::after { content: ""; position: absolute; inset: 0; background: #059669; transform: scaleX(0); transform-origin: left; transition: transform .35s ease; }
+    .step-line.fill::after { transform: scaleX(1); }
+
+    .pane { display: none; animation: fadeUp .3s ease; }
+    .pane.active { display: block; }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } }
+
+    .pane h3 { font-size: 21px; letter-spacing: -.02em; margin-bottom: 4px; }
+    .pane .hint { color: #64748b; font-size: 14px; margin-bottom: 22px; }
+    .pane form { display: grid; gap: 15px; }
+    .pane .row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    @media (max-width: 460px) { .pane .row { grid-template-columns: 1fr; } }
+
+    .nav-btns { display: flex; justify-content: space-between; margin-top: 26px; }
+    .btn-back { background: transparent; color: #64748b; padding: 12px 20px; border-radius: 10px; border: 1.5px solid #e2e8f0; cursor: pointer; font: inherit; font-weight: 600; transition: all .15s ease; }
+    .btn-back:hover { border-color: #94a3b8; }
+
+    .review { display: grid; gap: 12px; }
+    .review-item { display: flex; justify-content: space-between; gap: 18px; background: #f8fafc; border: 1px solid #eef2f7; border-radius: 12px; padding: 14px 18px; font-size: 14px; }
+    .review-item span { color: #64748b; font-size: 12.5px; font-weight: 600; text-transform: uppercase; letter-spacing: .05em; }
+    .review-item b { text-align: right; font-weight: 600; }
+
+    .consent { display: flex; gap: 10px; align-items: flex-start; font-size: 13.5px; color: #475569; }
+    .consent input { margin-top: 3px; accent-color: #4f46e5; }
+
+    .btn-primary { border-radius: 10px; }
+  </style>
+</head>
+<body>
+  <div class="toast"></div>
+  <section class="section">
+    <div class="card">
+      <div class="steps" id="steps">
+        <div class="step active" data-steplabel="1"><span class="dot">1</span><span class="lbl">Applicant</span></div>
+        <div class="step-line"></div>
+        <div class="step" data-steplabel="2"><span class="dot">2</span><span class="lbl">Coverage</span></div>
+        <div class="step-line"></div>
+        <div class="step" data-steplabel="3"><span class="dot">3</span><span class="lbl">Details</span></div>
+        <div class="step-line"></div>
+        <div class="step" data-steplabel="4"><span class="dot">4</span><span class="lbl">Review</span></div>
+      </div>
+
+      <!-- Step 1 -->
+      <div class="pane active" data-pane="1">
+        <h3>About the applicant</h3>
+        <p class="hint">Start with the basics — this stays private and secure.</p>
+        <form onsubmit="return false">
+          <div class="field">
+            <label for="s1-name">Full name *</label>
+            <input class="input" id="s1-name" type="text" placeholder="e.g. Priya Nair" required data-field="Applicant" />
+          </div>
+          <div class="row">
+            <div class="field">
+              <label for="s1-dob">Date of birth *</label>
+              <select class="select" id="s1-dob" required data-field="Age">
+                <option value="">Select…</option>
+                <option>Under 18</option>
+                <option>18 – 30</option>
+                <option>31 – 45</option>
+                <option>46 – 60</option>
+                <option>60+</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="s1-email">Email</label>
+              <input class="input" id="s1-email" type="email" placeholder="optional" data-field="Email" />
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <!-- Step 2 -->
+      <div class="pane" data-pane="2">
+        <h3>Pick your coverage</h3>
+        <p class="hint">Choose the plan that fits your needs best.</p>
+        <form onsubmit="return false">
+          <div class="field">
+            <label for="s2-plan">Coverage plan *</label>
+            <select class="select" id="s2-plan" required data-field="Plan">
+              <option value="">Choose a plan…</option>
+              <option>Essential</option>
+              <option>Standard</option>
+              <option>Premium</option>
+              <option>Family</option>
+              <option>Custom</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="s2-relation">Relationship *</label>
+            <select class="select" id="s2-relation" required data-field="Relationship">
+              <option value="">Who is this for?</option>
+              <option>Just me</option>
+              <option>Me & partner</option>
+              <option>Me & family</option>
+              <option>Someone else</option>
+            </select>
+          </div>
+        </form>
+      </div>
+
+      <!-- Step 3 -->
+      <div class="pane" data-pane="3">
+        <h3>Tell us more</h3>
+        <p class="hint">A few details help us tailor the right cover.</p>
+        <form onsubmit="return false">
+          <div class="field">
+            <label for="s3-notes">Why do you need cover? *</label>
+            <textarea class="textarea" id="s3-notes" placeholder="Describe your situation, goals, or requirements…" required data-field="Notes"></textarea>
+            <span class="hint" id="s3-count">0 / 400 characters</span>
+          </div>
+          <div class="field">
+            <label for="s3-goal">Primary goal (one-liner)</label>
+            <input class="input" id="s3-goal" type="text" placeholder="e.g. Protection for my family" data-field="Goal" />
+          </div>
+        </form>
+      </div>
+
+      <!-- Step 4 -->
+      <div class="pane" data-pane="4">
+        <h3>Review & submit</h3>
+        <p class="hint">Double-check everything before sending.</p>
+        <div class="review">
+          <div class="review-item"><span>Applicant</span><b id="r-name">—</b></div>
+          <div class="review-item"><span>Age group</span><b id="r-team">—</b></div>
+          <div class="review-item"><span>Plan</span><b id="r-award">—</b></div>
+          <div class="review-item"><span>Notes</span><b id="r-reason">—</b></div>
+          <label class="consent"><input type="checkbox" id="r-consent" /> I confirm these details are accurate to the best of my knowledge.</label>
+        </div>
+      </div>
+
+      <div class="nav-btns">
+        <button class="btn-back" id="btnBack" type="button" style="visibility:hidden">← Back</button>
+        <button class="btn btn-primary" id="btnNext" type="button">Continue →</button>
+      </div>
+    </div>
+  </section>
+
+  <script src="js/common.js"></script>
+  <script>
+    let current = 1;
+    const total = 4;
+    const panes = document.querySelectorAll("[data-pane]");
+    const steps = document.querySelectorAll("[data-steplabel]");
+    const lines = document.querySelectorAll(".step-line");
+    const btnBack = document.getElementById("btnBack");
+    const btnNext = document.getElementById("btnNext");
+    const notes = document.getElementById("s3-notes");
+
+    notes.addEventListener("input", () => {
+      document.getElementById("s3-count").textContent = notes.value.length + " / 400 characters";
+    });
+
+    function syncNav() {
+      btnBack.style.visibility = current === 1 ? "hidden" : "visible";
+      btnNext.textContent = current === total ? "Submit application ✓" : "Continue →";
+    }
+
+    function render() {
+      panes.forEach((p) => p.classList.toggle("active", +p.dataset.pane === current));
+      steps.forEach((s, i) => {
+        const n = i + 1;
+        s.classList.toggle("active", n === current);
+        s.classList.toggle("done", n < current);
+      });
+      lines.forEach((l, i) => l.classList.toggle("fill", i < current - 1));
+      syncNav();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function validateCurrent() {
+      const pane = document.querySelector(`[data-pane="${current}"]`);
+      const fields = pane.querySelectorAll("input, select, textarea");
+      for (const f of fields) {
+        if (!f.checkValidity()) { f.reportValidity(); return false; }
+      }
+      return true;
+    }
+
+    function fillReview() {
+      document.getElementById("r-name").textContent = document.getElementById("s1-name").value || "—";
+      document.getElementById("r-team").textContent = document.getElementById("s1-dob").value || "—";
+      document.getElementById("r-award").textContent = document.getElementById("s2-plan").value || "—";
+      document.getElementById("r-reason").textContent = document.getElementById("s3-notes").value || "—";
+    }
+
+    btnNext.addEventListener("click", () => {
+      if (current < total) {
+        if (!validateCurrent()) return;
+        current++;
+      } else {
+        if (!document.getElementById("r-consent").checked) { showToast("Please confirm the details first."); return; }
+        const d = {};
+        document.querySelectorAll("[data-field]").forEach((el) => { d[el.dataset.field] = el.value.trim(); });
+        showToast("🎉 Application submitted for " + (d["Applicant"] || "the applicant") + "!");
+        document.querySelectorAll(".pane").forEach((p) => p.querySelectorAll("input,select,textarea").forEach((f) => { if (f.type !== "checkbox") f.value = ""; }));
+        document.getElementById("r-consent").checked = false;
+        current = 1;
+      }
+      render();
+    });
+
+    btnBack.addEventListener("click", () => { if (current > 1) { current--; render(); } });
+    render();
+  </script>
+</body>
+</html>

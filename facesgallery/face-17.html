@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>17 · VOLT Wireless Earbuds — RJ Web Faces</title>
+  <meta name="description" content="VOLT — a 3D product showcase for wireless earbuds: a cursor-tilting CSS-3D bud stage, live finish swatches, an interactive audio visualizer and a working order form. Face 17 of the RJ Web Faces Gallery — Advanced level." />
+  <link rel="icon" href="assets/img/RJ_Logo_Black.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Sora:wght@500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/common.css" />
+  <style>
+    :root {
+      --bg0: #0B0D12; --bg1: #131722;
+      --txt: #EDF0F8; --dim: #98A0B8;
+      --line: rgba(255,255,255,.08);
+      --violet: #6D5BD0; --cyan: #37E6FF;
+      /* Midnight finish (default palette) */
+      --accA: #6D5BD0; --accB: #9d8bff;
+      --shA: #454b6e; --shB: #1d2138; --shC: #0a0d1c;
+      --sheen: rgba(255,255,255,.32);
+      --rimA: rgba(55,230,255,.8);
+    }
+    html { scroll-behavior: smooth; }
+    body { background: radial-gradient(1200px 700px at 85% -10%, rgba(109,91,208,.16), transparent 60%), radial-gradient(900px 600px at -10% 30%, rgba(55,230,255,.08), transparent 55%), linear-gradient(180deg, var(--bg0), var(--bg1) 60%, #0a0c12); color: var(--txt); overflow-x: hidden; }
+    ::selection { background: var(--violet); color: #fff; }
+    a { text-decoration: none; color: inherit; }
+    h1, h2, h3 { font-family: "Sora", var(--font-body); letter-spacing: -.02em; }
+
+    .toast { background: #10131f; color: var(--txt); border: 1px solid rgba(55,230,255,.4); box-shadow: 0 0 24px rgba(55,230,255,.25), 0 12px 34px -8px rgba(0,0,0,.6); }
+
+    /* ================= NAV ================= */
+    .nav { position: sticky; top: 0; z-index: 80; display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 14px 6vw; background: rgba(11,13,18,.72); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border-bottom: 1px solid var(--line); transition: box-shadow .25s ease, background .25s ease; }
+    .nav.scrolled { box-shadow: 0 14px 34px -18px rgba(0,0,0,.6); background: rgba(9,11,16,.88); }
+    .brand { display: flex; align-items: center; gap: 11px; }
+    .brand .logo { width: 34px; height: 34px; }
+    .brand .logo img { width: 100%; height: 100%; object-fit: contain; }
+    .wordmark { font-family: "Sora"; font-weight: 800; font-size: 17px; letter-spacing: .22em; }
+    .wordmark i { font-style: normal; color: var(--cyan); text-shadow: 0 0 14px rgba(55,230,255,.8); }
+    .nav-links { display: flex; align-items: center; gap: 26px; }
+    .nav-links a { font-size: 13.5px; font-weight: 500; color: var(--dim); transition: color .2s; }
+    .nav-links a:hover { color: var(--txt); }
+    .btnv { display: inline-flex; align-items: center; gap: 8px; border: none; cursor: pointer; font: inherit; font-weight: 600; font-size: 14px; padding: 11px 20px; border-radius: 12px; transition: transform .15s, box-shadow .2s, filter .2s, background .2s; }
+    .btnv:active { transform: translateY(1px) scale(.99); }
+    .btnv-primary { background: linear-gradient(135deg, var(--accA), var(--accB)); color: #fff; box-shadow: 0 10px 26px -10px rgba(109,91,208,.7); }
+    .btnv-primary:hover { filter: brightness(1.12); transform: translateY(-2px); }
+    .btnv-ghost { background: rgba(255,255,255,.03); color: var(--txt); border: 1px solid var(--line); }
+    .btnv-ghost:hover { border-color: rgba(55,230,255,.55); color: var(--cyan); }
+    .burger { display: none; background: none; border: 1px solid var(--line); color: var(--txt); border-radius: 10px; padding: 8px 12px; font-size: 17px; cursor: pointer; }
+    @media (max-width: 900px) {
+      .nav-links { position: fixed; inset: 62px 0 auto 0; flex-direction: column; align-items: flex-start; gap: 2px; background: rgba(13,16,24,.98); padding: 14px 6vw 22px; border-bottom: 1px solid var(--line); display: none; }
+      .nav-links.open { display: flex; }
+      .nav-links a { padding: 9px 0; width: 100%; }
+      .nav-links .btnv { margin-top: 10px; }
+      .burger { display: block; }
+    }
+
+    /* ================= HERO ================= */
+    .hero { display: grid; grid-template-columns: 1.02fr .98fr; gap: 30px; align-items: center; min-height: calc(100svh - 64px); padding: 60px 6vw 70px; max-width: 1240px; margin: 0 auto; }
+    @media (max-width: 960px) { .hero { grid-template-columns: 1fr; min-height: 0; padding-top: 44px; } }
+    .eyebrow { display: inline-flex; align-items: center; gap: 9px; font-size: 12px; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: var(--cyan); border: 1px solid rgba(55,230,255,.3); background: rgba(55,230,255,.07); padding: 7px 14px; border-radius: 999px; }
+    .eyebrow .pulse { width: 7px; height: 7px; border-radius: 50%; background: var(--cyan); animation: blink 1.6s ease-in-out infinite; }
+    @keyframes blink { 50% { opacity: .25; } }
+    .hero h1 { font-size: clamp(38px, 5.4vw, 64px); line-height: 1.04; margin: 22px 0 16px; font-weight: 800; }
+    .hero h1 .acc { font-style: normal; background: linear-gradient(100deg, var(--accA), var(--accB)); -webkit-background-clip: text; background-clip: text; color: transparent; transition: background .35s; }
+    .hero .sub { color: var(--dim); font-size: 16.5px; max-width: 480px; }
+    .price-row { display: flex; align-items: baseline; gap: 12px; margin-top: 24px; }
+    .price-row b { font-family: "Sora"; font-size: 34px; font-weight: 800; letter-spacing: -.02em; }
+    .price-row s { color: var(--dim); opacity: .6; font-size: 16px; }
+    .price-row .save { font-size: 12px; font-weight: 700; color: #0b0d12; background: linear-gradient(90deg, var(--accA), var(--accB)); padding: 4px 9px; border-radius: 999px; }
+    .stars { color: #FFD166; letter-spacing: 2px; font-size: 13px; }
+    .stars small { color: var(--dim); letter-spacing: 0; margin-left: 8px; font-weight: 500; }
+    .hero-cta { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 26px; }
+    .hero-cta .btnv { padding: 14px 24px; border-radius: 14px; }
+    .swatches { margin-top: 30px; }
+    .swatches .lbl { font-size: 11px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: var(--dim); }
+    .swatches .lbl b { color: var(--txt); font-weight: 700; }
+    .sw-row { display: flex; gap: 10px; margin-top: 12px; flex-wrap: wrap; }
+    .sw { display: inline-flex; align-items: center; gap: 9px; background: rgba(255,255,255,.03); border: 1px solid var(--line); color: var(--dim); font: inherit; font-size: 13.5px; font-weight: 600; padding: 9px 15px 9px 10px; border-radius: 999px; cursor: pointer; transition: border-color .2s, color .2s, background .2s; }
+    .sw .dot { width: 20px; height: 20px; border-radius: 50%; box-shadow: inset 0 0 0 1px rgba(255,255,255,.25); }
+    .sw[data-color="Midnight"] .dot { background: linear-gradient(135deg, #6D5BD0, #11152a); }
+    .sw[data-color="Glacier"]  .dot { background: linear-gradient(135deg, #eef4ff, #37E6FF); }
+    .sw[data-color="Solar"]    .dot { background: linear-gradient(135deg, #FFD97A, #FF7A3C); }
+    .sw:hover { color: var(--txt); border-color: rgba(255,255,255,.28); }
+    .sw.active { color: var(--txt); border-color: var(--accA); background: rgba(109,91,208,.16); box-shadow: 0 0 0 3px rgba(109,91,208,.18); }
+
+    /* ================= 3D STAGE ================= */
+    .stage-zone { position: relative; display: grid; place-items: center; }
+    .stage { width: clamp(320px, 40vw, 560px); max-width: 100%; aspect-ratio: 1; position: relative; perspective: 1050px; perspective-origin: 50% 42%; }
+    .stage-inner { position: absolute; inset: 0; transform-style: preserve-3d; will-change: transform; }
+    .ring { position: absolute; left: 50%; top: 46%; width: 96%; aspect-ratio: 1; transform: translate(-50%, -50%); border-radius: 50%;
+      background: conic-gradient(from 0deg, transparent 0deg 35deg, var(--rimA) 55deg, transparent 75deg 140deg, rgba(109,91,208,.85) 160deg, transparent 185deg 260deg, rgba(55,230,255,.5) 280deg, transparent 305deg 360deg);
+      -webkit-mask: radial-gradient(circle, transparent 0 55%, #000 57% 62%, transparent 64%);
+      mask: radial-gradient(circle, transparent 0 55%, #000 57% 62%, transparent 64%);
+      animation: ringSpin 16s linear infinite; opacity: .9; }
+    @keyframes ringSpin { to { transform: translate(-50%, -50%) rotate(360deg); } }
+    .halo { position: absolute; left: 50%; top: 46%; width: 70%; aspect-ratio: 1; transform: translate(-50%, -50%); border-radius: 50%; background: radial-gradient(circle, rgba(109,91,208,.3), rgba(55,230,255,.05) 55%, transparent 70%); filter: blur(10px); }
+    .float { position: absolute; inset: 0; transform-style: preserve-3d; animation: floatY 6.5s ease-in-out infinite; }
+    @keyframes floatY { 0%, 100% { transform: translateY(-9px); } 50% { transform: translateY(9px); } }
+
+    /* the bud */
+    .bud { position: absolute; left: 50%; top: 44%; width: 200px; height: 300px; transform: translate(-50%, -50%); }
+    @media (max-width: 480px) { .bud { width: 160px; height: 250px; } }
+    .dome { position: absolute; left: 50%; top: 0; width: 100%; height: 62%; transform: translateX(-50%);
+      border-radius: 50% 50% 46% 46% / 62% 62% 40% 40%;
+      background:
+        radial-gradient(130% 100% at 28% 12%, var(--sheen) 0%, rgba(255,255,255,0) 34%),
+        radial-gradient(150% 110% at 50% 115%, var(--shC) 0%, transparent 52%),
+        radial-gradient(120% 90% at 32% 18%, var(--shA) 0%, var(--shB) 55%, var(--shC) 100%);
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,.12), 0 26px 50px -18px rgba(0,0,0,.75);
+      transition: background .35s; }
+    .dome::after { content: ""; position: absolute; left: 50%; top: 24%; width: 44%; aspect-ratio: 1; transform: translateX(-50%); border-radius: 50%;
+      background: radial-gradient(circle at 50% 60%, rgba(255,255,255,.22), rgba(255,255,255,.02) 48%, transparent 62%);
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,.28); }
+    .dome-back { position: absolute; left: 50%; top: -7%; width: 96%; height: 60%; transform: translateX(-50%) rotateX(0deg);
+      border-radius: 50% 50% 46% 46% / 62% 62% 40% 40%;
+      background: linear-gradient(180deg, var(--shB), var(--shC) 90%); opacity: .55; filter: blur(1px);
+      z-index: -1; }
+    .band { position: absolute; left: 50%; top: 55.5%; width: 101%; height: 9%; transform: translateX(-50%);
+      background: linear-gradient(180deg, rgba(255,255,255,.14), rgba(255,255,255,0) 60%), linear-gradient(180deg, var(--shB), var(--shC));
+      border-radius: 12px; box-shadow: 0 1px 0 rgba(255,255,255,.2) inset, 0 -4px 12px rgba(0,0,0,.4) inset; }
+    .stem { position: absolute; left: 50%; top: 59%; width: 24%; height: 38%; transform: translateX(-50%);
+      border-radius: 18px;
+      background: linear-gradient(90deg, var(--shC) 0%, var(--shB) 22%, var(--shA) 50%, var(--shB) 78%, var(--shC) 100%);
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,.14), 0 18px 30px -14px rgba(0,0,0,.7); }
+    .stem::before { content: ""; position: absolute; left: 16%; top: 10%; width: 16%; height: 80%; border-radius: 8px;
+      background: linear-gradient(180deg, rgba(255,255,255,.5), rgba(255,255,255,.06)); }
+    .tip { position: absolute; left: 50%; top: 95%; width: 26%; aspect-ratio: 2.4; transform: translateX(-50%);
+      border-radius: 999px; background: conic-gradient(from 180deg at 50% 50%, #5c6378, #1b1f31, #5c6378, #0a0d1c, #5c6378);
+      box-shadow: 0 8px 14px -6px rgba(0,0,0,.8); }
+    .ped { position: absolute; left: 50%; top: 92%; width: 200%; aspect-ratio: 4.6; transform: translate(-50%, -50%) rotateX(74deg);
+      border-radius: 50%;
+      background: radial-gradient(circle at 50% 40%, rgba(255,255,255,.1), transparent 55%), radial-gradient(circle at 50% 120%, rgba(55,230,255,.16), transparent 60%), rgba(255,255,255,.03);
+      box-shadow: 0 0 0 1px rgba(255,255,255,.1), 0 0 60px rgba(109,91,208,.35) inset;
+      transform-origin: 50% 50%; }
+
+    /* floating spec chips */
+    .chip { position: absolute; padding: 10px 14px; border-radius: 13px; background: rgba(19,24,38,.72); backdrop-filter: blur(8px);
+      border: 1px solid rgba(255,255,255,.14); box-shadow: 0 14px 30px -12px rgba(0,0,0,.55); font-size: 12.5px; color: var(--dim);
+      white-space: nowrap; transform-style: preserve-3d; }
+    .chip b { display: block; font-family: "Sora"; font-size: 15px; color: var(--txt); font-weight: 700; }
+    .chip b em { font-style: normal; color: var(--accA); }
+    .chip .t { display: block; font-size: 10.5px; letter-spacing: .1em; text-transform: uppercase; opacity: .7; }
+    .chip.c1 { left: 50%; top: 12%; translate: -50% -50%; transform: translateZ(70px); }
+    .chip.c2 { left: 78%; top: 30%; translate: -50% -50%; transform: translateZ(120px); }
+    .chip.c3 { left: 24%; top: 38%; translate: -50% -50%; transform: translateZ(95px); }
+    .chip.c4 { left: 70%; top: 72%; translate: -50% -50%; transform: translateZ(85px); }
+
+    /* ================= SOUND ================= */
+    section { padding: 90px 6vw; position: relative; }
+    .wrap { max-width: 1180px; margin: 0 auto; }
+    .kicker { font-size: 12px; font-weight: 800; letter-spacing: .2em; text-transform: uppercase; color: var(--cyan); margin-bottom: 12px; }
+    .sec-head { margin-bottom: 44px; }
+    .sec-head h2, h2.big { font-size: clamp(28px, 3.8vw, 44px); font-weight: 800; }
+    .sec-head p { color: var(--dim); margin-top: 12px; max-width: 560px; font-size: 15.5px; }
+    .split { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
+    @media (max-width: 900px) { .split { grid-template-columns: 1fr; } }
+    .eq-panel { position: relative; background: linear-gradient(150deg, rgba(255,255,255,.045), rgba(255,255,255,.015)); border: 1px solid var(--line); border-radius: 26px; padding: 38px 30px 30px; overflow: hidden; }
+    .eq-panel::before { content: ""; position: absolute; inset: -40% -20% auto; height: 70%; background: radial-gradient(closest-side, rgba(109,91,208,.35), transparent); }
+    .eq-label { display: flex; align-items: center; justify-content: space-between; font-size: 11.5px; letter-spacing: .18em; text-transform: uppercase; color: var(--dim); position: relative; z-index: 2; }
+    .eq-label .st { color: var(--cyan); font-weight: 700; }
+    .eq-wrap { position: relative; z-index: 2; height: 210px; display: flex; align-items: flex-end; gap: 5px; margin: 18px 0 4px; }
+    .bar { flex: 1; border-radius: 3px 3px 1px 1px; transform-origin: bottom; background: linear-gradient(180deg, var(--accB), var(--accA) 55%, rgba(55,230,255,.55)); opacity: .9; animation: eqDance .9s ease-in-out infinite; animation-play-state: paused; }
+    .eq-panel.on .bar { animation-play-state: running; }
+    @keyframes eqDance { 0%, 100% { transform: scaleY(.18); } 50% { transform: scaleY(1); } }
+    .bar:nth-child(4n+1) { animation-duration: .78s; }
+    .bar:nth-child(4n+2) { animation-duration: 1.05s; animation-delay: -.4s; }
+    .bar:nth-child(4n+3) { animation-duration: .62s; animation-delay: -.2s; }
+    .bar:nth-child(4n) { animation-duration: .9s; animation-delay: -.6s; }
+    .eq-panel .hint { font-size: 12px; color: var(--dim); opacity: .8; }
+
+    /* ================= FEATURES ================= */
+    .grid6 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+    @media (max-width: 960px) { .grid6 { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 600px) { .grid6 { grid-template-columns: 1fr; } }
+    .feat { background: linear-gradient(160deg, rgba(255,255,255,.045), rgba(255,255,255,.015)); border: 1px solid var(--line); border-radius: 18px; padding: 26px 22px; transition: transform .25s ease, border-color .25s ease, box-shadow .25s ease; }
+    .feat:hover { transform: translateY(-6px); border-color: rgba(55,230,255,.4); box-shadow: 0 22px 44px -24px rgba(55,230,255,.25); }
+    .feat .ico { width: 46px; height: 46px; border-radius: 13px; display: grid; place-items: center; font-size: 20px; margin-bottom: 16px; background: linear-gradient(135deg, rgba(109,91,208,.4), rgba(55,230,255,.2)); border: 1px solid rgba(255,255,255,.14); }
+    .feat h3 { font-size: 17px; margin-bottom: 6px; }
+    .feat p { font-size: 13.5px; color: var(--dim); }
+
+    /* ================= SPECS ================= */
+    .specs-card { border: 1px solid var(--line); border-radius: 22px; overflow: hidden; background: rgba(255,255,255,.02); }
+    .spec-row { display: grid; grid-template-columns: 1fr 1fr; padding: 15px 26px; }
+    .spec-row:nth-child(odd) { background: rgba(255,255,255,.025); }
+    .spec-row dt { color: var(--dim); font-size: 14px; }
+    .spec-row dd { font-size: 14px; font-weight: 600; text-align: right; color: var(--txt); }
+    @media (max-width: 640px) { .spec-row { grid-template-columns: 1fr 1.4fr; padding: 13px 18px; } }
+
+    /* ================= REVIEWS ================= */
+    .grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+    @media (max-width: 860px) { .grid3 { grid-template-columns: 1fr; } }
+    .rev { border: 1px solid var(--line); background: rgba(255,255,255,.03); border-radius: 18px; padding: 26px; display: flex; flex-direction: column; gap: 12px; }
+    .rev .stars { font-size: 14px; }
+    .rev p { color: var(--dim); font-size: 14.5px; flex: 1; }
+    .rev .who { display: flex; align-items: center; gap: 12px; }
+    .rev .av { width: 42px; height: 42px; border-radius: 50%; display: grid; place-items: center; font-weight: 700; font-family: "Sora"; color: #0b0d12; }
+    .av1 { background: linear-gradient(135deg, #37E6FF, #6D5BD0); }
+    .av2 { background: linear-gradient(135deg, #FFD166, #FF7A9C); }
+    .av3 { background: linear-gradient(135deg, #9d8bff, #37E6FF); }
+    .rev .who b { display: block; font-size: 14px; }
+    .rev .who span { font-size: 12.5px; color: var(--dim); }
+
+    /* ================= BUY ================= */
+    .buy-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 54px; align-items: center; }
+    @media (max-width: 900px) { .buy-grid { grid-template-columns: 1fr; } }
+    .perks { list-style: none; margin-top: 22px; display: grid; gap: 13px; }
+    .perks li { display: flex; gap: 11px; color: var(--dim); font-size: 14.5px; }
+    .perks li b { color: var(--cyan); }
+    form.order { background: rgba(255,255,255,.035); border: 1px solid var(--line); border-radius: 22px; padding: 30px; display: grid; gap: 16px; box-shadow: 0 30px 70px -30px rgba(0,0,0,.6); }
+    .field label { font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--dim); }
+    .field input, .field select { background: rgba(11,13,18,.6); border: 1px solid var(--line); color: var(--txt); padding: 13px 15px; border-radius: 12px; font: inherit; font-size: 14.5px; outline: none; transition: border-color .2s, box-shadow .2s; width: 100%; }
+    .field input:focus, .field select:focus { border-color: var(--accA); box-shadow: 0 0 0 4px rgba(109,91,208,.2); }
+    .field select option { background: #141828; }
+    .row2 { display: grid; grid-template-columns: 1.2fr .8fr; gap: 14px; }
+    @media (max-width: 480px) { .row2 { grid-template-columns: 1fr; } }
+    form.order .btnv { width: 100%; padding: 15px; font-size: 15px; border-radius: 14px; }
+
+    /* ================= FOOTER ================= */
+    footer { border-top: 1px solid var(--line); padding: 42px 6vw 48px; background: rgba(8,10,15,.6); }
+    .foot { max-width: 1180px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap; }
+    .foot .copy { font-size: 13px; color: var(--dim); }
+    .foot .copy b { color: var(--txt); }
+    .foot a.go { color: var(--cyan); font-size: 14px; font-weight: 600; }
+    .foot a.go:hover { text-shadow: 0 0 12px rgba(55,230,255,.8); }
+
+    /* ================= MOTION PREFERENCES ================= */
+    @media (prefers-reduced-motion: reduce) {
+      .stage-inner { transform: none !important; }
+      .ring, .float, .bud { animation: none !important; }
+      .eq-panel .bar { animation-play-state: paused !important; transform: scaleY(.5); }
+    }
+  </style>
+</head>
+<body id="app" data-color="Midnight">
+  <div class="toast"></div>
+
+  <!-- ================= NAV ================= -->
+  <nav class="nav" id="nav">
+    <a class="brand" href="index.html">
+      <span class="logo"><img src="assets/img/RJ_Logo.png" alt="RJ logo" /></span>
+      <span class="wordmark">VOL<i>T</i></span>
+    </a>
+    <div class="nav-links" id="menu">
+      <a href="#sound">Sound</a>
+      <a href="#features">Features</a>
+      <a href="#specs">Specs</a>
+      <a href="#reviews">Reviews</a>
+      <button class="btnv btnv-primary" onclick="document.getElementById('buy').scrollIntoView({behavior:'smooth'})">Buy now</button>
+    </div>
+    <button class="burger" id="burger" aria-label="Menu">☰</button>
+  </nav>
+
+  <!-- ================= HERO ================= -->
+  <header class="hero" id="hero">
+    <div class="hero-copy">
+      <span class="eyebrow reveal"><span class="pulse"></span> New · VOLT One — 2026 edition</span>
+      <h1 class="reveal" style="transition-delay:.05s">Sound that lives in <em class="acc">another dimension.</em></h1>
+      <p class="sub reveal" style="transition-delay:.1s">VOLT One folds lab-grade active noise cancelling, 40-hour stamina and buttery spatial audio into a bud so light you will forget it is there — until the room disappears.</p>
+      <div class="price-row reveal" style="transition-delay:.15s">
+        <b>$149</b><s>$189</s><span class="save">SAVE 21%</span>
+        <span class="stars">★★★★★ <small>4.8 · 2,140 reviews</small></span>
+      </div>
+      <div class="hero-cta reveal" style="transition-delay:.2s">
+        <button class="btnv btnv-primary" id="buyTop">Add to bag</button>
+        <a class="btnv btnv-ghost" href="#sound">▶ Hear the difference</a>
+      </div>
+      <div class="swatches reveal" style="transition-delay:.25s">
+        <span class="lbl">Finish — <b id="shadeName">Midnight</b></span>
+        <div class="sw-row" id="swRow">
+          <button class="sw active" type="button" data-color="Midnight"> <span class="dot"></span> Midnight </button>
+          <button class="sw" type="button" data-color="Glacier"> <span class="dot"></span> Glacier </button>
+          <button class="sw" type="button" data-color="Solar"> <span class="dot"></span> Solar </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3D stage -->
+    <div class="stage-zone reveal" style="transition-delay:.15s">
+      <div class="stage" id="stage">
+        <div class="stage-inner" id="tilt">
+          <div class="halo"></div>
+          <div class="ring"></div>
+          <div class="float" id="float">
+            <div class="ped"></div>
+            <div class="bud">
+              <div class="dome-back"></div>
+              <div class="dome"></div>
+              <div class="band"></div>
+              <div class="stem"></div>
+              <div class="tip"></div>
+            </div>
+            <div class="chip c1" data-px="14"><span class="t">Noise cancelling</span><b>-38 <em>dB</em></b></div>
+            <div class="chip c2" data-px="22"><span class="t">Playtime</span><b>40 <em>hours</em></b></div>
+            <div class="chip c3" data-px="18"><span class="t">Rating</span><b>IPX5</b></div>
+            <div class="chip c4" data-px="16"><span class="t">Audio</span><b>Spatial · LDAC</b></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ================= SOUND ================= -->
+  <section id="sound">
+    <div class="wrap split">
+      <div class="reveal">
+        <div class="kicker">The Sound Lab</div>
+        <h2 class="big" style="margin-bottom:0">A sample you can feel, not just hear.</h2>
+        <p style="color:var(--dim); margin:18px 0 8px; max-width:520px; font-size:15.5px">Eleven-millimetre dual-magnet drivers, tuned by the same engineers who mix the film scores — warm lows, crystalline highs, zero fatigue at the end of a long session.</p>
+        <button class="btnv btnv-primary" id="playBtn" style="margin-top:20px">▶&nbsp; Play sample</button>
+        <p style="font-size:12.5px; color:var(--dim); margin-top:10px; opacity:.8">Tap to start the equaliser — tap again to stop.</p>
+      </div>
+      <div class="eq-panel reveal" id="eqPanel" style="transition-delay:.1s">
+        <div class="eq-label"><span>VOLT One · Reference profile</span><span class="st" id="eqState">IDLE</span></div>
+        <div class="eq-wrap" id="eqWrap"></div>
+        <p class="hint">Frequencies 20 Hz → 20 kHz, rendered live.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= FEATURES ================= -->
+  <section id="features" style="padding-top:30px">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <div class="kicker">Why VOLT</div>
+        <h2>Engineered for the hours you listen</h2>
+        <p>Six reasons reviewers keep calling VOLT One "the whole package" — hardware and software, tuned as one.</p>
+      </div>
+      <div class="grid6">
+        <article class="feat reveal"><span class="ico">🛡</span><h3>Adaptive ANC</h3><p>Microphones sample the world 48,000 times a second and cancel up to 38 dB before you notice it.</p></article>
+        <article class="feat reveal" style="transition-delay:.06s"><span class="ico">🔋</span><h3>40-hour battery</h3><p>Nine hours per charge, four more refills in the pocket case — a full working week on one top-up.</p></article>
+        <article class="feat reveal" style="transition-delay:.12s"><span class="ico">💧</span><h3>IPX5 splash-proof</h3><p>Rain runs, gym sessions and sudden showers. VOLT shrugs and keeps the beat going.</p></article>
+        <article class="feat reveal" style="transition-delay:.18s"><span class="ico">⚡</span><h3>Wireless charging</h3><p>Drop the case on any Qi pad — or get 5 hours of playback from a 10-minute USB-C top-up.</p></article>
+        <article class="feat reveal" style="transition-delay:.24s"><span class="ico">🌌</span><h3>Spatial audio</h3><p>Head-tracking surround that pins instruments in the room around you, not inside your ears.</p></article>
+        <article class="feat reveal" style="transition-delay:.3s"><span class="ico">🔗</span><h3>Multipoint pairing</h3><p>Laptop and phone connected at once. Calls ring where you are; video stays on the big screen.</p></article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= SPECS ================= -->
+  <section id="specs" style="padding-top:30px">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <div class="kicker">Technical sheet</div>
+        <h2>Specs, minus the fine print</h2>
+      </div>
+      <dl class="specs-card reveal" style="margin-top:34px">
+        <div class="spec-row"><dt>Driver</dt><dd>11 mm dual-magnet dynamic</dd></div>
+        <div class="spec-row"><dt>Active noise cancelling</dt><dd>Up to 38 dB · adaptive</dd></div>
+        <div class="spec-row"><dt>Battery life</dt><dd>9 h buds · 40 h with case</dd></div>
+        <div class="spec-row"><dt>Weight</dt><dd>4.8 g per bud</dd></div>
+        <div class="spec-row"><dt>Bluetooth</dt><dd>5.4 · LDAC / AAC / SBC</dd></div>
+        <div class="spec-row"><dt>Water resistance</dt><dd>IPX5</dd></div>
+        <div class="spec-row"><dt>Charging</dt><dd>USB-C · Qi wireless</dd></div>
+        <div class="spec-row"><dt>In the box</dt><dd>Buds, case, 3 tip sizes, USB-C cable</dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <!-- ================= REVIEWS ================= -->
+  <section id="reviews" style="padding-top:30px">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <div class="kicker">Reviews</div>
+        <h2>2,140 listeners, one verdict</h2>
+      </div>
+      <div class="grid3">
+        <article class="rev reveal">
+          <div class="stars">★★★★★</div>
+          <p>"The ANC is the quietest I have ever heard at this price. Trains become libraries. I bought a second pair for the office within a week."</p>
+          <div class="who"><span class="av av1">MR</span><div><b>Meera Raman</b><span>Product designer · Bengaluru</span></div></div>
+        </article>
+        <article class="rev reveal" style="transition-delay:.08s">
+          <div class="stars">★★★★★</div>
+          <p>"Forty hours is not marketing math — I genuinely charge this thing once a fortnight. Spatial audio on movie night is a party trick that never gets old."</p>
+          <div class="who"><span class="av av2">JT</span><div><b>Jonas Thorne</b><span>Remote engineer · Lisbon</span></div></div>
+        </article>
+        <article class="rev reveal" style="transition-delay:.16s">
+          <div class="stars">★★★★☆</div>
+          <p>"Solar finish looks stunning in daylight and the touch controls are perfectly placed. I only wish the case were a touch smaller — everything else is superb."</p>
+          <div class="who"><span class="av av3">AO</span><div><b>Amara Okafor</b><span>Podcaster · Lagos</span></div></div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= BUY ================= -->
+  <section id="buy" style="padding-top:30px">
+    <div class="wrap buy-grid">
+      <div>
+        <div class="sec-head reveal" style="margin-bottom:0">
+          <div class="kicker">Ready when you are</div>
+          <h2>Claim your pair of VOLT One</h2>
+        </div>
+        <p style="color:var(--dim); margin-top:16px; max-width:460px; font-size:15.5px">Free express shipping, a 30-day listen-at-home trial and a two-year warranty. If your ears are not converted, send them back — no questions asked.</p>
+        <ul class="perks">
+          <li><b>✓</b> Ships in 24 h from our Mumbai &amp; Berlin hubs</li>
+          <li><b>✓</b> 30-day no-questions trial</li>
+          <li><b>✓</b> 2-year warranty + free tip refills for life</li>
+        </ul>
+      </div>
+      <form class="order reveal" id="buyForm" novalidate style="transition-delay:.1s">
+        <div class="row2">
+          <div class="field">
+            <label for="buyName">Full name *</label>
+            <input id="buyName" type="text" placeholder="e.g. Kiran Mehta" required data-field="Name" />
+          </div>
+          <div class="field">
+            <label for="buyQty">Quantity</label>
+            <select id="buyQty" data-field="Quantity">
+              <option>1</option><option>2</option><option>3</option><option>4</option>
+            </select>
+          </div>
+        </div>
+        <div class="field">
+          <label for="buyEmail">Email *</label>
+          <input id="buyEmail" type="email" placeholder="you@example.com" required data-field="Email" />
+        </div>
+        <div class="row2">
+          <div class="field">
+            <label for="col">Colour *</label>
+            <select id="col" required data-field="Colour">
+              <option value="Midnight" selected>Midnight</option>
+              <option value="Glacier">Glacier</option>
+              <option value="Solar">Solar</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="ship">Ship to</label>
+            <select id="ship" data-field="Region">
+              <option>India</option><option>Europe</option><option>North America</option><option>Rest of world</option>
+            </select>
+          </div>
+        </div>
+        <button class="btnv btnv-primary" type="submit">Place order — $149</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- ================= FOOTER ================= -->
+  <footer>
+    <div class="foot">
+      <span class="copy">© 2026 VOLT Audio Labs · <b>Demo page 17 of the RJ Web Faces Gallery</b></span>
+      <a class="go" href="index.html">← View all 20 faces</a>
+    </div>
+  </footer>
+
+  <script src="js/common.js"></script>
+  <script>
+    // ---------- Mobile menu ----------
+    const nav = document.querySelector(".nav");
+    const burger = document.getElementById("burger");
+    const menu = document.getElementById("menu");
+    burger.addEventListener("click", () => menu.classList.toggle("open"));
+    menu.querySelectorAll("a, button").forEach((el) => el.addEventListener("click", () => menu.classList.remove("open")));
+    addEventListener("scroll", () => nav.classList.toggle("scrolled", scrollY > 8), { passive: true });
+
+    // ---------- Finish palettes (data-driven recolor) ----------
+    const app = document.getElementById("app");
+    const shadeName = document.getElementById("shadeName");
+    const colSelect = document.getElementById("col");
+    const swatchBtns = [...document.querySelectorAll(".sw")];
+
+    function applyPalette(name) {
+      app.dataset.color = name;
+      shadeName.textContent = name;
+      swatchBtns.forEach((b) => b.classList.toggle("active", b.dataset.color === name));
+      colSelect.value = name;
+    }
+    swatchBtns.forEach((b) => b.addEventListener("click", () => { applyPalette(b.dataset.color); showToast("🎨 Finish set to " + b.dataset.color); }));
+    colSelect.addEventListener("change", () => applyPalette(colSelect.value));
+
+    // Palette CSS overrides (headline accent + bud gradients)
+    const pStyles = {
+      Midnight: { "--accA": "#6D5BD0", "--accB": "#9d8bff", "--shA": "#4b5178", "--shB": "#1c2036", "--shC": "#090b17" },
+      Glacier:  { "--accA": "#37E6FF", "--accB": "#9fd8ff", "--shA": "#eef4ff", "--shB": "#9fb2d8", "--shC": "#3f4c70" },
+      Solar:    { "--accA": "#FFC04D", "--accB": "#FF7A3C", "--shA": "#ffe3ae", "--shB": "#d98a3e", "--shC": "#5f2c10" }
+    };
+    const palObs = new MutationObserver(() => {
+      const s = pStyles[app.dataset.color];
+      if (!s) return;
+      Object.entries(s).forEach(([k, v]) => app.style.setProperty(k, v));
+    });
+    palObs.observe(app, { attributes: true, attributeFilter: ["data-color"] });
+    palObs.takeRecords(); // apply initial palette vars
+
+    // ---------- Equalizer builder + play/stop ----------
+    const eqWrap = document.getElementById("eqWrap");
+    for (let i = 0; i < 32; i++) {
+      const b = document.createElement("i");
+      b.className = "bar";
+      b.style.height = (38 + Math.random() * 62) + "%";
+      eqWrap.appendChild(b);
+    }
+    const eqPanel = document.getElementById("eqPanel");
+    const eqState = document.getElementById("eqState");
+    const playBtn = document.getElementById("playBtn");
+    let playing = false;
+    playBtn.addEventListener("click", () => {
+      playing = !playing;
+      eqPanel.classList.toggle("on", playing);
+      playBtn.innerHTML = playing ? "⏸&nbsp; Stop sample" : "▶&nbsp; Play sample";
+      eqState.textContent = playing ? "PLAYING · 48kHz" : "IDLE";
+      showToast(playing ? "🎧 Sample playing — drag in the frequencies" : "Sample paused");
+    });
+
+    // ---------- Add-to-bag scroll ----------
+    document.getElementById("buyTop").addEventListener("click", () => document.getElementById("buy").scrollIntoView({ behavior: "smooth" }));
+
+    // ---------- 3D tilt + chip parallax (rAF, no-op for touch / reduced motion) ----------
+    const RM = matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const fine = matchMedia("(hover: hover) and (pointer: fine)").matches;
+    const tilt = document.getElementById("tilt");
+    const chips = [...document.querySelectorAll(".chip")];
+    if (fine && !RM) {
+      let curX = 0, curY = 0, tgtX = 0, tgtY = 0, raf = null, active = false;
+      const stage = document.getElementById("stage");
+      const lerp = (a, b) => a + (b - a) * 0.1;
+      function frame() {
+        curX = lerp(curX, tgtX); curY = lerp(curY, tgtY);
+        tilt.style.transform = "rotateX(" + (-curY * 10).toFixed(2) + "deg) rotateY(" + (curX * 10).toFixed(2) + "deg)";
+        chips.forEach((c) => {
+          const d = parseFloat(c.dataset.px) || 10;
+          c.style.translate = "calc(-50% + " + (curX * d).toFixed(1) + "px) calc(-50% + " + (curY * d).toFixed(1) + "px)";
+        });
+        if (Math.abs(curX - tgtX) < 0.02 && Math.abs(curY - tgtY) < 0.02 && !active) { raf = null; return; }
+        raf = requestAnimationFrame(frame);
+      }
+      function wake() { if (!raf) raf = requestAnimationFrame(frame); }
+      stage.addEventListener("pointermove", (e) => {
+        const r = stage.getBoundingClientRect();
+        tgtX = Math.max(-1, Math.min(1, ((e.clientX - r.left) / r.width) * 2 - 1));
+        tgtY = Math.max(-1, Math.min(1, ((e.clientY - r.top) / r.height) * 2 - 1));
+        active = true; wake();
+      });
+      stage.addEventListener("pointerleave", () => { tgtX = 0; tgtY = 0; active = false; wake(); });
+    }
+
+    // ---------- Buy form ----------
+    document.getElementById("buyForm").addEventListener("submit", (e) => {
+      e.preventDefault();
+      const form = e.target;
+      if (!form.checkValidity()) { form.reportValidity(); return; }
+      const d = collectForm(form);
+      showToast("✅ Order placed — VOLT " + d["Colour"] + (d["Quantity"] !== "1" ? " ×" + d["Quantity"] : ""));
+      form.reset();
+      applyPalette("Midnight");
+    });
+  </script>
+</body>
+</html>

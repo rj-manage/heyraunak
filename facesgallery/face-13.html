@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>13 · NEON//GRID Arena — RJ Web Faces</title>
+  <meta name="description" content="NEON//GRID — the arena network: live tournaments, clan rosters and neon ticket drops for the competitive gaming underground. Face 13 of the RJ Web Faces Gallery — Advanced level." />
+  <link rel="icon" href="assets/img/RJ_Logo_Black.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Sora:wght@600;700;800&family=Share+Tech+Mono&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/common.css" />
+  <style>
+    :root {
+      --void: #04050A;
+      --cyan: #00F0FF;
+      --magenta: #FF2BD6;
+      --violet: #8B5CF6;
+      --txt: #E8F6FF;
+      --dim: #8FA3B8;
+      --panel: rgba(10, 14, 28, .8);
+      --mono: "Share Tech Mono", ui-monospace, "SF Mono", monospace;
+    }
+    body { background: var(--void); color: var(--txt); overflow-x: hidden; }
+    ::selection { background: var(--cyan); color: #000; }
+    h1, h2, h3 { font-family: "Sora", var(--font-body); }
+    a { text-decoration: none; }
+
+    /* toast: neon chip */
+    .toast { background: #0A0E1C; color: var(--txt); border: 1px solid var(--cyan); box-shadow: 0 0 18px rgba(0,240,255,.5), 0 12px 32px -8px rgba(0,0,0,.6); font-family: var(--mono); letter-spacing: .04em; }
+
+    /* ---------- scanlines ---------- */
+    body::after {
+      content: ""; position: fixed; inset: 0; pointer-events: none; z-index: 999;
+      background: repeating-linear-gradient(180deg, rgba(0,0,0,0) 0 2px, rgba(0,0,0,.13) 2px 4px);
+      mix-blend-mode: multiply; opacity: .5;
+    }
+    .scan-fx { position: fixed; inset: 0; pointer-events: none; z-index: 998; background: linear-gradient(180deg, transparent 0 60%, rgba(0,240,255,.03) 60% 61%, transparent 61%); background-size: 100% 340px; animation: scanMove 9s linear infinite; }
+    @keyframes scanMove { from { background-position: 0 0; } to { background-position: 0 340px; } }
+
+    /* ---------- top ticker ---------- */
+    .ticker { background: #070A14; border-bottom: 1px solid rgba(0,240,255,.35); overflow: hidden; padding: 8px 0; position: relative; z-index: 5; }
+    .tk-track { display: inline-flex; white-space: nowrap; gap: 44px; padding-left: 0; animation: tk 26s linear infinite; will-change: transform; }
+    .tk-track span { font-family: var(--mono); font-size: 12.5px; letter-spacing: .12em; color: var(--txt); }
+    .tk-track span b { color: var(--cyan); font-weight: 400; }
+    .tk-track span .hot { color: var(--magenta); }
+    @keyframes tk { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+    /* ---------- nav ---------- */
+    .nav { position: sticky; top: 0; z-index: 90; background: rgba(4,5,10,.82); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(139,92,246,.4); }
+    .nav-in { max-width: 1240px; margin: 0 auto; padding: 0 4vw; height: 68px; display: flex; align-items: center; gap: 26px; }
+    .brand-ng { font-family: "Sora", sans-serif; font-weight: 800; font-size: 17px; letter-spacing: .02em; color: var(--txt); position: relative; }
+    .brand-ng .slash { color: var(--magenta); }
+    .brand-ng::after { content: "▮"; position: absolute; right: -13px; top: 1px; color: var(--cyan); font-size: 12px; animation: flick 4s steps(1) infinite; }
+    @keyframes flick { 0%, 91%, 94%, 100% { opacity: 0; } 92%, 93% { opacity: 1; } }
+    .nav-links { display: flex; gap: 24px; margin-left: auto; }
+    .nav-links a { color: var(--dim); font-size: 13px; letter-spacing: .14em; text-transform: uppercase; font-weight: 600; transition: color .2s, text-shadow .2s; }
+    .nav-links a:hover { color: var(--cyan); text-shadow: 0 0 10px rgba(0,240,255,.8); }
+    .btn-neon {
+      font-family: "Sora", sans-serif; font-weight: 700; font-size: 12.5px; letter-spacing: .14em; text-transform: uppercase;
+      color: #030407; background: linear-gradient(90deg, var(--cyan), #6FE7FF); border: none; padding: 10px 18px; cursor: pointer;
+      box-shadow: 0 0 16px rgba(0,240,255,.55), inset 0 0 0 1px rgba(255,255,255,.4); transition: transform .15s, box-shadow .2s;
+    }
+    .btn-neon:hover { box-shadow: 0 0 26px rgba(0,240,255,.9); transform: translateY(-1px); }
+    .btn-neon.alt { background: linear-gradient(90deg, var(--magenta), #FF6FE0); box-shadow: 0 0 16px rgba(255,43,214,.5); }
+    .burger { display: none; background: none; border: 1px solid rgba(0,240,255,.5); color: var(--cyan); padding: 7px 11px; font-size: 16px; cursor: pointer; margin-left: auto; }
+    @media (max-width: 860px) {
+      .burger { display: block; } .nav .btn-neon { display: none; }
+      .nav-links { position: fixed; inset: 68px 0 auto 0; background: rgba(5,7,14,.97); flex-direction: column; gap: 0; padding: 8px 6vw 18px; border-bottom: 1px solid rgba(139,92,246,.5); display: none; }
+      .nav-links.open { display: flex; }
+      .nav-links a { padding: 12px 0; border-bottom: 1px solid rgba(139,92,246,.15); }
+    }
+
+    /* ---------- hero ---------- */
+    .hero { position: relative; min-height: calc(100vh - 68px); display: grid; place-items: center; overflow: hidden; padding: 90px 6vw 110px; }
+    .hero-bg { position: absolute; inset: 0; background:
+        radial-gradient(900px 480px at 18% 18%, rgba(139,92,246,.22), transparent 60%),
+        radial-gradient(800px 460px at 85% 12%, rgba(0,240,255,.13), transparent 60%),
+        radial-gradient(700px 500px at 55% 100%, rgba(255,43,214,.12), transparent 60%); }
+    .hero-grid-floor { position: absolute; left: -20%; right: -20%; bottom: -8%; height: 52%; background:
+        linear-gradient(rgba(0,240,255,.14) 1px, transparent 1px), linear-gradient(90deg, rgba(0,240,255,.14) 1px, transparent 1px);
+        background-size: 54px 54px; transform: perspective(600px) rotateX(62deg); transform-origin: 50% 0; -webkit-mask-image: linear-gradient(180deg, transparent, #000 55%); mask-image: linear-gradient(180deg, transparent, #000 55%); opacity: .5; }
+    .hero .beam { position: absolute; width: 1px; height: 300px; background: linear-gradient(180deg, transparent, var(--magenta), transparent); opacity: .5; animation: beamPulse 5s ease-in-out infinite; }
+    .hero .beam.b1 { left: 16%; top: -60px; } .hero .beam.b2 { right: 20%; top: -40px; animation-delay: 2.2s; background: linear-gradient(180deg, transparent, var(--cyan), transparent); }
+    @keyframes beamPulse { 0%, 100% { opacity: .25; } 50% { opacity: .8; } }
+    .hero-in { position: relative; z-index: 2; text-align: center; max-width: 880px; }
+    .term { font-family: var(--mono); font-size: clamp(12px, 1.5vw, 14px); color: var(--dim); letter-spacing: .06em; text-align: left; max-width: 620px; margin: 0 auto 26px; border: 1px solid rgba(0,240,255,.25); background: rgba(4,6,14,.7); padding: 10px 14px; }
+    .term .prompt { color: var(--violet); }
+    .term .ok { color: var(--cyan); }
+    #typed { color: var(--txt); }
+    .cursor { display: inline-block; width: 9px; height: 15px; background: var(--cyan); vertical-align: -2px; margin-left: 3px; animation: blink .9s steps(1) infinite; box-shadow: 0 0 8px var(--cyan); }
+    @keyframes blink { 50% { opacity: 0; } }
+    .hero h1 { font-size: clamp(44px, 9vw, 108px); line-height: .98; font-weight: 800; letter-spacing: -.02em; margin-bottom: 18px; }
+    .glitch { position: relative; color: var(--txt); }
+    .glitch em { font-style: normal; background: linear-gradient(90deg, var(--cyan) 0%, #7DF9FF 35%, var(--magenta) 90%); -webkit-background-clip: text; background-clip: text; color: transparent; filter: drop-shadow(0 0 14px rgba(255,43,214,.45)); }
+    .glitch::before, .glitch::after { content: attr(data-text); position: absolute; inset: 0; pointer-events: none; opacity: .75; }
+    .glitch::before { color: var(--magenta); animation: gl1 3.2s infinite steps(1); }
+    .glitch::after { color: var(--cyan); animation: gl2 2.7s infinite steps(1); }
+    @keyframes gl1 {
+      0%, 7%, 100% { transform: translate(0); clip-path: inset(0 0 100% 0); }
+      8% { transform: translate(-3px, 1px); clip-path: inset(10% 0 55% 0); }
+      12% { transform: translate(3px, -1px); clip-path: inset(60% 0 8% 0); }
+      16% { transform: translate(-2px, 0); clip-path: inset(30% 0 40% 0); }
+      20% { transform: translate(0); clip-path: inset(0 0 100% 0); }
+    }
+    @keyframes gl2 {
+      0%, 12%, 100% { transform: translate(0); clip-path: inset(100% 0 0 0); }
+      13% { transform: translate(3px, -1px); clip-path: inset(45% 0 30% 0); }
+      17% { transform: translate(-3px, 1px); clip-path: inset(5% 0 75% 0); }
+      21% { transform: translate(0); clip-path: inset(100% 0 0 0); }
+    }
+    .hero p.sub { color: var(--dim); font-size: 16px; max-width: 560px; margin: 0 auto 26px; }
+    .hero p.sub b { color: var(--txt); font-weight: 600; }
+    .cta-row { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+    .cta-row .btn-neon { padding: 14px 26px; font-size: 13px; }
+    .btn-ghost-neon { background: transparent; border: 1px solid rgba(0,240,255,.55); color: var(--cyan); padding: 13px 24px; font-family: "Sora", sans-serif; font-size: 13px; letter-spacing: .12em; text-transform: uppercase; font-weight: 700; cursor: pointer; }
+    .btn-ghost-neon:hover { background: rgba(0,240,255,.08); box-shadow: 0 0 18px rgba(0,240,255,.35) inset; }
+    .live-badge { display: inline-flex; align-items: center; gap: 9px; margin-top: 26px; font-family: var(--mono); font-size: 13px; color: var(--txt); border: 1px solid rgba(255,43,214,.5); background: rgba(255,43,214,.07); padding: 7px 15px; }
+    .live-badge .pdot { width: 8px; height: 8px; border-radius: 50%; background: var(--magenta); box-shadow: 0 0 10px var(--magenta); animation: pulseDot 1.6s ease-in-out infinite; }
+    @keyframes pulseDot { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: .35; transform: scale(.75); } }
+    .live-badge .cn { color: var(--cyan); }
+
+    /* ---------- sections ---------- */
+    section { padding: 92px 6vw; position: relative; }
+    .wrap { max-width: 1180px; margin: 0 auto; }
+    .kicker { font-family: var(--mono); font-size: 12.5px; letter-spacing: .3em; text-transform: uppercase; color: var(--cyan); margin-bottom: 12px; }
+    .kicker::before { content: "// "; color: var(--magenta); }
+    .sec-head h2 { font-size: clamp(28px, 4.2vw, 46px); font-weight: 800; letter-spacing: -.01em; margin-bottom: 10px; }
+    .sec-head h2 .g { color: var(--cyan); text-shadow: 0 0 18px rgba(0,240,255,.5); }
+    .sec-head p { color: var(--dim); max-width: 560px; margin-bottom: 40px; font-size: 15px; }
+    .hexline { height: 3px; width: 90px; background: linear-gradient(90deg, var(--magenta), var(--cyan)); margin: 0 0 40px; clip-path: polygon(0 0, 100% 0, calc(100% - 14px) 100%, 14px 100%); }
+
+    /* event cards */
+    .events { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
+    @media (max-width: 960px) { .events { grid-template-columns: 1fr; } }
+    .ev {
+      border: 1px solid rgba(0,240,255,.3); background: var(--panel); backdrop-filter: blur(6px);
+      box-shadow: 0 0 0 rgba(0,240,255,0), 0 24px 44px -30px rgba(0,0,0,.8); padding: 24px;
+      display: flex; flex-direction: column; gap: 14px; transition: transform .2s, box-shadow .2s, border-color .2s; position: relative;
+    }
+    .ev:hover { transform: translateY(-6px); border-color: var(--cyan); box-shadow: 0 0 22px rgba(0,240,255,.25), 0 28px 50px -28px rgba(0,240,255,.3); }
+    .ev .top { display: flex; align-items: center; justify-content: space-between; font-family: var(--mono); font-size: 12px; color: var(--dim); letter-spacing: .1em; }
+    .ev .st { display: inline-flex; align-items: center; gap: 7px; padding: 4px 10px; font-size: 11px; border: 1px solid; }
+    .ev .st.live { color: var(--magenta); border-color: rgba(255,43,214,.7); }
+    .ev .st.up { color: var(--cyan); border-color: rgba(0,240,255,.5); }
+    .ev .st .pdot { width: 7px; height: 7px; border-radius: 50%; display: inline-block; }
+    .ev .st.live .pdot { background: var(--magenta); animation: pulseDot 1.4s infinite; }
+    .ev .st.up .pdot { background: var(--cyan); opacity: .8; }
+    .ev h3 { font-size: 21px; letter-spacing: -.01em; }
+    .ev .pool { font-family: var(--mono); font-size: 15px; color: #7DF9FF; text-shadow: 0 0 12px rgba(0,240,255,.4); }
+    .ev .pool b { color: var(--txt); }
+    .ev .meta { font-size: 13px; color: var(--dim); font-family: var(--mono); letter-spacing: .04em; }
+    .clans { display: flex; gap: 8px; flex-wrap: wrap; padding-top: 12px; border-top: 1px solid rgba(139,92,246,.3); }
+    .hex { width: 34px; height: 38px; clip-path: polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%); display: grid; place-items: center; font-family: var(--mono); font-size: 11px; color: #fff; position: relative; }
+    .hex.h1 { background: linear-gradient(160deg, #00F0FF, #0A3F6E); }
+    .hex.h2 { background: linear-gradient(160deg, #FF2BD6, #5A0A47); }
+    .hex.h3 { background: linear-gradient(160deg, #8B5CF6, #2A0F5E); }
+    .hex.h4 { background: linear-gradient(160deg, #6FE7FF, #123B8C); }
+    .hex.h5 { background: linear-gradient(160deg, #FF6FE0, #7A1040); }
+    .vs { margin-left: auto; color: var(--dim); font-family: var(--mono); font-size: 12px; letter-spacing: .12em; }
+    .ev .btn-neon { align-self: flex-start; margin-top: 4px; font-size: 11.5px; padding: 9px 14px; }
+
+    /* rosters */
+    .rosters { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
+    @media (max-width: 860px) { .rosters { grid-template-columns: 1fr; } }
+    .team { border: 1px solid rgba(139,92,246,.4); background: var(--panel); overflow: hidden; transition: box-shadow .25s, border-color .25s; }
+    .team:hover { border-color: var(--violet); box-shadow: 0 0 24px rgba(139,92,246,.3); }
+    .team-head { padding: 18px 22px; display: flex; align-items: center; gap: 14px; border-bottom: 1px solid rgba(139,92,246,.35); background: linear-gradient(90deg, rgba(139,92,246,.16), rgba(0,240,255,.05)); }
+    .team-head .hex { width: 44px; height: 50px; font-size: 14px; }
+    .team-head .nm h3 { font-size: 19px; letter-spacing: .02em; }
+    .team-head .nm p { font-family: var(--mono); font-size: 11.5px; color: var(--cyan); letter-spacing: .14em; }
+    .team-head .region { margin-left: auto; font-family: var(--mono); font-size: 11px; color: var(--dim); border: 1px solid rgba(143,163,184,.4); padding: 4px 8px; }
+    .pl { display: grid; grid-template-columns: auto 1fr auto auto; gap: 14px; align-items: center; padding: 12px 22px; border-bottom: 1px solid rgba(139,92,246,.14); }
+    .pl:last-child { border-bottom: none; }
+    .pl .avatar { width: 34px; height: 38px; clip-path: polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%); background: linear-gradient(160deg, var(--c1, #8B5CF6), var(--c2, #0A0E1C)); display: grid; place-items: center; font-family: var(--mono); font-size: 12px; color: #fff; }
+    .pl .h { font-size: 15px; font-weight: 700; }
+    .pl .h small { display: block; font-weight: 400; font-size: 11.5px; color: var(--dim); letter-spacing: .1em; text-transform: uppercase; font-family: var(--mono); }
+    .pl .role { font-family: var(--mono); font-size: 12px; color: var(--violet); border: 1px solid rgba(139,92,246,.45); padding: 4px 9px; }
+    .pl .kd { font-family: var(--mono); font-size: 13px; color: #7DF9FF; text-align: right; }
+    .pl .kd small { display: block; color: var(--dim); font-size: 10px; letter-spacing: .18em; }
+
+    /* join band */
+    .join { border: 1px solid rgba(255,43,214,.4); background: linear-gradient(120deg, rgba(139,92,246,.14), rgba(255,43,214,.08) 55%, rgba(0,240,255,.08)); box-shadow: inset 0 0 60px rgba(0,0,0,.5); padding: 60px 6vw; }
+    .join-in { max-width: 1060px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 44px; align-items: center; }
+    @media (max-width: 900px) { .join-in { grid-template-columns: 1fr; } }
+    .join h2 { font-size: clamp(26px, 3.4vw, 38px); line-height: 1.1; }
+    .join h2 .g { background: linear-gradient(90deg, var(--magenta), var(--cyan)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+    .join p { color: var(--dim); margin-top: 12px; font-size: 14.5px; }
+    .join .perks { list-style: none; margin-top: 18px; display: grid; gap: 8px; }
+    .join .perks li { font-family: var(--mono); font-size: 13px; color: var(--txt); }
+    .join .perks li::before { content: "▸ "; color: var(--magenta); }
+    .join form { background: rgba(6,8,18,.85); border: 1px solid rgba(0,240,255,.35); padding: 26px; display: grid; gap: 14px; box-shadow: 0 0 30px rgba(0,240,255,.08); }
+    .field label { color: var(--dim); font-family: var(--mono); font-size: 12px; letter-spacing: .16em; text-transform: uppercase; }
+    .input, .select { background: rgba(4,5,10,.9); border: 1px solid rgba(143,163,184,.35); color: var(--txt); border-radius: 0; font-family: var(--mono); font-size: 14px; }
+    .input:focus, .select:focus { border-color: var(--cyan); box-shadow: 0 0 0 3px rgba(0,240,255,.15); }
+    .input::placeholder { color: #4A5A6C; }
+    .join form .btn-neon { padding: 14px; font-size: 13px; width: 100%; }
+    .fine { font-family: var(--mono); font-size: 11.5px; color: #4A5A6C; text-align: center; }
+
+    /* watch modal */
+    .modal { position: fixed; inset: 0; z-index: 300; display: grid; place-items: center; background: rgba(2,3,8,.82); backdrop-filter: blur(6px); opacity: 0; pointer-events: none; transition: opacity .3s ease; }
+    .modal.open { opacity: 1; pointer-events: auto; }
+    .modal-card { width: min(760px, 92vw); border: 1px solid rgba(0,240,255,.5); background: #070A16; box-shadow: 0 0 40px rgba(0,240,255,.18), 0 30px 80px -30px #000; transform: translateY(14px) scale(.98); transition: transform .3s ease; }
+    .modal.open .modal-card { transform: none; }
+    .m-head { display: flex; align-items: center; gap: 10px; padding: 13px 18px; border-bottom: 1px solid rgba(139,92,246,.4); font-family: var(--mono); font-size: 13px; }
+    .m-head .live-tag { color: var(--magenta); display: inline-flex; align-items: center; gap: 7px; }
+    .m-head .live-tag .pdot { width: 8px; height: 8px; background: var(--magenta); border-radius: 50%; animation: pulseDot 1.4s infinite; }
+    .m-head .viewers { margin-left: auto; color: var(--cyan); }
+    .m-close { background: none; border: 1px solid rgba(143,163,184,.4); color: var(--dim); cursor: pointer; font-family: var(--mono); font-size: 12px; padding: 4px 10px; }
+    .m-close:hover { color: var(--magenta); border-color: var(--magenta); }
+    .stream { position: relative; aspect-ratio: 16 / 9; overflow: hidden; background: radial-gradient(600px 300px at 30% 20%, rgba(139,92,246,.35), transparent 65%), radial-gradient(500px 300px at 80% 80%, rgba(255,43,214,.25), transparent 65%), #04050A; }
+    .stream .arena { position: absolute; inset: auto 0 0 0; height: 45%; background:
+        linear-gradient(rgba(0,240,255,.16) 1px, transparent 1px), linear-gradient(90deg, rgba(0,240,255,.16) 1px, transparent 1px);
+        background-size: 40px 40px; transform: perspective(500px) rotateX(60deg); transform-origin: bottom; }
+    .stream .big-vs { position: absolute; inset: 0; display: grid; place-items: center; font-family: "Sora", sans-serif; font-weight: 800; font-size: clamp(30px, 6vw, 64px); letter-spacing: .04em; }
+    .stream .big-vs .t1 { color: var(--cyan); text-shadow: 0 0 24px rgba(0,240,255,.7); }
+    .stream .big-vs .t2 { color: var(--magenta); text-shadow: 0 0 24px rgba(255,43,214,.7); }
+    .eq { position: absolute; left: 18px; bottom: 14px; display: flex; gap: 3px; align-items: flex-end; height: 30px; }
+    .eq i { width: 4px; background: var(--magenta); box-shadow: 0 0 8px var(--magenta); animation: eq 1s ease-in-out infinite; }
+    .eq i:nth-child(odd) { background: var(--cyan); box-shadow: 0 0 8px var(--cyan); animation-duration: .8s; }
+    .eq i:nth-child(1){height:30%}.eq i:nth-child(2){height:70%}.eq i:nth-child(3){height:40%}.eq i:nth-child(4){height:90%}.eq i:nth-child(5){height:55%}.eq i:nth-child(6){height:100%}.eq i:nth-child(7){height:35%}.eq i:nth-child(8){height:80%}.eq i:nth-child(9){height:48%}.eq i:nth-child(10){height:65%}
+    @keyframes eq { 0%, 100% { transform: scaleY(.5); } 50% { transform: scaleY(1.15); } }
+    .m-info { padding: 16px 20px; display: flex; gap: 22px; flex-wrap: wrap; font-size: 13px; color: var(--dim); }
+    .m-info b { color: var(--txt); font-weight: 600; }
+    .m-info .mono { font-family: var(--mono); font-size: 12.5px; }
+
+    /* footer */
+    footer { border-top: 1px solid rgba(139,92,246,.4); background: #06070F; padding: 52px 6vw 30px; }
+    .foot-in { max-width: 1180px; margin: 0 auto; display: grid; grid-template-columns: 1.5fr 1fr 1fr; gap: 40px; }
+    @media (max-width: 760px) { .foot-in { grid-template-columns: 1fr; } }
+    .foot-brand p { color: var(--dim); font-size: 13px; margin-top: 8px; max-width: 36ch; }
+    .foot-col h4 { font-family: var(--mono); font-size: 12px; letter-spacing: .22em; text-transform: uppercase; color: var(--cyan); margin-bottom: 12px; font-weight: 400; }
+    .foot-col a { display: block; color: var(--dim); font-size: 13.5px; padding: 4px 0; }
+    .foot-col a:hover { color: var(--magenta); text-shadow: 0 0 10px rgba(255,43,214,.6); }
+    .foot-col span { display: block; color: var(--dim); font-size: 13px; padding: 2px 0; font-family: var(--mono); }
+    .foot-bottom { max-width: 1180px; margin: 36px auto 0; padding-top: 18px; border-top: 1px solid rgba(139,92,246,.3); display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; font-family: var(--mono); font-size: 12px; color: #56657a; }
+    .foot-bottom a { color: var(--cyan); }
+
+    @media (prefers-reduced-motion: reduce) {
+      .tk-track, .scan-fx, .glitch::before, .glitch::after, .eq i, .stream .big-vs, .hero .beam { animation: none !important; }
+      .glitch::before, .glitch::after { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="toast"></div>
+  <div class="scan-fx" aria-hidden="true"></div>
+
+  <!-- ticker -->
+  <div class="ticker" aria-hidden="true">
+    <div class="tk-track">
+      <span>◆ NEXT EVENT: <b>GRID OPEN CUP</b> — FRI 21:00 IST · WATCH LIVE · <b class="hot">$25,000</b> PRIZE POOL · LAN FINALS AT NEON DOCK</span>
+      <span>◆ NEXT EVENT: <b>GRID OPEN CUP</b> — FRI 21:00 IST · WATCH LIVE · <b class="hot">$25,000</b> PRIZE POOL · LAN FINALS AT NEON DOCK</span>
+    </div>
+  </div>
+
+  <!-- ================= NAV ================= -->
+  <nav class="nav">
+    <div class="nav-in">
+      <a class="brand-ng" href="#top">NEON<span class="slash">//</span>GRID</a>
+      <div class="nav-links" id="menu">
+        <a href="#events">Events</a>
+        <a href="#rosters">Rosters</a>
+        <a href="#tickets">Tickets</a>
+      </div>
+      <a class="btn-neon" href="#tickets">Get tickets</a>
+      <button class="burger" id="burger" aria-label="Menu">☰</button>
+    </div>
+  </nav>
+
+  <!-- ================= HERO ================= -->
+  <header class="hero" id="top">
+    <div class="hero-bg" aria-hidden="true"></div>
+    <div class="hero-grid-floor" aria-hidden="true"></div>
+    <div class="beam b1" aria-hidden="true"></div>
+    <div class="beam b2" aria-hidden="true"></div>
+    <div class="hero-in">
+      <p class="term"><span class="prompt">$</span> neon-grid --status &nbsp;<span class="ok">✓ arena network online</span><br />
+      <span id="typedLine"><span class="prompt">&gt;</span> <span id="typed"></span></span><span class="cursor"></span></p>
+      <h1 class="glitch" data-text="OWN THE GRID.">OWN THE <em>GRID.</em></h1>
+      <p class="sub">The arena network where <b>1,842 clans</b> fight for ranking, prize money and the right to be called legends — streamed live every weekend.</p>
+      <div class="cta-row">
+        <button class="btn-neon" id="watchBtn" type="button">▶ Watch live</button>
+        <a class="btn-ghost-neon" href="#events">Browse events</a>
+      </div>
+      <span class="live-badge"><span class="pdot"></span> LIVE <span class="cn">12,400</span> watching now</span>
+    </div>
+  </header>
+
+  <!-- ================= EVENTS ================= -->
+  <section id="events">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <div class="kicker">Upcoming broadcasts</div>
+        <h2>Featured <span class="g">tournaments</span></h2>
+        <p>Three events on the grid this week. Open cups are community-entry; Masters and Invitationals are inviter-only with scouts watching.</p>
+        <div class="hexline"></div>
+      </div>
+      <div class="events">
+        <article class="ev reveal">
+          <div class="top"><span class="date">FRI · 21:00 IST</span><span class="st live"><span class="pdot"></span>LIVE</span></div>
+          <h3>GRID OPEN CUP</h3>
+          <div class="pool"><b>$25,000</b> prize pool</div>
+          <p class="meta">Finals · best of 5 · stage: Neon Dock</p>
+          <div class="clans">
+            <span class="hex h1">VX</span><span class="hex h2">S9</span><span class="hex h3">HS</span><span class="hex h4">NV</span><span class="hex h5">ZK</span>
+            <span class="vs">8 teams</span>
+          </div>
+          <a class="btn-neon" href="#" onclick="openModal(); return false;">Watch live</a>
+        </article>
+        <article class="ev reveal" style="transition-delay:.1s">
+          <div class="top"><span class="date">SAT · 17:00 IST</span><span class="st up"><span class="pdot"></span>UPCOMING</span></div>
+          <h3>ASIA MASTERS SPLIT 2</h3>
+          <div class="pool"><b>$10,000</b> prize pool</div>
+          <p class="meta">Group stage · 16 teams · 4 groups</p>
+          <div class="clans">
+            <span class="hex h3">HS</span><span class="hex h5">ZK</span><span class="hex h1">VX</span><span class="hex h4">NV</span>
+            <span class="vs">16 teams</span>
+          </div>
+          <a class="btn-neon" href="#tickets">Get tickets</a>
+        </article>
+        <article class="ev reveal" style="transition-delay:.2s">
+          <div class="top"><span class="date">SUN · 20:00 IST</span><span class="st up"><span class="pdot"></span>UPCOMING</span></div>
+          <h3>VOIDLANE INVITATIONAL</h3>
+          <div class="pool"><b>$5,000</b> prize pool</div>
+          <p class="meta">Invite only · single elimination</p>
+          <div class="clans">
+            <span class="hex h2">S9</span><span class="hex h5">ZK</span><span class="hex h3">HS</span>
+            <span class="vs">4 teams</span>
+          </div>
+          <a class="btn-neon" href="#tickets">Get tickets</a>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= ROSTERS ================= -->
+  <section id="rosters" style="padding-top:10px">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <div class="kicker">Clan ladder · rank 1 &amp; 2</div>
+        <h2>Meet the <span class="g">top of the ladder</span></h2>
+        <p>Two rosters running the meta right now. K/D is from the current competitive season, minimum 200 maps played.</p>
+        <div class="hexline"></div>
+      </div>
+      <div class="rosters">
+        <article class="team reveal">
+          <div class="team-head">
+            <span class="hex h1">VW</span>
+            <div class="nm"><h3>VOIDWALKERS</h3><p>LADDER RANK #01 · 4,980 PTS</p></div>
+            <span class="region">MUMBAI · IN</span>
+          </div>
+          <div class="pl"><span class="avatar" style="--c1:#00F0FF;--c2:#062C4E">AK</span><div class="h">AKA$H<small>IGL · Captain</small></div><span class="role">IGL</span><span class="kd">1.42<small>K/D</small></span></div>
+          <div class="pl"><span class="avatar" style="--c1:#FF2BD6;--c2:#3A0630">RU</span><div class="h">RUNT1ME<small>Entry duelist</small></div><span class="role">Duel</span><span class="kd">1.61<small>K/D</small></span></div>
+          <div class="pl"><span class="avatar" style="--c1:#8B5CF6;--c2:#1E0B45">ME</span><div class="h">MERCURY_<small>Support anchor</small></div><span class="role">Flex</span><span class="kd">1.18<small>K/D</small></span></div>
+          <div class="pl"><span class="avatar" style="--c1:#6FE7FF;--c2:#0A2F66">SY</span><div class="h">SYN4PSE<small>Operator specialist</small></div><span class="role">Sniper</span><span class="kd">1.55<small>K/D</small></span></div>
+        </article>
+        <article class="team reveal" style="transition-delay:.1s">
+          <div class="team-head">
+            <span class="hex h2">S9</span>
+            <div class="nm"><h3>STATIC NINE</h3><p>LADDER RANK #02 · 4,612 PTS</p></div>
+            <span class="region">SEOUL · KR</span>
+          </div>
+          <div class="pl"><span class="avatar" style="--c1:#FF6FE0;--c2:#44082E">JI</span><div class="h">J1NX<small>IGL · Captain</small></div><span class="role">IGL</span><span class="kd">1.29<small>K/D</small></span></div>
+          <div class="pl"><span class="avatar" style="--c1:#8B5CF6;--c2:#241045">KO</span><div class="h">KODA-9<small>Entry duelist</small></div><span class="role">Duel</span><span class="kd">1.58<small>K/D</small></span></div>
+          <div class="pl"><span class="avatar" style="--c1:#00F0FF;--c2:#04304F">HA</span><div class="h">HALCY0N<small>Trade fragger</small></div><span class="role">Rifler</span><span class="kd">1.37<small>K/D</small></span></div>
+          <div class="pl"><span class="avatar" style="--c1:#3DFF9E;--c2:#043A26">MI</span><div class="h">MINERVA<small>Smoke architect</small></div><span class="role">Flex</span><span class="kd">1.21<small>K/D</small></span></div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= JOIN / TICKETS ================= -->
+  <section id="tickets" class="join" style="padding-top:60px">
+    <div class="join-in">
+      <div class="reveal">
+        <div class="kicker">Join the grid</div>
+        <h2>Your seat at the <span class="g">finals</span></h2>
+        <p>Digital tickets unlock the 4K watch-party room, player cams and a chance to win signed peripherals from the top clans.</p>
+        <ul class="perks">
+          <li>VIP watch room with pro casters</li>
+          <li>Live stats overlay &amp; minimap feed</li>
+          <li>Post-match Q&amp;A with the winning roster</li>
+        </ul>
+      </div>
+      <form id="tkForm" novalidate class="reveal" style="transition-delay:.1s">
+        <div class="field">
+          <label for="tkname">Handle *</label>
+          <input class="input" id="tkname" type="text" placeholder="e.g. xX_ph4nt0m_Xx" required data-field="Handle" />
+        </div>
+        <div class="field">
+          <label for="tkemail">Email *</label>
+          <input class="input" id="tkemail" type="email" placeholder="you@arena.net" required data-field="Email" />
+        </div>
+        <div class="field">
+          <label for="tktier">Ticket tier</label>
+          <select class="select" id="tktier" data-field="Tier">
+            <option>Standard — ₹499</option>
+            <option>VIP watch room — ₹1,499</option>
+            <option>Team bundle (5× VIP) — ₹5,999</option>
+          </select>
+        </div>
+        <button class="btn-neon" type="submit">Secure ticket</button>
+        <p class="fine">Tickets are digital-only. Confirmation arrives in ~60 seconds.</p>
+      </form>
+    </div>
+  </section>
+
+  <!-- ================= FOOTER ================= -->
+  <footer>
+    <div class="foot-in">
+      <div class="foot-brand">
+        <a class="brand-ng" href="#top">NEON<span class="slash">//</span>GRID</a>
+        <p>Community-owned tournament network running weekend cups, a living clan ladder and honest casters since 2023.</p>
+      </div>
+      <div class="foot-col">
+        <h4>Network</h4>
+        <a href="#events">Events</a>
+        <a href="#rosters">Rosters</a>
+        <a href="#tickets">Tickets</a>
+        <a href="#top">Back to top</a>
+      </div>
+      <div class="foot-col">
+        <h4>Connect</h4>
+        <span>discord.gg/neongrid</span>
+        <span>@neongrid.arena</span>
+        <span>ops@neongrid.gg</span>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© 2026 NEON//GRID ARENA NETWORK · Demo page 13 of the RJ Web Faces Gallery</span>
+      <span><a href="index.html">← View all 20 faces</a></span>
+    </div>
+  </footer>
+
+  <!-- ================= WATCH MODAL ================= -->
+  <div class="modal" id="modal" role="dialog" aria-modal="true" aria-label="Live stream player">
+    <div class="modal-card">
+      <div class="m-head">
+        <span class="live-tag"><span class="pdot"></span>LIVE</span>
+        <span>GRID OPEN CUP — FINALS · VOIDWALKERS vs STATIC NINE</span>
+        <span class="viewers" id="viewCount">12,400 watching</span>
+        <button class="m-close" id="closeModal" type="button">✕ CLOSE</button>
+      </div>
+      <div class="stream">
+        <div class="arena"></div>
+        <div class="big-vs"><span class="t1">VOIDWALKERS</span><span>&nbsp;VS&nbsp;</span><span class="t2">STATIC NINE</span></div>
+        <div class="eq" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+      </div>
+      <div class="m-info">
+        <span><b>Map 5</b> · Neon Metropolis</span>
+        <span class="mono">Score 2 — 2</span>
+        <span>Round 14 · half-time</span>
+        <span class="mono">Caster: RIKO &amp; 0VERWATCH</span>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/common.js"></script>
+  <script>
+    // --- mobile menu ---
+    const burger = document.getElementById("burger");
+    const menu = document.getElementById("menu");
+    burger.addEventListener("click", () => menu.classList.toggle("open"));
+    menu.querySelectorAll("a").forEach((a) => a.addEventListener("click", () => menu.classList.remove("open")));
+
+    // --- typewriter cycling through terminal lines ---
+    const phrases = [
+      "scanning servers: mumbai-1 … ping 3ms ✓",
+      "12,400 spectators connected — stream healthy",
+      "next broadcast: GRID OPEN CUP · FRI 21:00 IST",
+      "clan ladder online: 1,842 teams registered",
+      "anti-cheat sweep complete: 0 flags · gg"
+    ];
+    const typedEl = document.getElementById("typed");
+    let pi = 0, ci = 0, deleting = false;
+    (function typeLoop() {
+      const full = phrases[pi];
+      typedEl.textContent = full.slice(0, ci);
+      if (!deleting && ci < full.length) { ci++; setTimeout(typeLoop, 26); }
+      else if (!deleting) { deleting = true; setTimeout(typeLoop, 2100); }
+      else if (ci > 0) { ci--; setTimeout(typeLoop, 11); }
+      else { deleting = false; pi = (pi + 1) % phrases.length; setTimeout(typeLoop, 350); }
+    })();
+
+    // --- watch modal ---
+    const modal = document.getElementById("modal");
+    const viewEl = document.getElementById("viewCount");
+    let viewN = 12400, viewTimer = null;
+    window.openModal = function () {
+      modal.classList.add("open");
+      if (!viewTimer) viewTimer = setInterval(() => { viewN += Math.floor(Math.random() * 9) + 1; viewEl.textContent = viewN.toLocaleString("en-IN") + " watching"; }, 1600);
+    };
+    function closeModal() { modal.classList.remove("open"); }
+    document.getElementById("watchBtn").addEventListener("click", openModal);
+    document.getElementById("closeModal").addEventListener("click", closeModal);
+    modal.addEventListener("click", (e) => { if (e.target === modal) closeModal(); });
+    addEventListener("keydown", (e) => { if (e.key === "Escape") closeModal(); });
+
+    // --- ticket form ---
+    document.getElementById("tkForm").addEventListener("submit", (e) => {
+      e.preventDefault();
+      const form = e.target;
+      if (!form.checkValidity()) { form.reportValidity(); return; }
+      const d = collectForm(form);
+      showToast("✅ Ticket reserved — " + d["Handle"] + " · " + d["Tier"]);
+      form.reset();
+    });
+  </script>
+</body>
+</html>

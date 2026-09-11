@@ -1,0 +1,1076 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RJ_MANAGE — Forms Design Gallery</title>
+  <meta name="description" content="A gallery of 20 unique form designs by RJ_MANAGE — from classic layouts to high-tech 3D animated UI/UX." />
+  <link rel="icon" href="assets/img/RJ_Logo_Black.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Sora:wght@500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/common.css" />
+  <style>
+    body { background: radial-gradient(1200px 600px at 80% -10%, #eef2ff 0%, transparent 60%), var(--paper); }
+
+    /* ---------- Nav ---------- */
+    .nav {
+      position: sticky; top: 0; z-index: 50;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 16px 32px; background: rgba(255,255,255,.8);
+      backdrop-filter: blur(12px); border-bottom: 1px solid #eef2f7;
+    }
+    .brand { display: flex; align-items: center; text-decoration: none; }
+    .brand-mark { display: block; width: 48px; height: 48px; transition: transform .2s ease; }
+    .brand-mark:hover { transform: translateY(-2px); }
+    .brand-mark img { width: 100%; height: 100%; object-fit: contain; display: block; }
+    .nav-tags { display: flex; gap: 8px; align-items: center; font-size: 13px; font-weight: 600; color: var(--ink-600); }
+    .nav-tags span { color: var(--ink-400); }
+
+    /* ---------- Hero ---------- */
+    .hero { text-align: center; padding: 84px 24px 48px; }
+    .hero .chip {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: 12.5px; font-weight: 600; color: var(--brand-600);
+      background: var(--brand-50); border: 1px solid #dfe3ff;
+      padding: 7px 16px; border-radius: 999px; margin-bottom: 22px;
+    }
+    .hero .chip .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--green-600); animation: pulse 1.6s infinite; }
+    @keyframes pulse { 50% { opacity: .35; } }
+    .hero h1 { font-size: clamp(30px, 5.5vw, 54px); line-height: 1.08; letter-spacing: -.03em; }
+    .hero h1 em { font-style: normal; background: linear-gradient(90deg, #4f46e5, #a855f7, #06b6d4); -webkit-background-clip: text; background-clip: text; color: transparent; }
+    .hero p { color: var(--ink-600); max-width: 660px; margin: 18px auto 0; font-size: 16.5px; }
+    .hero-stats { display: flex; gap: 44px; justify-content: center; margin-top: 32px; flex-wrap: wrap; }
+    .hero-stats b { display: block; font-family: var(--font-display); font-size: 24px; color: var(--ink-900); }
+    .hero-stats span { font-size: 13px; color: var(--ink-400); font-weight: 600; }
+
+    /* ---------- Category rail ---------- */
+    .rail { position: sticky; top: 72px; z-index: 40; display: flex; gap: 8px;
+      overflow-x: auto; padding: 10px 24px; background: rgba(248,250,252,.9);
+      backdrop-filter: blur(10px); border-bottom: 1px solid #eef2f7; -webkit-overflow-scrolling: touch; }
+    .rail a {
+      flex: none; font-size: 13px; font-weight: 600; color: var(--ink-600);
+      text-decoration: none; padding: 7px 14px; border-radius: 999px;
+      border: 1px solid #e5eaf1; background: #fff; transition: all .15s ease;
+    }
+    .rail a:hover { border-color: var(--brand-500); color: var(--brand-600); }
+
+    /* ---------- Sections ---------- */
+    .gallery { max-width: 1220px; margin: 0 auto; padding: 8px 24px 40px; }
+    .category { margin-top: 44px; scroll-margin-top: 130px; }
+    .category-head { display: flex; align-items: center; gap: 14px; margin-bottom: 6px; }
+    .category-head .icon {
+      width: 42px; height: 42px; border-radius: 12px; display: grid; place-items: center;
+      color: #fff; flex: none; font-size: 18px;
+      box-shadow: 0 8px 22px -8px rgba(15,23,42,.35);
+    }
+    .category-head .kicker { font-size: 11px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: var(--ink-400); }
+    .category-head h2 { font-size: 26px; letter-spacing: -.02em; line-height: 1.15; }
+    .category-head p { color: var(--ink-600); font-size: 14px; margin-top: 2px; }
+
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 24px; margin-top: 22px; }
+
+    /* ---------- Cards ---------- */
+    .card {
+      background: var(--card); border-radius: var(--radius-lg);
+      overflow: hidden; text-decoration: none; display: flex; flex-direction: column;
+      border: 1px solid #eef2f7; box-shadow: var(--shadow-card);
+      transition: transform .22s ease, box-shadow .22s ease;
+    }
+    .card:hover { transform: translateY(-6px); box-shadow: var(--shadow-pop); }
+    .card .thumb { height: 168px; display: grid; place-items: center; position: relative; overflow: hidden; }
+    .card .thumb .num { font-family: var(--font-display); font-weight: 800; font-size: 40px; opacity: .13; position: absolute; top: 6px; right: 14px; }
+    .card .body { padding: 18px 22px 22px; display: flex; flex-direction: column; gap: 5px; flex: 1; }
+    .card .row { display: flex; align-items: center; justify-content: space-between; }
+    .card .level {
+      font-size: 10.5px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase;
+      padding: 4px 10px; border-radius: 999px;
+    }
+    .card h3 { font-size: 19px; letter-spacing: -.01em; }
+    .card p { font-size: 13px; color: var(--ink-600); flex: 1; }
+    .card .go { font-size: 13px; font-weight: 700; color: var(--brand-600); margin-top: 6px; }
+    .card:hover .go { text-decoration: underline; }
+
+    footer { text-align: center; padding: 44px 20px 50px; color: var(--ink-400); font-size: 13.5px; border-top: 1px solid #eef2f7; }
+    footer .foot-logo { display: inline-block; height: 52px; margin-bottom: 14px; transition: transform .25s ease; }
+    footer .foot-logo:hover { transform: translateY(-4px); }
+    footer .foot-logo img { height: 100%; width: auto; display: block; }
+    footer .foot-tag { display: block; margin-bottom: 8px; font-size: 13px; font-weight: 600; color: var(--ink-600); }
+    footer b { color: var(--ink-600); }
+
+    /* ---------- Level badges ---------- */
+    .lvl { background: #eef2ff; color: #4f46e5; }
+    .lvl-s { background: #f1f5f9; color: #64748b; }
+    .lvl-m { background: #ecfdf5; color: #059669; }
+    .lvl-a { background: #fff7ed; color: #ea580c; }
+    .lvl-x { background: linear-gradient(90deg, #fef2f2, #ffe4e6); color: #e11d48; }
+
+    /* ---------- Category color themes ---------- */
+    .cat-classic .icon { background: linear-gradient(135deg, #64748b, #475569); }
+    .cat-soft .icon { background: linear-gradient(135deg, #06b6d4, #4f46e5); }
+    .cat-immersive .icon { background: linear-gradient(135deg, #a855f7, #ec4899); }
+    .cat-luxury .icon { background: linear-gradient(135deg, #d4a853, #92400e); }
+    .cat-hightech .icon { background: linear-gradient(135deg, #0ea5e9, #6366f1); }
+    .cat-synth .icon { background: linear-gradient(135deg, #ec4899, #f59e0b); }
+
+    /* ---------- CSS mini-thumbnails (real visual previews) ---------- */
+    .mini { width: 190px; display: grid; gap: 6px; padding: 10px 12px; border-radius: 10px; position: relative; }
+    .mini .mini-bar { height: 6px; border-radius: 4px; background: currentColor; opacity: .24; }
+    .mini .mini-bar.w1 { width: 55%; } .mini .mini-bar.w2 { width: 78%; } .mini .mini-bar.w3 { width: 66%; }
+    .mini .mini-btn { height: 18px; border-radius: 5px; background: currentColor; opacity: .6; margin-top: 2px; }
+    .mini .mini-input { height: 16px; border-radius: 5px; background: transparent; border: 1.5px solid currentColor; opacity: .35; }
+
+    /* t1 Classic Simple */
+    .t1 { background: linear-gradient(135deg, #f1f5f9, #e2e8f0); color: #334155; }
+    .t1 .mini { background: #fff; box-shadow: 0 10px 24px -12px rgba(15,23,42,.4); }
+    .t1 .mini-btn { background: #334155; opacity: 1; }
+
+    /* t2 Modern Minimal (dark) */
+    .t2 { background: linear-gradient(135deg, #0f172a, #1e293b); color: #e2e8f0; }
+    .t2 .mini { background: #fff; color: #94a3b8; box-shadow: 0 14px 30px -14px rgba(0,0,0,.7); }
+    .t2 .mini-btn { background: #6366f1; opacity: 1; color: #6366f1; }
+
+    /* t3 Split Screen */
+    .t3 { background: linear-gradient(135deg, #f8fafc, #e2e8f0); color: #0f172a; }
+    .t3 .mini { background: #fff; }
+    .t3 .mini::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 34%;
+      background: linear-gradient(180deg, #312e81, #4f46e5); border-radius: 10px 0 0 10px; }
+    .t3 .mini-btn { background: #0f172a; opacity: .85; }
+
+    /* t4 Step Wizard */
+    .t4 { background: linear-gradient(135deg, #eef2ff, #e0e7ff); color: #3730a3; }
+    .t4 .mini { background: #fff; color: #64748b; }
+    .t4 .steps { display: flex; align-items: center; gap: 6px; margin-bottom: 4px; }
+    .t4 .dot { width: 12px; height: 12px; border-radius: 50%; background: #4f46e5; opacity: 1; }
+    .t4 .dot.off { background: #c7d2fe; }
+    .t4 .line { height: 2px; flex: 1; background: #c7d2fe; }
+    .t4 .mini-btn { background: #4f46e5; opacity: 1; color: #4f46e5; }
+
+    /* t5 Glassmorphism */
+    .t5 { background: linear-gradient(135deg, #0f172a 0%, #0b1b3a 60%, #1e1b4b 100%); color: #a5b4fc; }
+    .t5 .mini { background: rgba(255,255,255,.12); backdrop-filter: blur(6px); border: 1px solid rgba(255,255,255,.25); color: #e0e7ff; }
+    .t5 .mini::after { content: ""; position: absolute; inset: 0; border-radius: 10px; background: radial-gradient(120px 80px at 70% 0%, rgba(168,85,247,.5), transparent 70%); }
+    .t5 .mini-btn { background: rgba(255,255,255,.2); opacity: 1; }
+
+    /* t6 Neumorphism */
+    .t6 { background: #dbe4ef; color: #5b6472; }
+    .t6 .mini { background: #dbe4ef; color: #7b8794;
+      box-shadow: 6px 6px 14px #b9c6d8, -6px -6px 14px #f4f8fd; }
+    .t6 .mini-btn { background: #dbe4ef; opacity: 1; color: #4f46e5;
+      box-shadow: 5px 5px 12px #b9c6d8, -5px -5px 12px #f4f8fd; }
+
+    /* t7 Neon Cyber */
+    .t7 { background: linear-gradient(135deg, #020617, #0f172a); color: #22d3ee; }
+    .t7 .mini { background: rgba(8,15,34,.9); border: 1px solid rgba(34,211,238,.4); color: #67e8f9;
+      box-shadow: 0 0 18px rgba(34,211,238,.25); font-family: monospace; }
+    .t7 .mini::after { content: ">_ EXECUTE"; position: absolute; right: 10px; bottom: 8px; font-size: 9px; letter-spacing: .1em; color: #22d3ee; }
+    .t7 .mini-btn { background: #22d3ee; opacity: 1; color: #020617; box-shadow: 0 0 12px rgba(34,211,238,.6); }
+
+    /* t8 3D Tilt Card */
+    .t8 { background: linear-gradient(135deg, #7c3aed, #4f46e5); color: #fff; }
+    .t8 .mini { background: linear-gradient(160deg, rgba(255,255,255,.24), rgba(255,255,255,.08));
+      border: 1px solid rgba(255,255,255,.4); backdrop-filter: blur(6px);
+      box-shadow: 0 24px 44px -16px rgba(0,0,0,.6); transform: perspective(600px) rotateX(6deg) rotateY(-7deg); }
+    .t8 .mini-btn { background: #fff; opacity: 1; color: #4c1d95; }
+
+    /* t9 Premium Gold */
+    .t9 { background: linear-gradient(135deg, #0b0f1a, #1b2134); color: #f59e0b; }
+    .t9 .mini { background: linear-gradient(165deg, #14141c, #0d0d13); color: #a8a29e;
+      border: 1px solid rgba(212,168,83,.5); box-shadow: 0 0 0 1px rgba(212,168,83,.2), 0 20px 40px -18px rgba(0,0,0,.8); }
+    .t9 .mini-btn { background: linear-gradient(120deg, #e6c878, #d4a853); opacity: 1; color: #14140c; }
+
+    /* t10 Expert Showcase (purple) */
+    .t10 { background: radial-gradient(800px 400px at 20% 0%, #3b0a4d, #0f0a1e 65%); color: #f0abfc; }
+    .t10 .mini { background: rgba(255,255,255,.05); border: 1px solid rgba(240,171,252,.3); color: #c4b5fd;
+      backdrop-filter: blur(8px); }
+    .t10 .mini-btn { background: linear-gradient(120deg, #f0abfc, #a78bfa); opacity: 1; color: #17082b; }
+
+    /* ---------- New form thumbnails (11-20) ---------- */
+
+    /* t11 Holographic */
+    .t11 { background: linear-gradient(135deg, #e0e7ff, #c7d2fe 40%, #fbcfe8); color: #4338ca; }
+    .t11 .mini { background: linear-gradient(135deg, rgba(255,255,255,.55), rgba(255,255,255,.25));
+      border: 1px solid rgba(79,70,229,.4); backdrop-filter: blur(8px); color: #4f46e5;
+      box-shadow: 0 0 24px rgba(129,140,248,.35); }
+    .t11 .rainbow { height: 4px; border-radius: 4px; background: linear-gradient(90deg,#6366f1,#ec4899,#f59e0b,#22d3ee); opacity: .9; }
+    .t11 .mini-btn { background: linear-gradient(90deg,#6366f1,#ec4899); opacity: 1; color: #fff; }
+
+    /* t12 Particle Constellation */
+    .t12 { background: radial-gradient(600px 400px at 30% 20%, #1e1b4b, #0f0a1e); color: #a5b4fc; }
+    .t12 .mini { background: rgba(10,10,30,.6); border: 1px solid rgba(139,92,246,.35); color: #c4b5fd;
+      box-shadow: 0 0 0 .5px rgba(139,92,246,.2), 0 16px 34px -16px rgba(0,0,0,.6); }
+    .t12 .particles { position: absolute; inset: 0; border-radius: 10px;
+      background-image: radial-gradient(circle, currentColor 1px, transparent 1.6px);
+      background-size: 18px 18px; opacity: .5; }
+    .t12 .mini-btn { background: #a78bfa; opacity: 1; color: #1a1130; }
+
+    /* t13 Morph Hover */
+    .t13 { background: linear-gradient(135deg, #0f172a, #1e1b4b); color: #818cf8; }
+    .t13 .mini { background: #fff; color: #64748b; box-shadow: 0 18px 34px -16px rgba(0,0,0,.7); }
+    .t13 .morph { position: absolute; top: 6px; right: 8px; width: 26px; height: 26px; border-radius: 50%;
+      background: linear-gradient(135deg, #0ea5e9, #6366f1); box-shadow: 0 0 0 4px rgba(129,140,248,.25); opacity: .9; }
+    .t13 .mini-btn { background: #4f46e5; opacity: 1; color: #fff; }
+
+    /* t14 Deep Glass Layers */
+    .t14 { background: linear-gradient(135deg, #083344, #0f172a); color: #67e8f9; }
+    .t14 .mini { background: rgba(8,145,178,.14); border: 1px solid rgba(34,211,238,.35); color: #a5f3fc;
+      backdrop-filter: blur(7px); box-shadow: 0 26px 50px -20px rgba(0,0,0,.7); }
+    .t14 .layers { position: absolute; left: -14px; right: -14px; top: 34px; bottom: -10px; border-radius: 14px;
+      border: 1px solid rgba(34,211,238,.2); background: rgba(8,145,178,.1); }
+    .t14 .mini-btn { background: #22d3ee; opacity: 1; color: #083344; }
+
+    /* t15 Circuit Board */
+    .t15 { background: linear-gradient(135deg, #022c22, #064e3b); color: #34d399; }
+    .t15 .mini { background: rgba(2,44,34,.8); border: 1px solid rgba(52,211,153,.35); color: #6ee7b7;
+      box-shadow: 0 0 0 .5px rgba(52,211,153,.2), 0 16px 32px -16px rgba(0,0,0,.6); }
+    .t15 .circuit { position: absolute; inset: 0; border-radius: 10px; opacity: .5;
+      background-image: radial-gradient(circle at 80% 20%, #34d399 2px, transparent 2.5px),
+        linear-gradient(90deg, transparent 49.5%, rgba(52,211,153,.35) 50%, transparent 50.5%),
+        linear-gradient(90deg, transparent 49.5%, rgba(52,211,153,.18) 50%, transparent 50.5%);
+      background-size: 60px 60px; }
+    .t15 .mini-btn { background: #34d399; opacity: 1; color: #022c22; }
+
+    /* t16 Liquid Fill */
+    .t16 { background: linear-gradient(135deg, #312e81, #4338ca); color: #e0e7ff; }
+    .t16 .mini { background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.25); color: #e0e7ff;
+      backdrop-filter: blur(6px); }
+    .t16 .liquid { position: absolute; left: 0; right: 0; bottom: 0; height: 40%; border-radius: 0 0 10px 10px;
+      background: linear-gradient(180deg, rgba(34,211,238,.9), rgba(99,102,241,.9)); opacity: .7; }
+    .t16 .mini-btn { background: #22d3ee; opacity: 1; color: #0f172a; }
+
+    /* t17 Flip Card */
+    .t17 { background: linear-gradient(135deg, #fb7185, #f43f5e); color: #fff; }
+    .t17 .mini { background: rgba(255,255,255,.14); border: 1px solid rgba(255,255,255,.35); color: #fff;
+      backdrop-filter: blur(6px); transform: perspective(650px) rotateY(14deg); }
+    .t17 .flap { position: absolute; inset: 0; border-radius: 10px;
+      background: linear-gradient(160deg, rgba(255,255,255,.25), rgba(255,255,255,.06));
+      transform: rotateY(-70deg) translateZ(30px); transform-origin: left; }
+    .t17 .mini-btn { background: #fff; opacity: 1; color: #e11d48; }
+
+    /* t18 Stepper Liquid */
+    .t18 { background: linear-gradient(135deg, #0ea5e9, #6366f1); color: #fff; }
+    .t18 .mini { background: #fff; color: #64748b; box-shadow: 0 20px 40px -18px rgba(2,32,71,.6); }
+    .t18 .steps { display: flex; align-items: center; gap: 6px; margin-bottom: 5px; }
+    .t18 .dot { width: 14px; height: 14px; border-radius: 50%; background: #0ea5e9; box-shadow: 0 0 0 3px rgba(14,165,233,.2); }
+    .t18 .dot.off { background: #e2e8f0; box-shadow: none; }
+    .t18 .line { height: 2px; flex: 1; background: linear-gradient(90deg,#0ea5e9,#6366f1); }
+    .t18 .mini-btn { background: linear-gradient(120deg,#0ea5e9,#6366f1); opacity: 1; color: #fff; }
+
+    /* t19 Synthwave Grid */
+    .t19 { background: linear-gradient(180deg, #2d0a3f 0%, #0f0520 70%); color: #f472b6; }
+    .t19 .mini { background: linear-gradient(180deg, rgba(45,10,63,.6), rgba(15,5,32,.8));
+      border: 1px solid rgba(244,114,182,.3); color: #f9a8d4; }
+    .t19 .sun { position: absolute; top: 10px; left: 50%; width: 34px; height: 20px; transform: translateX(-50%);
+      background: linear-gradient(#fde68a, #f472b6); clip-path: polygon(0 0, 100% 0, 100% 45%, 0 100%); opacity: .9; }
+    .t19 .gridhor { position: absolute; inset: 0; border-radius: 10px; opacity: .5;
+      background-image: linear-gradient(rgba(244,114,182,.28) 1px, transparent 1px);
+      background-size: 100% 12px; transform: perspective(80px) rotateX(40deg) scale(1.4) translateY(24px); transform-origin: bottom; }
+    .t19 .mini-btn { background: #ec4899; opacity: 1; color: #fff; }
+
+    /* t20 Kinetic */
+    .t20 { background: linear-gradient(135deg, #0f172a, #1e293b); color: #fbbf24; }
+    .t20 .mini { background: #fff; color: #94a3b8; box-shadow: 0 20px 40px -18px rgba(0,0,0,.7); }
+    .t20 .kin { position: absolute; top: 6px; right: 8px; font-family: var(--font-display); font-weight: 800; font-size: 20px;
+      color: #0f172a; opacity: .9; }
+    .t20 .mini-btn { background: #fbbf24; opacity: 1; color: #0f172a; }
+
+    /* ============================================================
+       ANIMATIONS & EFFECTS
+       ============================================================ */
+
+    /* ---------- Scroll progress bar ---------- */
+    #progress {
+      position: fixed; top: 0; left: 0; height: 3px; z-index: 100; width: 0%;
+      background: linear-gradient(90deg, #4f46e5, #a855f7, #06b6d4);
+      box-shadow: 0 0 12px rgba(99,102,241,.7);
+    }
+
+    /* ---------- Floating aurora blobs behind hero ---------- */
+    .blob { position: fixed; border-radius: 50%; filter: blur(80px); z-index: 0; pointer-events: none; opacity: .5; }
+    .blob-a { width: 480px; height: 480px; left: -140px; top: -120px; background: #818cf8; animation: blobFloat 22s ease-in-out infinite alternate; }
+    .blob-b { width: 420px; height: 420px; right: -120px; top: 10%; background: #f0abfc; animation: blobFloat 26s ease-in-out infinite alternate-reverse; }
+    .blob-c { width: 360px; height: 360px; left: 35%; top: 30%; background: #67e8f9; opacity: .32; animation: blobFloat 30s ease-in-out infinite alternate; }
+
+    main.gallery, .hero { position: relative; z-index: 1; }
+    @keyframes blobFloat {
+      0%   { transform: translate(0,0) scale(1); }
+      50%  { transform: translate(40px, -30px) scale(1.12); }
+      100% { transform: translate(-30px, 30px) scale(.95); }
+    }
+
+    /* ---------- Brand logo (hover handled by .brand-mark:hover) ---------- */
+
+    /* ---------- Hero entrance (staggered) ---------- */
+    .hero .chip, .hero h1, .hero p, .hero .hero-stats { opacity: 0; animation: riseUp .8s cubic-bezier(.2,.7,.3,1) forwards; }
+    .hero .chip { animation-delay: .05s; }
+    .hero h1 { animation-delay: .15s; }
+    .hero p { animation-delay: .3s; }
+    .hero .hero-stats { animation-delay: .45s; }
+    @keyframes riseUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: none; } }
+
+    /* gradient shimmer on the headline "em" */
+    .hero h1 em { background-size: 200% 100%; animation: hueShift 8s linear infinite; }
+    @keyframes hueShift { to { background-position: -200% 0; } }
+
+    /* chip dot */
+    .hero .chip .dot { animation: pulse 1.6s infinite, dotGlow 2.4s ease-in-out infinite; }
+    @keyframes dotGlow { 50% { box-shadow: 0 0 10px 3px rgba(5,150,105,.5); } }
+
+    /* ---------- Hero stat counter float ---------- */
+    .hero-stats div { animation: statFloat 4s ease-in-out infinite; }
+    .hero-stats div:nth-child(2) { animation-delay: .4s; }
+    .hero-stats div:nth-child(3) { animation-delay: .8s; }
+    @keyframes statFloat { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+
+    /* ---------- Scroll reveal ---------- */
+    .reveal { opacity: 0; transform: translateY(34px); transition: opacity .7s ease, transform .7s cubic-bezier(.2,.7,.3,1); }
+    .reveal.in { opacity: 1; transform: none; }
+    .category-head.reveal { transition-delay: .05s; }
+    .grid .card.reveal { transition-delay: calc(var(--i, 0) * 80ms); }
+
+    /* ---------- Card hover: lift + 3D tilt + glare ---------- */
+    .card { position: relative; transform-style: preserve-3d; will-change: transform; }
+    .card .spot { position: absolute; inset: 0; z-index: 2; pointer-events: none; opacity: 0; transition: opacity .25s ease;
+      background: radial-gradient(320px 180px at var(--mx,50%) var(--my,50%), rgba(255,255,255,.55), transparent 70%); }
+    .card:hover .spot { opacity: 1; }
+    /* hover ring glow */
+    .card:hover { border-color: rgba(99,102,241,.4); }
+
+    /* card thumbnail zoom-on-hover for the mini */
+    .card .mini { transition: transform .5s cubic-bezier(.2,.7,.3,1); }
+    .card:hover .mini { transform: scale(1.06) rotate(1deg); }
+    /* override the baked 3D transforms so zoom doesn't clobber them */
+    .card:hover .t8 .mini, .card:hover .t17 .mini { transform: perspective(600px) rotateX(5deg) rotateY(-5deg) scale(1.05); }
+
+    /* ---------- "Open demo" arrow slide ---------- */
+    .card .go { display: inline-flex; align-items: center; gap: 6px; }
+    .card .go::after { content: ""; width: 0; height: 2px; background: var(--brand-500); transition: width .25s ease; border-radius: 2px; }
+    .card:hover .go::after { width: 18px; }
+
+    /* ---------- Category icon entrance + wobble ---------- */
+    .category-head .icon { animation: iconPop .6s cubic-bezier(.2,.9,.3,1.4) both; }
+    @keyframes iconPop { from { transform: scale(0) rotate(-20deg); } }
+    .category-head:hover .icon { animation: iconWobble .6s ease; }
+    @keyframes iconWobble { 0%,100% { transform: rotate(0); } 25% { transform: rotate(-8deg) scale(1.1); } 65% { transform: rotate(8deg) scale(1.05); } }
+
+    /* ---------- Rail active link pill ---------- */
+    .rail a.active { background: var(--brand-600); color: #fff; border-color: var(--brand-600); box-shadow: 0 6px 16px -6px rgba(79,70,229,.6); }
+
+    /* ---------- Back to top ---------- */
+    #toTop {
+      position: fixed; right: 22px; bottom: 22px; z-index: 90; width: 48px; height: 48px;
+      border-radius: 14px; border: none; cursor: pointer; display: grid; place-items: center;
+      color: #fff; font-size: 20px; opacity: 0; pointer-events: none; transform: translateY(14px);
+      background: linear-gradient(135deg, #4f46e5, #8b5cf6); box-shadow: 0 12px 30px -8px rgba(79,70,229,.7);
+      transition: opacity .3s ease, transform .3s ease;
+    }
+    #toTop.show { opacity: 1; pointer-events: auto; transform: none; }
+    #toTop:hover { filter: brightness(1.1); }
+
+    @media (prefers-reduced-motion: reduce) {
+      .blob, .brand-mark, .hero h1 em, .hero-stats div, .category-head .icon { animation: none !important; }
+    }
+  </style>
+
+  <style>
+    /* ============================================================
+       Neumorphic soft-UI theme — landing page (matches face-8).
+       Loaded last so it overrides the shared indigo theme; the
+       demo pages and css/common.css stay untouched.
+       ============================================================ */
+    :root{
+      --canvas:#E3E9F0; --light:#F7FAFE; --dark:#C3CDDA;
+      --ink:#2A3444; --muted:#8C98A9;
+      --mint:#3CCF91; --coral:#FF8E7F; --indigo:#6366F1;
+      --sh-r:10px 10px 22px var(--dark), -10px -10px 22px var(--light);
+      --sh-s:5px 5px 9px var(--dark), -5px -5px 9px var(--light);
+      --sh-in:inset 5px 5px 10px var(--dark), inset -5px -5px 10px var(--light);
+      --sh-in-s:inset 3px 3px 6px var(--dark), -3px -3px 6px var(--light);
+    }
+    body{ background:var(--canvas) !important; color:var(--ink) !important; overflow-x:hidden; }
+    .blob,.bg-scene{ display:none !important; }
+    ::selection{ background:var(--mint); color:#fff; }
+
+    /* ---------- soft primitives ---------- */
+    .soft-raised{ background:var(--canvas); border-radius:24px; box-shadow:var(--sh-r); }
+    .soft-btn{ display:inline-flex; align-items:center; justify-content:center; gap:8px; font:inherit; font-weight:700;
+      cursor:pointer; border:none; color:#fff; text-decoration:none; background:linear-gradient(145deg,#4ED7A0,#2BB87E);
+      border-radius:999px; padding:14px 26px; box-shadow:7px 7px 16px var(--dark), -7px -7px 16px var(--light);
+      transition:transform .15s ease, box-shadow .15s ease, filter .15s ease; }
+    .soft-btn:hover{ transform:translateY(-2px); filter:brightness(1.03);
+      box-shadow:9px 9px 20px var(--dark), -9px -9px 20px var(--light); }
+    .soft-btn:active{ transform:translateY(0) scale(.99); box-shadow:var(--sh-in-s); }
+    .soft-btn.ink{ background:linear-gradient(145deg,#3A4760,#202B3E); }
+    .soft-chip{ display:inline-flex; align-items:center; gap:8px; font-size:12.5px; font-weight:700; color:var(--muted);
+      background:var(--canvas); border-radius:999px; padding:8px 15px; box-shadow:var(--sh-s); }
+    .soft-chip .dot{ width:8px; height:8px; border-radius:50%; background:var(--mint); }
+
+    /* ---------- nav (floating soft pill) ---------- */
+    .nav{ position:sticky; top:14px; z-index:60; width:min(1160px,94vw); margin:14px auto 0;
+      display:flex; align-items:center; justify-content:space-between; gap:18px;
+      padding:12px 22px 12px 26px; border-radius:999px; background:var(--canvas) !important;
+      backdrop-filter:none !important; -webkit-backdrop-filter:none !important;
+      border:none !important; box-shadow:var(--sh-r); }
+    .brand{ display:inline-flex; align-items:center; gap:12px; text-decoration:none; }
+    .brand .logo{ width:44px; height:44px; flex:none; padding:8px; border-radius:50%; display:grid; place-items:center;
+      background:var(--canvas); box-shadow:var(--sh-s); }
+    .brand .logo img{ width:100%; height:100%; object-fit:contain; display:block; }
+    .brand b{ font-family:var(--font-display); font-size:18px; font-weight:800; letter-spacing:-.02em; color:var(--ink); }
+    .nav-side{ display:flex; align-items:center; gap:12px; }
+    .nav .cta{ padding:10px 20px; font-size:13.5px; }
+
+    /* ---------- hero ---------- */
+    .hero{ text-align:center; padding:64px 24px 34px; position:relative; z-index:1; }
+    .hero .chip{ display:inline-flex; align-items:center; gap:8px; font-size:12.5px; font-weight:700;
+      color:var(--muted) !important; background:var(--canvas) !important; border:none !important;
+      padding:8px 16px; border-radius:999px; margin-bottom:24px; box-shadow:var(--sh-s); }
+    .hero .chip .dot{ width:8px; height:8px; border-radius:50%; background:var(--mint) !important;
+      box-shadow:none !important; animation:softPulse 2.4s ease-in-out infinite; }
+    @keyframes softPulse{ 50%{ opacity:.45; } }
+    .hero h1{ font-size:clamp(32px,5.5vw,56px); line-height:1.06; letter-spacing:-.03em; font-weight:800; color:var(--ink); }
+    .hero h1 em{ font-style:normal; background:none !important; -webkit-background-clip:initial !important;
+      background-clip:initial !important; -webkit-text-fill-color:var(--mint); color:var(--mint) !important;
+      animation:none !important; }
+    .hero p{ color:var(--muted) !important; max-width:680px; margin:18px auto 0; font-size:16.5px; line-height:1.7; }
+    .hero-cta{ display:flex; gap:14px; justify-content:center; flex-wrap:wrap; margin-top:30px; }
+    .hero-stats{ display:flex; gap:18px; justify-content:center; margin-top:34px; flex-wrap:wrap; }
+    .hero-stats div{ background:var(--canvas); border-radius:22px; padding:16px 28px; box-shadow:var(--sh-r); min-width:124px; }
+    .hero-stats b{ display:block; font-family:var(--font-display); font-size:26px; color:var(--ink); }
+    .hero-stats span{ font-size:12px; color:var(--muted); font-weight:700; letter-spacing:.08em; text-transform:uppercase; }
+
+    /* ---------- category rail ---------- */
+    .rail{ position:sticky; top:88px; z-index:40; display:flex; gap:10px; overflow-x:auto;
+      padding:14px 24px 16px; background:var(--canvas) !important; backdrop-filter:none !important;
+      -webkit-backdrop-filter:none !important; border-bottom:none !important; -webkit-overflow-scrolling:touch; }
+    .rail a{ flex:none; font-size:13px; font-weight:700; color:var(--muted) !important; text-decoration:none;
+      padding:9px 16px; border-radius:999px; border:none !important; background:var(--canvas) !important;
+      box-shadow:var(--sh-s); transition:color .18s ease, transform .15s ease; }
+    .rail a:hover{ color:var(--ink) !important; transform:translateY(-1px); }
+    .rail a.active{ color:#fff !important; background:linear-gradient(145deg,#4ED7A0,#2BB87E) !important;
+      box-shadow:5px 5px 12px var(--dark), -5px -5px 12px var(--light) !important; }
+
+    /* ---------- gallery + cards ---------- */
+    .gallery{ max-width:1160px; margin:0 auto; padding:8px 24px 40px; position:relative; z-index:1; }
+    .category{ margin-top:56px; scroll-margin-top:150px; }
+    .category-head{ display:flex; align-items:center; gap:16px; margin-bottom:10px; }
+    .category-head .icon{ width:54px; height:54px; border-radius:18px; display:grid; place-items:center; flex:none;
+      font-size:20px; background:var(--canvas) !important; background-image:none !important; box-shadow:var(--sh-s) !important; }
+    .category-head .kicker{ font-size:11px; font-weight:800; letter-spacing:.18em; text-transform:uppercase; color:var(--mint); }
+    .category-head h2{ font-size:27px; letter-spacing:-.02em; line-height:1.15; color:var(--ink); }
+    .category-head p{ color:var(--muted); font-size:14px; margin-top:2px; }
+    .cat-classic .icon{ color:#64748B !important; }
+    .cat-modern .icon{ color:var(--indigo) !important; }
+    .cat-glass .icon{ color:#8B5CF6 !important; }
+    .cat-luxury .icon{ color:#C79A3E !important; }
+    .cat-hightech .icon{ color:#0EA5E9 !important; }
+    .cat-future .icon{ color:var(--coral) !important; }
+    .cat-soft .icon{ color:#06B6D4 !important; }
+    .cat-immersive .icon{ color:#A855F7 !important; }
+    .cat-synth .icon{ color:#EC4899 !important; }
+    .cat-basics .icon{ color:#64748B !important; }
+    .cat-motion .icon{ color:var(--indigo) !important; }
+    .cat-physics .icon{ color:#8B5CF6 !important; }
+    .cat-3d .icon{ color:#0EA5E9 !important; }
+    .cat-high .icon{ color:var(--coral) !important; }
+
+    .grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:24px; margin-top:24px; }
+    .card{ background:var(--canvas) !important; border-radius:26px; overflow:hidden; text-decoration:none;
+      display:flex; flex-direction:column; border:none !important; box-shadow:var(--sh-r) !important;
+      transition:transform .25s ease, box-shadow .25s ease; }
+    .card:hover{ border-color:transparent !important;
+      box-shadow:14px 14px 30px var(--dark), -12px -12px 28px var(--light) !important; }
+    .card .thumb{ margin:16px 16px 0; height:176px; border-radius:20px; display:grid; place-items:center;
+      position:relative; overflow:hidden; background:var(--canvas) !important; box-shadow:var(--sh-in-s); }
+    .card .thumb .num{ font-family:var(--font-display); font-weight:800; font-size:38px; opacity:.12;
+      position:absolute; top:3px; right:14px; color:var(--ink); }
+    .card .body{ padding:18px 22px 24px; display:flex; flex-direction:column; gap:6px; flex:1; }
+    .card .row{ display:flex; align-items:center; justify-content:space-between; gap:10px; }
+    .card h3{ font-size:19px; letter-spacing:-.01em; color:var(--ink); }
+    .card p{ font-size:13px; color:var(--muted); flex:1; line-height:1.6; }
+    .card .level{ font-size:10.5px; font-weight:800; letter-spacing:.1em; text-transform:uppercase; flex:none;
+      padding:5px 12px; border-radius:999px; background:var(--canvas) !important; box-shadow:var(--sh-in-s); }
+    .lvl{ color:var(--indigo) !important; }
+    .lvl-s{ color:#64748B !important; }
+    .lvl-m{ color:#1F9D6A !important; }
+    .lvl-a{ color:#EA580C !important; }
+    .lvl-x{ color:#E11D48 !important; }
+    .card .go{ font-size:13px; font-weight:800; color:var(--mint) !important; margin-top:8px; }
+    .card:hover .go{ text-decoration:none; }
+    .card .go::after{ background:var(--mint) !important; }
+
+    /* ---------- footer ---------- */
+    footer{ padding:40px 5vw 46px; color:var(--muted); font-size:13.5px; border-top:none !important; text-align:left; }
+    .foot-main{ max-width:1160px; margin:0 auto; display:flex; flex-wrap:wrap; align-items:center;
+      justify-content:space-between; gap:18px; padding:26px 30px; }
+    .foot-main .flinks{ display:flex; gap:20px; font-size:13.5px; flex-wrap:wrap; }
+    .foot-main .flinks a{ color:var(--muted); text-decoration:none; }
+    .foot-main .flinks a:hover{ color:var(--ink); }
+    .demo-tag{ max-width:1160px; margin:18px auto 0; padding:16px 8px 0; border-top:1px solid rgba(60,80,110,.15);
+      display:flex; flex-wrap:wrap; justify-content:space-between; gap:10px; font-size:12.5px; color:var(--muted); }
+    .demo-tag b{ color:var(--ink); }
+
+    /* ---------- scroll progress + back-to-top ---------- */
+    #progress{ position:fixed; top:0; left:0; height:4px; z-index:100; width:0%;
+      background:linear-gradient(90deg,#57D9A4,#2BB87E) !important; box-shadow:0 0 12px rgba(60,207,145,.55) !important; }
+    #toTop{ position:fixed; right:24px; bottom:24px; z-index:90; width:54px; height:54px; border-radius:50%;
+      border:none; cursor:pointer; display:grid; place-items:center; color:var(--mint); font-size:20px;
+      background:var(--canvas) !important; background-image:none !important; box-shadow:var(--sh-r) !important;
+      opacity:0; pointer-events:none; transform:translateY(14px);
+      transition:opacity .3s ease, transform .3s ease, color .2s ease; }
+    #toTop.show{ opacity:1; pointer-events:auto; transform:none; }
+    #toTop:hover{ color:var(--ink); }
+
+    @media (max-width:860px){
+      .nav{ flex-wrap:wrap; border-radius:26px; padding:12px 16px; }
+      .nav-side{ width:100%; justify-content:space-between; }
+      .nav .cta{ display:none; }
+      .rail{ position:static; }
+    }
+    @media (prefers-reduced-motion:reduce){
+      .soft-chip .dot,.hero .chip .dot{ animation:none !important; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Decorative animated background -->
+  <div class="blob blob-a"></div>
+  <div class="blob blob-b"></div>
+  <div class="blob blob-c"></div>
+  <div id="progress"></div>
+  <button id="toTop" aria-label="Back to top">↑</button>
+
+  <nav class="nav">
+    <a class="brand" href="index.html">
+      <span class="logo"><img src="assets/img/RJ_Logo_Black.png" alt="RJ logo" /></span>
+      <b>RJ Forms Gallery</b>
+    </a>
+    <div class="nav-side">
+      <span class="soft-chip"><span class="dot"></span> 20 designs · 6 categories</span>
+      <a class="soft-btn cta" href="#cat-classic">Browse the gallery</a>
+    </div>
+  </nav>
+
+  <header class="hero">
+    <span class="chip"><span class="dot"></span> 20 handcrafted form designs</span>
+    <h1>Forms, elevated.<br /><em>From classic to high-tech.</em></h1>
+    <p>Explore twenty complete form design demos by <b>RJ_MANAGE</b> — a full spectrum of UI/UX, from minimal and classic layouts to 3D, animated, high-tech experiences. Every form is live and ready to submit.</p>
+    <div class="hero-cta">
+      <a class="soft-btn" href="#cat-classic">Explore all 20 designs</a>
+      <a class="soft-btn ink" href="#cat-synth">Jump to the finale</a>
+    </div>
+    <div class="hero-stats">
+      <div><b>20</b><span>Designs</span></div>
+      <div><b>6</b><span>Categories</span></div>
+      <div><b>100%</b><span>Interactive</span></div>
+    </div>
+  </header>
+
+  <!-- Category rail -->
+  <nav class="rail" aria-label="Form categories">
+    <a href="#cat-classic">Classic &amp; Minimal</a>
+    <a href="#cat-soft">Glass &amp; Soft UI</a>
+    <a href="#cat-immersive">Immersive</a>
+    <a href="#cat-luxury">Luxury</a>
+    <a href="#cat-hightech">High-Tech</a>
+    <a href="#cat-synth">Synthwave &amp; Kinetic</a>
+  </nav>
+
+  <main class="gallery">
+
+    <!-- ============ CATEGORY: Classic & Minimal ============ -->
+    <section class="category cat-classic" id="cat-classic">
+      <div class="category-head reveal">
+        <span class="icon">▤</span>
+        <div>
+          <div class="kicker">Category 01</div>
+          <h2>Classic &amp; Minimal</h2>
+          <p>Timeless, clean, and fast — the foundations of great forms.</p>
+        </div>
+      </div>
+      <div class="grid reveal">
+
+        <a class="card reveal" href="form-1.html">
+          <div class="thumb t1">
+            <span class="spot"></span><span class="num">01</span>
+            <div class="mini">
+              <div class="mini-input"></div><div class="mini-input" style="width:84%"></div>
+              <div class="mini-bar w2"></div><div class="mini-bar w3"></div>
+              <div class="mini-btn"></div>
+            </div>
+          </div>
+          <div class="body">
+            <div class="row"><h3>Classic Simple</h3><span class="level lvl-s">Starter</span></div>
+            <p>A clean, timeless single-column form. No noise — just clear fields and one button.</p>
+            <span class="go">Open demo →</span>
+          </div>
+        </a>
+
+        <a class="card reveal" href="form-3.html">
+          <div class="thumb t3">
+            <span class="spot"></span><span class="num">02</span>
+            <div class="mini">
+              <div style="position:relative;margin-left:38%;display:grid;gap:6px">
+                <div class="mini-bar w1"></div><div class="mini-input" style="width:90%"></div>
+                <div class="mini-btn" style="width:70%"></div>
+              </div>
+            </div>
+          </div>
+          <div class="body">
+            <div class="row"><h3>Split Screen</h3><span class="level lvl">Beginner</span></div>
+            <p>A bold split layout — brand panel on the left, fields on the right. Campaign feel.</p>
+            <span class="go">Open demo →</span>
+          </div>
+        </a>
+
+        <a class="card reveal" href="form-2.html">
+          <div class="thumb t2">
+            <span class="spot"></span><span class="num">03</span>
+            <div class="mini">
+              <div class="mini-bar w1" style="opacity:.7"></div><div class="mini-input"></div>
+              <div class="mini-bar w2"></div><div class="mini-btn"></div>
+            </div>
+          </div>
+          <div class="body">
+            <div class="row"><h3>Modern Minimal</h3><span class="level lvl">Beginner</span></div>
+            <p>Floating labels, soft focus rings and generous whitespace. The modern standard.</p>
+            <span class="go">Open demo →</span>
+          </div>
+        </a>
+
+      </div>
+    </section>
+
+    <!-- ============ CATEGORY: Glass & Soft UI ============ -->
+    <section class="category cat-soft" id="cat-soft">
+      <div class="category-head reveal">
+        <span class="icon">❄</span>
+        <div>
+          <div class="kicker">Category 02</div>
+          <h2>Glass &amp; Soft UI</h2>
+          <p>Frosted glass depth and tactile, physical-feeling controls.</p>
+        </div>
+      </div>
+      <div class="grid reveal">
+
+        <a class="card reveal" href="form-5.html">
+          <div class="thumb t5">
+            <span class="spot"></span><span class="num">04</span>
+            <div class="mini">
+              <div class="mini-bar w1"></div><div class="mini-input"></div><div class="mini-input" style="width:88%"></div>
+              <div class="mini-btn"></div>
+            </div>
+          </div>
+          <div class="body">
+            <div class="row"><h3>Glassmorphism</h3><span class="level lvl-m">Intermediate</span></div>
+            <p>Frosted-glass panels floating over a living aurora gradient. Depth, blur, cosmos.</p>
+            <span class="go">Open demo →</span>
+          </div>
+        </a>
+
+        <a class="card reveal" href="form-6.html">
+          <div class="thumb t6">
+            <span class="spot"></span><span class="num">05</span>
+            <div class="mini">
+              <div class="mini-bar w1"></div><div class="mini-input"></div><div class="mini-bar w2"></div>
+              <div class="mini-btn"></div>
+            </div>
+          </div>
+          <div class="body">
+            <div class="row"><h3>Neumorphism</h3><span class="level lvl-m">Intermediate</span></div>
+            <p>Soft extruded controls on a pastel canvas — tactile, calm, satisfyingly physical.</p>
+            <span class="go">Open demo →</span>
+          </div>
+        </a>
+
+      </div>
+    </section>
+
+    <!-- ============ CATEGORY: Immersive ============ -->
+    <section class="category cat-immersive" id="cat-immersive">
+      <div class="category-head reveal">
+        <span class="icon">✦</span>
+        <div>
+          <div class="kicker">Category 03</div>
+          <h2>Guided Classics &amp; Immersive</h2>
+          <p>Multi-step flows, terminal vibes, and cursor-tracking 3D.</p>
+        </div>
+      </div>
+      <div class="grid reveal">
+
+        <a class="card reveal" href="form-4.html">
+          <div class="thumb t4">
+            <span class="spot"></span><span class="num">06</span>
+            <div class="mini">
+              <div class="steps"><span class="dot"></span><span class="line"></span><span class="dot off"></span><span class="line"></span><span class="dot off"></span></div>
+              <div class="mini-bar w2"></div><div class="mini-input"></div>
+              <div class="mini-btn"></div>
+            </div>
+          </div>
+          <div class="body">
+            <div class="row"><h3>Step Wizard</h3><span class="level lvl-m">Intermediate</span></div>
+            <p>A guided multi-step wizard with progress bar, per-step validation and a review screen.</p>
+            <span class="go">Open demo →</span>
+          </div>
+        </a>
+
+        <a class="card reveal" href="form-7.html">
+          <div class="thumb t7">
+            <span class="spot"></span><span class="num">07</span>
+            <div class="mini">
+              <div class="mini-bar w1"></div><div class="mini-input"></div><div class="mini-input" style="width:85%"></div>
+              <div class="mini-btn"></div>
+            </div>
+          </div>
+          <div class="body">
+            <div class="row"><h3>Neon Cyber</h3><span class="level lvl-a">Advanced</span></div>
+            <p>Glowing neon inputs, scanlines and a terminal-inspired flow. Pure cyberpunk energy.</p>
+            <span class="go">Open demo →</span>
+          </div>
+        </a>
+
+        <a class="card reveal" href="form-8.html">
+          <div class="thumb t8">
+            <span class="spot"></span><span class="num">08</span>
+            <div class="mini">
+              <div class="mini-bar w1"></div><div class="mini-input"></div><div class="mini-bar w2"></div>
+              <div class="mini-btn"></div>
+            </div>
+          </div>
+          <div class="body">
+            <div class="row"><h3>3D Tilt Card</h3><span class="level lvl-a">Advanced</span></div>
+            <p>A perspective-tilting card that follows your cursor, with parallax shine and depth.</p>
+            <span class="go">Open demo →</span>
+          </div>
+        </a>
+
+      </div>
+    </section>
+
+    <!-- ============ CATEGORY: Luxury ============ -->
+    <section class="category cat-luxury" id="cat-luxury">
+      <div class="category-head reveal">
+        <span class="icon">♜</span>
+        <div>
+          <div class="kicker">Category 04</div>
+          <h2>Luxury &amp; Premium</h2>
+          <p>Gold, prestige, and celebratory production polish.</p>
+        </div>
+      </div>
+      <div class="grid reveal">
+
+        <a class="card reveal" href="form-9.html">
+          <div class="thumb t9">
+            <span class="spot"></span><span class="num">09</span>
+            <div class="mini">
+              <div class="mini-bar w1"></div><div class="mini-input"></div><div class="mini-bar w2"></div>
+              <div class="mini-btn"></div>
+            </div>
+          </div>
+          <div class="body">
+            <div class="row"><h3>Premium Animated</h3><span class="level lvl-a">Advanced</span></div>
+            <p>Gold on black, magnetic buttons, shimmering borders and scroll-revealed elegance.</p>
+            <span class="go">Open demo →</span>
+          </div>
+        </a>
+
+        <a class="card reveal" href="form-10.html">
+          <div class="thumb t10">
+            <span class="spot"></span><span class="num">10</span>
+            <div class="mini">
+              <div class="mini-bar w1"></div><div class="mini-input"></div><div class="mini-bar w2" style="width:90%"></div>
+              <div class="mini-btn"></div>
+            </div>
+          </div>
+          <div class="body">
+            <div class="row"><h3>Expert Showcase</h3><span class="level lvl-x">Expert</span></div>
+            <p>The finale. Confetti celebration, live counters, autosave — the full production experience.</p>
+            <span class="go">Open demo →</span>
+          </div>
+        </a>
+
+      </div>
+    </section>
+
+    <!-- ============ CATEGORY: High-Tech ============ -->
+    <section class="category cat-hightech" id="cat-hightech">
+      <div class="category-head reveal">
+        <span class="icon">✺</span>
+        <div>
+          <div class="kicker">Category 05 · New</div>
+          <h2>High-Tech</h2>
+          <p>Holographic, particle, morphing, layered-depth and circuit forms — the future.</p>
+        </div>
+      </div>
+      <div class="grid reveal">
+
+        <a class="card reveal" href="form-11.html">
+          <div class="thumb t11">
+            <span class="spot"></span><span class="num">11</span>
+            <div class="mini">
+              <div class="rainbow"></div>
+              <div class="mini-bar w1"></div><div class="mini-input"></div><div class="mini-input" style="width:82%"></div>
+              <div class="mini-btn"></div>
+            </div>
+          </div>
+          <div class="body">
+            <div class="row"><h3>Holographic UI</h3><span class="level lvl-a">Advanced</span></div>
+            <p>Iridescent surfaces that shift hue as you move, with a shimmering rainbow header line.</p>
+            <span class="go">Open demo →</span>
+          </div>
+        </a>
+
+        <a class="card reveal" href="form-12.html">
+          <div class="thumb t12">
+            <span class="spot"></span><span class="num">12</span>
+            <div class="mini">
+              <span class="particles"></span>
+              <div class="mini-bar w1"></div><div class="mini-input"></div><div class="mini-bar w2"></div>
+              <div class="mini-btn"></div>
+            </div>
+          </div>
+          <div class="body">
+            <div class="row"><h3>Particle Constellation</h3><span class="level lvl-a">Advanced</span></div>
+            <p>Interacting particles drift and connect behind a glowing field of inputs.</p>
+            <span class="go">Open demo →</span>
+          </div>
+        </a>
+
+        <a class="card reveal" href="form-13.html">
+          <div class="thumb t13">
+            <span class="spot"></span><span class="num">13</span>
+            <div class="mini">
+              <span class="morph"></span>
+              <div class="mini-bar w1"></div><div class="mini-input"></div><div class="mini-bar w2"></div>
+              <div class="mini-btn"></div>
+            </div>
+          </div>
+          <div class="body">
+            <div class="row"><h3>Morph Hover</h3><span class="level lvl-a">Advanced</span></div>
+            <p>Fields subtly scale and their animated gradient border morphs on focus. Playful and alive.</p>
+            <span class="go">Open demo →</span>
+          </div>
+        </a>
+
+        <a class="card reveal" href="form-14.html">
+          <div class="thumb t14">
+            <span class="spot"></span><span class="num">14</span>
+            <div class="mini">
+              <span class="layers"></span>
+              <div class="mini-bar w1"></div><div class="mini-input"></div><div class="mini-bar w2"></div>
+              <div class="mini-btn"></div>
+            </div>
+          </div>
+          <div class="body">
+            <div class="row"><h3>Deep Glass Layers</h3><span class="level lvl-x">Expert</span></div>
+            <p>Multiple stacked translucent depth-layers that parallax as you scroll, cyan on navy.</p>
+            <span class="go">Open demo →</span>
+          </div>
+        </a>
+
+        <a class="card reveal" href="form-15.html">
+          <div class="thumb t15">
+            <span class="spot"></span><span class="num">15</span>
+            <div class="mini">
+              <span class="circuit"></span>
+              <div class="mini-bar w1"></div><div class="mini-input"></div><div class="mini-bar w2"></div>
+              <div class="mini-btn"></div>
+            </div>
+          </div>
+          <div class="body">
+            <div class="row"><h3>Circuit Board</h3><span class="level lvl-x">Expert</span></div>
+            <p>Glowing circuit traces pulse across a deep-green board. Hardware meets interface.</p>
+            <span class="go">Open demo →</span>
+          </div>
+        </a>
+
+        <a class="card reveal" href="form-16.html">
+          <div class="thumb t16">
+            <span class="spot"></span><span class="num">16</span>
+            <div class="mini">
+              <span class="liquid"></span>
+              <div class="mini-bar w1"></div><div class="mini-input"></div><div class="mini-bar w2"></div>
+              <div class="mini-btn"></div>
+            </div>
+          </div>
+          <div class="body">
+            <div class="row"><h3>Liquid Fill</h3><span class="level lvl-a">Advanced</span></div>
+            <p>Fluid, water-like fills inside fields and a rippling button. Everything flows.</p>
+            <span class="go">Open demo →</span>
+          </div>
+        </a>
+
+        <a class="card reveal" href="form-18.html">
+          <div class="thumb t18">
+            <span class="spot"></span><span class="num">17</span>
+            <div class="mini">
+              <div class="steps"><span class="dot"></span><span class="line"></span><span class="dot off"></span><span class="line"></span><span class="dot off"></span></div>
+              <div class="mini-bar w2"></div><div class="mini-input"></div>
+              <div class="mini-btn"></div>
+            </div>
+          </div>
+          <div class="body">
+            <div class="row"><h3>Stepper Flow</h3><span class="level lvl-a">Advanced</span></div>
+            <p>A sleek multi-step flow with animated progress dots and gradient stepper.</p>
+            <span class="go">Open demo →</span>
+          </div>
+        </a>
+
+      </div>
+    </section>
+
+    <!-- ============ CATEGORY: Synthwave & Kinetic ============ -->
+    <section class="category cat-synth" id="cat-synth">
+      <div class="category-head reveal">
+        <span class="icon">◈</span>
+        <div>
+          <div class="kicker">Category 06 · New</div>
+          <h2>Synthwave, 3D &amp; Kinetic</h2>
+          <p>Retro-future grids, flip motion, and kinetic typography.</p>
+        </div>
+      </div>
+      <div class="grid reveal">
+
+        <a class="card reveal" href="form-17.html">
+          <div class="thumb t17">
+            <span class="spot"></span><span class="num">18</span>
+            <div class="mini">
+              <span class="flap"></span>
+              <div class="mini-bar w1"></div><div class="mini-input"></div><div class="mini-bar w2"></div>
+              <div class="mini-btn"></div>
+            </div>
+          </div>
+          <div class="body">
+            <div class="row"><h3>Flip Card</h3><span class="level lvl-a">Advanced</span></div>
+            <p>A 3D card that flips between info and the form. Coral, motion and surprise.</p>
+            <span class="go">Open demo →</span>
+          </div>
+        </a>
+
+        <a class="card reveal" href="form-19.html">
+          <div class="thumb t19">
+            <span class="spot"></span><span class="num">19</span>
+            <div class="mini">
+              <span class="sun"></span><span class="gridhor"></span>
+              <div class="mini-bar w1"></div><div class="mini-input"></div>
+              <div class="mini-btn"></div>
+            </div>
+          </div>
+          <div class="body">
+            <div class="row"><h3>Synthwave Grid</h3><span class="level lvl-x">Expert</span></div>
+            <p>Neon sun over a retro perspective grid. Pure outrun aesthetic.</p>
+            <span class="go">Open demo →</span>
+          </div>
+        </a>
+
+        <a class="card reveal" href="form-20.html">
+          <div class="thumb t20">
+            <span class="spot"></span><span class="num">20</span>
+            <div class="mini">
+              <span class="kin">F</span>
+              <div class="mini-bar w1"></div><div class="mini-input"></div><div class="mini-bar w2"></div>
+              <div class="mini-btn"></div>
+            </div>
+          </div>
+          <div class="body">
+            <div class="row"><h3>Kinetic Form</h3><span class="level lvl-a">Advanced</span></div>
+            <p>Moving headline, tumbling fields and a vibrating button. Typography in motion.</p>
+            <span class="go">Open demo →</span>
+          </div>
+        </a>
+
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <div class="foot-main soft-raised">
+      <a class="brand" href="index.html">
+        <span class="logo"><img src="assets/img/RJ_Logo_Black.png" alt="RJ logo" /></span>
+        <b>RJ Forms Gallery</b>
+      </a>
+      <div class="flinks">
+        <a href="#cat-classic">Classic &amp; Minimal</a>
+        <a href="#cat-soft">Glass &amp; Soft UI</a>
+        <a href="#cat-immersive">Immersive</a>
+        <a href="#cat-luxury">Luxury</a>
+        <a href="#cat-hightech">High-Tech</a>
+        <a href="#cat-synth">Synthwave &amp; Kinetic</a>
+      </div>
+    </div>
+    <div class="demo-tag">
+      <span><b>RJ_MANAGE</b> · 20 form designs across 6 categories</span>
+      <span>2026 · Built with HTML, CSS &amp; vanilla JS</span>
+    </div>
+  </footer>
+
+  <script>
+    /* ---------- Scroll reveal with staggered cards ---------- */
+    const revealObs = new IntersectionObserver((entries) => {
+      entries.forEach((en) => {
+        if (!en.isIntersecting) return;
+        // stagger reveals of cards inside the same grid
+        if (en.target.classList.contains('card')) {
+          const siblings = [...en.target.parentElement.querySelectorAll('.card')];
+          const i = siblings.indexOf(en.target);
+          en.target.style.transitionDelay = (i % 4) * 80 + 'ms';
+        }
+        en.target.classList.add('in');
+        revealObs.unobserve(en.target);
+      });
+    }, { threshold: 0.12 });
+    document.querySelectorAll('.reveal').forEach((el) => revealObs.observe(el));
+
+    /* ---------- Scroll progress bar ---------- */
+    const progress = document.getElementById('progress');
+    function onScroll() {
+      const h = document.documentElement;
+      const scrollable = h.scrollHeight - h.clientHeight;
+      const pct = scrollable > 0 ? (h.scrollTop / scrollable) * 100 : 0;
+      progress.style.width = pct + '%';
+    }
+
+    /* ---------- Back to top ---------- */
+    const toTop = document.getElementById('toTop');
+    function onScrollBtns() {
+      if (window.scrollY > 500) toTop.classList.add('show'); else toTop.classList.remove('show');
+    }
+    toTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+    window.addEventListener('scroll', () => { onScroll(); onScrollBtns(); }, { passive: true });
+    onScroll(); onScrollBtns();
+
+    /* ---------- Card 3D tilt + spotlight ---------- */
+    document.querySelectorAll('.card').forEach((card) => {
+      const spot = card.querySelector('.spot');
+      if (!spot) return;
+      card.addEventListener('mousemove', (e) => {
+        const r = card.getBoundingClientRect();
+        const px = (e.clientX - r.left) / r.width;
+        const py = (e.clientY - r.top) / r.height;
+        const rx = (0.5 - py) * 8;
+        const ry = (px - 0.5) * 10;
+        card.style.transform = `translateY(-6px) perspective(900px) rotateX(${rx}deg) rotateY(${ry}deg)`;
+        spot.style.setProperty('--mx', (px * 100) + '%');
+        spot.style.setProperty('--my', (py * 100) + '%');
+      });
+      card.addEventListener('mouseleave', () => {
+        card.style.transform = '';
+      });
+    });
+
+    /* ---------- Scrollspy: highlight active category in rail ---------- */
+    const railLinks = document.querySelectorAll('.rail a');
+    const sections = [...railLinks].map((a) => document.querySelector(a.getAttribute('href')));
+    const spy = new IntersectionObserver((entries) => {
+      entries.forEach((en) => {
+        if (en.isIntersecting) {
+          railLinks.forEach((a) => a.classList.remove('active'));
+          const link = document.querySelector('.rail a[href="#' + en.target.id + '"]');
+          if (link) link.classList.add('active');
+        }
+      });
+    }, { rootMargin: '-40% 0px -55% 0px' });
+    sections.forEach((s) => s && spy.observe(s));
+  </script>
+</body>
+</html>

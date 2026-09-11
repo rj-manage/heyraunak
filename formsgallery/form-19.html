@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>19 · Synthwave Grid — Rj_Manage</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Sora:wght@500;600;700;800&family=Press+Start+2P&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/common.css" />
+  <style>
+    body { background: linear-gradient(180deg, #2d0a3f 0%, #1b0530 55%, #0f0520 100%); overflow: hidden; height: 100vh; }
+    .section { position: relative; z-index: 2; height: 100vh; display: grid; place-items: center; padding: 40px 20px; }
+
+    /* neon sun */
+    .sun { position: absolute; top: 6%; left: 50%; transform: translateX(-50%);
+      width: 260px; height: 150px; z-index: 1; pointer-events: none;
+      background: linear-gradient(#fde68a, #f472b6); clip-path: polygon(0 0, 100% 0, 100% 42%, 0 100%);
+      filter: drop-shadow(0 0 40px rgba(244,114,182,.5)); }
+    .sun::after { content: ""; position: absolute; inset: 0;
+      background: repeating-linear-gradient(0deg, transparent 0 18px, rgba(15,5,32,.7) 18px 20px); }
+
+    /* perspective grid floor */
+    .grid-floor { position: absolute; left: -50%; right: -50%; bottom: 0; height: 60%; z-index: 0; pointer-events: none;
+      background-image: linear-gradient(rgba(244,114,182,.5) 2px, transparent 2px);
+      background-size: 100% 34px;
+      transform: perspective(400px) rotateX(58deg) translateY(24%);
+      transform-origin: bottom; filter: drop-shadow(0 0 10px rgba(244,114,182,.4)); }
+
+    .synth-card {
+      width: 100%; max-width: 600px; border-radius: 20px; padding: 44px 48px; position: relative; overflow: hidden;
+      background: rgba(20,5,36,.72); border: 1px solid rgba(244,114,182,.35);
+      backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+      box-shadow: 0 0 60px rgba(244,114,182,.25), 0 40px 100px -30px rgba(0,0,0,.7);
+    }
+    @media (max-width: 540px) { .synth-card { padding: 32px 22px; } }
+
+    .head { text-align: center; margin-bottom: 30px; }
+    .head .st { font-family: "Press Start 2P", monospace; font-size: 9px; letter-spacing: .02em; color: #f9a8d4; display: block; margin-bottom: 14px; }
+    .head h2 { color: #fce7f3; font-family: var(--font-display); font-size: clamp(24px, 4vw, 34px); letter-spacing: -.01em; }
+    .head p { color: #f9a8d4; font-size: 14px; margin-top: 10px; }
+
+    .synth-form { display: grid; gap: 18px; }
+    .y-field label { display: block; font-family: "Press Start 2P", monospace; font-size: 8px; letter-spacing: .04em; color: #f9a8d4; margin-bottom: 9px; }
+    .y-field input, .y-field select {
+      width: 100%; background: rgba(10,3,20,.6); border: 1px solid rgba(244,114,182,.3);
+      color: #fce7f3; font: inherit; font-size: 15px; padding: 13px 16px; border-radius: 10px; outline: none;
+      font-family: var(--font-display); transition: all .2s ease;
+    }
+    .y-field select { appearance: none; cursor: pointer;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%23f9a8d4' stroke-width='2.4'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 16px center; }
+    .y-field select option { background: #1b0530; color: #fce7f3; }
+    .y-field input::placeholder { color: rgba(249,168,212,.35); }
+    .y-field input:focus, .y-field select:focus {
+      border-color: #f472b6; box-shadow: 0 0 0 4px rgba(244,114,182,.16), 0 0 26px rgba(244,114,182,.35);
+    }
+
+    .row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    @media (max-width: 480px) { .row { grid-template-columns: 1fr; } }
+
+    .synth-btn {
+      font-family: "Press Start 2P", monospace; font-size: 11px; color: #0f0520;
+      background: linear-gradient(120deg, #f472b6, #fb7185, #ec4899); border: none; border-radius: 10px;
+      padding: 16px; cursor: pointer; letter-spacing: .02em;
+      box-shadow: 0 0 30px rgba(244,114,182,.6), inset 0 0 14px rgba(255,255,255,.25);
+      transition: transform .15s ease, box-shadow .2s ease, filter .2s ease;
+    }
+    .synth-btn:hover { transform: translateY(-2px); filter: brightness(1.1); box-shadow: 0 0 44px rgba(244,114,182,.8), inset 0 0 14px rgba(255,255,255,.3); }
+    .fine { text-align: center; font-family: "Press Start 2P", monospace; font-size: 7px; color: rgba(249,168,212,.5); margin-top: 2px; }
+  </style>
+</head>
+<body>
+  <div class="sun"></div>
+  <div class="grid-floor"></div>
+  <div class="toast"></div>
+
+  <section class="section">
+    <div class="synth-card">
+      <div class="head">
+        <span class="st">◢ NOTIFY.ME ◣</span>
+        <h2>Be first in line</h2>
+        <p>Reverse engineered. Rebuilt. Dropping 2026.</p>
+      </div>
+      <form class="synth-form" id="synthForm" novalidate>
+        <div class="row">
+          <div class="y-field">
+            <label for="name">>= HANDLE</label>
+            <input id="name" type="text" placeholder="Your name" required data-field="Name" />
+          </div>
+          <div class="y-field">
+            <label for="email">>= EMAIL</label>
+            <input id="email" type="email" placeholder="you@grid.io" required data-field="Email" />
+          </div>
+        </div>
+        <div class="y-field">
+          <label for="os">>= PLATFORM</label>
+          <select id="os" required data-field="Platform">
+            <option value="">SELECT... </option>
+            <option>macOS</option>
+            <option>Windows</option>
+            <option>Linux</option>
+            <option>Web</option>
+            <option>Mobile</option>
+          </select>
+        </div>
+        <button class="synth-btn" type="submit">⏎ NOTIFY ME</button>
+        <p class="fine">PRESS START TO PLAY · NO SPAM EVER</p>
+      </form>
+    </div>
+  </section>
+
+  <script src="js/common.js"></script>
+  <script>
+    document.getElementById("synthForm").addEventListener("submit", (e) => {
+      e.preventDefault();
+      const form = e.target;
+      if (!form.checkValidity()) { form.reportValidity(); return; }
+      const d = collectForm(form);
+      showToast("◢ Transmission received, " + d["Name"] + "!");
+      form.reset();
+    });
+  </script>
+</body>
+</html>

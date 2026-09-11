@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>12 · The Alba Coastal Resort — RJ Web Faces</title>
+  <meta name="description" content="The Alba — a coastal resort &amp; spa on a quiet point above the sea: rooms with hand-drawn views, a tide-room menu, wellness rituals and a live booking form. Face 12 of the RJ Web Faces Gallery — Advanced level." />
+  <link rel="icon" href="assets/img/RJ_Logo_Black.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/common.css" />
+  <style>
+    :root {
+      --pine: #10332C;      /* deep pine / teal */
+      --pine-d: #0C2823;    /* deepest pine */
+      --cream: #F6EFE3;     /* cream panels */
+      --cream-2: #FBF5EA;
+      --ink: #1E2420;
+      --brass: #C5A059;
+      --brass-l: #D9BE85;
+      --sage: #A8BCAC;      /* sage text on pine */
+      --line-c: #E2D5BC;
+      --serif: "Cormorant Garamond", "Playfair Display", Georgia, serif;
+    }
+    body { background: var(--cream); color: var(--ink); }
+    h1, h2, h3, .serif { font-family: var(--serif); font-weight: 500; }
+    ::selection { background: var(--brass); color: #fff; }
+
+    /* toast restyle for a light, elegant page */
+    .toast { background: var(--ink); border: 1px solid rgba(197,160,89,.55); color: var(--cream); font-family: var(--serif); font-size: 16px; letter-spacing: .01em; }
+
+    /* ---------------- utility bar ---------------- */
+    .util {
+      background: var(--pine-d); color: var(--sage); font-size: 12px; letter-spacing: .18em;
+      text-transform: uppercase; padding: 9px 6vw; display: flex; justify-content: space-between; gap: 16px;
+      border-bottom: 1px solid rgba(197,160,89,.35);
+    }
+    .util .award { color: var(--brass-l); font-weight: 600; white-space: nowrap; }
+    .util .addr { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    @media (max-width: 640px) { .util .addr { display: none; } .util { justify-content: center; } }
+
+    /* ---------------- nav ---------------- */
+    .nav {
+      position: sticky; top: 0; z-index: 60;
+      margin-bottom: -86px;             /* floats over the pine hero */
+      height: 86px; display: flex; align-items: stretch;
+      transition: background .45s ease, box-shadow .45s ease;
+    }
+    .nav-in {
+      width: 100%; max-width: 1240px; margin: 0 auto; padding: 0 4vw;
+      display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 12px;
+    }
+    .nav-group { display: flex; gap: 26px; align-items: center; }
+    .nav-group.left { justify-content: flex-end; }
+    .nav-group.right { justify-content: flex-start; }
+    .nav a { text-decoration: none; font-size: 13px; letter-spacing: .16em; text-transform: uppercase; color: #F3ECDC; transition: color .3s ease, opacity .3s ease; font-weight: 600; }
+    .nav a:hover { color: var(--brass-l); }
+    /* crest */
+    .crest { display: grid; place-items: center; text-decoration: none !important; letter-spacing: 0 !important; text-transform: none !important; }
+    .crest-ring {
+      width: 56px; height: 56px; border-radius: 50%; position: relative; display: grid; place-items: center;
+      background: radial-gradient(circle at 32% 28%, rgba(246,239,227,.16), rgba(246,239,227,.04) 70%);
+      border: 1px solid rgba(197,160,89,.85);
+      box-shadow: inset 0 0 0 3px rgba(246,239,227,.16), inset 0 0 0 4px var(--cream), inset 0 0 0 5px rgba(197,160,89,.7);
+      transition: transform .4s ease;
+    }
+    .crest-ring::after { content: ""; position: absolute; inset: -8px; border-radius: 50%; border: 1px solid rgba(197,160,89,.4); }
+    .crest:hover .crest-ring { transform: rotate(8deg) scale(1.04); }
+    .crest-ring b { font-family: var(--serif); font-weight: 600; font-size: 30px; color: var(--brass-l); line-height: 1; }
+    /* nav becomes solid on scroll */
+    .nav.solid { background: rgba(246,239,227,.96); box-shadow: 0 14px 30px -22px rgba(12,40,35,.55); backdrop-filter: blur(8px); }
+    .nav.solid .crest-ring { box-shadow: inset 0 0 0 3px rgba(30,36,32,.08), inset 0 0 0 4px #fff, inset 0 0 0 5px rgba(197,160,89,.55); }
+    .nav.solid a { color: var(--pine); }
+    .nav.solid a:hover { color: var(--brass); }
+    /* reserve button */
+    .btn-r {
+      background: var(--brass); color: #FFF9EE !important; border-radius: 999px; padding: 10px 20px;
+      font-size: 12.5px !important; letter-spacing: .16em; text-transform: uppercase; font-weight: 700;
+      box-shadow: 0 10px 22px -12px rgba(12,40,35,.8); transition: transform .2s ease, background .2s ease;
+    }
+    .btn-r:hover { background: var(--brass-l); color: var(--pine-d) !important; transform: translateY(-1px); }
+    .burger { display: none; background: none; border: 1px solid rgba(246,239,227,.55); color: var(--cream); border-radius: 50%; width: 42px; height: 42px; font-size: 17px; cursor: pointer; }
+    .nav.solid .burger { border-color: var(--pine); color: var(--pine); }
+    @media (max-width: 900px) {
+      .nav-in { grid-template-columns: 1fr auto auto; }
+      .nav-group.links { display: none; }
+      .nav-group.left { justify-content: flex-start; order: 2; }
+      .crest { order: 1; justify-self: start; }
+      .burger { display: block; order: 3; justify-self: end; }
+      .nav-group.links.menu-open { position: fixed; inset: 86px 0 auto 0; background: var(--cream); display: flex; flex-direction: column; align-items: center; gap: 0; padding: 10px 0 18px; border-bottom: 1px solid var(--line-c); box-shadow: 0 24px 40px -24px rgba(12,40,35,.4); }
+      .nav-group.links.menu-open a { color: var(--pine) !important; padding: 12px 0; font-size: 13px; }
+    }
+    @media (max-width: 560px) {
+      .btn-r { display: none; }
+      .crest-ring { width: 48px; height: 48px; }
+      .crest-ring b { font-size: 26px; }
+      .nav { height: 74px; margin-bottom: -74px; }
+    }
+
+    /* ---------------- HERO art ---------------- */
+    .hero { position: relative; min-height: 100vh; overflow: hidden; display: grid; align-items: end; background: var(--pine-d); }
+    .scene { position: absolute; inset: 0; animation: driftZoom 30s ease-in-out infinite alternate; will-change: transform; }
+    @keyframes driftZoom { from { transform: scale(1) translateY(0); } to { transform: scale(1.09) translateY(-1.4%); } }
+    .scene > * { position: absolute; }
+    .sky { inset: 0; background: linear-gradient(180deg, #071B17 0%, #0C2823 24%, #1C4738 40%, #6E8F6B 55%, #D9C08C 66%, #F0DCA6 70%, #F6EFE3 74%); }
+    .sundisc { left: 62%; top: 46%; width: 120px; height: 120px; margin: -60px 0 0 -60px; border-radius: 50%; background: radial-gradient(circle, #F4E3B2 0%, #E7C67F 55%, rgba(231,198,127,0) 72%); opacity: .95; }
+    .halo { left: 62%; top: 46%; width: 460px; height: 200px; margin: -100px 0 0 -230px; background: radial-gradient(ellipse at center, rgba(246,227,178,.5), rgba(246,227,178,0) 70%); }
+    .farland { left: 0; right: 0; bottom: 21%; height: 46%; background: #13372C; clip-path: polygon(0 100%, 0 62%, 12% 60%, 20% 52%, 34% 60%, 47% 55%, 60% 60%, 70% 52%, 84% 58%, 100% 50%, 100% 100%); opacity: .55; }
+    .cliff { left: 0; right: 0; bottom: 18%; height: 40%; background: linear-gradient(180deg, #0A211B, #0C2823); clip-path: polygon(0 100%, 0 70%, 16% 66%, 30% 72%, 48% 64%, 62% 70%, 78% 63%, 88% 68%, 100% 62%, 100% 100%); }
+    .seasheen { left: 0; right: 0; bottom: 0; height: 26%; background: linear-gradient(180deg, #D9C08C 0%, #9AB39A 18%, #4E7E69 52%, #0F3128 100%); }
+    .shimmer { left: 0; right: 0; bottom: 0; height: 26%; background: linear-gradient(180deg, transparent 40%, rgba(246,239,227,.28) 46%, rgba(246,239,227,0) 56%, transparent 78%, rgba(246,239,227,.14) 92%, transparent); animation: gleam 9s ease-in-out infinite; }
+    @keyframes gleam { 0%, 100% { opacity: .4; } 50% { opacity: .9; } }
+    /* birds */
+    .birds { opacity: .85; overflow: visible; }
+    .b1 { left: 8%; top: 27%; animation: glide 38s linear infinite; }
+    .b2 { left: 32%; top: 20%; animation: glide 30s linear 6s infinite; transform: scale(.72); }
+    .b3 { left: 74%; top: 31%; animation: glide 44s linear -14s infinite; transform: scale(.58); }
+    @keyframes glide { from { transform: translateX(-6vw); } to { transform: translateX(108vw); } }
+    @media (max-width: 760px) { .sundisc, .halo { left: 50%; } .b1, .b2, .b3 { display: none; } }
+    .shade { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(7,27,23,0) 38%, rgba(7,27,23,.18) 58%, rgba(6,20,16,.66) 100%); }
+    .hero-inner { position: relative; z-index: 2; width: 100%; max-width: 1180px; margin: 0 auto; padding: 34vh 6vw 10vh; }
+    .kicker { font-size: 12px; letter-spacing: .3em; text-transform: uppercase; color: var(--brass-l); font-weight: 600; margin-bottom: 14px; }
+    .hero h1 { font-size: clamp(44px, 7.4vw, 96px); line-height: 1.02; color: #FBF4E4; font-weight: 500; letter-spacing: -.01em; max-width: 13ch; }
+    .hero h1 em { font-style: italic; color: var(--brass-l); }
+    .hero .lead { margin-top: 18px; color: #E9E0CC; font-size: 16.5px; max-width: 520px; font-weight: 400; }
+    .cta-row { display: flex; gap: 16px; flex-wrap: wrap; align-items: center; margin-top: 30px; }
+    .btn-gold { background: linear-gradient(135deg, #D4B468, var(--brass)); color: #241B0A; font-weight: 700; padding: 14px 26px; border-radius: 999px; font-size: 13.5px; letter-spacing: .08em; text-transform: uppercase; box-shadow: 0 16px 30px -14px rgba(0,0,0,.55); text-decoration: none; }
+    .btn-gold:hover { filter: brightness(1.07); transform: translateY(-1px); }
+    .btn-ghostw { background: rgba(246,239,227,.06); border: 1px solid rgba(246,239,227,.55); color: #F6EFE3; padding: 13px 24px; border-radius: 999px; font-size: 13px; letter-spacing: .08em; text-transform: uppercase; font-weight: 600; text-decoration: none; }
+    .btn-ghostw:hover { background: rgba(246,239,227,.16); }
+    .weather { display: inline-flex; align-items: center; gap: 10px; background: rgba(7,27,23,.4); border: 1px solid rgba(246,239,227,.35); border-radius: 999px; padding: 9px 16px; margin-left: 4px; backdrop-filter: blur(4px); }
+    .weather .sun { width: 26px; height: 26px; border-radius: 50%; background: radial-gradient(circle at 35% 30%, #FFF3C4, #E7C67F); box-shadow: 0 0 18px rgba(231,198,127,.8); }
+    .weather b { font-family: var(--serif); font-size: 21px; font-weight: 600; color: #FBF4E4; }
+    .weather span { font-size: 12.5px; letter-spacing: .04em; color: var(--sage); }
+    @media (max-width: 640px) { .hero-inner { padding-top: 30vh; padding-bottom: 7vh; } .weather { margin-left: 0; } }
+
+    /* ---------------- sections ---------------- */
+    section { padding: 92px 6vw; }
+    .wrap { max-width: 1180px; margin: 0 auto; }
+    .sec-head { max-width: 680px; margin-bottom: 46px; }
+    .sec-head .kicker { color: var(--brass); }
+    .sec-head h2 { font-size: clamp(32px, 4.4vw, 52px); color: var(--pine); line-height: 1.06; }
+    .sec-head h2 em { font-style: italic; }
+    .sec-head p { margin-top: 12px; color: #55615A; font-size: 15.5px; }
+
+    /* rooms */
+    .rooms { display: grid; grid-template-columns: repeat(3, 1fr); gap: 26px; }
+    @media (max-width: 980px) { .rooms { grid-template-columns: 1fr; } }
+    .room { background: var(--cream-2); border: 1px solid var(--line-c); border-radius: 18px; overflow: hidden; box-shadow: 0 24px 44px -30px rgba(12,40,35,.5); transition: transform .5s cubic-bezier(.2,.7,.3,1), box-shadow .5s ease; perspective: 900px; }
+    .room:hover { transform: translateY(-8px) rotate(.8deg); box-shadow: 0 34px 54px -26px rgba(12,40,35,.55); }
+    .art { position: relative; height: 216px; overflow: hidden; }
+    .art .zoom { position: absolute; inset: -14%; transition: transform 1.5s cubic-bezier(.2,.7,.3,1); }
+    .room:hover .art .zoom { transform: scale(1.14) translateY(-3%); }
+    .art > * { position: absolute; }
+    /* Bay Suite view — warm morning over a quiet bay */
+    .vb .sky { inset: 0; background: linear-gradient(180deg, #F3DFA9, #F8EDCD 55%, #EDD19B); }
+    .vb .sun { width: 64px; height: 64px; left: 66%; top: 22%; border-radius: 50%; background: radial-gradient(circle at 38% 34%, #FFF7DA, #E8C177); }
+    .vb .land { left: 0; right: 0; top: 44%; bottom: 0; background: linear-gradient(180deg, #1D4A3B, #12372E); clip-path: polygon(0 100%, 0 38%, 22% 30%, 34% 36%, 52% 26%, 68% 34%, 82% 26%, 100% 32%, 100% 100%); }
+    .vb .water { left: 0; right: 0; bottom: 0; height: 42%; background: linear-gradient(180deg, #F2DDA4 0%, #C9B98C 14%, #5E8E79 48%, #1D5241 100%); opacity: .96; }
+    .vb .ripple { left: 0; right: 0; bottom: 12%; height: 26%; background: radial-gradient(ellipse at 30% 30%, rgba(255,255,255,.5), transparent 55%); opacity: .5; }
+    /* Cliff Villa — a headland dropping to the sea at dusk */
+    .vc .sky { inset: 0; background: linear-gradient(180deg, #173B46, #3E6B72 45%, #CBA67F 72%, #F6EFE3 86%); }
+    .vc .sun { width: 46px; height: 46px; left: 24%; top: 58%; border-radius: 50%; background: radial-gradient(circle at 40% 36%, #FFF0C4, #E3A96C); opacity: .95; }
+    .vc .land { left: 0; right: 0; top: 30%; bottom: 0; background: linear-gradient(160deg, #0E3029 0%, #123A30 70%); clip-path: polygon(0 100%, 0 62%, 34% 46%, 55% 62%, 100% 44%, 100% 100%); }
+    .vc .land2 { left: 0; right: 0; top: 52%; bottom: 0; background: #0B2620; clip-path: polygon(0 100%, 0 44%, 100% 52%, 100% 100%); }
+    .vc .water { left: 0; right: 0; bottom: 0; height: 40%; background: linear-gradient(180deg, #BF9E80 0%, #8A7D68 16%, #31564E 52%, #143B31 100%); }
+    .vc .glow { left: 0; right: 0; top: 52%; height: 34%; background: radial-gradient(ellipse at 24% 0%, rgba(255,224,166,.55), transparent 60%); }
+    /* Garden Room — palms by a still pond */
+    .vg .sky { inset: 0; background: linear-gradient(180deg, #CFE3CE, #EAF0DC 55%, #D9CBA6); }
+    .vg .sun { width: 40px; height: 40px; right: 12%; top: 16%; border-radius: 50%; background: radial-gradient(circle at 40% 36%, #FFF8DE, #EBD088); opacity: .9; }
+    .vg .land { left: 0; right: 0; bottom: 0; top: 40%; background: linear-gradient(180deg, #3F7A4E, #2E6340); clip-path: polygon(0 100%, 0 34%, 14% 40%, 26% 30%, 44% 38%, 58% 26%, 72% 36%, 88% 26%, 100% 34%, 100% 100%); }
+    .vg .pond { left: 12%; bottom: -6%; width: 62%; height: 34%; border-radius: 50% 46% 42% 50%; background: radial-gradient(ellipse at 40% 30%, #B7D2B4, #7FAE8F 60%, #4E8160); box-shadow: inset 0 -8px 18px rgba(12,40,35,.25); }
+    .vg .trunk { left: 70%; bottom: 18%; width: 9px; height: 74px; background: linear-gradient(90deg, #6B4A2E, #8A6240); border-radius: 6px; transform: rotate(8deg); }
+    .vg .frond { left: 62%; bottom: 62%; width: 60px; height: 60px; }
+    .vg .frond::before, .vg .frond::after { content: ""; position: absolute; inset: 0; border-radius: 50%; }
+    .vg .frond::before { background: #1E5C34; clip-path: polygon(50% 60%, 8% 20%, 30% 10%, 50% 26%, 68% 4%, 92% 12%, 50% 60%); }
+    .vg .frond::after { content: ""; inset: 8px 6px; background: #17482A; clip-path: polygon(50% 52%, 4% 8%, 24% 2%, 50% 22%, 74% 0%, 96% 6%, 50% 52%); }
+    .art .tag { position: absolute; top: 14px; left: 14px; z-index: 3; background: rgba(10,32,26,.66); color: var(--cream); font-size: 11px; letter-spacing: .2em; text-transform: uppercase; padding: 6px 12px; border-radius: 999px; backdrop-filter: blur(3px); font-weight: 600; }
+    .room-body { padding: 24px 24px 26px; }
+    .room-body .price { font-size: 12px; letter-spacing: .22em; text-transform: uppercase; color: var(--brass); font-weight: 700; }
+    .room-body h3 { font-size: 27px; color: var(--pine); margin: 5px 0 8px; }
+    .room-body p { font-size: 14px; color: #5C675F; }
+    .price-line { display: flex; align-items: baseline; gap: 8px; margin-top: 12px; }
+    .price-line b { font-family: var(--serif); font-size: 25px; color: var(--ink); font-weight: 600; }
+    .price-line span { font-size: 12.5px; color: #85917F; }
+    .amen { display: flex; flex-wrap: wrap; gap: 6px 14px; margin-top: 15px; padding-top: 14px; border-top: 1px dashed var(--line-c); }
+    .amen span { font-size: 12.5px; color: #6E7A70; }
+    .amen span::before { content: "· "; color: var(--brass); font-weight: 700; margin-right: 6px; }
+
+    /* dining */
+    .dine-split { display: grid; grid-template-columns: 1fr 1.05fr; gap: 70px; align-items: start; }
+    @media (max-width: 960px) { .dine-split { grid-template-columns: 1fr; gap: 40px; } }
+    .dine-intro .kicker { color: var(--brass); }
+    .dine-intro h2 { font-size: clamp(32px, 4vw, 48px); color: var(--pine); line-height: 1.08; }
+    .dine-intro p { margin-top: 16px; color: #55615A; font-size: 15.5px; }
+    .dine-intro .hours { margin-top: 24px; padding-top: 18px; border-top: 1px solid var(--line-c); font-size: 13px; color: #6E7A70; letter-spacing: .04em; }
+    .dine-intro .hours b { color: var(--pine); font-weight: 600; }
+    .menu { list-style: none; }
+    .dish { display: grid; grid-template-columns: 44px 1fr auto; gap: 18px; align-items: start; padding: 22px 0; border-bottom: 1px solid rgba(197,160,89,.45); }
+    .dish:first-child { padding-top: 6px; }
+    .dish .no { font-family: var(--serif); font-style: italic; font-size: 20px; color: var(--brass); padding-top: 3px; }
+    .dish h3 { font-size: 25px; color: var(--pine); font-weight: 500; }
+    .dish p { font-size: 14px; color: #66726A; margin-top: 3px; max-width: 46ch; }
+    .dish .amt { font-family: var(--serif); font-size: 19px; color: var(--brass); font-weight: 600; white-space: nowrap; padding-top: 4px; }
+    @media (max-width: 560px) { .dish { grid-template-columns: 30px 1fr; } .dish .amt { grid-column: 2; } }
+
+    /* spa */
+    .spa { background: var(--pine); color: var(--cream); }
+    .spa .wrap { display: grid; grid-template-columns: .9fr 1.1fr; gap: 70px; align-items: start; }
+    @media (max-width: 960px) { .spa .wrap { grid-template-columns: 1fr; } }
+    .spa .sec-head { margin-bottom: 0; }
+    .spa .sec-head h2 { color: var(--cream); }
+    .spa .sec-head p { color: var(--sage); }
+    .spa .sec-head .kicker { color: var(--brass-l); }
+    .txlist { list-style: none; }
+    .tx { border-top: 1px solid rgba(168,188,172,.28); }
+    .tx:last-child { border-bottom: 1px solid rgba(168,188,172,.28); }
+    .tx-head { width: 100%; background: none; border: none; display: flex; align-items: center; gap: 18px; padding: 19px 4px; cursor: pointer; text-align: left; color: inherit; }
+    .tx-head .no { font-family: var(--serif); font-style: italic; font-size: 18px; color: var(--brass-l); width: 30px; flex: none; }
+    .tx-head .nm { font-family: var(--serif); font-size: 22px; color: var(--cream); font-weight: 500; }
+    .tx-head .dur { margin-left: auto; font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: var(--sage); white-space: nowrap; }
+    .tx-head .chev { flex: none; width: 26px; height: 26px; border: 1px solid rgba(197,160,89,.6); border-radius: 50%; color: var(--brass-l); font-size: 13px; display: grid; place-items: center; transition: transform .35s ease; margin-left: 8px; }
+    .tx.open .chev { transform: rotate(135deg); }
+    .tx-body { max-height: 0; overflow: hidden; transition: max-height .5s cubic-bezier(.4,0,.2,1); }
+    .tx-body p { padding: 0 4px 20px 52px; color: var(--sage); font-size: 14.5px; max-width: 56ch; }
+    @media (max-width: 560px) { .tx-body p { padding-left: 4px; } .tx-head .dur { display: none; } }
+
+    /* stories */
+    .quotes { display: grid; grid-template-columns: 1fr 1fr; gap: 26px; }
+    @media (max-width: 860px) { .quotes { grid-template-columns: 1fr; } }
+    .quote { background: var(--cream-2); border: 1px solid var(--line-c); border-left: 3px solid var(--brass); border-radius: 4px 16px 16px 4px; padding: 34px 32px; box-shadow: 0 18px 36px -30px rgba(12,40,35,.4); }
+    .quote .mark { font-family: var(--serif); font-size: 64px; line-height: 0; color: var(--brass); display: block; height: 34px; }
+    .quote p { font-family: var(--serif); font-size: 21px; font-style: italic; line-height: 1.42; color: var(--pine); }
+    .quote cite { display: block; margin-top: 18px; font-style: normal; font-size: 13px; color: #71806F; letter-spacing: .04em; }
+    .quote cite b { color: var(--ink); font-weight: 600; }
+
+    /* visit + form */
+    .visit-split { display: grid; grid-template-columns: .95fr 1.05fr; gap: 34px; align-items: stretch; }
+    @media (max-width: 940px) { .visit-split { grid-template-columns: 1fr; } }
+    .vcard { background: var(--pine); color: var(--cream); border-radius: 18px; padding: 38px 34px; position: relative; overflow: hidden; }
+    .vcard::after { content: ""; position: absolute; right: -70px; top: -70px; width: 230px; height: 230px; border-radius: 50%; background: radial-gradient(circle, rgba(197,160,89,.35), transparent 65%); }
+    .vcard h3 { font-size: 30px; margin-bottom: 18px; }
+    .vrow { display: flex; gap: 14px; padding: 13px 0; border-top: 1px solid rgba(168,188,172,.22); font-size: 14.5px; }
+    .vrow:last-of-type { border-bottom: 1px solid rgba(168,188,172,.22); }
+    .vrow .ic { color: var(--brass-l); width: 18px; flex: none; }
+    .vrow b { display: block; color: var(--sage); font-size: 11.5px; letter-spacing: .18em; text-transform: uppercase; margin-bottom: 2px; font-weight: 700; }
+    .vrow span { color: #E7DEC9; }
+    .book { background: #FFFFFF; border: 1px solid var(--line-c); border-radius: 18px; padding: 32px; box-shadow: 0 30px 54px -34px rgba(12,40,35,.45); }
+    .book h3 { font-size: 27px; color: var(--pine); margin-bottom: 4px; }
+    .book > p { font-size: 13.5px; color: #75816F; margin-bottom: 20px; }
+    .frow { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px; }
+    @media (max-width: 560px) { .frow { grid-template-columns: 1fr; } }
+    .field label { font-size: 11.5px; letter-spacing: .14em; text-transform: uppercase; color: var(--pine); font-weight: 700; }
+    .input, .select {
+      background: #FDFAF2; border: 1.5px solid #E4D8BC; color: var(--ink); border-radius: 10px; font-size: 14.5px;
+    }
+    .input:focus, .select:focus { border-color: var(--brass); box-shadow: 0 0 0 4px rgba(197,160,89,.18); background: #fff; }
+    .staysum { margin: 4px 0 18px; padding: 13px 16px; background: #F7F0E0; border-radius: 10px; font-family: var(--serif); font-size: 17.5px; color: var(--pine); border: 1px solid #EAD9B4; }
+    .staysum i { color: var(--brass); font-style: italic; }
+    .btn-book { width: 100%; background: linear-gradient(135deg, #D4B468, var(--brass)); color: #241B0A; font-weight: 700; border-radius: 999px; padding: 14px; font-size: 13.5px; letter-spacing: .1em; text-transform: uppercase; }
+    .btn-book:hover { filter: brightness(1.06); }
+    .nope { font-size: 12px; color: #8B9684; text-align: center; margin-top: 10px; }
+
+    /* footer */
+    footer { background: var(--pine-d); color: var(--sage); padding: 64px 6vw 34px; }
+    .foot-grid { max-width: 1180px; margin: 0 auto; display: grid; grid-template-columns: 1.6fr 1fr 1fr 1.1fr; gap: 40px; }
+    @media (max-width: 940px) { .foot-grid { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 560px) { .foot-grid { grid-template-columns: 1fr; } }
+    .foot-brand .crest-ring { width: 46px; height: 46px; margin-bottom: 14px; }
+    .foot-brand .crest-ring b { font-size: 25px; }
+    .foot-brand p { font-size: 13.5px; max-width: 34ch; margin-top: 8px; }
+    .foot-col h4 { color: var(--brass-l); font-size: 11.5px; letter-spacing: .22em; text-transform: uppercase; font-family: var(--font-body); font-weight: 700; margin-bottom: 16px; }
+    .foot-col a { display: block; text-decoration: none; font-size: 13.5px; padding: 5px 0; }
+    .foot-col a:hover { color: var(--cream); }
+    .foot-col span { display: block; font-size: 13.5px; padding: 5px 0; }
+    .foot-col .tiny { font-size: 12.5px; color: #7E9186; line-height: 1.7; }
+    .foot-bottom { max-width: 1180px; margin: 44px auto 0; padding-top: 20px; border-top: 1px solid rgba(168,188,172,.22); display: flex; justify-content: space-between; gap: 14px; flex-wrap: wrap; font-size: 12.5px; color: #7E9186; }
+    .foot-bottom a { color: var(--brass-l); text-decoration: none; font-weight: 600; }
+
+    @media (prefers-reduced-motion: reduce) {
+      .scene, .shimmer, .birds, .crest-ring, .util .award, .weather .sun { animation: none !important; }
+      .room { transition: transform .001s ease; }
+      .room:hover { transform: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="toast"></div>
+
+  <!-- utility bar -->
+  <div class="util">
+    <span class="addr">Alba Point, Coastal Road — Est. 1921</span>
+    <span class="award">✦ AA Five-Star · 2026</span>
+  </div>
+
+  <!-- ================= NAV ================= -->
+  <nav class="nav" id="nav">
+    <div class="nav-in">
+      <div class="nav-group left links">
+        <a href="#rooms">Rooms</a>
+        <a href="#dining">Dining</a>
+      </div>
+      <a class="crest" href="#top" aria-label="The Alba home">
+        <span class="crest-ring"><b>A</b></span>
+      </a>
+      <div class="nav-group right links" id="menu">
+        <a href="#spa">Spa</a>
+        <a href="#visit">Visit</a>
+        <a class="btn-r" href="#visit">Reserve</a>
+      </div>
+      <button class="burger" id="burger" aria-label="Menu">☰</button>
+    </div>
+  </nav>
+
+  <!-- ================= HERO ================= -->
+  <header class="hero" id="top">
+    <div class="scene" aria-hidden="true">
+      <div class="sky"></div>
+      <div class="halo"></div>
+      <div class="sundisc"></div>
+      <div class="farland"></div>
+      <div class="cliff"></div>
+      <div class="seasheen"></div>
+      <div class="shimmer"></div>
+      <svg class="birds b1" width="34" height="11" viewBox="0 0 34 11" fill="none">
+        <path d="M1 7.5C6 4 12 2.2 17 4.6C22 2.2 28 4 33 7.5C28 9.4 23 8.6 17 8.2C11 8.6 6 9.4 1 7.5Z" fill="#F6EFE3" opacity=".85"/>
+      </svg>
+      <svg class="birds b2" width="34" height="11" viewBox="0 0 34 11" fill="none">
+        <path d="M1 7.5C6 4 12 2.2 17 4.6C22 2.2 28 4 33 7.5C28 9.4 23 8.6 17 8.2C11 8.6 6 9.4 1 7.5Z" fill="#F6EFE3" opacity=".8"/>
+      </svg>
+      <svg class="birds b3" width="34" height="11" viewBox="0 0 34 11" fill="none">
+        <path d="M1 7.5C6 4 12 2.2 17 4.6C22 2.2 28 4 33 7.5C28 9.4 23 8.6 17 8.2C11 8.6 6 9.4 1 7.5Z" fill="#F6EFE3" opacity=".75"/>
+      </svg>
+    </div>
+    <div class="shade"></div>
+    <div class="hero-inner">
+      <p class="kicker">The Alba · Coastal Resort &amp; Spa</p>
+      <h1>Where the sea writes <em>the mornings.</em></h1>
+      <p class="lead">Thirty-two rooms on a quiet headland, where breakfast arrives with the tide and the evenings taste of salt and cedar smoke.</p>
+      <div class="cta-row">
+        <a class="btn-gold" href="#visit">Reserve a room</a>
+        <a class="btn-ghostw" href="#rooms">Explore the stay</a>
+        <span class="weather"><span class="sun"></span><b>27°C</b><span>Sunny, light breeze</span></span>
+      </div>
+    </div>
+  </header>
+
+  <!-- ================= ROOMS ================= -->
+  <section id="rooms">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <div class="kicker">Rooms &amp; suites</div>
+        <h2>Three ways to wake up <em>by the water</em></h2>
+        <p>Every room faces the sea or the garden, finished in lime-washed pine and hand-rolled linen. Rates include breakfast on the terrace and use of the spa's thermal circuit.</p>
+      </div>
+      <div class="rooms">
+        <article class="room reveal" style="transition-delay:.05s">
+          <div class="art vb" aria-hidden="true">
+            <div class="zoom">
+              <div class="sky"></div><div class="sun"></div><div class="land"></div><div class="water"></div><div class="ripple"></div>
+            </div>
+            <span class="tag">Sea view</span>
+          </div>
+          <div class="room-body">
+            <div class="price">Signature · floor 3</div>
+            <h3>Bay Suite</h3>
+            <p>A corner suite with two balconies watching the fishing boats come home, a freestanding tub at the window and a four-poster of reclaimed teak.</p>
+            <div class="price-line"><b>₹46,000</b><span>/ night · sleeps 2</span></div>
+            <div class="amen"><span>King bed</span><span>74 m²</span><span>Two balconies</span><span>Breakfast</span></div>
+          </div>
+        </article>
+        <article class="room reveal" style="transition-delay:.15s">
+          <div class="art vc" aria-hidden="true">
+            <div class="zoom">
+              <div class="sky"></div><div class="glow"></div><div class="sun"></div><div class="land"></div><div class="land2"></div><div class="water"></div>
+            </div>
+            <span class="tag">Cliff edge</span>
+          </div>
+          <div class="room-body">
+            <div class="price">Villa · private path</div>
+            <h3>Cliff Villa</h3>
+            <p>Standalone stone villa on the western edge of the point — sunset over open water, a plunge pool cut into the rock and a butler on call.</p>
+            <div class="price-line"><b>₹78,500</b><span>/ night · sleeps 3</span></div>
+            <div class="amen"><span>Plunge pool</span><span>96 m²</span><span>Butler</span><span>Sunset deck</span></div>
+          </div>
+        </article>
+        <article class="room reveal" style="transition-delay:.25s">
+          <div class="art vg" aria-hidden="true">
+            <div class="zoom">
+              <div class="sky"></div><div class="sun"></div><div class="land"></div><div class="pond"></div><div class="trunk"></div><div class="frond"></div>
+            </div>
+            <span class="tag">Garden level</span>
+          </div>
+          <div class="room-body">
+            <div class="price">Courtyard · ground floor</div>
+            <h3>Garden Room</h3>
+            <p>Doors that fold fully open onto a private lawn by the lily pond — the quietest corner of the resort, ten steps from the spa pavilion.</p>
+            <div class="price-line"><b>₹22,000</b><span>/ night · sleeps 2</span></div>
+            <div class="amen"><span>Garden deck</span><span>46 m²</span><span>Rain shower</span><span>Breakfast</span></div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= DINING ================= -->
+  <section id="dining" style="padding-top:20px">
+    <div class="wrap dine-split">
+      <div class="dine-intro reveal">
+        <div class="kicker">Dining — the tide room</div>
+        <h2>Cooked to the rhythm of the catch</h2>
+        <p>Chef Anouk Basu shops the morning boats and the resort's own salt garden. Menus change with the moon; these three rarely leave the table.</p>
+        <div class="hours"><b>Hours —</b> Breakfast 7:00–11:00 · Lunch 12:30–15:00 · Dinner 18:30–22:30<br />Terrace seats: 34, book ahead for sunset.</div>
+      </div>
+      <ul class="menu reveal" style="transition-delay:.1s">
+        <li class="dish">
+          <span class="no">01</span>
+          <div><h3>Pan-seared day-boat catch</h3><p>Line-caught reef fish, charred lemon, samphire beurre blanc and the day's wild herbs from the dunes.</p></div>
+          <span class="amt">₹2,450</span>
+        </li>
+        <li class="dish">
+          <span class="no">02</span>
+          <div><h3>Saffron &amp; goat-curd risotto</h3><p>Coastal carnaroli finished with smoked pine honey, toasted cashew and a shaving of local aged cheese.</p></div>
+          <span class="amt">₹1,850</span>
+        </li>
+        <li class="dish">
+          <span class="no">03</span>
+          <div><h3>Sea-salt caramel soufflé</h3><p>Served warm with vanilla-bean cream and a spoon of burnt honey — the dessert that ends every anniversary dinner.</p></div>
+          <span class="amt">₹1,150</span>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ================= SPA ================= -->
+  <section id="spa" class="spa">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <div class="kicker">Spa &amp; wellness</div>
+        <h2>Rituals drawn from the headland</h2>
+        <p>Four treatments, each built around something gathered here — pine, sea salt, cedar or the morning air itself. Open daily 8:00 to 20:00.</p>
+      </div>
+      <ul class="txlist reveal" style="transition-delay:.1s">
+        <li class="tx open">
+          <button class="tx-head" type="button"><span class="no">01</span><span class="nm">Pine mineral soak</span><span class="dur">60 min</span><span class="chev">+</span></button>
+          <div class="tx-body"><p>Submerged in a heated bath of pine-infused mineral water, then wrapped and left to rest while a therapist works out knots from the shoulders and neck with warm juniper oil.</p></div>
+        </li>
+        <li class="tx">
+          <button class="tx-head" type="button"><span class="no">02</span><span class="nm">Deep-sea salt ritual</span><span class="dur">90 min</span><span class="chev">+</span></button>
+          <div class="tx-body"><p>A full-body exfoliation with coarse sea salt and coconut oil, followed by a rhythmic massage with heated shells. Ends with an ocean-facing foot soak on the cliff deck.</p></div>
+        </li>
+        <li class="tx">
+          <button class="tx-head" type="button"><span class="no">03</span><span class="nm">Cedar &amp; clay massage</span><span class="dur">75 min</span><span class="chev">+</span></button>
+          <div class="tx-body"><p>Warm cedar-smoked clay is pressed into tired muscles before a slow, deep-tissue sequence. Ideal after long walks or the drive down from the city.</p></div>
+        </li>
+        <li class="tx">
+          <button class="tx-head" type="button"><span class="no">04</span><span class="nm">Dawn breath session</span><span class="dur">45 min</span><span class="chev">+</span></button>
+          <div class="tx-body"><p>Begin the day on the sunrise platform with guided pranayama and a short walking meditation along the cliff path. Complimentary for all guests on Tuesday and Saturday.</p></div>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ================= STORIES ================= -->
+  <section id="stories" style="padding-top:20px">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <div class="kicker">Stories from guests</div>
+        <h2>Kept in their own words</h2>
+      </div>
+      <div class="quotes">
+        <blockquote class="quote reveal">
+          <span class="mark">“</span>
+          <p>My aunt and I watched the fishing boats return every evening from our Bay Suite balcony. By the second day the kitchen knew exactly how she takes her tea.</p>
+          <cite><b>Meera Varma</b> — Bombay · stayed 6 nights, October</cite>
+        </blockquote>
+        <blockquote class="quote reveal" style="transition-delay:.12s">
+          <span class="mark">“</span>
+          <p>We woke at five on our last morning just to see the sun climb out of the sea from the Cliff Villa deck. Neither of us said a word for a full hour.</p>
+          <cite><b>Jonas &amp; Priya Lindqvist</b> — Stockholm · honeymoon, March</cite>
+        </blockquote>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= VISIT / BOOK ================= -->
+  <section id="visit" style="padding-top:20px">
+    <div class="wrap visit-split">
+      <div class="vcard reveal">
+        <h3>Find the point</h3>
+        <div class="vrow"><span class="ic">⌖</span><div><b>Address</b><span>Alba Point, Coastal Road, Alibaug 402 201 — 2h drive south of Bombay</span></div></div>
+        <div class="vrow"><span class="ic">◷</span><div><b>Check-in / check-out</b><span>From 2:00 PM · Until 11:00 AM · 24h concierge</span></div></div>
+        <div class="vrow"><span class="ic">✆</span><div><b>Reservations</b><span>+91 22 4000 8120 · stay@thealba.resort</span></div></div>
+        <div class="vrow"><span class="ic">⇢</span><div><b>Getting here</b><span>Helipad &amp; jetty transfers by prior arrangement; valet parking for drive-in guests</span></div></div>
+      </div>
+      <div class="book reveal" style="transition-delay:.12s">
+        <h3>Reserve your stay</h3>
+        <p>Pick your dates — the summary below updates as you choose. We hold unconfirmed requests for 24 hours.</p>
+        <form id="bookForm" novalidate>
+          <div class="frow">
+            <div class="field">
+              <label for="ci">Check-in</label>
+              <input class="input" id="ci" type="date" required data-field="Check-in" />
+            </div>
+            <div class="field">
+              <label for="co">Check-out</label>
+              <input class="input" id="co" type="date" required data-field="Check-out" />
+            </div>
+          </div>
+          <div class="frow">
+            <div class="field">
+              <label for="guests">Guests</label>
+              <select class="select" id="guests" data-field="Guests">
+                <option>1 guest</option><option selected>2 guests</option><option>3 guests</option><option>4 guests</option><option>5+ guests</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="room">Room</label>
+              <select class="select" id="room" required data-field="Room">
+                <option>Bay Suite</option><option>Cliff Villa</option><option>Garden Room</option>
+              </select>
+            </div>
+          </div>
+          <p class="staysum" id="staysum">Choose dates to see your stay&nbsp;<i>…</i></p>
+          <button class="btn-book" type="submit">Request reservation</button>
+          <p class="nope">No prepayment today — we confirm by email within the hour.</p>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= FOOTER ================= -->
+  <footer>
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <span class="crest-ring"><b>A</b></span>
+        <p>The Alba, a coastal resort &amp; spa on a quiet headland south of Bombay — thirty-two rooms, one tide, and no hurry.</p>
+      </div>
+      <div class="foot-col">
+        <h4>Explore</h4>
+        <a href="#rooms">Rooms &amp; suites</a>
+        <a href="#dining">Dining</a>
+        <a href="#spa">Spa &amp; wellness</a>
+        <a href="#stories">Guest stories</a>
+      </div>
+      <div class="foot-col">
+        <h4>Contact</h4>
+        <span>Alba Point, Coastal Road</span>
+        <span>Alibaug 402 201, India</span>
+        <span>stay@thealba.resort</span>
+        <span>+91 22 4000 8120</span>
+      </div>
+      <div class="foot-col">
+        <h4>Good to know</h4>
+        <span class="tiny">Check-in 2 PM · Check-out 11 AM</span>
+        <span class="tiny">Children welcome in the Garden Wing</span>
+        <span class="tiny">The resort closes 1–15 June for monsoon</span>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© 2026 The Alba Coastal Resort &amp; Spa · Demo page 12 of the RJ Web Faces Gallery</span>
+      <span><a href="index.html">← View all 20 faces</a></span>
+    </div>
+  </footer>
+
+  <script src="js/common.js"></script>
+  <script>
+    // --- Mobile menu ---
+    const burger = document.getElementById("burger");
+    const menu = document.getElementById("menu");
+    burger.addEventListener("click", () => menu.classList.toggle("menu-open"));
+    menu.querySelectorAll("a").forEach((a) => a.addEventListener("click", () => menu.classList.remove("menu-open")));
+
+    // --- Nav turns solid once the pine hero has scrolled past ---
+    const nav = document.getElementById("nav");
+    const onScroll = () => nav.classList.toggle("solid", scrollY > Math.max(120, innerHeight - 190));
+    addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
+
+    // --- Treatment accordion (one open at a time) ---
+    document.querySelectorAll(".tx-head").forEach((h) => {
+      h.addEventListener("click", () => {
+        const item = h.closest(".tx");
+        const open = item.classList.contains("open");
+        document.querySelectorAll(".tx.open").forEach((t) => {
+          t.classList.remove("open");
+          t.querySelector(".tx-body").style.maxHeight = "0px";
+        });
+        if (!open) {
+          item.classList.add("open");
+          const body = item.querySelector(".tx-body");
+          body.style.maxHeight = body.scrollHeight + "px";
+        }
+      });
+    });
+
+    // --- Booking dates: min = tomorrow, refresh live summary, nights on submit ---
+    const ci = document.getElementById("ci"), co = document.getElementById("co");
+    const roomSel = document.getElementById("room"), sum = document.getElementById("staysum");
+    const day = (n) => { const d = new Date(); d.setDate(d.getDate() + n); return d.toISOString().slice(0, 10); };
+    ci.min = day(1); co.min = day(2);
+    ci.value = day(2); co.value = day(5);
+
+    const nightsBetween = (a, b) => { if (!a || !b) return null; return Math.round((new Date(b) - new Date(a)) / 86400000); };
+
+    function refreshSummary() {
+      const n = nightsBetween(ci.value, co.value);
+      if (n === null) { sum.innerHTML = "Choose dates to see your stay <i>…</i>"; return; }
+      if (n <= 0) { sum.innerHTML = "Check-out must come <i>after</i> check-in."; return; }
+      const total = (parseInt(roomSel.value === "Cliff Villa" ? 78500 : roomSel.value === "Garden Room" ? 22000 : 46000) * n).toLocaleString("en-IN");
+      sum.innerHTML = `<i>${roomSel.value}</i> · ${n} night${n > 1 ? "s" : ""} from ${ci.value} — ≈ ₹${total}`;
+    }
+    [ci, co, roomSel].forEach((el) => el.addEventListener("input", refreshSummary));
+    refreshSummary();
+
+    // --- Submit: validate, collect, toast with real nights ---
+    document.getElementById("bookForm").addEventListener("submit", (e) => {
+      e.preventDefault();
+      const form = e.target;
+      if (!form.checkValidity()) { form.reportValidity(); return; }
+      const n = nightsBetween(ci.value, co.value);
+      if (n <= 0) { showToast("⚠ Please choose a check-out date after check-in."); return; }
+      const d = collectForm(form);
+      showToast("✅ Requested: " + d["Room"] + " · " + n + " nights from " + d["Check-in"]);
+      form.reset();
+      refreshSummary();
+    });
+  </script>
+</body>
+</html>

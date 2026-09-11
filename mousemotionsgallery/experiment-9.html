@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>09 · Magnetic Typography — RJ Motion Gallery</title>
+  <meta name="description" content="Every letter of the word reacts on its own — each leans toward you with a different strength. Experiment 09 of the RJ Motion Gallery — Expert level." />
+  <link rel="icon" href="assets/img/RJ_Logo_Black.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Sora:wght@500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/common.css" />
+  <style>
+    :root { --ink:#0f172a; --slate:#475569; --muted:#94a3b8; --line:#e5eaf1; --accent:#d97706; }
+    body { background: radial-gradient(1200px 600px at 80% -10%, #fffbeb 0%, transparent 60%), var(--paper); }
+    .nav { position: sticky; top: 0; z-index: 60; display: flex; align-items: center; justify-content: space-between; padding: 14px 6vw; background: rgba(255,255,255,.85); backdrop-filter: blur(12px); border-bottom: 1px solid var(--line); }
+    .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+    .brand .logo { width: 36px; height: 36px; }
+    .brand .logo img { width: 100%; height: 100%; object-fit: contain; }
+    .brand b { font-family: var(--font-display); font-size: 16px; color: var(--ink); letter-spacing: -.01em; }
+    .brand small { color: var(--muted); font-weight: 600; }
+    .nav-links { display: flex; gap: 24px; align-items: center; }
+    .nav-links a { text-decoration: none; color: var(--slate); font-size: 14px; font-weight: 600; }
+    .nav-links a:hover { color: var(--accent); }
+    .nav-links .btn { font-size: 13.5px; padding: 9px 16px; border-radius: 999px; }
+    .hero { padding: 60px 6vw 34px; max-width: 1220px; margin: 0 auto; }
+    .hero .kicker { display: inline-flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: #b45309; background: #fffbeb; border: 1px solid #fde68a; padding: 6px 13px; border-radius: 999px; margin-bottom: 16px; }
+    .hero h1 { font-size: clamp(30px, 4.6vw, 46px); line-height: 1.08; letter-spacing: -.03em; color: var(--ink); }
+    .hero h1 em { font-style: normal; color: var(--accent); }
+    .hero p { color: var(--slate); font-size: 16px; margin-top: 14px; max-width: 640px; }
+    .hero .meta { display: flex; gap: 20px; flex-wrap: wrap; margin-top: 18px; font-size: 12.5px; font-weight: 600; color: var(--muted); }
+    .hero .meta b { color: var(--accent); }
+    .stage-wrap { max-width: 1220px; margin: 0 auto; padding: 0 6vw; }
+    .stage { position: relative; height: clamp(340px, 54vh, 520px); background: #fffdf7; border: 1px solid var(--line); border-radius: 22px; overflow: hidden; box-shadow: 0 40px 80px -40px rgba(15,23,42,.35); }
+    .stage__tag { position: absolute; top: 16px; right: 18px; z-index: 20; font-family: var(--font-mono); font-size: 10px; letter-spacing: .22em; text-transform: uppercase; color: var(--muted); pointer-events: none; user-select: none; }
+    .stage__controls { position: absolute; left: 50%; bottom: 16px; transform: translateX(-50%); z-index: 20; display: flex; gap: 8px; align-items: center; }
+    .stage__controls .btn { padding: 8px 16px; font-size: 10px; border-radius: 999px; border: 1px solid var(--line); color: var(--slate); background: #fff; backdrop-filter: blur(6px); letter-spacing: .14em; }
+    .stage__controls .btn:hover { border-color: var(--accent); color: var(--accent); }
+    .stage__controls .btn.paused { color: #fff; background: var(--accent); border-color: var(--accent); }
+
+    .tm { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; overflow: hidden; user-select: none; }
+    .tm__line { position: absolute; left: 50%; top: 50%; width: 140%; height: 1px; background: linear-gradient(90deg, transparent, rgba(15,23,42,.07), transparent); pointer-events: none; }
+    .tm__line--h { transform: translate(-50%,-50%) rotate(90deg); width: 60vh; }
+    .tm__word { display: flex; flex-wrap: nowrap; font-family: "Space Grotesk", var(--font-display); font-weight: 700; text-transform: uppercase; letter-spacing: -.035em; font-size: clamp(58px, 15.5vw, 250px); line-height: 1; white-space: nowrap; position: relative; z-index: 2; }
+    .tm__letter { display: inline-block; will-change: transform; transition: color .3s ease; }
+    .tm__letter:nth-child(1) { color: var(--ink); }
+    .tm__letter:nth-child(2) { color: transparent; -webkit-text-stroke: 1.5px rgba(15,23,42,.9); }
+    .tm__letter:nth-child(3) { color: var(--accent); }
+    .tm__letter:nth-child(4) { color: transparent; -webkit-text-stroke: 1.5px rgba(15,23,42,.9); }
+    .tm__letter:nth-child(5) { color: var(--ink); }
+    .tm__letter:nth-child(6) { color: var(--accent); }
+    .tm__cap { position: absolute; font-family: var(--font-mono); font-size: 8px; letter-spacing: .26em; text-transform: uppercase; color: var(--muted); display: flex; align-items: center; gap: 8px; pointer-events: none; }
+    .tm__cap i { width: 18px; height: 1px; background: #cbd5e1; }
+    .tm__cap--tl { top: 14%; left: 7%; }
+    .tm__cap--br { bottom: 13%; right: 7%; justify-content: flex-end; flex-direction: row-reverse; }
+    .tm__cap--br i { order: -1; }
+
+    section { padding: 64px 6vw; max-width: 1220px; margin: 0 auto; }
+    .sec-head { max-width: 640px; margin-bottom: 34px; }
+    .sec-head .kicker { font-size: 12px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--accent); margin-bottom: 10px; }
+    .sec-head h2 { font-size: clamp(24px, 3.2vw, 34px); color: var(--ink); letter-spacing: -.02em; }
+    .sec-head p { color: var(--slate); margin-top: 10px; font-size: 15.5px; }
+    .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
+    @media (max-width: 820px) { .grid2 { grid-template-columns: 1fr; } }
+    .card { background: #fff; border: 1px solid var(--line); border-radius: 16px; padding: 26px; }
+    .card .ico { width: 42px; height: 42px; border-radius: 12px; display: grid; place-items: center; font-size: 18px; color: #fff; margin-bottom: 14px; background: linear-gradient(135deg, var(--accent), #f59e0b); }
+    .card h3 { font-size: 17px; color: var(--ink); margin-bottom: 6px; }
+    .card p { font-size: 14px; color: var(--slate); }
+    .card code { font-family: var(--font-mono); font-size: 12px; color: #b45309; background: #fffbeb; padding: 2px 6px; border-radius: 6px; }
+
+    footer { border-top: 1px solid var(--line); background: #fbfcfe; padding: 40px 6vw 46px; }
+    .foot { max-width: 1220px; margin: 0 auto; display: flex; justify-content: space-between; gap: 30px; flex-wrap: wrap; align-items: center; }
+    .foot .brand b { font-size: 16px; }
+    .foot-links { display: flex; gap: 22px; font-size: 13.5px; color: var(--slate); }
+    .foot-links a { text-decoration: none; }
+    .foot-links a:hover { color: var(--accent); }
+    .foot-copy { max-width: 1220px; margin: 22px auto 0; padding-top: 18px; border-top: 1px solid var(--line); font-size: 12.5px; color: var(--muted); display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+    .foot-copy a { color: var(--accent); text-decoration: none; font-weight: 600; }
+  </style>
+</head>
+<body>
+  <div class="toast"></div>
+
+  <nav class="nav" id="nav">
+    <a class="brand" href="index.html">
+      <span class="logo"><img src="assets/img/RJ_Logo_Black.png" alt="RJ logo" /></span>
+      <b>RJ Motion <small>· Gallery</small></b>
+    </a>
+    <div class="nav-links" id="menu">
+      <a href="#explain">How it works</a>
+      <a href="#more">More demos</a>
+      <a class="btn btn-primary" href="index.html">← All experiments</a>
+    </div>
+  </nav>
+
+  <header class="hero reveal">
+    <span class="kicker"><span style="width:7px;height:7px;border-radius:50%;background:var(--green-600);display:inline-block;animation:pulse 1.8s infinite;"></span> Experiment 09 · Expert</span>
+    <h1>Magnetic <em>Typography</em> — letters with a mind.</h1>
+    <p>Every letter of the word reacts on its own. Each one leans toward you with a different strength, as if the type is curious about your cursor.</p>
+    <div class="meta">
+      <span>Technique · <b>Type magnetism</b></span>
+      <span>Hint · <b>Approach the word</b></span>
+      <span>Level · <b>09</b> / 10</span>
+    </div>
+  </header>
+
+  <div class="stage-wrap">
+    <div class="stage reveal">
+      <span class="stage__tag">Demo 09 · Magnetic Typography</span>
+      <div class="tm" id="demo">
+        <div class="tm__line" aria-hidden="true"></div>
+        <div class="tm__line tm__line--h" aria-hidden="true"></div>
+        <div class="tm__word" id="word" role="img" aria-label="CURSOR"></div>
+        <span class="tm__cap tm__cap--tl"><i></i> Each letter reacts</span>
+        <span class="tm__cap tm__cap--br"><i></i> Radius ≤ 300px</span>
+      </div>
+      <div class="stage__controls">
+        <button class="btn" id="pauseBtn">Pause</button>
+        <button class="btn" id="resetBtn">Reset</button>
+      </div>
+    </div>
+  </div>
+
+  <section id="explain">
+    <div class="sec-head reveal">
+      <div class="kicker">Technique</div>
+      <h2>Six letters, six personalities</h2>
+      <p>The word "CURSOR" is split into six independent <code>&lt;span&gt;</code>s. Each has its own pull power and rotation feel, and each smooths at its own rate — so the type never moves as one monolithic block.</p>
+    </div>
+    <div class="grid2">
+      <article class="card reveal">
+        <span class="ico">Aa</span>
+        <h3>Per-letter magnets</h3>
+        <p>Pull ranges from <code>0.45</code> (indifferent, mounts a slow drift) to <code>1.0</code> (eager, snaps fast). Rotation feel varies too, from <code>0.5</code> to <code>1.4</code>.</p>
+      </article>
+      <article class="card reveal">
+        <span class="ico">◜</span>
+        <h3>Radial falloff</h3>
+        <p>Within a 300px radius, influence fades with distance squared. Move your cursor near a letter and it leans toward you; pull back and it relaxes home.</p>
+      </article>
+    </div>
+  </section>
+
+  <section id="more" style="padding-top:10px">
+    <div class="sec-head reveal">
+      <div class="kicker">Keep exploring</div>
+      <h2>More motion experiments</h2>
+      <div class="meta" style="display:flex;gap:18px;flex-wrap:wrap;font-size:13px;font-weight:600;color:var(--muted);margin-top:14px;">
+        <a href="experiment-8.html" style="color:var(--accent);text-decoration:none;">08 · Liquid Distortion →</a>
+        <a href="experiment-10.html" style="color:var(--accent);text-decoration:none;">10 · Cursor Gravity →</a>
+        <a href="index.html" style="color:var(--accent);text-decoration:none;">All 10 →</a>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="foot">
+      <a class="brand" href="index.html">
+        <span class="logo"><img src="assets/img/RJ_Logo_Black.png" alt="RJ logo" /></span>
+        <b>RJ Motion Gallery</b>
+      </a>
+      <div class="foot-links">
+        <a href="experiment-8.html">Prev: Distortion</a>
+        <a href="experiment-10.html">Next: Gravity</a>
+        <a href="index.html">All 10 experiments</a>
+      </div>
+    </div>
+    <div class="foot-copy">
+      <span>© 2026 RJ Motion Gallery · Experiment 09 of 10 — Magnetic Typography</span>
+      <span><a href="index.html">← View all 10 experiments</a></span>
+    </div>
+  </footer>
+
+  <script src="js/common.js"></script>
+  <script>
+    (function () {
+      "use strict";
+      const host = document.getElementById("demo");
+      const WORD = "CURSOR";
+      const METAS = [
+        { pull: 1.0, rot: 1.0 }, { pull: 0.55, rot: 0.6 }, { pull: 0.8, rot: 1.4 },
+        { pull: 0.45, rot: 0.8 }, { pull: 0.95, rot: 1.1 }, { pull: 0.7, rot: 0.5 },
+      ];
+      const word = document.getElementById("word");
+      const letters = [];
+      WORD.split("").forEach((ch, i) => {
+        const s = document.createElement("span");
+        s.className = "tm__letter";
+        s.textContent = ch;
+        word.appendChild(s);
+        letters.push({ el: s, home: { cx: 0, cy: 0 }, cur: { x: 0, y: 0, r: 0 } });
+      });
+      const s = { px: -9999, py: -9999, inside: false };
+      function measure() {
+        letters.forEach((l) => {
+          const r = l.el.getBoundingClientRect();
+          l.home.cx = r.left + r.width / 2;
+          l.home.cy = r.top + r.height / 2;
+        });
+      }
+      function render(i) {
+        const l = letters[i];
+        if (!l) return;
+        l.el.style.transform = "translate3d(" + l.cur.x.toFixed(2) + "px, " + l.cur.y.toFixed(2) + "px, 0) rotate(" + l.cur.r.toFixed(3) + "deg)";
+      }
+      let running = !prefersReducedMotion;
+      document.getElementById("pauseBtn").addEventListener("click", function () { running = !running; this.textContent = running ? "Pause" : "Resume"; this.classList.toggle("paused", !running); });
+      document.getElementById("resetBtn").addEventListener("click", function () { letters.forEach((l) => { l.cur = { x: 0, y: 0, r: 0 }; }); letters.forEach((_, i) => render(i)); });
+      host.addEventListener("pointerenter", (e) => { measure(); s.inside = true; s.px = e.clientX; s.py = e.clientY; });
+      host.addEventListener("pointermove", (e) => { s.px = e.clientX; s.py = e.clientY; });
+      host.addEventListener("pointerleave", () => { s.inside = false; });
+      window.addEventListener("resize", measure);
+      window.addEventListener("scroll", measure, { passive: true });
+      measure();
+      if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => { measure(); setTimeout(measure, 300); });
+      (function loop(t, last) {
+        const dt = Math.min(0.05, (t - last) / 1000);
+        if (running) {
+          METAS.forEach((m, i) => {
+            const l = letters[i];
+            if (!l) return;
+            const d = Math.hypot(l.home.cx - s.px, l.home.cy - s.py);
+            let tx = 0, ty = 0, tr = 0;
+            if (s.inside && d < 300) {
+              const falloff = 1 - d / 300;
+              const power = falloff * falloff * m.pull * 36;
+              const dx = (l.home.cx - s.px) / Math.max(d, 1);
+              const dy = (l.home.cy - s.py) / Math.max(d, 1);
+              tx = dx * power; ty = dy * power;
+              tr = clamp(dy * m.rot * falloff * 9, -7, 7);
+            }
+            const k = 7 + m.pull * 8;
+            l.cur.x = damp(l.cur.x, tx, k, dt);
+            l.cur.y = damp(l.cur.y, ty, k, dt);
+            l.cur.r = damp(l.cur.r, tr, 9, dt);
+            render(i);
+          });
+        }
+        requestAnimationFrame((nt) => loop(nt, t));
+      })(performance.now(), performance.now());
+      window.addEventListener("scroll", () => document.getElementById("nav").classList.toggle("scrolled", scrollY > 10), { passive: true });
+    })();
+  </script>
+</body>
+</html>

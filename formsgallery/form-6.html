@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>06 · Neumorphism — Rj_Manage</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Sora:wght@500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/common.css" />
+  <style>
+    :root {
+      --neu-bg: #dbe4ef;
+      --neu-light: #f4f8fd;
+      --neu-dark: #b9c6d8;
+      --neu-text: #4b5563;
+    }
+    body { background: var(--neu-bg); }
+    .section { padding: 80px 20px; }
+
+    .neu {
+      background: var(--neu-bg);
+      border-radius: 22px;
+      box-shadow: 9px 9px 22px var(--neu-dark), -9px -9px 22px var(--neu-light);
+    }
+    .neu-inset {
+      background: var(--neu-bg);
+      box-shadow: inset 5px 5px 12px var(--neu-dark), inset -5px -5px 12px var(--neu-light);
+    }
+    .neu-press {
+      transition: box-shadow .15s ease;
+    }
+    .neu-press:active {
+      box-shadow: inset 5px 5px 12px var(--neu-dark), inset -5px -5px 12px var(--neu-light);
+    }
+
+    .head { text-align: center; margin-bottom: 38px; }
+    .head .tile {
+      width: 60px; height: 60px; margin: 0 auto 18px; border-radius: 18px;
+      display: grid; place-items: center; font-family: var(--font-display); font-weight: 800; font-size: 19px;
+      color: var(--neu-text);
+      box-shadow: 8px 8px 18px var(--neu-dark), -8px -8px 18px var(--neu-light);
+    }
+    .head h2 { color: var(--neu-text); font-size: clamp(24px, 4vw, 34px); letter-spacing: -.02em; }
+    .head p { color: #7d8ba0; font-size: 14.5px; margin-top: 8px; }
+
+    .card { max-width: 640px; margin: 0 auto; padding: 44px 48px; }
+    @media (max-width: 540px) { .card { padding: 32px 26px; } }
+    .card form { display: grid; gap: 22px; }
+
+    .n-field label { display: block; font-size: 13.5px; font-weight: 600; color: #5d6b80; margin-bottom: 10px; padding-left: 6px; }
+    .n-field input, .n-field select, .n-field textarea {
+      width: 100%; border: none; outline: none; font: inherit; font-size: 15px; color: var(--neu-text);
+      background: var(--neu-bg); border-radius: 16px; padding: 15px 18px; resize: vertical;
+      box-shadow: inset 6px 6px 14px var(--neu-dark), inset -6px -6px 14px var(--neu-light);
+      transition: box-shadow .18s ease;
+    }
+    .n-field input:focus, .n-field select:focus, .n-field textarea:focus {
+      box-shadow: inset 3px 3px 8px var(--neu-dark), inset -3px -3px 8px var(--neu-light);
+    }
+    .n-field input::placeholder, .n-field textarea::placeholder { color: #9aa8bc; }
+    .n-field select { appearance: none; -webkit-appearance: none; }
+
+    .row { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+    @media (max-width: 500px) { .row { grid-template-columns: 1fr; } }
+
+    .toggle-row { display: flex; gap: 12px; flex-wrap: wrap; }
+    .toggle {
+      flex: 1; min-width: 120px; padding: 14px 12px; border: none; border-radius: 16px;
+      background: var(--neu-bg); font: inherit; font-size: 13.5px; font-weight: 600; color: #5d6b80;
+      cursor: pointer;
+      box-shadow: 6px 6px 14px var(--neu-dark), -6px -6px 14px var(--neu-light);
+      transition: all .15s ease;
+    }
+    .toggle.selected {
+      color: #4f46e5;
+      box-shadow: inset 5px 5px 12px var(--neu-dark), inset -5px -5px 12px var(--neu-light);
+    }
+
+    .submit-btn {
+      border: none; border-radius: 18px; padding: 16px; font: inherit; font-size: 15.5px; font-weight: 700;
+      color: #4f46e5; cursor: pointer; background: var(--neu-bg);
+      box-shadow: 7px 7px 16px var(--neu-dark), -7px -7px 16px var(--neu-light);
+      transition: all .15s ease;
+    }
+    .submit-btn:hover { color: #4338ca; }
+    .submit-btn:active {
+      color: #3730a3;
+      box-shadow: inset 5px 5px 12px var(--neu-dark), inset -5px -5px 12px var(--neu-light);
+    }
+  </style>
+</head>
+<body>
+  <div class="toast"></div>
+  <section class="section">
+    <div class="head">
+      <div class="tile">RJ</div>
+      <h2>Set your preferences</h2>
+      <p>Rj_Manage · Neumorphic controls, physical feel</p>
+    </div>
+
+    <div class="neu card">
+      <form id="prefForm" novalidate>
+        <div class="n-field">
+          <label for="name">Your name</label>
+          <input id="name" type="text" placeholder="Full name" required data-field="Name" />
+        </div>
+        <div class="row">
+          <div class="n-field">
+            <label for="language">Language</label>
+            <select id="language" required data-field="Language">
+              <option value="">Select…</option>
+              <option>English</option>
+              <option>Hindi</option>
+              <option>Spanish</option>
+              <option>French</option>
+              <option>German</option>
+            </select>
+          </div>
+          <div class="n-field">
+            <label for="timezone">Timezone</label>
+            <select id="timezone" required data-field="Timezone">
+              <option value="">Select…</option>
+              <option>IST (UTC+5:30)</option>
+              <option>ET (UTC-5)</option>
+              <option>GMT (UTC+0)</option>
+              <option>CET (UTC+1)</option>
+              <option>PST (UTC-8)</option>
+            </select>
+          </div>
+        </div>
+        <div class="n-field">
+          <label>Notification level</label>
+          <div class="toggle-row">
+            <button type="button" class="toggle" data-toggle>Digest</button>
+            <button type="button" class="toggle" data-toggle>Real-time</button>
+            <button type="button" class="toggle" data-toggle>None</button>
+          </div>
+        </div>
+        <div class="n-field">
+          <label for="bio">Short bio</label>
+          <textarea id="bio" placeholder="A sentence about you…" required data-field="Bio"></textarea>
+        </div>
+        <button class="submit-btn" type="submit">Save preferences</button>
+      </form>
+    </div>
+  </section>
+
+  <script src="js/common.js"></script>
+  <script>
+    const toggles = document.querySelectorAll("[data-toggle]");
+    toggles.forEach((t) => t.addEventListener("click", () => {
+      toggles.forEach((x) => x.classList.remove("selected"));
+      t.classList.add("selected");
+    }));
+
+    document.getElementById("prefForm").addEventListener("submit", (e) => {
+      e.preventDefault();
+      const form = e.target;
+      if (!form.checkValidity()) { form.reportValidity(); return; }
+      const d = collectForm(form);
+      const mode = document.querySelector("[data-toggle].selected");
+      showToast("✅ Preferences saved for " + d["Name"] + (mode ? " · " + mode.textContent : ""));
+      form.reset();
+      toggles.forEach((x) => x.classList.remove("selected"));
+    });
+  </script>
+</body>
+</html>

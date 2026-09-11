@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>16 · Liquid Fill — Rj_Manage</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Sora:wght@500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/common.css" />
+  <style>
+    body { background: linear-gradient(135deg, #1e1b4b, #312e81, #1e3a8a); overflow-x: hidden; }
+    .section { min-height: 100vh; display: grid; place-items: center; padding: 80px 20px; }
+
+    .head { text-align: center; margin-bottom: 34px; }
+    .head h2 { color: #fff; font-size: clamp(26px, 4vw, 40px); letter-spacing: -.02em; }
+    .head .sub { color: #c7d2fe; font-size: 15px; margin-top: 8px; }
+
+    .liquid-card {
+      width: 100%; max-width: 640px; border-radius: 28px; padding: 48px 52px; position: relative; overflow: hidden;
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.22);
+      backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+      box-shadow: 0 40px 100px -30px rgba(0,0,0,.6), inset 0 1px 0 rgba(255,255,255,.15);
+    }
+    /* rippling wave strip across the top */
+    .liquid-card .wave { position: absolute; left: 0; right: 0; height: 70px; bottom: 0; opacity: .5; }
+    @media (max-width: 540px) { .liquid-card { padding: 32px 22px; } }
+
+    .liquid-form { display: grid; gap: 22px; position: relative; z-index: 2; }
+
+    .liq-field { position: relative; }
+    .liq-field label { display: block; font-size: 13px; font-weight: 600; color: #e0e7ff; margin-bottom: 8px; }
+    .liq-field .in {
+      position: relative; border-radius: 14px; overflow: hidden; border: 1px solid rgba(255,255,255,.25);
+      transition: border-color .25s ease;
+    }
+    .liq-field input, .liq-field select, .liq-field textarea {
+      width: 100%; background: rgba(10,15,45,.5); border: none; color: #fff; font: inherit; font-size: 15px;
+      padding: 15px 17px; outline: none; resize: vertical; position: relative; z-index: 2;
+    }
+    .liq-field textarea { min-height: 100px; }
+    .liq-field select { appearance: none; cursor: pointer;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%23a5b4fc' stroke-width='2.4'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 16px center; }
+    /* liquid fill layer inside the input */
+    .liq-field .in::before {
+      content: ""; position: absolute; inset: 0; z-index: 1;
+      background: linear-gradient(180deg, rgba(34,211,238,.32), rgba(99,102,241,.32));
+      transform: scaleY(0); transform-origin: bottom; transition: transform .5s cubic-bezier(.22,.8,.3,1);
+    }
+    .liq-field:focus-within .in::before { transform: scaleY(1); }
+    .liq-field input:focus, .liq-field textarea:focus { background: transparent; }
+    .liq-field input::placeholder, .liq-field textarea::placeholder { color: rgba(199,210,254,.4); }
+    .liq-field select option { background: #1e1b4b; color: #fff; }
+
+    .row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    @media (max-width: 520px) { .row { grid-template-columns: 1fr; } }
+
+    .liq-btn {
+      position: relative; font: inherit; font-weight: 800; font-size: 15.5px; color: #0f172a;
+      border: none; border-radius: 14px; padding: 16px; cursor: pointer; overflow: hidden;
+      background: linear-gradient(120deg, #67e8f9, #4f46e5); z-index: 2;
+      box-shadow: 0 14px 44px -12px rgba(34,211,238,.6), inset 0 1px 0 rgba(255,255,255,.5);
+      transition: transform .15s ease, box-shadow .2s ease, filter .2s ease;
+    }
+    .liq-btn:hover { filter: brightness(1.06); transform: translateY(-2px); box-shadow: 0 20px 58px -12px rgba(34,211,238,.85); }
+    .fine { text-align: center; color: rgba(226,232,240,.55); font-size: 12.5px; margin-top: 2px; z-index: 2; position: relative; }
+  </style>
+</head>
+<body>
+  <div class="toast"></div>
+  <section class="section">
+    <div>
+      <div class="head">
+        <h2>Join the waitlist</h2>
+        <p class="sub">Fields fill like water when you focus. <b>Rj_Manage · Liquid UI</b></p>
+      </div>
+      <div class="liquid-card">
+        <svg class="wave" viewBox="0 0 1200 120" preserveAspectRatio="none">
+          <path fill="#22d3ee" opacity=".7" d="M0,60 C150,110 300,10 450,50 C600,90 750,30 900,60 C1050,90 1100,60 1200,80 L1200,120 L0,120 Z"></path>
+        </svg>
+        <form class="liquid-form" id="waitForm" novalidate>
+          <div class="row">
+            <div class="liq-field">
+              <label for="name">Name *</label>
+              <div class="in"><input id="name" type="text" placeholder="Your name" required data-field="Name" /></div>
+            </div>
+            <div class="liq-field">
+              <label for="email">Email *</label>
+              <div class="in"><input id="email" type="email" placeholder="you@example.com" required data-field="Email" /></div>
+            </div>
+          </div>
+          <div class="liq-field">
+            <label for="interest">Reason to join *</label>
+            <div class="in">
+              <select id="interest" required data-field="Interest">
+                <option value="">Select…</option>
+                <option>Product early access</option>
+                <option>Investor updates</option>
+                <option>Founder community</option>
+                <option>Media / Press</option>
+              </select>
+            </div>
+          </div>
+          <div class="liq-field">
+            <label for="message">Tell us more</label>
+            <div class="in"><textarea id="message" placeholder="What are you hoping for?" data-field="Message"></textarea></div>
+          </div>
+          <button class="liq-btn" type="submit" id="liqBtn">Save my spot →</button>
+          <p class="fine">We'll email you the moment doors open.</p>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <script src="js/common.js"></script>
+  <script>
+    /* ripple on the button when clicked */
+    const btn = document.getElementById("liqBtn");
+    btn.addEventListener("click", function (e) {
+      const r = this.getBoundingClientRect();
+      const d = document.createElement("span");
+      const size = Math.max(r.width, r.height);
+      d.style.cssText = `position:absolute;width:${size}px;height:${size}px;border-radius:50%;background:rgba(255,255,255,.4);transform:translate(-50%,-50%);left:${e.clientX-r.left}px;top:${e.clientY-r.top}px;pointer-events:none;z-index:3;`;
+      this.appendChild(d);
+      d.animate([{ transform: "translate(-50%,-50%) scale(0)", opacity: .6 }, { transform: "translate(-50%,-50%) scale(2.4)", opacity: 0 }], { duration: 600, easing: "ease-out" }).onfinish = () => d.remove();
+    });
+
+    document.getElementById("waitForm").addEventListener("submit", (e) => {
+      e.preventDefault();
+      const form = e.target;
+      if (!form.checkValidity()) { form.reportValidity(); return; }
+      const d = collectForm(form);
+      showToast("🌊 You're on the list, " + d["Name"] + "!");
+      form.reset();
+    });
+  </script>
+</body>
+</html>

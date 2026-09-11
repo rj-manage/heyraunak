@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>09 · Premium Animated — Rj_Manage</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Sora:wght@500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/common.css" />
+  <style>
+    body { background: #0a0a0f; color: #e7e5e4; overflow-x: hidden; }
+
+    .noise { position: fixed; inset: 0; pointer-events: none; z-index: 1; opacity: .5;
+      background-image: radial-gradient(rgba(255,255,255,.045) 1px, transparent 1px);
+      background-size: 22px 22px; }
+
+    .spark { position: fixed; border-radius: 50%; pointer-events: none; z-index: 0; background: radial-gradient(circle, rgba(245,158,11,.5), transparent 70%); filter: blur(2px); animation: floaty linear infinite; }
+    @keyframes floaty { 0% { transform: translateY(20vh) scale(1); opacity: 0; } 15% { opacity: .8; } 85% { opacity: .6; } 100% { transform: translateY(-80vh) scale(1.4); opacity: 0; } }
+
+    .section { padding: 90px 20px; position: relative; z-index: 2; }
+
+    .head { text-align: center; margin-bottom: 44px; }
+    .head .crown { font-size: 40px; display: block; margin-bottom: 8px; animation: bob 3.2s ease-in-out infinite; }
+    @keyframes bob { 50% { transform: translateY(-8px); } }
+    .head .eyebrow { font-size: 12px; font-weight: 700; letter-spacing: .22em; text-transform: uppercase; color: #d4a853; margin-bottom: 14px; }
+    .head h2 { font-family: "Playfair Display", serif; font-size: clamp(30px, 5vw, 46px); font-weight: 600; letter-spacing: -.01em; }
+    .head h2 em { font-style: italic; color: #d4a853; }
+    .head p { color: #78716c; font-size: 15px; margin-top: 12px; }
+
+    .p-card {
+      position: relative; max-width: 720px; margin: 0 auto; border-radius: 24px;
+      background: linear-gradient(165deg, #14141c, #0d0d13 60%);
+      padding: 50px 54px; overflow: hidden;
+    }
+    @media (max-width: 560px) { .p-card { padding: 34px 24px; } }
+
+    /* shimmering gold border */
+    .p-card::before {
+      content: ""; position: absolute; inset: 0; border-radius: 24px; padding: 1.5px;
+      background: linear-gradient(120deg, rgba(212,168,83,.15), #d4a853 25%, rgba(212,168,83,.15) 50%, #d4a853 75%, rgba(212,168,83,.15));
+      background-size: 300% 300%;
+      -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+      -webkit-mask-composite: xor; mask-composite: exclude;
+      animation: shimmer 5s linear infinite;
+      pointer-events: none;
+    }
+    @keyframes shimmer { 0% { background-position: 0% 50%; } 100% { background-position: 300% 50%; } }
+
+    /* soft inner glow */
+    .p-card::after {
+      content: ""; position: absolute; top: -160px; left: 50%; transform: translateX(-50%);
+      width: 420px; height: 260px; border-radius: 50%;
+      background: radial-gradient(closest-side, rgba(212,168,83,.14), transparent);
+      pointer-events: none;
+    }
+
+    .p-card .tagline { font-size: 11.5px; font-weight: 700; letter-spacing: .24em; text-transform: uppercase; color: #d4a853; text-align: center; margin-bottom: 30px; }
+
+    .p-form { display: grid; gap: 20px; position: relative; z-index: 2; }
+
+    .p-field label { display: block; font-size: 13px; font-weight: 600; letter-spacing: .04em; color: #a8a29e; margin-bottom: 8px; }
+    .p-field input, .p-field select, .p-field textarea {
+      width: 100%; background: rgba(255,255,255,.03); border: 1px solid rgba(212,168,83,.22);
+      color: #f5f5f4; font: inherit; font-size: 15px; padding: 14px 17px; border-radius: 12px; outline: none; resize: vertical;
+      transition: border-color .25s ease, box-shadow .25s ease, background .25s ease;
+    }
+    .p-field textarea { min-height: 96px; }
+    .p-field select option { background: #14141c; color: #f5f5f4; }
+    .p-field input:focus, .p-field select:focus, .p-field textarea:focus {
+      border-color: #d4a853; background: rgba(255,255,255,.05);
+      box-shadow: 0 0 0 4px rgba(212,168,83,.14), 0 0 30px rgba(212,168,83,.12);
+    }
+
+    .row { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+    @media (max-width: 520px) { .row { grid-template-columns: 1fr; } }
+
+    /* magnetic gold button */
+    .gold-btn-wrap { position: relative; display: flex; justify-content: center; }
+    .gold-btn {
+      font: inherit; font-weight: 800; font-size: 15.5px; letter-spacing: .06em;
+      color: #14140c; background: linear-gradient(120deg, #e6c878, #d4a853 40%, #f0d896 60%, #c99a3f);
+      border: none; border-radius: 14px; padding: 16px 54px; cursor: pointer; position: relative;
+      transition: transform .12s ease, box-shadow .2s ease, filter .2s ease;
+      box-shadow: 0 12px 40px -10px rgba(212,168,83,.5), inset 0 1px 0 rgba(255,255,255,.5);
+    }
+    .gold-btn:hover { filter: brightness(1.08); box-shadow: 0 18px 54px -10px rgba(212,168,83,.7); }
+    .gold-btn:active { transform: scale(.98); }
+
+    .fine { text-align: center; color: #57534e; font-size: 12.5px; margin-top: 8px; }
+
+    /* scroll reveal */
+    .reveal { opacity: 0; transform: translateY(26px); transition: opacity .7s ease, transform .7s ease; }
+    .reveal.in { opacity: 1; transform: none; }
+    .p-field { transition-delay: calc(var(--i, 0) * 70ms); }
+  </style>
+</head>
+<body>
+  <div class="noise"></div>
+  <div class="toast"></div>
+
+  <section class="section">
+    <div class="head reveal">
+      <span class="crown">👑</span>
+      <div class="eyebrow">The Gilded Membership</div>
+      <h2>Join with <em>prestige.</em></h2>
+      <p>Rj_Manage · The membership where excellence gets its golden moment.</p>
+    </div>
+
+    <div class="p-card">
+      <div class="tagline">Exclusive Membership · MMXXVI</div>
+      <form class="p-form" id="memberForm" novalidate>
+        <div class="p-field reveal" style="--i:1">
+          <label for="name">Applicant's name *</label>
+          <input id="name" type="text" placeholder="Full name" required data-field="Name" />
+        </div>
+        <div class="row">
+          <div class="p-field reveal" style="--i:2">
+            <label for="title">Your title *</label>
+            <input id="title" type="text" placeholder="e.g. Senior Engineer" required data-field="Title" />
+          </div>
+          <div class="p-field reveal" style="--i:3">
+            <label for="tier">Membership tier *</label>
+            <select id="tier" required data-field="Tier">
+              <option value="">Select…</option>
+              <option>Bronze</option>
+              <option>Silver</option>
+              <option>Gold</option>
+              <option>Platinum</option>
+            </select>
+          </div>
+        </div>
+        <div class="p-field reveal" style="--i:4">
+          <label for="reason">The statement *</label>
+          <textarea id="reason" placeholder="Write the words that open your doors…" required data-field="Statement"></textarea>
+        </div>
+        <div class="p-field reveal gold-btn-wrap" style="--i:5">
+          <button class="gold-btn" type="submit" id="goldBtn">Submit Application</button>
+        </div>
+        <p class="fine reveal" style="--i:6">Every application is reviewed with care by our board.</p>
+      </form>
+    </div>
+  </section>
+
+  <script src="js/common.js"></script>
+  <script>
+    /* Floating sparks */
+    for (let i = 0; i < 14; i++) {
+      const s = document.createElement("span");
+      s.className = "spark";
+      const size = 3 + Math.random() * 6;
+      s.style.width = size + "px";
+      s.style.height = size + "px";
+      s.style.left = Math.random() * 100 + "vw";
+      s.style.bottom = "-4vh";
+      s.style.animationDuration = 9 + Math.random() * 12 + "s";
+      s.style.animationDelay = -Math.random() * 20 + "s";
+      document.body.appendChild(s);
+    }
+
+    /* Scroll reveal */
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((en) => { if (en.isIntersecting) { en.target.classList.add("in"); io.unobserve(en.target); } });
+    }, { threshold: 0.15 });
+    document.querySelectorAll(".reveal").forEach((el) => io.observe(el));
+
+    /* Magnetic button */
+    const wrap = document.querySelector(".gold-btn-wrap");
+    const btn = document.getElementById("goldBtn");
+    wrap.addEventListener("mousemove", (e) => {
+      const r = wrap.getBoundingClientRect();
+      const dx = (e.clientX - (r.left + r.width / 2)) * 0.25;
+      const dy = (e.clientY - (r.top + r.height / 2)) * 0.25;
+      btn.style.transform = `translate(${dx}px, ${dy}px)`;
+    });
+    wrap.addEventListener("mouseleave", () => { btn.style.transform = ""; });
+
+    document.getElementById("memberForm").addEventListener("submit", (e) => {
+      e.preventDefault();
+      const form = e.target;
+      if (!form.checkValidity()) { form.reportValidity(); return; }
+      const d = collectForm(form);
+      showToast("👑 Application sealed for " + d["Name"]);
+      form.reset();
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,896 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Raunak Raj - Portfolio</title>
+<meta name="description" content="Portfolio of Raunak Raj — Full-Stack Web/Software Developer from Bengaluru. Scroll to walk through his journey.">
+<link rel="icon" type="image/png" href="RJ_Logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#e3e3e3;                 /* matches the RJ walk frame background */
+    --ink:#111827;
+    --ink-70:#3f4756;
+    --muted:#6b7280;
+    --accent:#4338ca;
+    --accent-2:#0e7490;
+    --card:rgba(255,255,255,.62);
+    --line:rgba(17,24,39,.12);
+    --stage-w:min(56.25vh, 100vw);   /* frame is 540x960 => width = height*0.5625 */
+    --ease:cubic-bezier(.22,.9,.24,1);
+  }
+
+  *{ margin:0; padding:0; box-sizing:border-box; }
+  html{ scroll-behavior:smooth; scrollbar-gutter:stable; }
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'Inter','Space Grotesk',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
+    overflow-x:hidden;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,.kicker,.brand{ font-family:'Space Grotesk','Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif; }
+  a{ color:var(--accent); text-decoration:none; }
+  a:hover{ text-decoration:underline; }
+
+  /* ---------- fixed top chrome ---------- */
+  #progress{ position:fixed; top:0; left:0; right:0; height:3px; z-index:60; background:rgba(17,24,39,.08); }
+  #progress i{ display:block; height:100%; width:100%; transform-origin:0 50%; transform:scaleX(0);
+    background:linear-gradient(90deg,var(--accent),var(--accent-2)); }
+  .brand{
+    position:fixed; top:18px; left:22px; z-index:60;
+    font-size:12px; font-weight:600; letter-spacing:.28em; text-transform:uppercase; color:var(--ink-70);
+    display:flex; align-items:center; gap:10px;
+  }
+  .brand img{ display:block; width:48px; height:48px; object-fit:contain; }
+  .side-tag{
+    position:fixed; bottom:18px; right:22px; z-index:60; text-align:right;
+    font-size:11px; letter-spacing:.18em; text-transform:uppercase; color:var(--muted); line-height:1.7;
+  }
+  .side-tag .dot{ color:var(--accent); }
+
+  /* ---------- fixed site navigation ---------- */
+  .site-nav{
+    position:fixed; top:14px; left:50%; transform:translateX(-50%);
+    z-index:55; width:min(1240px,94vw);
+    display:flex; align-items:center; justify-content:space-between; gap:16px;
+    padding:10px 20px 10px 22px; border-radius:999px;
+    background:rgba(227,227,227,.86);
+    -webkit-backdrop-filter:blur(14px); backdrop-filter:blur(14px);
+    border:1px solid rgba(17,24,39,.10);
+    box-shadow:0 20px 44px -26px rgba(17,24,39,.55);
+  }
+  .site-nav .nav-brand{ display:inline-flex; align-items:center; gap:12px; flex:none; color:var(--ink); }
+  .site-nav .nav-brand:hover{ text-decoration:none; }
+  .site-nav .nav-logo{
+    width:46px; height:46px; border-radius:50%; display:grid; place-items:center; flex:none;
+    background:var(--bg);
+    box-shadow:0 6px 14px -8px rgba(17,24,39,.5), inset 0 0 0 1px rgba(17,24,39,.06);
+  }
+  .site-nav .nav-logo img{ width:30px; height:30px; object-fit:contain; display:block; }
+  .site-nav .nav-brand b{
+    display:block; font-family:'Space Grotesk','Inter',sans-serif;
+    font-size:18px; font-weight:700; letter-spacing:-.02em; line-height:1.1;
+  }
+  .site-nav .nav-brand small{
+    display:block; font-size:10px; font-weight:700; letter-spacing:.16em;
+    text-transform:uppercase; color:var(--muted);
+  }
+  .site-nav .nav-links{ display:flex; align-items:center; gap:4px; }
+  .site-nav .nav-links a{
+    position:relative; font-size:13.5px; font-weight:600; color:var(--muted);
+    padding:9px 14px; border-radius:999px; white-space:nowrap;
+    transition:color .18s ease, background .18s ease, box-shadow .18s ease;
+  }
+  .site-nav .nav-links a:hover{
+    color:var(--ink); background:rgba(255,255,255,.55); text-decoration:none;
+  }
+  .site-nav .nav-links a.active{
+    color:var(--accent); background:rgba(255,255,255,.78);
+    box-shadow:inset 0 0 0 1px rgba(67,56,202,.18);
+  }
+  .nav-cta{
+    flex:none; display:inline-flex; align-items:center; justify-content:center;
+    padding:11px 22px; border-radius:999px; font-weight:700; font-size:13.5px;
+    background:var(--ink); color:#fff;
+  }
+  .nav-cta:hover{ text-decoration:none; }
+  .nav-burger{
+    display:none; width:44px; height:44px; border-radius:50%; border:none; cursor:pointer;
+    background:var(--bg); color:var(--ink); font-size:17px; place-items:center; flex:none;
+    box-shadow:0 6px 14px -8px rgba(17,24,39,.5), inset 0 0 0 1px rgba(17,24,39,.06);
+  }
+
+  /* ---------- fixed central walking stage ---------- */
+  #stage{
+    position:fixed; top:0; left:50%; transform:translateX(-50%);
+    width:var(--stage-w); z-index:1; pointer-events:none;
+  }
+  #stage img{
+    display:block; width:100%; height:auto; user-select:none;
+    /* The walk sequence is a full-height rectangle whose own background does
+       not match the page exactly, so its straight vertical edges read as a
+       visible box around the walker. Feather the left/right edges into the
+       page background to dissolve that box. */
+    -webkit-mask-image:linear-gradient(to right,transparent 0,#000 7%,#000 93%,transparent 100%);
+    mask-image:linear-gradient(to right,transparent 0,#000 7%,#000 93%,transparent 100%);
+    -webkit-mask-repeat:no-repeat; mask-repeat:no-repeat;
+    -webkit-mask-size:100% 100%; mask-size:100% 100%;
+  }
+
+  /* ---------- content slots: 3 columns with a reserved center lane ---------- */
+  main{ position:relative; z-index:2; }
+  .slot{
+    position:relative;
+    min-height:100vh;
+    display:grid;
+    grid-template-columns:minmax(0,1fr) var(--stage-w) minmax(0,1fr);
+    align-items:center;
+    padding:13vh 0;
+  }
+  .side{ grid-row:1; }
+  .slot[data-side=left]  .side{ grid-column:1; justify-self:start; padding-left:clamp(20px,4.5vw,72px); }
+  .slot[data-side=right] .side{ grid-column:3; justify-self:end;  padding-right:clamp(20px,4.5vw,72px); }
+  /* a section may carry a companion card on the opposite side (e.g. hero) */
+  .slot .side[data-opposite]{ grid-column:3; justify-self:end; padding-left:0;
+    padding-right:clamp(20px,4.5vw,72px); }
+
+  /* reveal animation — content is hidden until its slot is in view */
+  .side{ --x:-80px; --y:0px; opacity:0; transform:translate(var(--x),var(--y));
+    transition:opacity .9s var(--ease), transform 1s var(--ease); }
+  .slot[data-side=right] .side,
+  .slot .side[data-opposite]{ --x:80px; }
+  .side.in{ opacity:1; transform:translate(0,0); }
+  .side.in > *{ animation:rise 1s var(--ease) backwards; }
+  .side > *:nth-child(1){ animation-delay:.05s; }
+  .side > *:nth-child(2){ animation-delay:.14s; }
+  .side > *:nth-child(3){ animation-delay:.23s; }
+  .side > *:nth-child(4){ animation-delay:.32s; }
+  .side > *:nth-child(5){ animation-delay:.41s; }
+  .side > *:nth-child(6){ animation-delay:.5s; }
+  .side > *:nth-child(7){ animation-delay:.59s; }
+  @keyframes rise{ from{ opacity:0; transform:translateY(26px);} to{ opacity:1; transform:none;} }
+
+  .card{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:22px;
+    padding:clamp(24px,2.4vw,38px);
+    box-shadow:0 24px 50px -30px rgba(17,24,39,.35);
+    backdrop-filter:blur(9px);
+    -webkit-backdrop-filter:blur(9px);
+    max-width:min(500px,calc(100% - 6vw));
+  }
+  .kicker{
+    font-size:11px; font-weight:600; letter-spacing:.3em; text-transform:uppercase;
+    color:var(--accent); margin-bottom:14px;
+    display:flex; align-items:center; gap:10px;
+  }
+  .kicker::before{ content:""; width:26px; height:1px; background:var(--accent); }
+  h2{ font-size:clamp(1.7rem,3vw,2.5rem); line-height:1.12; letter-spacing:-.01em; margin-bottom:16px; }
+  h3{ font-size:1.12rem; line-height:1.3; }
+  p.lead{ color:var(--ink-70); line-height:1.75; font-size:.99rem; }
+  p.muted{ color:var(--muted); font-size:.86rem; line-height:1.7; }
+
+  /* hero */
+  .hero h1{
+    font-size:clamp(2.6rem,5.4vw,4.6rem); line-height:1.02; letter-spacing:-.02em; margin-bottom:6px;
+  }
+  .hero h1 .accent{
+    background:linear-gradient(100deg,var(--accent),var(--accent-2));
+    -webkit-background-clip:text; background-clip:text; color:transparent;
+  }
+  .role-line{ font-size:clamp(1rem,1.5vw,1.25rem); font-weight:500; color:var(--accent); margin-bottom:16px; }
+  .chips{ display:flex; flex-wrap:wrap; gap:8px; margin:18px 0 4px; }
+  .chip{
+    display:inline-flex; align-items:center; gap:7px;
+    background:rgba(255,255,255,.8); border:1px solid var(--line); border-radius:999px;
+    padding:7px 13px; font-size:.8rem; font-weight:500; color:var(--ink-70); white-space:nowrap;
+  }
+  .chip svg{ width:14px; height:14px; color:var(--accent); flex:none; }
+  .chip a{ color:var(--ink-70); }
+  .chip a:hover{ color:var(--accent); text-decoration:none; }
+  .cta-row{ display:flex; flex-wrap:wrap; gap:12px; margin-top:26px; }
+  .btn{
+    display:inline-flex; align-items:center; gap:9px; padding:12px 20px; border-radius:12px;
+    font-weight:600; font-size:.9rem; transition:transform .25s var(--ease), box-shadow .25s var(--ease);
+  }
+  .btn svg{ width:16px; height:16px; }
+  .btn.primary{ background:var(--ink); color:#fff; }
+  .btn.primary:hover{ transform:translateY(-2px); box-shadow:0 14px 26px -14px rgba(17,24,39,.6); text-decoration:none; }
+  .btn.ghost{ border:1px solid var(--line); background:rgba(255,255,255,.7); color:var(--ink); }
+  .btn.ghost:hover{ transform:translateY(-2px); border-color:var(--accent); color:var(--accent); text-decoration:none; }
+
+  /* status card (hero right) */
+  .status-pill{
+    display:inline-flex; align-items:center; gap:9px; border-radius:999px; padding:8px 15px;
+    background:rgba(255,255,255,.85); border:1px solid var(--line); font-weight:600; font-size:.8rem;
+  }
+  .status-pill .pulse{ width:9px; height:9px; border-radius:50%; background:#059669; box-shadow:0 0 0 0 rgba(5,150,105,.6); animation:pulse 1.8s infinite; }
+  @keyframes pulse{ 0%{ box-shadow:0 0 0 0 rgba(5,150,105,.55);} 70%{ box-shadow:0 0 0 9px rgba(5,150,105,0);} 100%{ box-shadow:0 0 0 0 rgba(5,150,105,0);} }
+  .facts{ list-style:none; margin-top:16px; }
+  .facts li{ display:flex; gap:12px; padding:11px 0; border-bottom:1px dashed var(--line); font-size:.92rem; color:var(--ink-70); }
+  .facts li:last-child{ border-bottom:none; }
+  .facts .k{ font-weight:600; color:var(--ink); flex:none; min-width:118px; font-size:.8rem; letter-spacing:.02em; }
+  .scroll-hint{ margin-top:24px; display:inline-flex; align-items:center; gap:10px; color:var(--muted); font-size:.82rem; letter-spacing:.08em; }
+  .scroll-hint .arr{ animation:bob 1.6s infinite; }
+  @keyframes bob{ 0%,100%{ transform:translateY(0);} 50%{ transform:translateY(6px);} }
+
+  /* entry lists (experience / education) */
+  .entry{ padding:18px 0; border-bottom:1px dashed var(--line); }
+  .entry:first-of-type{ padding-top:2px; }
+  .entry:last-child{ border-bottom:none; padding-bottom:2px; }
+  .entry .meta{ display:flex; flex-wrap:wrap; align-items:baseline; gap:8px 10px; margin:4px 0 8px; }
+  .entry .org{ font-weight:600; color:var(--ink); }
+  .entry .dates{ font-size:.78rem; font-weight:600; color:var(--accent); letter-spacing:.04em; white-space:nowrap; }
+  .entry .loc{ font-size:.8rem; color:var(--muted); }
+  .entry ul{ margin:6px 0 0; padding-left:18px; }
+  .entry li{ color:var(--ink-70); font-size:.9rem; line-height:1.65; margin-bottom:5px; }
+
+  .project{ padding:16px 0; border-bottom:1px dashed var(--line); }
+  .project:first-of-type{ padding-top:2px; }
+  .project:last-child{ border-bottom:none; }
+  .project h3{ display:flex; flex-wrap:wrap; align-items:baseline; gap:8px; }
+  .project .when{ font-size:.76rem; font-weight:600; color:var(--muted); letter-spacing:.05em; }
+  .project p{ color:var(--ink-70); font-size:.9rem; line-height:1.6; margin-top:5px; }
+  .project .tags{ display:flex; flex-wrap:wrap; gap:6px; margin-top:9px; }
+  .project .tags span{ font-size:.72rem; font-weight:600; color:var(--accent);
+    background:rgba(255,255,255,.75); border:1px solid var(--line); padding:3px 10px; border-radius:999px; }
+
+  /* skills */
+  .skill-group{ margin-bottom:16px; }
+  .skill-group:last-child{ margin-bottom:0; }
+  .skill-group .gname{ font-size:.72rem; font-weight:700; letter-spacing:.16em; text-transform:uppercase; color:var(--muted); margin-bottom:9px; }
+  .skill-group .tags{ display:flex; flex-wrap:wrap; gap:7px; }
+  .skill-group .tags span{ font-size:.82rem; font-weight:500; color:var(--ink-70);
+    background:rgba(255,255,255,.8); border:1px solid var(--line); padding:6px 13px; border-radius:999px; }
+
+  .cert{ display:flex; justify-content:space-between; align-items:baseline; gap:14px; padding:13px 0; border-bottom:1px dashed var(--line); font-size:.92rem; }
+  .cert:last-of-type{ border-bottom:none; }
+  .cert b{ display:block; font-weight:600; color:var(--ink); font-size:.93rem; }
+  .cert small{ color:var(--muted); font-size:.8rem; }
+  .cert .year{ flex:none; font-size:.78rem; font-weight:700; color:var(--accent); white-space:nowrap; }
+  .two-col{ display:grid; grid-template-columns:1fr 1fr; gap:18px; margin-top:14px; }
+  .two-col .box{ background:rgba(255,255,255,.55); border:1px solid var(--line); border-radius:16px; padding:18px; }
+  .two-col h4{ font-size:.76rem; letter-spacing:.14em; text-transform:uppercase; color:var(--accent); margin-bottom:10px; }
+  .two-col ul{ list-style:none; }
+  .two-col li{ font-size:.86rem; color:var(--ink-70); line-height:1.6; padding:3px 0; }
+  .two-col li::before{ content:"·"; color:var(--accent); font-weight:700; margin-right:8px; }
+
+  /* contact / footer */
+  .connect h2{ margin-bottom:8px; }
+  .big-cta{
+    display:flex; flex-direction:column; gap:14px; margin-top:22px;
+  }
+  .big-cta a{
+    display:flex; align-items:center; gap:14px; padding:15px 18px; border-radius:14px;
+    background:rgba(255,255,255,.75); border:1px solid var(--line); color:var(--ink);
+    font-weight:600; font-size:.95rem; transition:transform .25s var(--ease), border-color .25s var(--ease);
+  }
+  .big-cta a svg{ width:19px; height:19px; color:var(--accent); flex:none; }
+  .big-cta a small{ display:block; font-weight:400; color:var(--muted); font-size:.8rem; }
+  .big-cta a:hover{ transform:translateY(-2px); border-color:var(--accent); text-decoration:none; }
+
+  footer{
+    position:relative; z-index:2; text-align:center; padding:0 20px 34px;
+    font-size:.8rem; color:var(--muted); letter-spacing:.04em; line-height:1.8;
+  }
+  footer a{ color:var(--ink-70); font-weight:600; }
+  footer a:hover{ color:var(--accent); }
+
+  /* ---------- fullscreen intro ---------- */
+  #intro{
+    position:fixed; inset:0; z-index:100; background:#000;
+    display:grid; place-items:center; overflow:hidden;
+  }
+  /* show the full landscape video, never cropped — on portrait phones it
+     becomes a centered band with a black backdrop that matches its frame */
+  #intro-video{
+    width:100%; height:100%; object-fit:contain; background:#000;
+  }
+  #intro-ui{
+    position:fixed; inset:0; z-index:101; pointer-events:none;
+  }
+  #intro-ui .intro-tag{
+    font-family:'Space Grotesk',sans-serif; font-weight:600; letter-spacing:.14em;
+    text-transform:uppercase; color:#fff; font-size:13px;
+    position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
+    text-align:center; white-space:nowrap;
+  }
+  #intro-ui .intro-tag span{ color:var(--accent); }
+  #intro-ui #intro-skip{
+    pointer-events:auto; cursor:pointer; appearance:none; border:1px solid rgba(255,255,255,.35);
+    background:rgba(0,0,0,.35); color:#fff; border-radius:999px;
+    padding:9px 18px; font:600 12px/1 'Inter',sans-serif; letter-spacing:.04em;
+    position:absolute; right:clamp(20px,4vw,46px); bottom:26px;
+    transition:transform .25s var(--ease), box-shadow .25s var(--ease);
+  }
+  #intro-ui #intro-skip:hover{
+    transform:translateY(-1px); border-color:#fff; color:#fff;
+  }
+  #intro.out{ opacity:0; transition:opacity 1s var(--ease); }
+  #intro.hidden{ display:none; }
+  html.no-scroll{ overflow:hidden; }
+
+  /* ---------- narrow screens: stack content over the walker ---------- */
+  @media (max-width:1080px){
+    .slot{
+      display:flex; flex-direction:column; justify-content:center; align-items:center;
+      min-height:115vh; padding:16vh 5vw;
+    }
+    .side, .slot[data-side=left] .side, .slot[data-side=right] .side{
+      padding:0; width:100%; display:flex; justify-content:center;
+      --x:0px; --y:56px;
+    }
+    /* frosted look kept via higher opacity; the blur is dropped because it is
+       very expensive on phones while the walker repaints behind the cards */
+    .card{ max-width:620px; width:100%; background:rgba(255,255,255,.75);
+      backdrop-filter:none; -webkit-backdrop-filter:none; }
+    .hero{ text-align:center; }
+    .hero .kicker{ justify-content:center; }
+    .hero .chips, .hero .cta-row{ justify-content:center; }
+    .side-tag{ display:none; }
+    /* finale: keep the walker fully visible at the very end of the page
+       instead of hiding it behind the last (contact) card */
+    footer{ min-height:82vh; display:flex; flex-direction:column; justify-content:flex-end; }
+    /* nav collapses to a menu button; the links drop down as a panel so the
+       fixed bar keeps its height and never overlaps the first card */
+    .site-nav{ border-radius:28px; padding:12px 16px; }
+    .site-nav .nav-links{
+      position:absolute; top:calc(100% + 8px); left:0; right:0;
+      display:none; flex-direction:column; align-items:stretch; gap:2px;
+      padding:12px; border-radius:24px;
+      background:rgba(227,227,227,.97);
+      -webkit-backdrop-filter:blur(14px); backdrop-filter:blur(14px);
+      border:1px solid rgba(17,24,39,.10);
+      box-shadow:0 22px 44px -26px rgba(17,24,39,.6);
+    }
+    .site-nav .nav-links.open{ display:flex; }
+    .site-nav .nav-links a{ padding:12px 14px; border-radius:14px; }
+    .nav-cta{ display:none; }
+    .nav-burger{ display:grid; }
+  }
+  @media (max-width:640px){
+    .two-col{ grid-template-columns:1fr; }
+    .brand{ font-size:11px; }
+    .brand img{ width:40px; height:40px; }
+    .site-nav .nav-brand small{ display:none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ======================= INTRO ======================= -->
+<div id="intro" aria-label="Intro">
+  <video id="intro-video" autoplay muted playsinline preload="auto" tabindex="-1"
+         src="Log_Intro_web.mp4"></video>
+  <div id="intro-ui">
+    <div class="brand"><img src="RJ_Logo.png" alt="RJ logo"></div>
+    <button id="intro-skip" type="button">Skip intro →</button>
+  </div>
+</div>
+
+<div id="progress"><i></i></div>
+
+<!-- ======================= NAV ======================= -->
+<nav class="site-nav" aria-label="Site">
+  <a class="nav-brand" href="../index.html">
+    <span class="nav-logo"><img src="RJ_Logo_Black.png" alt="RJ Company logo"></span>
+    <span><b>RJ Company</b><small>Design &amp; Development</small></span>
+  </a>
+  <div class="nav-links" id="menu">
+    <a href="../index.html">Home</a>
+    <a href="./" class="active" aria-current="page">Portfolio</a>
+    <a href="../services/">Services</a>
+    <a href="../gallery/">Design Gallery</a>
+    <a href="../works/">Works</a>
+    <a href="../about/">About Company</a>
+  </div>
+  <a class="nav-cta" href="../gallery/">Explore Designs</a>
+  <button class="nav-burger" id="burger" type="button" aria-label="Menu" aria-expanded="false">☰</button>
+</nav>
+
+<div class="side-tag">scroll to walk through<br>the story <span class="dot">●</span></div>
+
+<!-- ======================= CENTRAL WALK ======================= -->
+<div id="stage" aria-hidden="true">
+  <img id="walker" alt="" width="540" height="960" draggable="false">
+</div>
+
+<main>
+
+  <!-- 01 · HERO (left) + status (right) -->
+  <section class="slot" data-side="left" id="top">
+    <div class="side hero">
+      <div class="card">
+        <div class="kicker">Portfolio · by RJ</div>
+        <h1>Raunak&nbsp;Raj</h1>
+        <div class="role-line">Full-Stack Web/Software Developer</div>
+        <p class="lead">I build clean, scalable software and web applications - from database-driven dashboards to exam-monitoring platforms - and I love turning ideas into working products.</p>
+        <div class="chips">
+          <span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>+91 77008 87944</span>
+          <span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg><a href="mailto:theprofessionalrj@gmail.com">theprofessionalrj@gmail.com</a></span>
+          <span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg><a href="https://github.com/rj-manage" target="_blank" rel="noopener">github.com/rj-manage</a></span>
+          <span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg><a href="https://www.linkedin.com/in/raunak-raj-a35b58261" target="_blank" rel="noopener">linkedin.com/in/raunak-raj</a></span>
+          <span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>Bengaluru, India</span>
+        </div>
+        <div class="cta-row">
+          <a class="btn primary" href="mailto:theprofessionalrj@gmail.com"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>Work With Me</a>
+          <a class="btn ghost" href="#about"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>My journey</a>
+        </div>
+      </div>
+    </div>
+    <div class="side" data-opposite>
+      <div class="card">
+        <div class="status-pill"><span class="pulse"></span>Explore SERVICES to find exactly what you need</div>
+        <ul class="facts">
+          <li><span class="k">Currently</span><span>Full Stack Web/Software Developer @ ANYELP GROUPS</span></li>
+          <li><span class="k">Studying</span><span>B.Tech CSE</span></li>
+          <li><span class="k">Based in</span><span>Bengaluru, Karnataka</span></li>
+          <li><span class="k">Interests</span><span>Web/Software development &amp; Freelancing</span></li>
+        </ul>
+        <div class="scroll-hint"><span>Keep scrolling - I'll walk you through it</span><span class="arr">↓</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 02 · ABOUT / OBJECTIVE (right) -->
+  <section class="slot" data-side="right" id="about">
+    <div class="side">
+      <div class="card">
+        <div class="kicker">About Me</div>
+        <h2>Who I am</h2>
+        <p class="lead">Aspiring Full-Stack Web Developer with strong foundations in <b>Java, HTML, CSS, JavaScript, Python, Supabase, Firebase, React, Flutter, XCode, React Native, Postgresql</b> and <b>MySQL</b>. Experienced in building software/web applications through academic projects, internships and leadership roles.</p>
+        <p class="lead" style="margin-top:12px">Seeking an entry-level software development role where I can apply my technical skills, build scalable web solutions and keep levelling up in modern web technologies.</p>
+        <div class="chips">
+          <span class="chip">Java</span><span class="chip">Python</span><span class="chip">JavaScript</span><span class="chip">HTML &amp; CSS</span><span class="chip">SQL</span><span class="chip">Spring Boot</span><span class="chip">Flask</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 03 · EXPERIENCE (left) -->
+  <section class="slot" data-side="left" id="experience">
+    <div class="side">
+      <div class="card">
+        <div class="kicker">Experience</div>
+        <h2>Where I've worked</h2>
+
+        <div class="entry">
+          <h3>Full Stack Web/Software Developer</h3>
+          <div class="meta"><span class="org">ANYELP GROUPS</span><span class="dates">Aug 2026 – Present</span><span class="loc">· Bengaluru, India</span></div>
+          <ul>
+            <li>Developed an Inventory &amp; Sales Management System to streamline business operations.</li>
+            <li>Implemented stock tracking, billing and profit/loss reporting modules.</li>
+            <li>Digitized manual inventory processes, improving operational efficiency.</li>
+          </ul>
+        </div>
+
+        <div class="entry">
+          <h3>President - SPARK Club</h3>
+          <div class="meta"><span class="org">REVA University</span><span class="dates">Nov 2025 – Present</span><span class="loc">· Bengaluru, India</span></div>
+          <ul>
+            <li>Leading a student-driven technical club focused on development &amp; cybersecurity.</li>
+            <li>Organize hackathons, CTF competitions and technical workshops.</li>
+            <li>Mentor students in full-stack development and Data Structures &amp; Algorithms.</li>
+          </ul>
+        </div>
+
+        <div class="entry">
+          <h3>Web Developer &amp; Technical Lead</h3>
+          <div class="meta"><span class="org">SIGMA Mathematics</span><span class="dates">Apr 2020 – Jul 2024</span><span class="loc">· Bihar, India</span></div>
+          <ul>
+            <li>Designed and maintained a responsive website with improved UI/UX.</li>
+            <li>Optimized performance and enhanced digital engagement.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 04 · PROJECTS (right) -->
+  <section class="slot" data-side="right" id="projects">
+    <div class="side">
+      <div class="card">
+        <div class="kicker">Projects</div>
+        <h2>Things I've built</h2>
+
+        <div class="project">
+          <h3>Web Scrapper<span class="when">Jan 2026</span></h3>
+          <p>The automated process of extracting specific data from websites and converting it into a structured format like a spreadsheet, database, or JSON file</p>
+          <div class="tags"><span>Python</span><span>ML logic</span><span>Web</span></div>
+        </div>
+
+        <div class="project">
+          <h3>Learn MySQL Web Application <span class="when">Dec 2025</span></h3>
+          <p>Flask platform for learning and running SQL queries live with explanations, plus role-based logins with controlled database access.</p>
+          <div class="tags"><span>Flask</span><span>MySQL</span><span>Python</span></div>
+        </div>
+
+        <div class="project">
+          <h3>Inventory &amp; Sales Management System</h3>
+          <p>Database-driven system for stock, sales transactions and automated financial / profit analysis reports.</p>
+          <div class="tags"><span>Java</span><span>MySQL</span><span>JSP</span></div>
+        </div>
+
+        <div class="project">
+          <h3>Event Management System <span class="when">Apr 2025</span></h3>
+          <p>JSP &amp; Servlet web app for event management and ticket booking with search, availability tracking and MySQL persistence.</p>
+          <div class="tags"><span>Java</span><span>Servlets</span><span>MySQL</span></div>
+        </div>
+
+        <div class="project">
+          <h3>Full-Stack Web Application</h3>
+          <p>Responsive web app with authentication and full CRUD, integrating a backend database with the frontend interface.</p>
+          <div class="tags"><span>HTML/CSS/JS</span><span>Auth</span><span>CRUD</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 05 · EDUCATION (left) -->
+  <section class="slot" data-side="left" id="education">
+    <div class="side">
+      <div class="card">
+        <div class="kicker">Education</div>
+        <h2>Learning journey</h2>
+
+        <div class="entry">
+          <h3>B.Tech — Computer Science &amp; Engineering</h3>
+          <div class="meta"><span class="org">REVA University</span><span class="dates">Sep 2023 – Jun 2027</span><span class="loc">· Bengaluru</span></div>
+          <ul><li>CGPA: 8 / 10</li></ul>
+        </div>
+
+        <div class="entry">
+          <h3>Higher Secondary (12th, CBSE)</h3>
+          <div class="meta"><span class="org">DAV Public School, Muzaffarpur</span><span class="dates">2023</span><span class="loc">· Bihar</span></div>
+          <ul><li>Percentage: 70%</li></ul>
+        </div>
+
+        <div class="entry">
+          <h3>Secondary (10th, CBSE)</h3>
+          <div class="meta"><span class="org">DAV Public School, Muzaffarpur</span><span class="dates">2021</span><span class="loc">· Bihar</span></div>
+          <ul><li>Percentage: 70%</li></ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 06 · SKILLS (right) -->
+  <section class="slot" data-side="right" id="skills">
+    <div class="side">
+      <div class="card">
+        <div class="kicker">Skills</div>
+        <h2>My toolkit</h2>
+
+        <div class="skill-group">
+  <div class="gname">Languages</div>
+  <div class="tags">
+    <span>Java</span>
+    <span>Python</span>
+    <span>C</span>
+    <span>C#</span>
+    <span>JavaScript</span>
+    <span>TypeScript</span>
+    <span>SQL</span>
+  </div>
+</div>
+
+<div class="skill-group">
+  <div class="gname">Web Development</div>
+  <div class="tags">
+    <span>HTML</span>
+    <span>CSS</span>
+    <span>JavaScript</span>
+    <span>React</span>
+    <span>Vite</span>
+    <span>Three.js</span>
+    <span>WebGL</span>
+    <span>GSAP</span>
+    <span>Node.js</span>
+  </div>
+</div>
+
+<div class="skill-group">
+  <div class="gname">Databases</div>
+  <div class="tags">
+    <span>MySQL</span>
+    <span>MongoDB</span>
+  </div>
+</div>
+
+<div class="skill-group">
+  <div class="gname">Tools &amp; Platforms</div>
+  <div class="tags">
+    <span>Git</span>
+    <span>GitHub</span>
+    <span>VS Code</span>
+    <span>Unity</span>
+    <span>TextMesh Pro</span>
+    <span>Node.js</span>
+    <span>npm</span>
+  </div>
+</div>
+
+<div class="skill-group">
+  <div class="gname">Core Concepts</div>
+  <div class="tags">
+    <span>DSA</span>
+    <span>OOP</span>
+    <span>DBMS</span>
+    <span>Problem Solving</span>
+    <span>3D Web Development</span>
+    <span>WebGL</span>
+    <span>UI/UX</span>
+    <span>Animation</span>
+    <span>Interactive UI</span>
+  </div>
+</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 07 · CERTIFICATIONS + EXTRACURRICULAR (left) -->
+  <section class="slot" data-side="left" id="certifications">
+    <div class="side">
+      <div class="card">
+        <div class="kicker">Beyond Code</div>
+        <h2>Certifications &amp; activities</h2>
+
+        <div class="cert">
+          <span><b>DSA with Java</b><small>Apna College</small></span>
+          <span class="year">Nov 2025</span>
+        </div>
+        <div class="cert">
+          <span><b>Front-End Web Development</b><small>Certification course</small></span>
+          <span class="year">Jun 2026</span>
+        </div>
+        <div class="cert">
+          <span><b>AWS Certifications</b><small>AWS</small></span>
+          <span class="year">Mar 2026</span>
+        </div>
+
+        <div class="two-col">
+          <div class="box">
+            <h4>Leadership</h4>
+            <ul>
+              <li>President, SPARK Club @ REVA University (2025 – Present)</li>
+              <li>Event Management Team, GDSC Event (Jun 2024)</li>
+            </ul>
+          </div>
+          <div class="box">
+            <h4>Languages &amp; Interests</h4>
+            <ul>
+              <li>English &amp; Hindi</li>
+              <li>Web/Software Development</li>
+              <li>Bike Riding</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 08 · CONTACT (right) -->
+  <section class="slot" data-side="right" id="contact">
+    <div class="side">
+      <div class="card connect">
+        <div class="kicker">Contact</div>
+        <h2>Let's connect</h2>
+        <p class="lead">Thanks for walking through my journey. Have a role, an idea or a project in mind? My inbox is always open.</p>
+        <div class="big-cta">
+          <a href="mailto:theprofessionalrj@gmail.com">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            <span>Email me<small>theprofessionalrj@gmail.com</small></span>
+          </a>
+          <a href="https://github.com/rj-manage" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+            <span>GitHub<small>github.com/rj-manage</small></span>
+          </a>
+          <a href="https://www.linkedin.com/in/raunak-raj-a35b58261" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+            <span>LinkedIn<small>linkedin.com/in/raunak-raj-a35b58261</small></span>
+          </a>
+          <a href="tel:+917700887944">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+            <span>Call me<small>+91 77008 87944</small></span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  © 2026 Raunak Raj · Portfolio<br>
+  <a href="mailto:theprofessionalrj@gmail.com">theprofessionalrj@gmail.com</a> · Bengaluru, India
+</footer>
+
+<script>
+(function(){
+  "use strict";
+
+  /* ---------- mobile nav ---------- */
+  var burger = document.getElementById("burger");
+  var menu   = document.getElementById("menu");
+  if(burger && menu){
+    burger.addEventListener("click", function(){
+      var open = menu.classList.toggle("open");
+      burger.setAttribute("aria-expanded", open ? "true" : "false");
+    });
+    Array.prototype.forEach.call(menu.querySelectorAll("a"), function(a){
+      a.addEventListener("click", function(){ menu.classList.remove("open"); });
+    });
+  }
+
+  /* ---------- scroll-scrubbed central walk ---------- */
+  var TOTAL   = 450;                       /* frame_0000 .. frame_0449  */
+  var PREFIX  = "RJ_Walk_Final/webp/frame_";
+  var walker  = document.getElementById("walker");
+  var stage   = document.getElementById("stage");
+  var current = -1;
+  var requested = {};
+
+  /* if the walk frames are not deployed, hide the stage rather than painting a
+     broken-image placeholder over the content */
+  walker.addEventListener("error", function(){
+    if(stage) stage.style.display = "none";
+  });
+
+  function src(i){ return PREFIX + ("0000" + i).slice(-4) + ".webp"; }
+
+  function frameFromScroll(){
+    var max = document.documentElement.scrollHeight - window.innerHeight;
+    var p   = max > 0 ? window.scrollY / max : 0;
+    return Math.round(p * (TOTAL - 1));
+  }
+
+  /* ask the browser to cache a frame (temp Image, reference dropped afterwards) */
+  function warm(i){
+    if(i < 0 || i >= TOTAL) return;
+    var k = src(i);
+    if(requested[k]) return;
+    requested[k] = true;
+    var im = new Image();
+    im.src = k;
+  }
+
+  function update(){
+    var target = frameFromScroll();
+    if(target !== current){
+      current = target;
+      walker.src = src(target);
+    }
+    /* keep a window of upcoming + past frames ready for smooth scrubbing */
+    for(var d = 1; d <= 14; d++){
+      warm(current + d);
+      warm(current - d);
+    }
+  }
+
+  var ticking = false;
+  function onScroll(){
+    if(!ticking){
+      ticking = true;
+      requestAnimationFrame(function(){
+        update();
+        paintBar();
+        ticking = false;
+      });
+    }
+  }
+  window.addEventListener("scroll", onScroll, { passive:true });
+  window.addEventListener("resize", onScroll);
+
+  /* preload the whole walk sequence into the browser cache during idle time so
+     scrubbing never has to wait on the network (prevents blank/flashing frames) */
+  var preloading = false;
+  function preloadAll(){
+    if(preloading) return;
+    preloading = true;
+    var i = 0;
+    var BATCH = 40;
+    function step(){
+      var end = Math.min(i + BATCH, TOTAL);
+      for(; i < end; i++) warm(i);
+      if(i < TOTAL){
+        if("requestIdleCallback" in window) requestIdleCallback(step, { timeout: 2000 });
+        else setTimeout(step, 50);
+      }
+    }
+    if("requestIdleCallback" in window) requestIdleCallback(step, { timeout: 3000 });
+    else setTimeout(step, 250);
+  }
+  window.addEventListener("load", preloadAll);
+  setTimeout(preloadAll, 1000);
+
+  /* pre-warm the first frames so the animation starts instantly */
+  update();
+
+  /* ---------- fullscreen intro → portfolio ---------- */
+  var intro      = document.getElementById("intro");
+  var video      = document.getElementById("intro-video");
+  var skipBtn    = document.getElementById("intro-skip");
+  var ended      = false;   /* video finished (or user chose to skip) */
+  var launched   = false;   /* portfolio revealed */
+  var playQueued = false;
+  var started    = false;   /* the intro video actually began playing */
+  /* safety net: if the intro never starts — the video file is missing on the
+     host, the codec is unsupported, or autoplay is blocked — do not strand the
+     visitor on a black screen */
+  var introWatchdog = setTimeout(function(){
+    if(!started){ ended = true; launchPortfolio(); }
+  }, 6000);
+
+  function launchPortfolio(){
+    if(launched) return;
+    launched = true;
+    clearTimeout(introWatchdog);
+    intro.classList.add("out");                 /* fade out the intro */
+    document.documentElement.classList.remove("no-scroll");
+    update();                                   /* reset the walk to frame 0 */
+    paintBar();
+    setTimeout(function(){ intro.classList.add("hidden"); }, 1050);
+  }
+
+  function tryPlay(){
+    if(playQueued) return;
+    playQueued = true;
+    var p = video.play();
+    if(p && p.catch) p.catch(function(){});
+  }
+
+  /* start playback as soon as the browser allows it */
+  window.addEventListener("load", tryPlay);
+  setTimeout(tryPlay, 250);
+
+  /* the video is muted: a click/keypress skips straight to the portfolio,
+     otherwise it just stays out of the way (no sound-on side effects) */
+  document.addEventListener("pointerdown", function(){ if(ended) launchPortfolio(); });
+  document.addEventListener("keydown", function(){ if(ended) launchPortfolio(); });
+
+  video.addEventListener("ended", function(){ ended = true; launchPortfolio(); });
+  video.addEventListener("error", launchPortfolio);   /* can't play → skip intro */
+  /* once the video has real data / is playing, cancel the skip-intro watchdog */
+  ["loadeddata", "playing"].forEach(function(ev){
+    video.addEventListener(ev, function(){ started = true; clearTimeout(introWatchdog); });
+  });
+
+  if(skipBtn){
+    skipBtn.addEventListener("pointerdown", function(e){ e.stopPropagation(); });
+    skipBtn.addEventListener("click", function(){ ended = true; launchPortfolio(); });
+  }
+
+  document.documentElement.classList.add("no-scroll");   /* lock scroll while the intro plays */
+
+  /* ---------- top progress bar ---------- */
+  var bar = document.querySelector("#progress i");
+  function paintBar(){
+    var max = document.documentElement.scrollHeight - window.innerHeight;
+    bar.style.transform = "scaleX(" + (max > 0 ? (window.scrollY / max) : 0) + ")";
+  }
+  paintBar();
+
+  /* ---------- reveal details on both sides while scrolling ---------- */
+  var sides = document.querySelectorAll(".side");
+  if("IntersectionObserver" in window){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        /* reveal once and keep revealed — re-hiding on scroll-up is what made
+           cards flicker (they faded out, then replayed their entry animation) */
+        if(e.isIntersecting) e.target.classList.add("in");
+      });
+    }, { threshold:0.12, rootMargin:"0px 0px -6% 0px" });
+    sides.forEach(function(s){ io.observe(s); });
+  } else {
+    sides.forEach(function(s){ s.classList.add("in"); });
+  }
+})();
+</script>
+</body>
+</html>

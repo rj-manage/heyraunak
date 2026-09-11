@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>02 · Magnetic Elements — RJ Motion Gallery</title>
+  <meta name="description" content="Buttons that lean toward the pointer then spring back — a custom underdamped magnetic spring integrator. Experiment 02 of the RJ Motion Gallery — Beginner level." />
+  <link rel="icon" href="assets/img/RJ_Logo_Black.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Sora:wght@500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/common.css" />
+  <style>
+    :root {
+      --ink: #0f172a;
+      --slate: #475569;
+      --muted: #94a3b8;
+      --line: #e5eaf1;
+      --accent: #4f46e5;
+      --stage-world: #1e2033;
+      --stage-line: rgba(233,236,248,.16);
+    }
+    body { background: radial-gradient(1200px 600px at 80% -10%, #f1f5f9 0%, transparent 60%), var(--paper); }
+
+    .nav { position: sticky; top: 0; z-index: 60; display: flex; align-items: center; justify-content: space-between; padding: 14px 6vw; background: rgba(255,255,255,.85); backdrop-filter: blur(12px); border-bottom: 1px solid var(--line); }
+    .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+    .brand .logo { width: 36px; height: 36px; }
+    .brand .logo img { width: 100%; height: 100%; object-fit: contain; }
+    .brand b { font-family: var(--font-display); font-size: 16px; color: var(--ink); letter-spacing: -.01em; }
+    .brand small { color: var(--muted); font-weight: 600; }
+    .nav-links { display: flex; gap: 24px; align-items: center; }
+    .nav-links a { text-decoration: none; color: var(--slate); font-size: 14px; font-weight: 600; }
+    .nav-links a:hover { color: var(--accent); }
+    .nav-links .btn { font-size: 13.5px; padding: 9px 16px; border-radius: 999px; }
+
+    .hero { padding: 60px 6vw 34px; max-width: 1220px; margin: 0 auto; }
+    .hero .kicker { display: inline-flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--accent); background: var(--brand-50); border: 1px solid #dfe3ff; padding: 6px 13px; border-radius: 999px; margin-bottom: 16px; }
+    .hero h1 { font-size: clamp(30px, 4.6vw, 46px); line-height: 1.08; letter-spacing: -.03em; color: var(--ink); }
+    .hero h1 em { font-style: normal; background: linear-gradient(90deg, #4f46e5, #a855f7); -webkit-background-clip: text; background-clip: text; color: transparent; }
+    .hero p { color: var(--slate); font-size: 16px; margin-top: 14px; max-width: 640px; }
+    .hero .meta { display: flex; gap: 20px; flex-wrap: wrap; margin-top: 18px; font-size: 12.5px; font-weight: 600; color: var(--muted); }
+    .hero .meta b { color: var(--accent); }
+
+    .stage-wrap { max-width: 1220px; margin: 0 auto; padding: 0 6vw; }
+    .stage { position: relative; height: clamp(380px, 60vh, 560px); background: linear-gradient(160deg, #f8fafc, #eef2ff); border: 1px solid #e5eaf1; border-radius: 22px; overflow: hidden; box-shadow: 0 40px 80px -40px rgba(15,23,42,.35); }
+    .stage__tag { position: absolute; top: 16px; right: 18px; z-index: 20; font-family: var(--font-mono); font-size: 10px; letter-spacing: .22em; text-transform: uppercase; color: var(--muted); pointer-events: none; user-select: none; }
+    .stage__controls { position: absolute; left: 50%; bottom: 16px; transform: translateX(-50%); z-index: 20; display: flex; gap: 8px; align-items: center; }
+    .stage__controls .btn { padding: 8px 16px; font-size: 10px; border-radius: 999px; border: 1px solid #e2e8f0; color: var(--slate); background: rgba(255,255,255,.8); backdrop-filter: blur(6px); letter-spacing: .14em; }
+    .stage__controls .btn:hover { border-color: var(--accent); color: var(--accent); }
+    .stage__controls .btn.paused { color: #fff; background: var(--accent); border-color: var(--accent); }
+
+    .mg { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: center; gap: clamp(18px, 3.4vh, 40px); padding: 6% 9%; user-select: none; }
+    .mg__word { position: absolute; right: -1%; bottom: -4%; font-family: "Space Grotesk", var(--font-display); font-weight: 700; font-size: clamp(120px, 24vw, 380px); line-height: 1; color: transparent; -webkit-text-stroke: 1px rgba(79,70,229,.12); text-transform: uppercase; pointer-events: none; white-space: nowrap; }
+    .mg__btn { position: relative; width: min(560px, 100%); will-change: transform; }
+    .mg__btn:nth-child(2) { align-self: center; }
+    .mg__btn:nth-child(3) { align-self: flex-end; }
+    .mg__btn-inner { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: clamp(20px, 3.6vh, 32px) clamp(24px, 3vw, 44px); border: 1px solid #e2e8f0; background: #fff; border-radius: 14px; position: relative; overflow: hidden; will-change: transform; transition: border-color .25s ease, box-shadow .25s ease; box-shadow: 0 16px 40px -22px rgba(15,23,42,.3); }
+    .mg__btn-inner::before { content: ""; position: absolute; inset: 0; background: linear-gradient(120deg, var(--accent), #a855f7); transform: scaleY(0); transform-origin: bottom; transition: transform .4s cubic-bezier(.16,1,.3,1); opacity: .92; }
+    .mg__btn:hover .mg__btn-inner { border-color: var(--accent); box-shadow: 0 22px 50px -20px rgba(79,70,229,.45); }
+    .mg__btn:hover .mg__btn-inner::before { transform: scaleY(1); }
+    .mg__label { font-family: "Space Grotesk", var(--font-display); font-size: clamp(22px, 3.4vw, 40px); font-weight: 700; letter-spacing: .02em; text-transform: uppercase; color: var(--ink); position: relative; z-index: 1; will-change: transform; transition: color .3s ease; }
+    .mg__meta { font-family: var(--font-mono); font-size: 10px; letter-spacing: .2em; text-transform: uppercase; color: var(--muted); display: flex; align-items: center; gap: 10px; position: relative; z-index: 1; will-change: transform; transition: color .3s ease; }
+    .mg__meta svg { width: 20px; }
+    .mg__btn:hover .mg__label, .mg__btn:hover .mg__meta { color: #fff; }
+
+    section { padding: 64px 6vw; max-width: 1220px; margin: 0 auto; }
+    .sec-head { max-width: 640px; margin-bottom: 34px; }
+    .sec-head .kicker { font-size: 12px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--accent); margin-bottom: 10px; }
+    .sec-head h2 { font-size: clamp(24px, 3.2vw, 34px); color: var(--ink); letter-spacing: -.02em; }
+    .sec-head p { color: var(--slate); margin-top: 10px; font-size: 15.5px; }
+    .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
+    @media (max-width: 820px) { .grid2 { grid-template-columns: 1fr; } }
+    .card { background: #fff; border: 1px solid var(--line); border-radius: 16px; padding: 26px; }
+    .card .ico { width: 42px; height: 42px; border-radius: 12px; display: grid; place-items: center; font-size: 18px; color: #fff; margin-bottom: 14px; background: linear-gradient(135deg, var(--accent), #a855f7); }
+    .card h3 { font-size: 17px; color: var(--ink); margin-bottom: 6px; }
+    .card p { font-size: 14px; color: var(--slate); }
+    .card code { font-family: var(--font-mono); font-size: 12px; color: var(--accent); background: var(--brand-50); padding: 2px 6px; border-radius: 6px; }
+
+    footer { border-top: 1px solid var(--line); background: #fbfcfe; padding: 40px 6vw 46px; }
+    .foot { max-width: 1220px; margin: 0 auto; display: flex; justify-content: space-between; gap: 30px; flex-wrap: wrap; align-items: center; }
+    .foot .brand b { font-size: 16px; }
+    .foot-links { display: flex; gap: 22px; font-size: 13.5px; color: var(--slate); }
+    .foot-links a { text-decoration: none; }
+    .foot-links a:hover { color: var(--accent); }
+    .foot-copy { max-width: 1220px; margin: 22px auto 0; padding-top: 18px; border-top: 1px solid var(--line); font-size: 12.5px; color: var(--muted); display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+    .foot-copy a { color: var(--accent); text-decoration: none; font-weight: 600; }
+  </style>
+</head>
+<body>
+  <div class="toast"></div>
+
+  <nav class="nav" id="nav">
+    <a class="brand" href="index.html">
+      <span class="logo"><img src="assets/img/RJ_Logo_Black.png" alt="RJ logo" /></span>
+      <b>RJ Motion <small>· Gallery</small></b>
+    </a>
+    <div class="nav-links" id="menu">
+      <a href="#explain">How it works</a>
+      <a href="#more">More demos</a>
+      <a class="btn btn-primary" href="index.html">← All experiments</a>
+    </div>
+  </nav>
+
+  <header class="hero reveal">
+    <span class="kicker"><span style="width:7px;height:7px;border-radius:50%;background:var(--green-600);display:inline-block;animation:pulse 1.8s infinite;"></span> Experiment 02 · Beginner</span>
+    <h1>Magnetic <em>Elements</em> — elastic spring physics.</h1>
+    <p>Buttons lean toward the pointer the closer it gets, then spring back to rest the moment you leave. Organic, elastic, alive.</p>
+    <div class="meta">
+      <span>Technique · <b>Magnetic cursor (custom spring)</b></span>
+      <span>Hint · <b>Get closer</b></span>
+      <span>Level · <b>02</b> / 10</span>
+    </div>
+  </header>
+
+  <div class="stage-wrap">
+    <div class="stage reveal">
+      <span class="stage__tag">Demo 02 · Magnetic Elements</span>
+      <div class="mg" id="demo">
+        <span class="mg__word">Magnetic</span>
+        <div class="mg__btn" data-btn>
+          <div class="mg__btn-inner" data-cursor="hover">
+            <span class="mg__label" data-btn-label>Explore</span>
+            <span class="mg__meta" data-btn-meta>Pull me closer
+              <svg viewBox="0 0 24 24" fill="none"><path d="M5 12h13M13 6l6 6-6 6" stroke="currentColor" strokeWidth="1.6"/></svg>
+            </span>
+          </div>
+        </div>
+        <div class="mg__btn" data-btn>
+          <div class="mg__btn-inner" data-cursor="hover">
+            <span class="mg__label" data-btn-label>View work</span>
+            <span class="mg__meta" data-btn-meta>I can feel you
+              <svg viewBox="0 0 24 24" fill="none"><path d="M5 12h13M13 6l6 6-6 6" stroke="currentColor" strokeWidth="1.6"/></svg>
+            </span>
+          </div>
+        </div>
+        <div class="mg__btn" data-btn>
+          <div class="mg__btn-inner" data-cursor="hover">
+            <span class="mg__label" data-btn-label>Get in touch</span>
+            <span class="mg__meta" data-btn-meta>Elastic spring
+              <svg viewBox="0 0 24 24" fill="none"><path d="M5 12h13M13 6l6 6-6 6" stroke="currentColor" strokeWidth="1.6"/></svg>
+            </span>
+          </div>
+        </div>
+      </div>
+      <div class="stage__controls">
+        <button class="btn" id="pauseBtn">Pause</button>
+        <button class="btn" id="resetBtn">Reset</button>
+      </div>
+    </div>
+  </div>
+
+  <section id="explain">
+    <div class="sec-head reveal">
+      <div class="kicker">Technique</div>
+      <h2>Proximity-triggered, spring-damped attraction</h2>
+      <p>Each button measures its own centre. When the pointer is within 240px, it applies a force proportional to distance squared; an underdamped spring integrator returns it smooth and elastic.</p>
+    </div>
+    <div class="grid2">
+      <article class="card reveal">
+        <span class="ico">⌁</span>
+        <h3>Strong spring</h3>
+        <p>Stiffness <code>k = 130</code> with light damping <code>9.5</code> creates that over-shoot "boing" as each button settles back to its post.</p>
+      </article>
+      <article class="card reveal">
+        <span class="ico">⇄</span>
+        <h3>Counter-shifted label</h3>
+        <p>The label and meta shift in the opposite direction to the button shell — a subtle stretch that makes the whole element feel like one mass.<br /><br />Physics are frame-rate independent via <code>dt</code>-scaled integration.</p>
+      </article>
+    </div>
+  </section>
+
+  <section id="more" style="padding-top:10px">
+    <div class="sec-head reveal">
+      <div class="kicker">Keep exploring</div>
+      <h2>More motion experiments</h2>
+      <div class="meta" style="display:flex;gap:18px;flex-wrap:wrap;font-size:13px;font-weight:600;color:var(--muted);margin-top:14px;">
+        <a href="experiment-1.html" style="color:var(--accent);text-decoration:none;">01 · Mouse Parallax →</a>
+        <a href="experiment-3.html" style="color:var(--accent);text-decoration:none;">03 · Cursor Follower →</a>
+        <a href="index.html" style="color:var(--accent);text-decoration:none;">All 10 →</a>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="foot">
+      <a class="brand" href="index.html">
+        <span class="logo"><img src="assets/img/RJ_Logo_Black.png" alt="RJ logo" /></span>
+        <b>RJ Motion Gallery</b>
+      </a>
+      <div class="foot-links">
+        <a href="experiment-1.html">Prev: Parallax</a>
+        <a href="experiment-3.html">Next: Follower</a>
+        <a href="index.html">All 10 experiments</a>
+      </div>
+    </div>
+    <div class="foot-copy">
+      <span>© 2026 RJ Motion Gallery · Experiment 02 of 10 — Magnetic Elements</span>
+      <span><a href="index.html">← View all 10 experiments</a></span>
+    </div>
+  </footer>
+
+  <script src="js/common.js"></script>
+  <script>
+    (function () {
+      "use strict";
+      const host = document.getElementById("demo");
+      const btns = Array.from(host.querySelectorAll("[data-btn]")).map((outer) => ({
+        outer,
+        label: outer.querySelector("[data-btn-label]"),
+        meta: outer.querySelector("[data-btn-meta]"),
+        cx: 0, cy: 0, x: 0, y: 0, vx: 0, vy: 0,
+      }));
+      const pointer = { x: -9999, y: -9999, inside: false };
+
+      function measure() {
+        btns.forEach((b) => {
+          const r = b.outer.getBoundingClientRect();
+          b.cx = r.left + r.width / 2;
+          b.cy = r.top + r.height / 2;
+        });
+      }
+      function apply(b) {
+        b.outer.style.transform = "translate3d(" + b.x.toFixed(2) + "px, " + b.y.toFixed(2) + "px, 0)";
+        if (b.label) b.label.style.transform = "translate3d(" + (-b.x * 0.4).toFixed(2) + "px, " + (-b.y * 0.32).toFixed(2) + "px, 0)";
+        if (b.meta) b.meta.style.transform = "translate3d(" + (-b.x * 0.28).toFixed(2) + "px, " + (-b.y * 0.22).toFixed(2) + "px, 0)";
+      }
+
+      let running = !prefersReducedMotion;
+      document.getElementById("pauseBtn").addEventListener("click", function () {
+        running = !running;
+        this.textContent = running ? "Pause" : "Resume";
+        this.classList.toggle("paused", !running);
+      });
+      document.getElementById("resetBtn").addEventListener("click", function () {
+        btns.forEach((b) => { b.x = 0; b.y = 0; b.vx = 0; b.vy = 0; apply(b); });
+      });
+
+      host.addEventListener("pointerenter", (e) => { measure(); pointer.inside = true; pointer.x = e.clientX; pointer.y = e.clientY; });
+      host.addEventListener("pointermove", (e) => { pointer.x = e.clientX; pointer.y = e.clientY; });
+      host.addEventListener("pointerleave", () => { pointer.inside = false; });
+      window.addEventListener("resize", measure);
+      window.addEventListener("scroll", measure, { passive: true });
+      measure();
+
+      (function loop(t, last) {
+        const dt = Math.min(0.05, (t - last) / 1000);
+        if (running) {
+          for (const b of btns) {
+            let tx = 0, ty = 0;
+            if (pointer.inside) {
+              const dx = pointer.x - b.cx, dy = pointer.y - b.cy;
+              const d = Math.hypot(dx, dy) || 1;
+              const s = clamp(1 - d / 240, 0, 1);
+              const strength = s * s * 58;
+              tx = (dx / d) * strength;
+              ty = (dy / d) * strength;
+            }
+            b.vx += (tx - b.x) * 130 * dt;
+            b.vy += (ty - b.y) * 130 * dt;
+            b.vx *= Math.exp(-9.5 * dt);
+            b.vy *= Math.exp(-9.5 * dt);
+            b.x += b.vx * dt;
+            b.y += b.vy * dt;
+            if (Math.abs(b.x) < 0.01 && Math.abs(b.y) < 0.01 && !pointer.inside) { b.x = 0; b.y = 0; }
+            apply(b);
+          }
+        }
+        requestAnimationFrame((nt) => loop(nt, t));
+      })(performance.now(), performance.now());
+
+      window.addEventListener("scroll", () => document.getElementById("nav").classList.toggle("scrolled", scrollY > 10), { passive: true });
+    })();
+  </script>
+</body>
+</html>

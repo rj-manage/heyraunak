@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>20 · Kinetic Form — Rj_Manage</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Sora:wght@500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/common.css" />
+  <style>
+    body { background: #0f172a; overflow: hidden; height: 100vh; }
+    .section { position: relative; z-index: 2; height: 100vh; display: grid; place-items: center; padding: 50px 20px; }
+
+    .kin-card {
+      width: 100%; max-width: 660px; border-radius: 26px; padding: 50px 56px; position: relative; overflow: hidden;
+      background: linear-gradient(165deg, #1e293b, #0b1524 60%); border: 1px solid rgba(251,191,36,.2);
+      box-shadow: 0 50px 120px -30px rgba(0,0,0,.75);
+    }
+    @media (max-width: 540px) { .kin-card { padding: 34px 24px; } }
+
+    /* kinetic headline: characters shift/tumble */
+    .head { text-align: center; margin-bottom: 34px; }
+    .head .word { display: inline-block; }
+    .head .char { display: inline-block; font-family: var(--font-display); font-weight: 800; color: #fbbf24;
+      font-size: clamp(30px, 5vw, 46px); letter-spacing: -.02em; line-height: 1.1;
+      animation: tumble 6s ease-in-out infinite; animation-delay: calc(var(--i) * .08s); }
+    @keyframes tumble { 0%, 100% { transform: translateY(0) rotate(0); opacity: 1; }
+      42% { transform: translateY(-12px) rotate(8deg); opacity: .3; } 58% { transform: translateY(4px) rotate(-4deg); opacity: 1; } }
+    .head p { color: #94a3b8; margin-top: 14px; font-size: 15px; }
+
+    /* wagging arrow */
+    .head .arrow { display: inline-block; color: #fbbf24; font-size: 20px; animation: wag 1.4s ease-in-out infinite; margin-left: 6px; }
+    @keyframes wag { 0%,100% { transform: rotate(0); } 50% { transform: rotate(18deg); } }
+
+    .kin-form { display: grid; gap: 20px; }
+    .k-field { --d: 0s; }
+    .k-field label { display: block; font-size: 13px; font-weight: 600; color: #cbd5e1; margin-bottom: 8px; }
+    .k-field input, .k-field select {
+      width: 100%; background: #0f172a; border: 1.5px solid #334155; color: #f1f5f9; font: inherit;
+      font-size: 15px; padding: 14px 16px; border-radius: 12px; outline: none;
+      transition: all .25s ease;
+    }
+    .k-field select { appearance: none; cursor: pointer;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%23fbbf24' stroke-width='2.4'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 16px center; }
+    .k-field select option { background: #0f172a; color: #f1f5f9; }
+    .k-field input::placeholder { color: #475569; }
+    .k-field input:focus, .k-field select:focus { border-color: #fbbf24; box-shadow: 0 0 0 4px rgba(251,191,36,.16); }
+
+    .row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    @media (max-width: 480px) { .row { grid-template-columns: 1fr; } }
+
+    .kin-btn {
+      font: inherit; font-weight: 800; font-size: 15.5px; color: #0f172a; position: relative;
+      background: linear-gradient(120deg, #fde68a, #fbbf24, #f59e0b); border: none; border-radius: 12px;
+      padding: 16px; cursor: pointer; overflow: hidden;
+      box-shadow: 0 14px 40px -10px rgba(251,191,36,.5);
+      transition: transform .15s ease, box-shadow .2s ease, filter .2s ease;
+    }
+    .kin-btn:hover { filter: brightness(1.05); transform: translateY(-2px); box-shadow: 0 20px 54px -10px rgba(251,191,36,.7); }
+    /* jitter on hover */
+    .kin-btn:hover::before { content: ""; position: absolute; inset: 0; background: repeating-linear-gradient(0deg, rgba(255,255,255,.12) 0 2px, transparent 2px 4px); }
+    .fine { text-align: center; color: #64748b; font-size: 12.5px; margin-top: 2px; }
+  </style>
+</head>
+<body>
+  <div class="toast"></div>
+  <section class="section">
+    <div class="kin-card">
+      <div class="head" id="kinHead"></div>
+      <form class="kin-form" id="kinForm" novalidate>
+        <div class="row">
+          <div class="k-field" style="--d:.1s">
+            <label for="name">Name *</label>
+            <input id="name" type="text" placeholder="Your name" required data-field="Name" />
+          </div>
+          <div class="k-field" style="--d:.2s">
+            <label for="email">Email *</label>
+            <input id="email" type="email" placeholder="you@example.com" required data-field="Email" />
+          </div>
+        </div>
+        <div class="k-field" style="--d:.3s">
+          <label for="topic">Topic *</label>
+          <select id="topic" required data-field="Topic">
+            <option value="">Select…</option>
+            <option>Product news</option>
+            <option>Design & UX</option>
+            <option>Engineering</option>
+            <option>Company updates</option>
+          </select>
+        </div>
+        <div class="k-field" style="--d:.4s">
+          <button class="kin-btn" type="submit" id="kinBtn">Subscribe →</button>
+        </div>
+        <p class="fine">One email a week. Unsubscribe anytime.</p>
+      </form>
+    </div>
+  </section>
+
+  <script src="js/common.js"></script>
+  <script>
+    /* Build the kinetic headline from characters */
+    var text = "STAY IN MOTION";
+    var html = "";
+    for (var i = 0; i < text.length; i++) {
+      if (text[i] === " ") html += '<span class="word">&nbsp;</span>';
+      else html += '<span class="char" style="--i:' + i + '">' + text[i] + '</span>';
+    }
+    html += '<span class="arrow">↗</span>';
+    document.getElementById("kinHead").innerHTML = html + '<p>Subscribe for movement, news and momentum.</p>';
+
+    /* quirky field entrance */
+    document.querySelectorAll(".k-field").forEach((el) => {
+      el.style.opacity = "0";
+      el.style.transform = "translateY(18px) rotate(-2deg)";
+      el.style.transition = "opacity .6s ease, transform .6s ease";
+      el.style.transitionDelay = el.style.getPropertyValue("--d");
+      requestAnimationFrame(() => { el.style.opacity = "1"; el.style.transform = "none"; });
+    });
+
+    document.getElementById("kinForm").addEventListener("submit", (e) => {
+      e.preventDefault();
+      const form = e.target;
+      if (!form.checkValidity()) { form.reportValidity(); return; }
+      const d = collectForm(form);
+      showToast("⚡ Subscribed! Welcome, " + d["Name"] + "!");
+      form.reset();
+    });
+  </script>
+</body>
+</html>

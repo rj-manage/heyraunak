@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>01 · Classic Simple — Rj_Manage</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Sora:wght@500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/common.css" />
+  <style>
+    body { background: #f1f5f9; }
+    .section { padding: 70px 20px; }
+
+    .card {
+      background: #fff; max-width: 660px; margin: 0 auto;
+      border-radius: 16px; padding: 42px 46px 46px;
+      box-shadow: 0 1px 2px rgba(15,23,42,.06), 0 20px 50px -24px rgba(15,23,42,.25);
+      border: 1px solid #e5e9f0;
+    }
+    .card h2 { font-size: 26px; letter-spacing: -.02em; margin-bottom: 4px; }
+    .card .sub { color: #64748b; font-size: 14.5px; margin-bottom: 8px; }
+    .rule { border: none; border-top: 1px solid #e2e8f0; margin: 22px 0; }
+
+    .row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    @media (max-width: 520px) { .row { grid-template-columns: 1fr; } }
+
+    .card .btn-primary { width: 100%; margin-top: 10px; border-radius: 10px; }
+    .card form { margin-top: 18px; display: grid; gap: 16px; }
+
+    .topbar { text-align: center; margin-bottom: 26px; }
+    .topbar .logo {
+      width: 52px; height: 52px; margin: 0 auto 14px; border-radius: 14px;
+      background: linear-gradient(135deg, #334155, #475569); color: #fff;
+      display: grid; place-items: center; font-family: var(--font-display); font-weight: 800; font-size: 18px;
+    }
+    .topbar p { color: #94a3b8; font-size: 13px; margin-top: 4px; }
+  </style>
+</head>
+<body>
+  <div class="toast"></div>
+  <section class="section">
+    <div class="card">
+      <div class="topbar">
+        <div class="logo">RJ</div>
+        <h2>Contact Form</h2>
+        <p>Rj_Manage · Simple classic layout</p>
+      </div>
+      <form id="theForm" novalidate>
+        <div class="field">
+          <label for="name">Full Name *</label>
+          <input class="input" id="name" type="text" placeholder="e.g. Aarav Sharma" required data-field="Name" />
+        </div>
+        <div class="field">
+          <label for="email">Email Address *</label>
+          <input class="input" id="email" type="email" placeholder="name@company.com" required data-field="Email" />
+        </div>
+        <div class="field">
+          <label for="subject">Subject *</label>
+          <select class="select" id="subject" required>
+            <option value="">Select a topic…</option>
+            <option>General Enquiry</option>
+            <option>Support</option>
+            <option>Partnership</option>
+            <option>Sales</option>
+            <option>Feedback</option>
+            <option>Careers</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="row">
+          <div class="field">
+            <label for="priority">Priority *</label>
+            <select class="select" id="priority" required>
+              <option value="">Choose…</option>
+              <option>Low</option>
+              <option>Normal</option>
+              <option>High</option>
+              <option>Urgent</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="date">Preferred Date *</label>
+            <input class="input" id="date" type="date" required />
+          </div>
+        </div>
+        <div class="field">
+          <label for="message">Your Message *</label>
+          <textarea class="textarea" id="message" placeholder="Briefly tell us how we can help…" required></textarea>
+        </div>
+        <button class="btn btn-primary" type="submit">Send Message</button>
+      </form>
+    </div>
+  </section>
+
+  <script src="js/common.js"></script>
+  <script>
+    document.getElementById("theForm").addEventListener("submit", (e) => {
+      e.preventDefault();
+      const form = e.target;
+      if (!form.checkValidity()) { form.reportValidity(); return; }
+      const d = collectForm(form);
+      showToast("✅ Message sent from " + d["Name"] + "!");
+      form.reset();
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>06 · Particle Field — RJ Motion Gallery</title>
+  <meta name="description" content="A quiet grid of points that wake up as you pass — pushed aside and tinted, then springing back to their posts. Experiment 06 of the RJ Motion Gallery — Intermediate level." />
+  <link rel="icon" href="assets/img/RJ_Logo_Black.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Sora:wght@500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/common.css" />
+  <style>
+    :root { --ink:#0f172a; --slate:#475569; --muted:#94a3b8; --line:#e5eaf1; --accent:#6366f1; }
+    body { background: radial-gradient(1200px 600px at 80% -10%, #eef2ff 0%, transparent 60%), var(--paper); }
+    .nav { position: sticky; top: 0; z-index: 60; display: flex; align-items: center; justify-content: space-between; padding: 14px 6vw; background: rgba(255,255,255,.85); backdrop-filter: blur(12px); border-bottom: 1px solid var(--line); }
+    .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+    .brand .logo { width: 36px; height: 36px; }
+    .brand .logo img { width: 100%; height: 100%; object-fit: contain; }
+    .brand b { font-family: var(--font-display); font-size: 16px; color: var(--ink); letter-spacing: -.01em; }
+    .brand small { color: var(--muted); font-weight: 600; }
+    .nav-links { display: flex; gap: 24px; align-items: center; }
+    .nav-links a { text-decoration: none; color: var(--slate); font-size: 14px; font-weight: 600; }
+    .nav-links a:hover { color: var(--accent); }
+    .nav-links .btn { font-size: 13.5px; padding: 9px 16px; border-radius: 999px; }
+    .hero { padding: 60px 6vw 34px; max-width: 1220px; margin: 0 auto; }
+    .hero .kicker { display: inline-flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: #4338ca; background: #eef2ff; border: 1px solid #dfe3ff; padding: 6px 13px; border-radius: 999px; margin-bottom: 16px; }
+    .hero h1 { font-size: clamp(30px, 4.6vw, 46px); line-height: 1.08; letter-spacing: -.03em; color: var(--ink); }
+    .hero h1 em { font-style: normal; color: var(--accent); }
+    .hero p { color: var(--slate); font-size: 16px; margin-top: 14px; max-width: 640px; }
+    .hero .meta { display: flex; gap: 20px; flex-wrap: wrap; margin-top: 18px; font-size: 12.5px; font-weight: 600; color: var(--muted); }
+    .hero .meta b { color: var(--accent); }
+    .stage-wrap { max-width: 1220px; margin: 0 auto; padding: 0 6vw; }
+    .stage { position: relative; height: clamp(420px, 66vh, 620px); background: linear-gradient(160deg, #0f1120, #1e2033); border: 1px solid rgba(165,180,252,.2); border-radius: 22px; overflow: hidden; box-shadow: 0 40px 80px -40px rgba(15,23,42,.6); }
+    .stage__tag { position: absolute; top: 16px; right: 18px; z-index: 20; font-family: var(--font-mono); font-size: 10px; letter-spacing: .22em; text-transform: uppercase; color: rgba(224,231,255,.5); pointer-events: none; user-select: none; }
+    .stage__controls { position: absolute; left: 50%; bottom: 16px; transform: translateX(-50%); z-index: 20; display: flex; gap: 8px; align-items: center; }
+    .stage__controls .btn { padding: 8px 16px; font-size: 10px; border-radius: 999px; border: 1px solid rgba(224,231,255,.25); color: rgba(224,231,255,.85); background: rgba(15,23,42,.4); backdrop-filter: blur(6px); letter-spacing: .14em; }
+    .stage__controls .btn:hover { border-color: var(--accent); color: #a5b4fc; }
+    .stage__controls .btn.paused { color: #0f1120; background: var(--accent); border-color: var(--accent); }
+
+    .pt { position: absolute; inset: 0; }
+    .pt canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+
+    section { padding: 64px 6vw; max-width: 1220px; margin: 0 auto; }
+    .sec-head { max-width: 640px; margin-bottom: 34px; }
+    .sec-head .kicker { font-size: 12px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--accent); margin-bottom: 10px; }
+    .sec-head h2 { font-size: clamp(24px, 3.2vw, 34px); color: var(--ink); letter-spacing: -.02em; }
+    .sec-head p { color: var(--slate); margin-top: 10px; font-size: 15.5px; }
+    .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
+    @media (max-width: 820px) { .grid2 { grid-template-columns: 1fr; } }
+    .card { background: #fff; border: 1px solid var(--line); border-radius: 16px; padding: 26px; }
+    .card .ico { width: 42px; height: 42px; border-radius: 12px; display: grid; place-items: center; font-size: 18px; color: #fff; margin-bottom: 14px; background: linear-gradient(135deg, var(--accent), #a855f7); }
+    .card h3 { font-size: 17px; color: var(--ink); margin-bottom: 6px; }
+    .card p { font-size: 14px; color: var(--slate); }
+    .card code { font-family: var(--font-mono); font-size: 12px; color: #4338ca; background: #eef2ff; padding: 2px 6px; border-radius: 6px; }
+
+    footer { border-top: 1px solid var(--line); background: #fbfcfe; padding: 40px 6vw 46px; }
+    .foot { max-width: 1220px; margin: 0 auto; display: flex; justify-content: space-between; gap: 30px; flex-wrap: wrap; align-items: center; }
+    .foot .brand b { font-size: 16px; }
+    .foot-links { display: flex; gap: 22px; font-size: 13.5px; color: var(--slate); }
+    .foot-links a { text-decoration: none; }
+    .foot-links a:hover { color: var(--accent); }
+    .foot-copy { max-width: 1220px; margin: 22px auto 0; padding-top: 18px; border-top: 1px solid var(--line); font-size: 12.5px; color: var(--muted); display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+    .foot-copy a { color: var(--accent); text-decoration: none; font-weight: 600; }
+  </style>
+</head>
+<body>
+  <div class="toast"></div>
+
+  <nav class="nav" id="nav">
+    <a class="brand" href="index.html">
+      <span class="logo"><img src="assets/img/RJ_Logo_Black.png" alt="RJ logo" /></span>
+      <b>RJ Motion <small>· Gallery</small></b>
+    </a>
+    <div class="nav-links" id="menu">
+      <a href="#explain">How it works</a>
+      <a href="#more">More demos</a>
+      <a class="btn btn-primary" href="index.html">← All experiments</a>
+    </div>
+  </nav>
+
+  <header class="hero reveal">
+    <span class="kicker"><span style="width:7px;height:7px;border-radius:50%;background:var(--green-600);display:inline-block;animation:pulse 1.8s infinite;"></span> Experiment 06 · Intermediate</span>
+    <h1>Particle <em>Field</em> — a grid that learns your touch.</h1>
+    <p>A quiet grid of points wakes up as you pass: pushed aside, tinted with the accent colour, then springing back to their posts.</p>
+    <div class="meta">
+      <span>Technique · <b>Canvas 2D springs + repulsion</b></span>
+      <span>Hint · <b>Sweep the field</b></span>
+      <span>Level · <b>06</b> / 10</span>
+    </div>
+  </header>
+
+  <div class="stage-wrap">
+    <div class="stage reveal">
+      <span class="stage__tag">Demo 06 · Particle Field</span>
+      <div class="pt" id="demo"><canvas id="canvas"></canvas></div>
+      <div class="stage__controls">
+        <button class="btn" id="pauseBtn">Pause</button>
+        <button class="btn" id="resetBtn">Reset</button>
+      </div>
+    </div>
+  </div>
+
+  <section id="explain">
+    <div class="sec-head reveal">
+      <div class="kicker">Technique</div>
+      <h2>Springs bringing quiet points back home</h2>
+      <p>Each particle stores a "home" position. The cursor exerts a repulsive impulse within a 130px radius; a spring constant pulls it back, and exponential damping settles the jitter.</p>
+    </div>
+    <div class="grid2">
+      <article class="card reveal">
+        <span class="ico">◎</span>
+        <h3>Physics per particle</h3>
+        <p>Spring <code>k = 120</code>, damping <code>c = 13</code>, repulsion power <code>620</code>. Integration is scaled by <code>dt</code>, so the same field feels identical on 60Hz and 144Hz screens.</p>
+      </article>
+      <article class="card reveal">
+        <span class="ico">✦</span>
+        <h3>Cursor-aware glow</h3>
+        <p>Particles near the cursor grow, brighten and tint with the accent colour. A faint radial glow hugs the pointer for a little extra depth.<br /><br />Hundreds of particles, one canvas — zero per-frame layout reads.</p>
+      </article>
+    </div>
+  </section>
+
+  <section id="more" style="padding-top:10px">
+    <div class="sec-head reveal">
+      <div class="kicker">Keep exploring</div>
+      <h2>More motion experiments</h2>
+      <div class="meta" style="display:flex;gap:18px;flex-wrap:wrap;font-size:13px;font-weight:600;color:var(--muted);margin-top:14px;">
+        <a href="experiment-5.html" style="color:var(--accent);text-decoration:none;">05 · Spotlight →</a>
+        <a href="experiment-7.html" style="color:var(--accent);text-decoration:none;">07 · 3D Tilt →</a>
+        <a href="index.html" style="color:var(--accent);text-decoration:none;">All 10 →</a>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="foot">
+      <a class="brand" href="index.html">
+        <span class="logo"><img src="assets/img/RJ_Logo_Black.png" alt="RJ logo" /></span>
+        <b>RJ Motion Gallery</b>
+      </a>
+      <div class="foot-links">
+        <a href="experiment-5.html">Prev: Spotlight</a>
+        <a href="experiment-7.html">Next: 3D Tilt</a>
+        <a href="index.html">All 10 experiments</a>
+      </div>
+    </div>
+    <div class="foot-copy">
+      <span>© 2026 RJ Motion Gallery · Experiment 06 of 10 — Particle Field</span>
+      <span><a href="index.html">← View all 10 experiments</a></span>
+    </div>
+  </footer>
+
+  <script src="js/common.js"></script>
+  <script>
+    (function () {
+      "use strict";
+      const host = document.getElementById("demo");
+      const canvas = document.getElementById("canvas");
+      const ctx = canvas.getContext("2d");
+      const SPACING = 26, REPEL_R = 130, REPEL_POWER = 620;
+      const pointer = { x: -9999, y: -9999, inside: false };
+      let parts = [];
+
+      function initParts(w, h) {
+        const cols = Math.max(4, Math.floor(w / SPACING));
+        const rows = Math.max(4, Math.floor(h / SPACING));
+        const arr = [];
+        for (let r = 0; r < rows; r++) for (let c = 0; c < cols; c++) {
+          const jx = ((c * 47 + r * 13) % 17) / 17 - 0.5;
+          const jy = ((c * 31 + r * 59) % 13) / 13 - 0.5;
+          arr.push({ hx: (c + 0.5 + jx * 0.5) / cols, hy: (r + 0.5 + jy * 0.5) / rows, x: 0, y: 0, vx: 0, vy: 0, phase: ((c * 3 + r) % 40) / 40 });
+        }
+        arr.forEach((p) => { p.x = p.hx; p.y = p.hy; });
+        return arr;
+      }
+      function setup(dpr) {
+        dpr = dpr || Math.min(window.devicePixelRatio || 1, 2);
+        const w = host.clientWidth, h = host.clientHeight;
+        canvas.width = Math.round(w * dpr);
+        canvas.height = Math.round(h * dpr);
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        return { w, h, dpr };
+      }
+      function draw(w, h, t, dt) {
+        ctx.clearRect(0, 0, w, h);
+        const px = pointer.x * w, py = pointer.y * h;
+        if (pointer.inside) {
+          const g = ctx.createRadialGradient(px, py, 0, px, py, REPEL_R);
+          g.addColorStop(0, "rgba(99,102,241,0.14)");
+          g.addColorStop(1, "rgba(99,102,241,0)");
+          ctx.fillStyle = g;
+          ctx.fillRect(px - REPEL_R, py - REPEL_R, REPEL_R * 2, REPEL_R * 2);
+        }
+        const pdt = clamp(dt, 0, 0.05);
+        for (const pt of parts) {
+          const x = pt.x * w, y = pt.y * h;
+          const dx = x - px, dy = y - py;
+          const d2 = dx * dx + dy * dy;
+          if (pointer.inside && d2 < REPEL_R * REPEL_R) {
+            const d = Math.sqrt(d2) || 1;
+            const near = 1 - d / REPEL_R;
+            const f = (REPEL_POWER * near * near) / Math.max(d, 40);
+            pt.vx += (dx / d) * f * pdt;
+            pt.vy += (dy / d) * f * pdt;
+          }
+          const k = 120, c = 13;
+          pt.vx += (pt.hx - pt.x) * k * pdt;
+          pt.vy += (pt.hy - pt.y) * k * pdt;
+          pt.vx *= Math.exp(-c * pdt);
+          pt.vy *= Math.exp(-c * pdt);
+          pt.x = clamp(pt.x + pt.vx * pdt, 0, 1);
+          pt.y = clamp(pt.y + pt.vy * pdt, 0, 1);
+          const nx = pt.x * w, ny = pt.y * h;
+          const dist = Math.sqrt((nx - px) ** 2 + (ny - py) ** 2);
+          const hot = pointer.inside && dist < REPEL_R;
+          const tw = 0.5 + 0.5 * Math.sin(t * 0.002 + pt.phase * Math.PI * 2);
+          const alpha = (0.22 + tw * 0.24) * (hot ? 0.9 : 1);
+          ctx.beginPath();
+          ctx.arc(nx, ny, hot ? 1.9 : 1.1, 0, Math.PI * 2);
+          ctx.fillStyle = hot ? "rgba(99,102,241,0.95)" : "rgba(224,231,255," + alpha.toFixed(3) + ")";
+          ctx.fill();
+        }
+      }
+
+      function resize() {
+        const { w, h } = setup();
+        if (parts.length === 0) parts = initParts(w, h);
+        draw(w, h, 0, 0.016);
+      }
+
+      let running = !prefersReducedMotion;
+      document.getElementById("pauseBtn").addEventListener("click", function () { running = !running; this.textContent = running ? "Pause" : "Resume"; this.classList.toggle("paused", !running); });
+      document.getElementById("resetBtn").addEventListener("click", function () { const r = host.getBoundingClientRect(); parts = initParts(r.width, r.height); draw(r.width, r.height, 0, 0.016); });
+
+      host.addEventListener("pointerenter", (e) => { const r = host.getBoundingClientRect(); pointer.x = clamp((e.clientX - r.left) / r.width, 0, 1); pointer.y = clamp((e.clientY - r.top) / r.height, 0, 1); pointer.inside = true; });
+      host.addEventListener("pointermove", (e) => { const r = host.getBoundingClientRect(); pointer.x = clamp((e.clientX - r.left) / r.width, 0, 1); pointer.y = clamp((e.clientY - r.top) / r.height, 0, 1); });
+      host.addEventListener("pointerleave", () => { pointer.inside = false; });
+
+      const { w, h } = setup(); parts = initParts(w, h); draw(w, h, 0, 0.016);
+      let resizeTimer;
+      window.addEventListener("resize", () => { clearTimeout(resizeTimer); resizeTimer = setTimeout(resize, 150); });
+
+      (function loop(t, last) {
+        const dt = Math.min(0.05, (t - last) / 1000);
+        if (running) {
+          const { w, h } = setup();
+          draw(w, h, t, dt);
+        }
+        requestAnimationFrame((nt) => loop(nt, t));
+      })(performance.now(), performance.now());
+      window.addEventListener("scroll", () => document.getElementById("nav").classList.toggle("scrolled", scrollY > 10), { passive: true });
+    })();
+  </script>
+</body>
+</html>

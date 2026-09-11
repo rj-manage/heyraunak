@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>15 · Circuit Board — Rj_Manage</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Sora:wght@500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/common.css" />
+  <style>
+    body { background: #032118; overflow-x: hidden; }
+
+    /* circuit trace background */
+    .pcb { position: fixed; inset: 0; z-index: 0; pointer-events: none; opacity: .8; }
+    .pcb .trace { position: absolute; background: rgba(52,211,153,.35); box-shadow: 0 0 8px rgba(52,211,153,.4); }
+    .pcb .pad { position: absolute; width: 5px; height: 5px; border-radius: 50%; background: #34d399; box-shadow: 0 0 8px #34d399; animation: glowPulse 2.4s ease-in-out infinite; }
+    @keyframes glowPulse { 50% { opacity: .25; } }
+
+    .section { position: relative; z-index: 2; padding: 80px 20px; }
+
+    .head { text-align: center; margin-bottom: 38px; }
+    .head .badge { display: inline-flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: #34d399; border: 1px solid rgba(52,211,153,.35); background: rgba(52,211,153,.08); padding: 7px 16px; border-radius: 999px; margin-bottom: 18px; }
+    .head .badge .led { width: 8px; height: 8px; border-radius: 50%; background: #34d399; animation: ledBlink 1.2s steps(1) infinite; }
+    @keyframes ledBlink { 50% { opacity: .2; } }
+    .head h2 { color: #ecfdf5; font-size: clamp(26px, 4vw, 38px); letter-spacing: -.02em; font-family: var(--font-display); }
+    .head h2 em { font-style: normal; color: #34d399; }
+    .head p { color: #6ee7b7; margin-top: 10px; font-size: 14.5px; }
+
+    .board {
+      max-width: 660px; margin: 0 auto; border-radius: 20px; padding: 44px 48px;
+      background: rgba(4,40,30,.6); border: 1px solid rgba(52,211,153,.3);
+      box-shadow: 0 40px 100px -30px rgba(0,0,0,.8), inset 0 0 60px rgba(16,185,129,.05);
+      position: relative;
+    }
+    .board::before { /* corner pads */
+      content: ""; position: absolute; width: 8px; height: 8px; border-radius: 50%;
+      background: #34d399; box-shadow: 0 0 10px #34d399;
+      top: 12px; left: 12px; right: auto; bottom: auto;
+    }
+    @media (max-width: 540px) { .board { padding: 32px 22px; } }
+
+    .board-form { display: grid; gap: 20px; }
+
+    .b-field label { display: flex; justify-content: space-between; font-size: 12.5px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: #34d399; margin-bottom: 8px; }
+    .b-field label .req { color: #fbbf24; }
+    .b-field input, .b-field select, .b-field textarea {
+      width: 100%; background: rgba(3,28,20,.7); border: 1px solid rgba(52,211,153,.3);
+      color: #d1fae5; font: inherit; font-size: 14.5px; font-family: var(--font-display);
+      padding: 13px 16px; border-radius: 10px; outline: none; resize: vertical;
+      transition: all .2s ease; letter-spacing: .01em;
+    }
+    .b-field textarea { min-height: 96px; }
+    .b-field select { appearance: none; -webkit-appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%2334d399' stroke-width='2.4'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+      background-repeat: no-repeat; background-position: right 16px center; cursor: pointer; }
+    .b-field select option { background: #032b20; color: #d1fae5; }
+    .b-field input::placeholder, .b-field textarea::placeholder { color: rgba(110,231,183,.3); }
+    .b-field input:focus, .b-field select:focus, .b-field textarea:focus {
+      border-color: #34d399; background: rgba(3,28,20,.9);
+      box-shadow: 0 0 0 3px rgba(52,211,153,.15), 0 0 28px rgba(16,185,129,.25);
+    }
+
+    .row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    @media (max-width: 500px) { .row { grid-template-columns: 1fr; } }
+
+    .board-btn {
+      font: inherit; font-weight: 800; font-size: 15px; letter-spacing: .04em;
+      color: #032118; background: linear-gradient(120deg, #6ee7b7, #34d399); border: none;
+      border-radius: 10px; padding: 15px; cursor: pointer; font-family: var(--font-display);
+      box-shadow: 0 12px 40px -10px rgba(16,185,129,.6), inset 0 1px 0 rgba(255,255,255,.5);
+      transition: transform .15s ease, box-shadow .2s ease, filter .2s ease;
+    }
+    .board-btn:hover { filter: brightness(1.08); transform: translateY(-2px); box-shadow: 0 18px 54px -10px rgba(16,185,129,.8); }
+    .status { text-align: center; font-size: 12px; color: rgba(110,231,183,.5); margin-top: 2px; letter-spacing: .08em; }
+    .status .ok { color: #34d399; }
+  </style>
+</head>
+<body>
+  <div class="pcb" id="pcb"></div>
+  <div class="toast"></div>
+
+  <section class="section">
+    <div class="head">
+      <span class="badge"><span class="led"></span> API ACCESS · BOARD v0.6</span>
+      <h2>Request <em>api</em> access</h2>
+      <p>Hardware meets interface — fill in your credentials for the grid.</p>
+    </div>
+
+    <div class="board">
+      <form class="board-form" id="apiForm" novalidate>
+        <div class="row">
+          <div class="b-field">
+            <label for="name">Developer <span class="req">*</span></label>
+            <input id="name" type="text" placeholder="FULL_NAME" required data-field="Developer" />
+          </div>
+          <div class="b-field">
+            <label for="email">Contact <span class="req">*</span></label>
+            <input id="email" type="email" placeholder="DEV@NET" required data-field="Email" />
+          </div>
+        </div>
+        <div class="b-field">
+          <label for="env">Environment <span class="req">*</span></label>
+          <select id="env" required data-field="Environment">
+            <option value="">SELECT_ENV…</option>
+            <option>Development</option>
+            <option>Staging</option>
+            <option>Production</option>
+            <option>Edge / CDN</option>
+          </select>
+        </div>
+        <div class="row">
+          <div class="b-field">
+            <label for="tier">Rate tier <span class="req">*</span></label>
+            <select id="tier" required data-field="Tier">
+              <option value="">SELECT_TIER…</option>
+              <option>Free (1K req/day)</option>
+              <option>Pro (100K req/day)</option>
+              <option>Enterprise (unlimited)</option>
+            </select>
+          </div>
+          <div class="b-field">
+            <label for="region">Region</label>
+            <select id="region" data-field="Region">
+              <option value="">SELECT_REGION…</option>
+              <option>Global</option>
+              <option>Asia</option>
+              <option>Europe</option>
+              <option>Americas</option>
+            </select>
+          </div>
+        </div>
+        <div class="b-field">
+          <label for="use">Use case <span class="req">*</span></label>
+          <textarea id="use" placeholder="DESCRIBE_YOUR_INTEGRATION…" required data-field="Use Case"></textarea>
+        </div>
+        <button class="board-btn" type="submit">⚡ COMPILE & REQUEST</button>
+        <p class="status">[ <span class="ok">ONLINE</span> ] · request routed via Rj_Manage grid</p>
+      </form>
+    </div>
+  </section>
+
+  <script src="js/common.js"></script>
+  <script>
+    /* Generate circuit traces */
+    const pcb = document.getElementById("pcb");
+    function genTraces() {
+      // clear existing
+      pcb.innerHTML = "";
+      const count = 26;
+      const cols = ["#34d399", "#2dd4bf", "#4ade80"];
+      for (let i = 0; i < count; i++) {
+        // horizontal or vertical short trace
+        const t = document.createElement("div");
+        t.className = "trace";
+        const horizontal = Math.random() > 0.5;
+        const len = 40 + Math.random() * 140;
+        const x = Math.random() * window.innerWidth;
+        const y = Math.random() * window.innerHeight;
+        if (horizontal) { t.style.width = len + "px"; t.style.height = "2px"; }
+        else { t.style.height = len + "px"; t.style.width = "2px"; }
+        t.style.left = x + "px"; t.style.top = y + "px";
+        t.style.background = cols[i % cols.length];
+        pcb.appendChild(t);
+        // pad at the end of some
+        if (Math.random() > 0.6) {
+          const p = document.createElement("div");
+          p.className = "pad";
+          p.style.left = (horizontal ? x + len : x) + "px";
+          p.style.top = (horizontal ? y : y + len) + "px";
+          p.style.animationDelay = -Math.random() * 2.4 + "s";
+          pcb.appendChild(p);
+        }
+      }
+    }
+    genTraces();
+    window.addEventListener("resize", genTraces);
+
+    document.getElementById("apiForm").addEventListener("submit", (e) => {
+      e.preventDefault();
+      const form = e.target;
+      if (!form.checkValidity()) { form.reportValidity(); return; }
+      const d = collectForm(form);
+      showToast("⚡ API key request queued for " + d["Developer"]);
+      form.reset();
+    });
+  </script>
+</body>
+</html>
