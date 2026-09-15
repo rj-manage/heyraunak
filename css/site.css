@@ -1,5 +1,5 @@
 /* ============================================================
-   RJ Company — soft-UI design system · LIGHT THEME ONLY
+   RJ — soft-UI design system · LIGHT THEME ONLY
    Visual language derived from face-8 "Pillow"
    (13. rj-web-faces-gallery/face-8.html)
    ============================================================ */
@@ -700,7 +700,7 @@ section {
 /* mini gallery strip inside the Design Gallery panel card */
 .mini-strip {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   gap: 12px;
   margin-top: 20px;
 }
@@ -721,6 +721,39 @@ section {
 }
 .mini-strip figure:hover img {
   transform: scale(1.06);
+}
+/* fourth tile — CSS-art phone face for the App Faces collection (no image) */
+.mini-strip figure.phoneface {
+  display: grid;
+  place-items: center;
+  padding: 10px;
+}
+.mini-phone {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  width: 46px;
+  height: 88px;
+  padding: 6px;
+  border-radius: 15px;
+  background: var(--canvas);
+  box-shadow: var(--sh-s);
+}
+.mini-phone .sc {
+  flex: 1;
+  border-radius: 10px;
+  background: linear-gradient(160deg, #eef3f9, #dde4ee);
+  box-shadow: var(--sh-in-s);
+}
+.mini-phone i {
+  display: block;
+  height: 4px;
+  border-radius: 999px;
+  background: var(--dark);
+  opacity: 0.4;
+}
+.mini-phone i:last-child {
+  width: 60%;
 }
 
 @media (max-width: 940px) {
@@ -922,6 +955,46 @@ section {
    so the framing (logo, scroll hint, full figure) is never cropped */
 .shot.wide .frame {
   aspect-ratio: 1600 / 909;
+}
+/* App Faces collection preview — a stack of CSS-art phones (no image) */
+.shot .frame.phoneshot {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 20px 16px;
+  background: var(--canvas);
+}
+.phoneshot .mn {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  width: 76px;
+  aspect-ratio: 9 / 19;
+  padding: 6px;
+  border-radius: 16px;
+  background: var(--canvas);
+  box-shadow: var(--sh-r);
+}
+.phoneshot .mn:nth-child(2) {
+  width: 92px;
+  transform: translateY(-8px);
+}
+.phoneshot .mn .sc {
+  flex: 1;
+  border-radius: 11px;
+  background: linear-gradient(160deg, #eef3f9, #dde4ee);
+  box-shadow: var(--sh-in-s);
+}
+.phoneshot .mn i {
+  display: block;
+  height: 5px;
+  border-radius: 999px;
+  background: var(--dark);
+  opacity: 0.4;
+}
+.phoneshot .mn i:nth-child(3) {
+  width: 64%;
 }
 
 /* ============================================================

@@ -1,5 +1,5 @@
 /* ============================================================
-   RJ Company — shared site behaviour
+   RJ — shared site behaviour
    nav · reveal-on-scroll
    ============================================================ */
 (function () {

@@ -1,0 +1,931 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>RJ App Faces Gallery — RJ</title>
+<meta name="description" content="RJ App Faces Gallery — twenty mobile app faces rendered live in the studio's soft-UI theme. Every screen is shown directly on the page, no clicking through one at a time." />
+<meta name="theme-color" content="#E3E9F0" />
+<link rel="icon" type="image/png" href="../assets/RJ_Logo_Black.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Sora:wght@500;600;700;800&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="../css/site.css" />
+<style>
+/* ============================================================
+   RJ App Faces Gallery
+   Twenty mobile app faces, rendered inline in the site's
+   soft-UI theme (canvas / mint / Inter + Sora). No images,
+   no click-through — every screen is live on the page.
+   ============================================================ */
+.sprite{position:absolute;width:0;height:0;overflow:hidden}
+
+.appfaces .grid-apps{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(228px,1fr));
+  gap:40px 30px;
+  margin-top:44px;
+}
+
+/* ---- phone shell ---- */
+.app{
+  margin:0;
+  --ac:var(--mint);
+  --ac2:var(--mint-3);
+  --acink:var(--mint-ink);
+}
+.app.d-indigo{--ac:#6366f1;--ac2:#8b93f8;--acink:#4f46e5}
+.app.d-coral{--ac:#f8716a;--ac2:#ffb3a7;--acink:#e0655f}
+.app.d-amber{--ac:#f5b041;--ac2:#ffd08a;--acink:#b3743a}
+.app.d-teal{--ac:#14b8a6;--ac2:#5eead4;--acink:#0f9488}
+.app.d-violet{--ac:#8b5cf6;--ac2:#c4b5fd;--acink:#7c3aed}
+.app.d-rose{--ac:#fb7185;--ac2:#ffc2cb;--acink:#e11d48}
+.app.d-sky{--ac:#0ea5e9;--ac2:#7dd3fc;--acink:#0284c7}
+
+.app .phone{
+  position:relative;
+  width:100%;
+  aspect-ratio:9/19.2;
+  border-radius:38px;
+  padding:11px;
+  background:var(--canvas);
+  box-shadow:var(--sh-r);
+  transition:transform .3s var(--ease),box-shadow .3s var(--ease);
+}
+.app:hover .phone{transform:translateY(-8px)}
+
+.screen{
+  position:relative;
+  height:100%;
+  border-radius:28px;
+  overflow:hidden;
+  background:linear-gradient(165deg,#f5f9fd,#e1e7ef);
+  box-shadow:var(--sh-in-s);
+  display:flex;
+  flex-direction:column;
+}
+.notch{
+  position:absolute;top:9px;left:50%;transform:translateX(-50%);
+  width:58px;height:15px;border-radius:999px;background:var(--dark);opacity:.55;z-index:6;
+}
+.sbar{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:14px 15px 4px;font-size:8.5px;font-weight:800;letter-spacing:.06em;color:var(--muted);
+}
+.sbar .sright{display:inline-flex;align-items:center;gap:5px}
+.sbar .sig{display:inline-flex;align-items:flex-end;gap:2.5px}
+.sbar .sig i{display:block;width:3px;border-radius:1px;background:var(--muted)}
+.sbar .sig i:nth-child(1){height:4px}
+.sbar .sig i:nth-child(2){height:6px}
+.sbar .sig i:nth-child(3){height:8px}
+.sbar .bat{position:relative;width:14px;height:8px;border-radius:2.5px;box-shadow:inset 0 0 0 1.3px var(--muted)}
+.sbar .bat::after{content:"";position:absolute;inset:1.3px 4px 1.3px 1.3px;border-radius:1px;background:var(--ac)}
+.sbody{flex:1;display:flex;flex-direction:column;gap:9px;padding:9px 13px;overflow:hidden;min-height:0}
+.tabbar{
+  display:flex;align-items:center;justify-content:space-around;
+  padding:7px 8px 2px;box-shadow:0 -1px 0 rgba(60,80,110,.12);
+}
+.tabbar span{display:grid;place-items:center;width:26px;height:26px;border-radius:9px;color:var(--muted)}
+.tabbar span.on{color:var(--acink);background:var(--canvas);box-shadow:var(--sh-in-s)}
+.tabbar svg,.ico{width:13px;height:13px}
+.homebar{width:36%;height:4px;border-radius:999px;background:var(--dark);opacity:.5;margin:5px auto 7px}
+
+/* ---- widgets ---- */
+.hd{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.hd b{font-family:var(--font-display);font-size:11.5px;letter-spacing:-.01em}
+.hd .sub{display:block;font-size:7.5px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;color:var(--muted)}
+.av{flex:none;width:24px;height:24px;border-radius:50%;box-shadow:var(--sh-s);background:linear-gradient(145deg,var(--ac2),var(--ac))}
+.av.sq{border-radius:9px}
+.av.sm{width:18px;height:18px}
+.av.b{background:linear-gradient(145deg,#8b93f8,#6366f1)}
+.av.c{background:linear-gradient(145deg,#ffb3a7,#f8716a)}
+.av.a{background:linear-gradient(145deg,#ffd08a,#f5b041)}
+.av.t{background:linear-gradient(145deg,#5eead4,#14b8a6)}
+.bar{height:7px;border-radius:999px;background:var(--dark);opacity:.34}
+.bar.h{height:5px}
+.tile{border-radius:13px;background:var(--canvas);box-shadow:var(--sh-s);padding:9px;display:grid;gap:4px;align-content:start}
+.tile.in{box-shadow:var(--sh-in-s)}
+.tile b{font-family:var(--font-display);font-size:12px;line-height:1.1}
+.tile .lbl,.lbl{font-size:7.5px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;color:var(--muted)}
+.tile.dark{border-radius:14px;background:linear-gradient(150deg,#3a4760,#202b3e);box-shadow:var(--sh-s);color:#eef3f9}
+.tile.dark .lbl{color:rgba(238,243,249,.6)}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:7px}
+.g5{display:grid;grid-template-columns:repeat(5,1fr);gap:7px}
+.g7{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
+.row{display:flex;align-items:center;gap:8px}
+.row .grow{flex:1;display:grid;gap:5px;min-width:0}
+.grow{min-width:0}
+.spacer{flex:1;min-height:0}
+.center{justify-items:center;text-align:center}
+.pill{
+  display:inline-flex;align-items:center;justify-content:center;gap:4px;
+  font-size:7.5px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;
+  color:var(--acink);background:var(--canvas);box-shadow:var(--sh-s);
+  border-radius:999px;padding:4px 9px;white-space:nowrap;
+}
+.pill.solid{color:#fff;background:linear-gradient(145deg,var(--ac2),var(--ac))}
+.prog{height:6px;border-radius:999px;background:var(--canvas);box-shadow:var(--sh-in-s);overflow:hidden}
+.prog i{display:block;height:100%;border-radius:999px;background:linear-gradient(90deg,var(--ac2),var(--ac))}
+.thumb{display:block;width:100%;aspect-ratio:16/10;border-radius:10px;box-shadow:var(--sh-s)}
+.num-big{font-family:var(--font-display);font-size:24px;font-weight:800;letter-spacing:-.04em;line-height:1.15}
+.mono2{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace}
+.searchbar{
+  display:flex;align-items:center;gap:7px;border-radius:12px;
+  background:var(--canvas);box-shadow:var(--sh-in-s);padding:8px 10px;color:var(--muted);
+}
+.searchbar .bar{flex:1}
+.chart{display:flex;align-items:flex-end;gap:6px;height:56px}
+.chart i{flex:1;border-radius:6px 6px 4px 4px;background:var(--canvas);box-shadow:var(--sh-s)}
+.chart i.on{background:linear-gradient(180deg,var(--ac2),var(--ac))}
+.bubble{max-width:80%;border-radius:12px;padding:8px 10px;background:var(--canvas);box-shadow:var(--sh-s);display:grid;gap:5px}
+.bubble .bar{width:100%;background:var(--dark);opacity:.32}
+.bubble.me{margin-left:auto;background:linear-gradient(145deg,var(--ac2),var(--ac))}
+.bubble.me .bar{background:#fff;opacity:.55}
+.play{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;color:#fff;background:linear-gradient(145deg,var(--ac2),var(--ac));box-shadow:var(--sh-btn)}
+.play svg{width:16px;height:16px}
+.ring{
+  position:relative;width:98px;height:98px;border-radius:50%;
+  background:conic-gradient(var(--ac) 0 68%,var(--dark) 68% 100%);
+  box-shadow:var(--sh-s);display:grid;place-items:center;
+}
+.ring::after{content:"";position:absolute;inset:11px;border-radius:50%;background:var(--canvas);box-shadow:var(--sh-in-s)}
+.ring b{position:relative;z-index:1;font-family:var(--font-display);font-size:16px;letter-spacing:-.02em}
+.map{position:relative;flex:1;min-height:0;border-radius:14px;background:linear-gradient(160deg,#e9eef6,#dbe3ee);box-shadow:var(--sh-in-s);overflow:hidden}
+.map .rd{position:absolute;border-radius:999px;background:rgba(255,255,255,.78)}
+.map .rt{position:absolute;border-radius:999px;background:linear-gradient(180deg,var(--ac2),var(--ac))}
+.map .pin{
+  position:absolute;width:16px;height:16px;border-radius:50% 50% 50% 0;
+  transform:rotate(-45deg);background:linear-gradient(145deg,var(--ac2),var(--ac));box-shadow:var(--sh-s);
+}
+.view{position:relative;flex:1;min-height:0;border-radius:14px;overflow:hidden;background:linear-gradient(160deg,#3a4760,#202b3e);box-shadow:var(--sh-in-s)}
+.view::before,.view::after{content:"";position:absolute;background:rgba(255,255,255,.14)}
+.view::before{left:33.33%;top:0;width:1px;height:100%;box-shadow:33.34% 0 0 rgba(255,255,255,.14)}
+.view::after{top:33.33%;left:0;height:1px;width:100%;box-shadow:0 33.34% 0 rgba(255,255,255,.14)}
+.view .pin{position:absolute;left:50%;top:50%;width:26px;height:26px;margin:-13px 0 0 -13px;border-radius:50%;box-shadow:inset 0 0 0 1.5px var(--ac)}
+.shutter{width:38px;height:38px;border-radius:50%;background:var(--canvas);box-shadow:var(--sh-s);display:grid;place-items:center}
+.shutter::after{content:"";width:26px;height:26px;border-radius:50%;box-shadow:inset 0 0 0 2.5px var(--ac)}
+.day{aspect-ratio:1;border-radius:8px;display:grid;place-items:center;font-size:8px;font-weight:700;color:var(--muted);background:var(--canvas);box-shadow:var(--sh-s)}
+.day.on{color:#fff;background:linear-gradient(145deg,var(--ac2),var(--ac))}
+.day.off{background:transparent;box-shadow:none;opacity:.5}
+.dw{font-size:7px;font-weight:800;letter-spacing:.04em;text-align:center;color:var(--muted)}
+.stamp{aspect-ratio:1;border-radius:9px;display:grid;place-items:center;color:var(--muted);background:var(--canvas);box-shadow:var(--sh-s)}
+.stamp.on{color:#fff;background:linear-gradient(145deg,var(--ac2),var(--ac))}
+.stamp svg{width:12px;height:12px}
+
+/* ---- caption ---- */
+.app .cap{display:flex;align-items:center;gap:10px;margin-top:14px;padding:0 4px}
+.app .cap .n{
+  flex:none;width:30px;height:30px;border-radius:11px;display:grid;place-items:center;
+  font-family:var(--font-display);font-size:11px;font-weight:800;color:var(--acink);
+  background:var(--canvas);box-shadow:var(--sh-s);
+}
+.app .cap b{display:block;font-family:var(--font-display);font-size:13.5px;letter-spacing:-.01em}
+.app .cap small{display:block;font-size:10.5px;font-weight:600;color:var(--muted)}
+
+@media (max-width:560px){
+  .appfaces .grid-apps{grid-template-columns:repeat(auto-fill,minmax(178px,1fr));gap:28px 18px}
+  .app .phone{border-radius:30px;padding:8px}
+  .screen{border-radius:22px}
+  .app .cap .n{width:26px;height:26px;border-radius:9px}
+}
+</style>
+</head>
+<body>
+
+<svg class="sprite" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+  <symbol id="i-home" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5"/><path d="M5.5 9.4V21h13V9.4"/></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m20.5 20.5-4.2-4.2"/></symbol>
+  <symbol id="i-heart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20.5S4.5 16 4.5 11A4.1 4.1 0 0 1 12 8.4 4.1 4.1 0 0 1 19.5 11c0 5-7.5 9.5-7.5 9.5Z"/></symbol>
+  <symbol id="i-user" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.6"/><path d="M4.8 20.2a7.2 7.2 0 0 1 14.4 0"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></symbol>
+  <symbol id="i-chart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19V11M10 19V5M16 19v-5M22 19H2"/></symbol>
+  <symbol id="i-play" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M8 5.3v13.4l11.2-6.7z"/></symbol>
+  <symbol id="i-prev" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M18 5.3v13.4L8.6 12z"/><path d="M6 5v14" stroke="currentColor" stroke-width="2"/></symbol>
+  <symbol id="i-next" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M6 5.3v13.4L15.4 12z"/><path d="M18 5v14" stroke="currentColor" stroke-width="2"/></symbol>
+  <symbol id="i-cart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 4.5h2.2l2.1 10.6h10.3L20 8H6"/><circle cx="9" cy="19.5" r="1.4"/><circle cx="17.5" cy="19.5" r="1.4"/></symbol>
+  <symbol id="i-bell" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6.5 9.5a5.5 5.5 0 0 1 11 0c0 4.6 1.7 5.7 1.7 5.7H4.8s1.7-1.1 1.7-5.7Z"/><path d="M10 19.3a2.1 2.1 0 0 0 4 0"/></symbol>
+  <symbol id="i-grid" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="3.5" width="7" height="7" rx="2"/><rect x="13.5" y="3.5" width="7" height="7" rx="2"/><rect x="3.5" y="13.5" width="7" height="7" rx="2"/><rect x="13.5" y="13.5" width="7" height="7" rx="2"/></symbol>
+  <symbol id="i-camera" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8.6a2 2 0 0 1 2-2h2l1.5-2h7L17 6.6h2a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z"/><circle cx="12" cy="13" r="3.4"/></symbol>
+  <symbol id="i-cal" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="15.5" rx="2.5"/><path d="M3.5 9.8h17M8 3v4M16 3v4"/></symbol>
+  <symbol id="i-map" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4 3.5 6.4v13.2L9 17.2l6 2.4 5.5-2.4V4L15 6.4 9 4Z"/><path d="M9 4v13.2M15 6.4v13.2"/></symbol>
+  <symbol id="i-music" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 17.5V6l10-2.2V15"/><circle cx="6.6" cy="17.6" r="2.4"/><circle cx="16.6" cy="15.2" r="2.4"/></symbol>
+  <symbol id="i-chat" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5.5h16v11H9.5L4 20.5Z"/></symbol>
+  <symbol id="i-wallet" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="18" height="13" rx="3"/><path d="M3 10.2h18"/><circle cx="16.8" cy="14.8" r="1.2"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.3V12l3.1 2"/></symbol>
+  <symbol id="i-star" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3.6 2.6 5.6 6.1.6-4.6 4.1 1.3 6-5.4-3.2-5.4 3.2 1.3-6L3.3 9.8l6.1-.6Z"/></symbol>
+  <symbol id="i-send" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12 20.5 3.5 13 20.5l-2.4-6.1Z"/></symbol>
+  <symbol id="i-activity" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h4l2.5-6.5 4.2 13.5 2.4-7H21"/></symbol>
+  <symbol id="i-coffee" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8.5h13V14a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5Z"/><path d="M17 9.6h1.8a2.4 2.4 0 0 1 0 4.9H17"/><path d="M7 3.5c0 1 1 1.1 1 2.2M11 3.5c0 1 1 1.1 1 2.2"/></symbol>
+  <symbol id="i-car" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 16.5h14M4.2 16.5v-4.2L6.2 7h11.6l2 5.3v4.2"/><circle cx="7.6" cy="18" r="1.6"/><circle cx="16.4" cy="18" r="1.6"/></symbol>
+</svg>
+
+<!-- ================= NAV ================= -->
+<nav class="nav">
+  <a class="brand" href="../index.html">
+    <span class="logo"><img src="../assets/RJ_Logo_Black.png" alt="RJ logo" /></span>
+    <span><b>RJ</b><small>Design &amp; Development</small></span>
+  </a>
+  <div class="nav-links" id="menu">
+    <a href="../index.html" data-nav>Home</a>
+    <a href="../portfolio/" data-nav>Portfolio</a>
+    <a href="../services/" data-nav>Services</a>
+    <a href="../gallery/" data-nav>Design Gallery</a>
+    <a href="../works/" data-nav>Works</a>
+    <a href="../about/" data-nav>About Company</a>
+  </div>
+  <a class="soft-btn cta" href="../gallery/">Back to Gallery</a>
+  <button class="burger" id="burger" type="button" aria-label="Menu" aria-expanded="false">☰</button>
+</nav>
+
+<!-- ================= PAGE HEAD ================= -->
+<header class="page-head">
+  <div class="sec-head reveal" style="max-width:820px">
+    <div class="kicker">Design Gallery · Collection D</div>
+    <h2>RJ App Faces Gallery</h2>
+    <p>Twenty mobile app faces — wallets, players, fitness, delivery, chat, maps and more. Unlike the other collections, nothing here opens on a separate page: every app face is rendered live below, so you can compare all twenty at a glance.</p>
+    <div class="soft-chip" style="margin-top:20px"><span class="dot"></span> 20 app faces · shown directly, no click-through</div>
+  </div>
+</header>
+
+<!-- ================= APP FACES ================= -->
+<section class="appfaces" style="padding-top:30px">
+  <div class="wrap">
+    <div class="grid-apps">
+
+      <!-- 01 · Wallet -->
+      <figure class="app reveal">
+        <div class="phone">
+          <div class="screen">
+            <span class="notch"></span>
+            <div class="sbar"><span>9:41</span><span class="sright"><span class="sig"><i></i><i></i><i></i></span><span class="bat"></span></span></div>
+            <div class="sbody">
+              <div class="hd"><div><b>Good morning</b><span class="sub">Raunak Raj</span></div><span class="av"></span></div>
+              <div class="tile dark" style="gap:7px;padding:13px">
+                <span class="lbl">Total balance</span>
+                <span class="num-big" style="color:#fff">$12,480<span style="font-size:12px">.50</span></span>
+                <span class="pill solid" style="justify-self:start">+2.4% this month</span>
+              </div>
+              <div class="g4">
+                <div class="tile in center" style="padding:8px 3px;gap:3px"><svg class="ico" viewBox="0 0 24 24"><use href="#i-send"/></svg><span class="lbl">Send</span></div>
+                <div class="tile in center" style="padding:8px 3px;gap:3px"><svg class="ico" viewBox="0 0 24 24"><use href="#i-plus"/></svg><span class="lbl">Top up</span></div>
+                <div class="tile in center" style="padding:8px 3px;gap:3px"><svg class="ico" viewBox="0 0 24 24"><use href="#i-cart"/></svg><span class="lbl">Pay</span></div>
+                <div class="tile in center" style="padding:8px 3px;gap:3px"><svg class="ico" viewBox="0 0 24 24"><use href="#i-grid"/></svg><span class="lbl">More</span></div>
+              </div>
+              <div class="hd"><b>Recent</b><span class="sub">See all</span></div>
+              <div class="row"><span class="av sq sm"></span><div class="grow"><span class="bar" style="width:72%"></span><span class="bar h" style="width:44%"></span></div><b class="mono2" style="font-size:9.5px;color:var(--acink)">+$240</b></div>
+              <div class="row"><span class="av sq sm b"></span><div class="grow"><span class="bar" style="width:58%"></span><span class="bar h" style="width:36%"></span></div><b class="mono2" style="font-size:9.5px;color:var(--muted)">-$24</b></div>
+              <span class="spacer"></span>
+            </div>
+            <nav class="tabbar">
+              <span class="on"><svg viewBox="0 0 24 24"><use href="#i-home"/></svg></span>
+              <span><svg viewBox="0 0 24 24"><use href="#i-chart"/></svg></span>
+              <span><svg viewBox="0 0 24 24"><use href="#i-wallet"/></svg></span>
+              <span><svg viewBox="0 0 24 24"><use href="#i-user"/></svg></span>
+            </nav>
+            <span class="homebar"></span>
+          </div>
+        </div>
+        <figcaption class="cap"><span class="n">01</span><div><b>Wallet</b><small>Finance · Balance &amp; actions</small></div></figcaption>
+      </figure>
+
+      <!-- 02 · Music Player -->
+      <figure class="app d-violet reveal">
+        <div class="phone">
+          <div class="screen">
+            <span class="notch"></span>
+            <div class="sbar"><span>9:41</span><span class="sright"><span class="sig"><i></i><i></i><i></i></span><span class="bat"></span></span></div>
+            <div class="sbody">
+              <div class="hd"><div><b>Now playing</b><span class="sub">Night drive</span></div><span class="av sm" style="border-radius:50%"></span></div>
+              <div class="tile in center" style="gap:8px;padding:14px">
+                <span class="av" style="width:86px;height:86px;border-radius:24px"></span>
+                <b style="font-size:12.5px">Midnight Drive</b>
+                <span class="sub" style="font-size:7.5px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;color:var(--muted)">Neon Coast</span>
+              </div>
+              <div class="prog"><i style="width:44%"></i></div>
+              <div class="row" style="justify-content:space-between;font-size:8px;font-weight:800;color:var(--muted)"><span>1:24</span><span>3:36</span></div>
+              <div class="row" style="justify-content:center;gap:18px">
+                <svg class="ico" viewBox="0 0 24 24" style="width:16px;height:16px;color:var(--muted)"><use href="#i-prev"/></svg>
+                <span class="play"><svg viewBox="0 0 24 24"><use href="#i-play"/></svg></span>
+                <svg class="ico" viewBox="0 0 24 24" style="width:16px;height:16px;color:var(--muted)"><use href="#i-next"/></svg>
+              </div>
+              <span class="spacer"></span>
+            </div>
+            <nav class="tabbar">
+              <span class="on"><svg viewBox="0 0 24 24"><use href="#i-home"/></svg></span>
+              <span><svg viewBox="0 0 24 24"><use href="#i-search"/></svg></span>
+              <span><svg viewBox="0 0 24 24"><use href="#i-music"/></svg></span>
+              <span><svg viewBox="0 0 24 24"><use href="#i-user"/></svg></span>
+            </nav>
+            <span class="homebar"></span>
+          </div>
+        </div>
+        <figcaption class="cap"><span class="n">02</span><div><b>Music Player</b><small>Audio · Now playing</small></div></figcaption>
+      </figure>
+
+      <!-- 03 · Fitness -->
+      <figure class="app d-coral reveal">
+        <div class="phone">
+          <div class="screen">
+            <span class="notch"></span>
+            <div class="sbar"><span>9:41</span><span class="sright"><span class="sig"><i></i><i></i><i></i></span><span class="bat"></span></span></div>
+            <div class="sbody">
+              <div class="hd"><div><b>Today</b><span class="sub">Wed · 15 Sep</span></div><span class="pill">Move</span></div>
+              <div class="tile in center" style="gap:4px;padding:14px">
+                <span class="num-big" style="color:var(--acink)">642</span>
+                <span class="lbl">kcal burned</span>
+              </div>
+              <div class="g3">
+                <div class="tile center" style="padding:8px 4px"><b>8.2k</b><span class="lbl">Steps</span></div>
+                <div class="tile center" style="padding:8px 4px"><b>5.4</b><span class="lbl">Km</span></div>
+                <div class="tile center" style="padding:8px 4px"><b>42</b><span class="lbl">Min</span></div>
+              </div>
+              <div class="hd"><b>This week</b><span class="sub">Goal 80%</span></div>
+              <div class="chart">
+                <i style="height:38%"></i><i style="height:62%"></i><i style="height:48%"></i><i class="on" style="height:88%"></i><i style="height:54%"></i><i style="height:70%"></i><i style="height:44%"></i>
+              </div>
+              <span class="spacer"></span>
+            </div>
+            <nav class="tabbar">
+              <span class="on"><svg viewBox="0 0 24 24"><use href="#i-home"/></svg></span>
+              <span><svg viewBox="0 0 24 24"><use href="#i-activity"/></svg></span>
+              <span><svg viewBox="0 0 24 24"><use href="#i-plus"/></svg></span>
+              <span><svg viewBox="0 0 24 24"><use href="#i-user"/></svg></span>
+            </nav>
+            <span class="homebar"></span>
+          </div>
+        </div>
+        <figcaption class="cap"><span class="n">03</span><div><b>Fitness</b><small>Health · Daily activity</small></div></figcaption>
+      </figure>
+
+      <!-- 04 · Food Delivery -->
+      <figure class="app d-amber reveal">
+        <div class="phone">
+          <div class="screen">
+            <span class="notch"></span>
+            <div class="sbar"><span>9:41</span><span class="sright"><span class="sig"><i></i><i></i><i></i></span><span class="bat"></span></span></div>
+            <div class="sbody">
+              <div class="hd"><div><b>Deliver to</b><span class="sub">Home · 12 min</span></div><span class="av sm a"></span></div>
+              <div class="searchbar"><svg class="ico" viewBox="0 0 24 24"><use href="#i-search"/></svg><span class="bar"></span></div>
+              <div class="g2">
+                <div class="tile" style="gap:7px"><span class="thumb" style="background:linear-gradient(145deg,#ffd08a,#f5b041)"></span><b>Burger</b><span class="lbl">$8.50 · 4.8</span></div>
+                <div class="tile" style="gap:7px"><span class="thumb" style="background:linear-gradient(145deg,#ffb3a7,#f8716a)"></span><b>Sushi</b><span class="lbl">$14.0 · 4.9</span></div>
+                <div class="tile" style="gap:7px"><span class="thumb" style="background:linear-gradient(145deg,#5eead4,#14b8a6)"></span><b>Salad</b><span class="lbl">$9.20 · 4.7</span></div>
+                <div class="tile" style="gap:7px"><span class="thumb" style="background:linear-gradient(145deg,#c4b5fd,#8b5cf6)"></span><b>Pasta</b><span class="lbl">$11.4 · 4.8</span></div>
+              </div>
+              <span class="spacer"></span>
+            </div>
+            <nav class="tabbar">
+              <span><svg viewBox="0 0 24 24"><use href="#i-home"/></svg></span>
+              <span class="on"><svg viewBox="0 0 24 24"><use href="#i-search"/></svg></span>
+              <span><svg viewBox="0 0 24 24"><use href="#i-cart"/></svg></span>
+              <span><svg viewBox="0 0 24 24"><use href="#i-user"/></svg></span>
+            </nav>
+            <span class="homebar"></span>
+          </div>
+        </div>
+        <figcaption class="cap"><span class="n">04</span><div><b>Food Delivery</b><small>Ordering · Nearby menu</small></div></figcaption>
+      </figure>
+
+      <!-- 05 · Messages -->
+      <figure class="app d-sky reveal">
+        <div class="phone">
+          <div class="screen">
+            <span class="notch"></span>
+            <div class="sbar"><span>9:41</span><span class="sright"><span class="sig"><i></i><i></i><i></i></span><span class="bat"></span></span></div>
+            <div class="sbody">
+              <div class="hd"><span class="av sm b"></span><div><b>Aarav Mehta</b><span class="sub">Active now</span></div><svg class="ico" viewBox="0 0 24 24" style="margin-left:auto"><use href="#i-bell"/></svg></div>
+              <div class="bubble"><span class="bar" style="width:88%"></span><span class="bar" style="width:58%"></span></div>
+              <div class="bubble me"><span class="bar" style="width:78%"></span><span class="bar" style="width:50%"></span></div>
+              <div class="bubble"><span class="bar" style="width:66%"></span></div>
+              <div class="bubble me"><span class="bar" style="width:62%"></span><span class="bar" style="width:38%"></span></div>
+              <span class="spacer"></span>
+              <div class="searchbar"><span class="bar"></span><svg class="ico" viewBox="0 0 24 24"><use href="#i-send"/></svg></div>
+            </div>
+            <span class="homebar"></span>
+          </div>
+        </div>
+        <figcaption class="cap"><span class="n">05</span><div><b>Messages</b><small>Social · Chat thread</small></div></figcaption>
+      </figure>
+
+      <!-- 06 · Weather -->
+      <figure class="app d-teal reveal">
+        <div class="phone">
+          <div class="screen">
+            <span class="notch"></span>
+            <div class="sbar"><span>9:41</span><span class="sright"><span class="sig"><i></i><i></i><i></i></span><span class="bat"></span></span></div>
+            <div class="sbody">
+              <div class="hd"><div><b>Mumbai</b><span class="sub">Partly cloudy</span></div><svg class="ico" viewBox="0 0 24 24"><use href="#i-map"/></svg></div>
+              <div class="tile in center" style="gap:2px;padding:16px">
+                <span class="num-big" style="font-size:34px;color:var(--acink)">27°</span>
+                <span class="lbl">Feels like 30°</span>
+              </div>
+              <div class="g4">
+                <div class="tile center" style="padding:7px 3px"><b style="font-size:10px">9AM</b><span class="lbl">26°</span></div>
+                <div class="tile center" style="padding:7px 3px"><b style="font-size:10px">12PM</b><span class="lbl">29°</span></div>
+                <div class="tile center" style="padding:7px 3px"><b style="font-size:10px">3PM</b><span class="lbl">31°</span></div>
+                <div class="tile center" style="padding:7px 3px"><b style="font-size:10px">6PM</b><span class="lbl">28°</span></div>
+              </div>
+              <div class="tile" style="gap:7px">
+                <div class="row"><span class="lbl" style="flex:1">Mon</span><span class="bar h" style="width:30%"></span><b style="font-size:9.5px">28°</b></div>
+                <div class="row"><span class="lbl" style="flex:1">Tue</span><span class="bar h" style="width:44%"></span><b style="font-size:9.5px">30°</b></div>
+                <div class="row"><span class="lbl" style="flex:1">Wed</span><span class="bar h" style="width:36%"></span><b style="font-size:9.5px">29°</b></div>
+              </div>
+              <span class="spacer"></span>
+            </div>
+            <nav class="tabbar">
+              <span><svg viewBox="0 0 24 24"><use href="#i-home"/></svg></span>
+              <span class="on"><svg viewBox="0 0 24 24"><use href="#i-map"/></svg></span>
+              <span><svg viewBox="0 0 24 24"><use href="#i-cal"/></svg></span>
+              <span><svg viewBox="0 0 24 24"><use href="#i-user"/></svg></span>
+            </nav>
+            <span class="homebar"></span>
+          </div>
+        </div>
+        <figcaption class="cap"><span class="n">06</span><div><b>Weather</b><small>Utility · Forecast</small></div></figcaption>
+      </figure>
+
+      <!-- 07 · Travel -->
+      <figure class="app d-indigo reveal">
+        <div class="phone">
+          <div class="screen">
+            <span class="notch"></span>
+            <div class="sbar"><span>9:41</span><span class="sright"><span class="sig"><i></i><i></i><i></i></span><span class="bat"></span></span></div>
+            <div class="sbody">
+              <div class="hd"><div><b>Explore</b><span class="sub">Where to next?</span></div><span class="av sm"></span></div>
+              <div class="searchbar"><svg class="ico" viewBox="0 0 24 24"><use href="#i-search"/></svg><span class="bar"></span></div>
+              <div class="tile" style="padding:0;overflow:hidden;gap:0">
+                <span style="display:block;aspect-ratio:16/9;background:linear-gradient(145deg,#8b93f8,#6366f1)"></span>
+                <div style="padding:9px;display:grid;gap:4px"><b>Kyoto, Japan</b><span class="lbl">7 nights · from $840</span></div>
+              </div>
+              <div class="g2">
+                <div class="tile center" style="padding:9px 4px"><b>Bali</b><span class="lbl">$520</span></div>
+                <div class="tile center" style="padding:9px 4px"><b>Paris</b><span class="lbl">$690</span></div>
+              </div>
+              <span class="spacer"></span>
+            </div>
+            <nav class="tabbar">
+              <span><svg viewBox="0 0 24 24"><use href="#i-search"/></svg></span>
+              <span class="on"><svg viewBox="0 0 24 24"><use href="#i-map"/></svg></span>
+              <span><svg viewBox="0 0 24 24"><use href="#i-heart"/></svg></span>
+              <span><svg viewBox="0 0 24 24"><use href="#i-user"/></svg></span>
+            </nav>
+            <span class="homebar"></span>
+          </div>
+        </div>
+        <figcaption class="cap"><span class="n">07</span><div><b>Travel</b><small>Booking · Find a stay</small></div></figcaption>
+      </figure>
+
+      <!-- 08 · Shop -->
+      <figure class="app d-rose reveal">
+        <div class="phone">
+          <div class="screen">
+            <span class="notch"></span>
+            <div class="sbar"><span>9:41</span><span class="sright"><span class="sig"><i></i><i></i><i></i></span><span class="bat"></span></span></div>
+            <div class="sbody">
+              <div class="hd"><div><b>Shop</b><span class="sub">New arrivals</span></div><svg class="ico" viewBox="0 0 24 24"><use href="#i-cart"/></svg></div>
+              <div class="g2">
+                <div class="tile" style="gap:7px"><span class="thumb" style="background:linear-gradient(145deg,#ffc2cb,#fb7185)"></span><b>Sneakers</b><span class="lbl">$96</span></div>
+                <div class="tile" style="gap:7px"><span class="thumb" style="background:linear-gradient(145deg,#c4b5fd,#8b5cf6)"></span><b>Backpack</b><span class="lbl">$74</span></div>
+                <div class="tile" style="gap:7px"><span class="thumb" style="background:linear-gradient(145deg,#7dd3fc,#0ea5e9)"></span><b>Watch</b><span class="lbl">$180</span></div>
+                <div class="tile" style="gap:7px"><span class="thumb" style="background:linear-gradient(145deg,#ffd08a,#f5b041)"></span><b>Camera</b><span class="lbl">$320</span></div>
+              </div>
+              <span class="spacer"></span>
+            </div>
+            <nav class="tabbar">
+              <span><svg viewBox="0 0 24 24"><use href="#i-home"/></svg></span>
+              <span><svg viewBox="0 0 24 24"><use href="#i-search"/></svg></span>
+              <span class="on"><svg viewBox="0 0 24 24"><use href="#i-cart"/></svg></span>
+              <span><svg viewBox="0 0 24 24"><use href="#i-user"/></svg></span>
+            </nav>
+            <span class="homebar"></span>
+          </div>
+        </div>
+        <figcaption class="cap"><span class="n">08</span><div><b>Shop</b><small>Commerce · Product grid</small></div></figcaption>
+      </figure>
+
+      <!-- 09 · Crypto -->
+      <figure class="app d-amber reveal">
+        <div class="phone">
+          <div class="screen">
+            <span class="notch"></span>
+            <div class="sbar"><span>9:41</span><span class="sright"><span class="sig"><i></i><i></i><i></i></span><span class="bat"></span></span></div>
+            <div class="sbody">
+              <div class="hd"><div><b>Portfolio</b><span class="sub">3 assets</span></div><span class="av sm a"></span></div>
+              <div class="tile dark" style="gap:6px;padding:13px">
+                <span class="lbl">Net worth</span>
+                <span class="num-big" style="color:#fff">$8,214<span style="font-size:12px">.90</span></span>
+                <span class="pill solid" style="justify-self:start">+5.8% today</span>
+              </div>
+              <div class="chart" style="height:46px">
+                <i style="height:34%"></i><i style="height:52%"></i><i style="height:44%"></i><i style="height:68%"></i><i style="height:58%"></i><i class="on" style="height:92%"></i><i style="height:74%"></i>
+              </div>
+              <div class="row"><span class="av sm a"></span><div class="grow"><b style="font-size:10px">Bitcoin</b><span class="lbl">BTC</span></div><b style="font-size:10px">$42,180</b></div>
+              <div class="row"><span class="av sm b"></span><div class="grow"><b style="font-size:10px">Ethereum</b><span class="lbl">ETH</span></div><b style="font-size:10px">$2,240</b></div>
+              <span class="spacer"></span>
+            </div>
+            <nav class="tabbar">
+              <span><svg viewBox="0 0 24 24"><use href="#i-home"/></svg></span>
+              <span class="on"><svg viewBox="0 0 24 24"><use href="#i-chart"/></svg></span>
+              <span><svg viewBox="0 0 24 24"><use href="#i-wallet"/></svg></span>
+              <span><svg viewBox="0 0 24 24"><use href="#i-user"/></svg></span>
+            </nav>
+            <span class="homebar"></span>
+          </div>
+        </div>
+        <figcaption class="cap"><span class="n">09</span><div><b>Crypto</b><small>Finance · Coins &amp; chart</small></div></figcaption>
+      </figure>
+
+      <!-- 10 · Meditation -->
+      <figure class="app d-teal reveal">
+        <div class="phone">
+          <div class="screen">
+            <span class="notch"></span>
+            <div class="sbar"><span>9:41</span><span class="sright"><span class="sig"><i></i><i></i><i></i></span><span class="bat"></span></span></div>
+            <div class="sbody">
+              <div class="hd"><div><b>Breathe</b><span class="sub">Evening wind-down</span></div><span class="pill">4-7-8</span></div>
+              <div style="display:grid;justify-items:center;gap:12px;padding-top:12px">
+                <div class="ring"><b>04:32</b></div>
+                <b style="font-size:11px">Inhale slowly</b>
+                <span class="lbl">Cycle 3 of 6</span>
+              </div>
+              <span class="spacer"></span>
+              <div class="row" style="justify-content:center;gap:10px">
+                <span class="pill solid">Deep</span>
+                <span class="pill">Focus</span>
+                <span class="pill">Sleep</span>
+              </div>
+            </div>
+            <span class="homebar"></span>
+          </div>
+        </div>
+        <figcaption class="cap"><span class="n">10</span><div><b>Meditation</b><small>Wellness · Breathe timer</small></div></figcaption>
+      </figure>
+
+      <!-- 11 · Podcast -->
+      <figure class="app d-violet reveal">
+        <div class="phone">
+          <div class="screen">
+            <span class="notch"></span>
+            <div class="sbar"><span>9:41</span><span class="sright"><span class="sig"><i></i><i></i><i></i></span><span class="bat"></span></span></div>
+            <div class="sbody">
+              <div class="hd"><div><b>Up next</b><span class="sub">Your queue</span></div><span class="av sq sm"></span></div>
+              <div class="tile in row" style="gap:9px;padding:9px">
+                <span class="av sq"></span>
+                <div class="grow"><b style="font-size:10px">Ep. 42 — Design systems</b><span class="bar h" style="width:62%;margin-top:5px"></span></div>
+              </div>
+              <div class="prog"><i style="width:62%"></i></div>
+              <div class="row" style="justify-content:space-between"><span class="lbl">28:14 left</span><span class="lbl">1.0×</span></div>
+              <div class="hd"><b>Episodes</b><span class="sub">12</span></div>
+              <div class="row"><span class="av sq sm b"></span><div class="grow"><span class="bar" style="width:72%"></span><span class="bar h" style="width:40%"></span></div></div>
+              <div class="row"><span class="av sq sm t"></span><div class="grow"><span class="bar" style="width:58%"></span><span class="bar h" style="width:34%"></span></div></div>
+              <span class="spacer"></span>
+            </div>
+            <nav class="tabbar">
+              <span class="on"><svg viewBox="0 0 24 24"><use href="#i-home"/></svg></span>
+              <span><svg viewBox="0 0 24 24"><use href="#i-play"/></svg></span>
+              <span><svg viewBox="0 0 24 24"><use href="#i-heart"/></svg></span>
+              <span><svg viewBox="0 0 24 24"><use href="#i-user"/></svg></span>
+            </nav>
+            <span class="homebar"></span>
+          </div>
+        </div>
+        <figcaption class="cap"><span class="n">11</span><div><b>Podcast</b><small>Audio · Episode queue</small></div></figcaption>
+      </figure>
+
+      <!-- 12 · Maps -->
+      <figure class="app d-sky reveal">
+        <div class="phone">
+          <div class="screen">
+            <span class="notch"></span>
+            <div class="sbar"><span>9:41</span><span class="sright"><span class="sig"><i></i><i></i><i></i></span><span class="bat"></span></span></div>
+            <div class="sbody">
+              <div class="hd"><div><b>Navigation</b><span class="sub">22 min · 8.4 km</span></div><span class="pill">Fastest</span></div>
+              <div class="map">
+                <span class="rd" style="left:-10%;top:26%;width:130%;height:9px"></span>
+                <span class="rd" style="left:32%;top:-10%;width:8px;height:130%"></span>
+                <span class="rd" style="left:-10%;top:70%;width:130%;height:7px"></span>
+                <span class="rt" style="left:34%;top:28%;width:7px;height:44%"></span>
+                <span class="pin" style="left:30%;top:64%"></span>
+                <span class="pin" style="left:60%;top:22%"></span>
+              </div>
+              <div class="tile row" style="padding:9px">
+                <span class="av sq sm"></span>
+                <div class="grow"><b style="font-size:10px">Office — Bandra</b><span class="lbl">Arrive 9:42 AM</span></div>
+                <span class="pill solid">Go</span>
+              </div>
+            </div>
+            <span class="homebar"></span>
+          </div>
+        </div>
+        <figcaption class="cap"><span class="n">12</span><div><b>Maps</b><small>Utility · Navigation</small></div></figcaption>
+      </figure>
+
+      <!-- 13 · Calendar -->
+      <figure class="app d-coral reveal">
+        <div class="phone">
+          <div class="screen">
+            <span class="notch"></span>
+            <div class="sbar"><span>9:41</span><span class="sright"><span class="sig"><i></i><i></i><i></i></span><span class="bat"></span></span></div>
+            <div class="sbody">
+              <div class="hd"><div><b>September</b><span class="sub">2026</span></div><span class="av sq sm c"></span></div>
+              <div class="g7">
+                <span class="dw">M</span><span class="dw">T</span><span class="dw">W</span><span class="dw">T</span><span class="dw">F</span><span class="dw">S</span><span class="dw">S</span>
+                <span class="day off"></span><span class="day">1</span><span class="day">2</span><span class="day">3</span><span class="day">4</span><span class="day">5</span><span class="day">6</span>
+                <span class="day">7</span><span class="day">8</span><span class="day">9</span><span class="day">10</span><span class="day">11</span><span class="day">12</span><span class="day">13</span>
+                <span class="day">14</span><span class="day on">15</span><span class="day">16</span><span class="day">17</span><span class="day">18</span><span class="day">19</span><span class="day">20</span>
+                <span class="day">21</span><span class="day">22</span><span class="day">23</span><span class="day">24</span><span class="day">25</span><span class="day">26</span><span class="day">27</span>
+              </div>
+              <div class="tile row" style="padding:9px">
+                <span class="av sq sm c"></span>
+                <div class="grow"><b style="font-size:10px">Design review</b><span class="lbl">3:00 PM · Studio</span></div>
+              </div>
+              <span class="spacer"></span>
+            </div>
+            <nav class="tabbar">
+              <span class="on"><svg viewBox="0 0 24 24"><use href="#i-cal"/></svg></span>
+              <span><svg viewBox="0 0 24 24"><use href="#i-clock"/></svg></span>
+              <span><svg viewBox="0 0 24 24"><use href="#i-plus"/></svg></span>
+              <span><svg viewBox="0 0 24 24"><use href="#i-user"/></svg></span>
+            </nav>
+            <span class="homebar"></span>
+          </div>
+        </div>
+        <figcaption class="cap"><span class="n">13</span><div><b>Calendar</b><small>Productivity · Month view</small></div></figcaption>
+      </figure>
+
+      <!-- 14 · Camera -->
+      <figure class="app d-indigo reveal">
+        <div class="phone">
+          <div class="screen">
+            <span class="notch"></span>
+            <div class="sbar"><span>9:41</span><span class="sright"><span class="sig"><i></i><i></i><i></i></span><span class="bat"></span></span></div>
+            <div class="sbody">
+              <div class="hd"><div><b>Camera</b><span class="sub">Photo · Auto</span></div><span class="pill">HDR</span></div>
+              <div class="view"><span class="pin"></span></div>
+              <div class="row" style="justify-content:space-between;align-items:center;padding:0 6px">
+                <span class="av sq sm b"></span>
+                <span class="shutter"></span>
+                <span class="av sq sm"></span>
+              </div>
+            </div>
+            <span class="homebar"></span>
+          </div>
+        </div>
+        <figcaption class="cap"><span class="n">14</span><div><b>Camera</b><small>Media · Capture screen</small></div></figcaption>
+      </figure>
+
+      <!-- 15 · Health -->
+      <figure class="app reveal">
+        <div class="phone">
+          <div class="screen">
+            <span class="notch"></span>
+            <div class="sbar"><span>9:41</span><span class="sright"><span class="sig"><i></i><i></i><i></i></span><span class="bat"></span></span></div>
+            <div class="sbody">
+              <div class="hd"><div><b>Health</b><span class="sub">Vitals · Today</span></div><span class="pill">Live</span></div>
+              <div class="g2">
+                <div class="tile"><span class="lbl">Heart</span><b style="color:var(--acink)">72 <span style="font-size:8px">bpm</span></b><div class="prog"><i style="width:56%"></i></div></div>
+                <div class="tile"><span class="lbl">SpO₂</span><b>98%</b><div class="prog"><i style="width:88%"></i></div></div>
+                <div class="tile"><span class="lbl">Sleep</span><b>7h 20m</b><div class="prog"><i style="width:74%"></i></div></div>
+                <div class="tile"><span class="lbl">Steps</span><b>8.2k</b><div class="prog"><i style="width:66%"></i></div></div>
+              </div>
+              <div class="hd"><b>Heart rate</b><span class="sub">24h</span></div>
+              <div class="chart" style="height:52px">
+                <i style="height:42%"></i><i style="height:66%"></i><i style="height:38%"></i><i style="height:74%"></i><i class="on" style="height:90%"></i><i style="height:52%"></i><i style="height:60%"></i>
+              </div>
+              <span class="spacer"></span>
+            </div>
+            <nav class="tabbar">
+              <span><svg viewBox="0 0 24 24"><use href="#i-home"/></svg></span>
+              <span class="on"><svg viewBox="0 0 24 24"><use href="#i-activity"/></svg></span>
+              <span><svg viewBox="0 0 24 24"><use href="#i-heart"/></svg></span>
+              <span><svg viewBox="0 0 24 24"><use href="#i-user"/></svg></span>
+            </nav>
+            <span class="homebar"></span>
+          </div>
+        </div>
+        <figcaption class="cap"><span class="n">15</span><div><b>Health</b><small>Health · Vitals dashboard</small></div></figcaption>
+      </figure>
+
+      <!-- 16 · Social Feed -->
+      <figure class="app d-rose reveal">
+        <div class="phone">
+          <div class="screen">
+            <span class="notch"></span>
+            <div class="sbar"><span>9:41</span><span class="sright"><span class="sig"><i></i><i></i><i></i></span><span class="bat"></span></span></div>
+            <div class="sbody">
+              <div class="hd"><div><b>Feed</b><span class="sub">Following</span></div><span class="av sm c"></span></div>
+              <div class="tile" style="gap:8px;padding:9px">
+                <div class="row"><span class="av sm b"></span><div class="grow"><span class="bar" style="width:52%"></span><span class="bar h" style="width:30%"></span></div></div>
+                <span class="thumb" style="background:linear-gradient(145deg,#ffc2cb,#fb7185)"></span>
+                <div class="row" style="gap:12px;color:var(--muted)">
+                  <svg class="ico" viewBox="0 0 24 24"><use href="#i-heart"/></svg>
+                  <svg class="ico" viewBox="0 0 24 24"><use href="#i-chat"/></svg>
+                  <svg class="ico" viewBox="0 0 24 24"><use href="#i-send"/></svg>
+                </div>
+              </div>
+              <div class="tile row" style="gap:9px;padding:9px">
+                <span class="av sm t"></span>
+                <div class="grow"><span class="bar" style="width:64%"></span><span class="bar h" style="width:38%"></span></div>
+              </div>
+              <span class="spacer"></span>
+            </div>
+            <nav class="tabbar">
+              <span class="on"><svg viewBox="0 0 24 24"><use href="#i-home"/></svg></span>
+              <span><svg viewBox="0 0 24 24"><use href="#i-search"/></svg></span>
+              <span><svg viewBox="0 0 24 24"><use href="#i-plus"/></svg></span>
+              <span><svg viewBox="0 0 24 24"><use href="#i-user"/></svg></span>
+            </nav>
+            <span class="homebar"></span>
+          </div>
+        </div>
+        <figcaption class="cap"><span class="n">16</span><div><b>Social Feed</b><small>Social · Post stream</small></div></figcaption>
+      </figure>
+
+      <!-- 17 · Notes -->
+      <figure class="app d-amber reveal">
+        <div class="phone">
+          <div class="screen">
+            <span class="notch"></span>
+            <div class="sbar"><span>9:41</span><span class="sright"><span class="sig"><i></i><i></i><i></i></span><span class="bat"></span></span></div>
+            <div class="sbody">
+              <div class="hd"><div><b>Notes</b><span class="sub">12 notes</span></div><span class="pill">New</span></div>
+              <div class="tile in" style="gap:6px;padding:10px">
+                <b style="font-size:10.5px">Gallery ideas</b>
+                <span class="bar h" style="width:86%"></span>
+                <span class="bar h" style="width:64%"></span>
+                <span class="bar h" style="width:44%"></span>
+              </div>
+              <div class="tile" style="gap:6px"><b style="font-size:10.5px">Client kickoff</b><span class="bar h" style="width:70%"></span><span class="bar h" style="width:48%"></span></div>
+              <div class="tile" style="gap:6px"><b style="font-size:10.5px">Shopping</b><span class="bar h" style="width:52%"></span></div>
+              <span class="spacer"></span>
+            </div>
+            <nav class="tabbar">
+              <span class="on"><svg viewBox="0 0 24 24"><use href="#i-home"/></svg></span>
+              <span><svg viewBox="0 0 24 24"><use href="#i-search"/></svg></span>
+              <span><svg viewBox="0 0 24 24"><use href="#i-grid"/></svg></span>
+              <span><svg viewBox="0 0 24 24"><use href="#i-user"/></svg></span>
+            </nav>
+            <span class="homebar"></span>
+          </div>
+        </div>
+        <figcaption class="cap"><span class="n">17</span><div><b>Notes</b><small>Productivity · Notebook</small></div></figcaption>
+      </figure>
+
+      <!-- 18 · Ride -->
+      <figure class="app d-sky reveal">
+        <div class="phone">
+          <div class="screen">
+            <span class="notch"></span>
+            <div class="sbar"><span>9:41</span><span class="sright"><span class="sig"><i></i><i></i><i></i></span><span class="bat"></span></span></div>
+            <div class="sbody">
+              <div class="hd"><div><b>Your ride</b><span class="sub">Arriving in 3 min</span></div><span class="av sm"></span></div>
+              <div class="map">
+                <span class="rd" style="left:-10%;top:18%;width:130%;height:8px"></span>
+                <span class="rd" style="left:-10%;top:58%;width:130%;height:8px"></span>
+                <span class="rd" style="left:46%;top:-10%;width:7px;height:130%"></span>
+                <span class="rt" style="left:49%;top:22%;width:6px;height:36%"></span>
+                <span class="pin" style="left:44%;top:16%"></span>
+                <span class="pin" style="left:60%;top:56%"></span>
+              </div>
+              <div class="tile row" style="padding:9px">
+                <span class="av sq"></span>
+                <div class="grow"><b style="font-size:10px">Ravi · RJ 4821</b><span class="lbl">Toyota Prius · 4.9</span></div>
+                <b class="mono2" style="font-size:11px">$12</b>
+              </div>
+              <div class="row" style="gap:8px">
+                <span class="pill solid" style="flex:1;padding:9px">Confirm</span>
+                <span class="pill" style="padding:9px 14px">Cancel</span>
+              </div>
+            </div>
+            <span class="homebar"></span>
+          </div>
+        </div>
+        <figcaption class="cap"><span class="n">18</span><div><b>Ride</b><small>Transport · Book a ride</small></div></figcaption>
+      </figure>
+
+      <!-- 19 · Coffee -->
+      <figure class="app d-coral reveal">
+        <div class="phone">
+          <div class="screen">
+            <span class="notch"></span>
+            <div class="sbar"><span>9:41</span><span class="sright"><span class="sig"><i></i><i></i><i></i></span><span class="bat"></span></span></div>
+            <div class="sbody">
+              <div class="hd"><div><b>Rewards</b><span class="sub">Aurora Coffee</span></div><span class="av sm c"></span></div>
+              <div class="tile dark" style="gap:6px;padding:13px">
+                <span class="lbl">Free drinks earned</span>
+                <span class="num-big" style="color:#fff">03</span>
+                <span class="pill solid" style="justify-self:start">Gold member</span>
+              </div>
+              <div class="hd"><b>Stamp card</b><span class="sub">6 of 10</span></div>
+              <div class="g5">
+                <span class="stamp on"><svg viewBox="0 0 24 24"><use href="#i-coffee"/></svg></span>
+                <span class="stamp on"><svg viewBox="0 0 24 24"><use href="#i-coffee"/></svg></span>
+                <span class="stamp on"><svg viewBox="0 0 24 24"><use href="#i-coffee"/></svg></span>
+                <span class="stamp on"><svg viewBox="0 0 24 24"><use href="#i-coffee"/></svg></span>
+                <span class="stamp on"><svg viewBox="0 0 24 24"><use href="#i-coffee"/></svg></span>
+                <span class="stamp on"><svg viewBox="0 0 24 24"><use href="#i-coffee"/></svg></span>
+                <span class="stamp"><svg viewBox="0 0 24 24"><use href="#i-coffee"/></svg></span>
+                <span class="stamp"><svg viewBox="0 0 24 24"><use href="#i-coffee"/></svg></span>
+                <span class="stamp"><svg viewBox="0 0 24 24"><use href="#i-coffee"/></svg></span>
+                <span class="stamp"><svg viewBox="0 0 24 24"><use href="#i-coffee"/></svg></span>
+              </div>
+              <span class="spacer"></span>
+              <div class="row" style="justify-content:center">
+                <span class="pill solid" style="padding:9px 22px">Scan to earn</span>
+              </div>
+            </div>
+            <nav class="tabbar">
+              <span><svg viewBox="0 0 24 24"><use href="#i-home"/></svg></span>
+              <span class="on"><svg viewBox="0 0 24 24"><use href="#i-coffee"/></svg></span>
+              <span><svg viewBox="0 0 24 24"><use href="#i-star"/></svg></span>
+              <span><svg viewBox="0 0 24 24"><use href="#i-user"/></svg></span>
+            </nav>
+            <span class="homebar"></span>
+          </div>
+        </div>
+        <figcaption class="cap"><span class="n">19</span><div><b>Coffee</b><small>Loyalty · Rewards card</small></div></figcaption>
+      </figure>
+
+      <!-- 20 · Analytics -->
+      <figure class="app d-indigo reveal">
+        <div class="phone">
+          <div class="screen">
+            <span class="notch"></span>
+            <div class="sbar"><span>9:41</span><span class="sright"><span class="sig"><i></i><i></i><i></i></span><span class="bat"></span></span></div>
+            <div class="sbody">
+              <div class="hd"><div><b>Overview</b><span class="sub">Last 7 days</span></div><span class="pill">Live</span></div>
+              <div class="g2">
+                <div class="tile" style="gap:6px"><span class="lbl">Visitors</span><b>24.8k</b><span class="pill solid" style="justify-self:start">+18%</span></div>
+                <div class="tile" style="gap:6px"><span class="lbl">Revenue</span><b>$9.2k</b><span class="pill" style="justify-self:start">+6%</span></div>
+              </div>
+              <div class="hd"><b>Traffic</b><span class="sub">Weekly</span></div>
+              <div class="chart" style="height:56px">
+                <i style="height:40%"></i><i style="height:58%"></i><i style="height:46%"></i><i style="height:72%"></i><i style="height:62%"></i><i style="height:84%"></i><i class="on" style="height:96%"></i>
+              </div>
+              <div class="row"><span class="lbl" style="flex:1">Bounce rate</span><b class="mono2" style="font-size:10px">32%</b></div>
+              <div class="row"><span class="lbl" style="flex:1">Avg. session</span><b class="mono2" style="font-size:10px">3m 12s</b></div>
+              <span class="spacer"></span>
+            </div>
+            <nav class="tabbar">
+              <span><svg viewBox="0 0 24 24"><use href="#i-home"/></svg></span>
+              <span class="on"><svg viewBox="0 0 24 24"><use href="#i-chart"/></svg></span>
+              <span><svg viewBox="0 0 24 24"><use href="#i-grid"/></svg></span>
+              <span><svg viewBox="0 0 24 24"><use href="#i-user"/></svg></span>
+            </nav>
+            <span class="homebar"></span>
+          </div>
+        </div>
+        <figcaption class="cap"><span class="n">20</span><div><b>Analytics</b><small>Business · Live metrics</small></div></figcaption>
+      </figure>
+
+    </div>
+  </div>
+</section>
+
+<!-- ================= CTA ================= -->
+<section style="padding-top:20px">
+  <div class="wrap">
+    <div class="cta-band reveal">
+      <span class="glow"></span>
+      <div>
+        <div class="kicker">Want one of these?</div>
+        <h2>Any app face here can become your product.</h2>
+        <p>Tell us which screen caught your eye and we will adapt it to your brand, content and goals.</p>
+        <div class="cta-actions">
+          <a class="soft-btn" href="mailto:theprofessionalrj@gmail.com">Get in touch</a>
+          <a class="soft-btn ghost" href="../gallery/">Back to the gallery</a>
+        </div>
+      </div>
+      <img class="band-logo" src="../assets/RJ_Logo.png" alt="RJ" />
+    </div>
+  </div>
+</section>
+
+<!-- ================= FOOTER ================= -->
+<footer>
+  <div class="foot">
+    <div class="foot-main">
+      <a class="brand" href="../index.html">
+        <span class="logo"><img src="../assets/RJ_Logo_Black.png" alt="RJ logo" /></span>
+        <span><b>RJ</b><small>Design &amp; Development</small></span>
+      </a>
+      <div class="flinks">
+        <a href="../portfolio/">Portfolio</a>
+        <a href="../services/">Services</a>
+        <a href="../gallery/">Design Gallery</a>
+        <a href="../works/">Works</a>
+        <a href="../about/">About Company</a>
+      </div>
+    </div>
+    <div class="foot-tag">
+      <span>© 2026 RJ · We design digital experiences.</span>
+      <a href="../gallery/">← All collections</a>
+    </div>
+  </div>
+</footer>
+
+<script src="../js/site.js"></script>
+</body>
+</html>
