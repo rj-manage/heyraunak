@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>RJ App Faces Gallery — RJ</title>
-<meta name="description" content="RJ App Faces Gallery — twenty mobile app faces rendered live in the studio's soft-UI theme. Every screen is shown directly on the page, no clicking through one at a time." />
+<meta name="description" content="RJ App Faces Gallery — twenty mobile app faces, each with its own palette, layout and design language. Every screen is shown directly on the page, no clicking through one at a time." />
 <meta name="theme-color" content="#E3E9F0" />
 <link rel="icon" type="image/png" href="../assets/RJ_Logo_Black.png" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -14,181 +14,515 @@
 <style>
 /* ============================================================
    RJ App Faces Gallery
-   Twenty mobile app faces, rendered inline in the site's
-   soft-UI theme (canvas / mint / Inter + Sora). No images,
-   no click-through — every screen is live on the page.
+   Twenty mobile app faces — every one a different design
+   language: dark glass, neon, brutalist, editorial, terminal,
+   map-first, paper, pro-camera, kraft, dashboard ...
+   All pure CSS art, all shown directly on the page.
+   The page chrome stays in the studio's soft-UI theme.
    ============================================================ */
 .sprite{position:absolute;width:0;height:0;overflow:hidden}
 
 .appfaces .grid-apps{
   display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(228px,1fr));
-  gap:40px 30px;
+  grid-template-columns:repeat(auto-fill,minmax(232px,1fr));
+  gap:46px 30px;
   margin-top:44px;
 }
 
-/* ---- phone shell ---- */
-.app{
-  margin:0;
-  --ac:var(--mint);
-  --ac2:var(--mint-3);
-  --acink:var(--mint-ink);
+/* ---------- shared device shell (the phone itself) ---------- */
+.app{margin:0;--bz1:#eef2f7;--bz2:#c9d1de}
+.app.dk{--bz1:#3b4353;--bz2:#1a1f28}
+.device{
+  position:relative;width:100%;aspect-ratio:9/19.2;
+  border-radius:40px;padding:10px;
+  background:linear-gradient(150deg,var(--bz1),var(--bz2));
+  box-shadow:0 24px 42px -20px rgba(42,52,68,.5),0 3px 8px -3px rgba(42,52,68,.3);
+  transition:transform .3s var(--ease);
 }
-.app.d-indigo{--ac:#6366f1;--ac2:#8b93f8;--acink:#4f46e5}
-.app.d-coral{--ac:#f8716a;--ac2:#ffb3a7;--acink:#e0655f}
-.app.d-amber{--ac:#f5b041;--ac2:#ffd08a;--acink:#b3743a}
-.app.d-teal{--ac:#14b8a6;--ac2:#5eead4;--acink:#0f9488}
-.app.d-violet{--ac:#8b5cf6;--ac2:#c4b5fd;--acink:#7c3aed}
-.app.d-rose{--ac:#fb7185;--ac2:#ffc2cb;--acink:#e11d48}
-.app.d-sky{--ac:#0ea5e9;--ac2:#7dd3fc;--acink:#0284c7}
+.app:hover .device{transform:translateY(-8px)}
+.device::before,.device::after{content:"";position:absolute;left:-2.5px;width:3px;border-radius:3px;background:rgba(0,0,0,.2)}
+.device::before{top:15%;height:7%;box-shadow:0 9px 0 rgba(0,0,0,.16)}
+.device::after{top:27%;height:13%;left:auto;right:-2.5px}
+.scr{position:relative;height:100%;border-radius:31px;overflow:hidden;background:#fff;display:flex;flex-direction:column}
+.notch{position:absolute;top:8px;left:50%;transform:translateX(-50%);width:54px;height:14px;border-radius:999px;background:#0e1219;z-index:9}
+.st{flex:none;position:relative;z-index:8;display:flex;justify-content:space-between;align-items:center;padding:13px 15px 3px;font-size:8.5px;font-weight:700;letter-spacing:.05em}
+.st .r{display:inline-flex;gap:5px;align-items:center}
+.st .sig{display:inline-flex;align-items:flex-end;gap:2.5px}
+.st .sig i{display:block;width:3px;border-radius:1px;background:currentColor;opacity:.9}
+.st .sig i:nth-child(1){height:3.5px}
+.st .sig i:nth-child(2){height:5.5px}
+.st .sig i:nth-child(3){height:7.5px}
+.st .bat{position:relative;width:13px;height:7.5px;border-radius:2.5px;box-shadow:inset 0 0 0 1.2px currentColor;opacity:.9}
+.st .bat::after{content:"";position:absolute;inset:1.2px 3.8px 1.2px 1.2px;border-radius:1px;background:currentColor}
+.bd{flex:1;min-height:0;overflow:hidden;display:flex;flex-direction:column}
+.hb{flex:none;width:34%;height:4px;border-radius:999px;background:currentColor;opacity:.3;margin:5px auto 7px}
 
-.app .phone{
-  position:relative;
-  width:100%;
-  aspect-ratio:9/19.2;
-  border-radius:38px;
-  padding:11px;
-  background:var(--canvas);
-  box-shadow:var(--sh-r);
-  transition:transform .3s var(--ease),box-shadow .3s var(--ease);
-}
-.app:hover .phone{transform:translateY(-8px)}
-
-.screen{
-  position:relative;
-  height:100%;
-  border-radius:28px;
-  overflow:hidden;
-  background:linear-gradient(165deg,#f5f9fd,#e1e7ef);
-  box-shadow:var(--sh-in-s);
-  display:flex;
-  flex-direction:column;
-}
-.notch{
-  position:absolute;top:9px;left:50%;transform:translateX(-50%);
-  width:58px;height:15px;border-radius:999px;background:var(--dark);opacity:.55;z-index:6;
-}
-.sbar{
-  display:flex;align-items:center;justify-content:space-between;
-  padding:14px 15px 4px;font-size:8.5px;font-weight:800;letter-spacing:.06em;color:var(--muted);
-}
-.sbar .sright{display:inline-flex;align-items:center;gap:5px}
-.sbar .sig{display:inline-flex;align-items:flex-end;gap:2.5px}
-.sbar .sig i{display:block;width:3px;border-radius:1px;background:var(--muted)}
-.sbar .sig i:nth-child(1){height:4px}
-.sbar .sig i:nth-child(2){height:6px}
-.sbar .sig i:nth-child(3){height:8px}
-.sbar .bat{position:relative;width:14px;height:8px;border-radius:2.5px;box-shadow:inset 0 0 0 1.3px var(--muted)}
-.sbar .bat::after{content:"";position:absolute;inset:1.3px 4px 1.3px 1.3px;border-radius:1px;background:var(--ac)}
-.sbody{flex:1;display:flex;flex-direction:column;gap:9px;padding:9px 13px;overflow:hidden;min-height:0}
-.tabbar{
-  display:flex;align-items:center;justify-content:space-around;
-  padding:7px 8px 2px;box-shadow:0 -1px 0 rgba(60,80,110,.12);
-}
-.tabbar span{display:grid;place-items:center;width:26px;height:26px;border-radius:9px;color:var(--muted)}
-.tabbar span.on{color:var(--acink);background:var(--canvas);box-shadow:var(--sh-in-s)}
-.tabbar svg,.ico{width:13px;height:13px}
-.homebar{width:36%;height:4px;border-radius:999px;background:var(--dark);opacity:.5;margin:5px auto 7px}
-
-/* ---- widgets ---- */
-.hd{display:flex;align-items:center;justify-content:space-between;gap:8px}
-.hd b{font-family:var(--font-display);font-size:11.5px;letter-spacing:-.01em}
-.hd .sub{display:block;font-size:7.5px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;color:var(--muted)}
-.av{flex:none;width:24px;height:24px;border-radius:50%;box-shadow:var(--sh-s);background:linear-gradient(145deg,var(--ac2),var(--ac))}
-.av.sq{border-radius:9px}
-.av.sm{width:18px;height:18px}
-.av.b{background:linear-gradient(145deg,#8b93f8,#6366f1)}
-.av.c{background:linear-gradient(145deg,#ffb3a7,#f8716a)}
-.av.a{background:linear-gradient(145deg,#ffd08a,#f5b041)}
-.av.t{background:linear-gradient(145deg,#5eead4,#14b8a6)}
-.bar{height:7px;border-radius:999px;background:var(--dark);opacity:.34}
-.bar.h{height:5px}
-.tile{border-radius:13px;background:var(--canvas);box-shadow:var(--sh-s);padding:9px;display:grid;gap:4px;align-content:start}
-.tile.in{box-shadow:var(--sh-in-s)}
-.tile b{font-family:var(--font-display);font-size:12px;line-height:1.1}
-.tile .lbl,.lbl{font-size:7.5px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;color:var(--muted)}
-.tile.dark{border-radius:14px;background:linear-gradient(150deg,#3a4760,#202b3e);box-shadow:var(--sh-s);color:#eef3f9}
-.tile.dark .lbl{color:rgba(238,243,249,.6)}
-.g2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}
-.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:7px}
-.g5{display:grid;grid-template-columns:repeat(5,1fr);gap:7px}
-.g7{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
-.row{display:flex;align-items:center;gap:8px}
-.row .grow{flex:1;display:grid;gap:5px;min-width:0}
-.grow{min-width:0}
-.spacer{flex:1;min-height:0}
-.center{justify-items:center;text-align:center}
-.pill{
-  display:inline-flex;align-items:center;justify-content:center;gap:4px;
-  font-size:7.5px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;
-  color:var(--acink);background:var(--canvas);box-shadow:var(--sh-s);
-  border-radius:999px;padding:4px 9px;white-space:nowrap;
-}
-.pill.solid{color:#fff;background:linear-gradient(145deg,var(--ac2),var(--ac))}
-.prog{height:6px;border-radius:999px;background:var(--canvas);box-shadow:var(--sh-in-s);overflow:hidden}
-.prog i{display:block;height:100%;border-radius:999px;background:linear-gradient(90deg,var(--ac2),var(--ac))}
-.thumb{display:block;width:100%;aspect-ratio:16/10;border-radius:10px;box-shadow:var(--sh-s)}
-.num-big{font-family:var(--font-display);font-size:24px;font-weight:800;letter-spacing:-.04em;line-height:1.15}
-.mono2{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace}
-.searchbar{
-  display:flex;align-items:center;gap:7px;border-radius:12px;
-  background:var(--canvas);box-shadow:var(--sh-in-s);padding:8px 10px;color:var(--muted);
-}
-.searchbar .bar{flex:1}
-.chart{display:flex;align-items:flex-end;gap:6px;height:56px}
-.chart i{flex:1;border-radius:6px 6px 4px 4px;background:var(--canvas);box-shadow:var(--sh-s)}
-.chart i.on{background:linear-gradient(180deg,var(--ac2),var(--ac))}
-.bubble{max-width:80%;border-radius:12px;padding:8px 10px;background:var(--canvas);box-shadow:var(--sh-s);display:grid;gap:5px}
-.bubble .bar{width:100%;background:var(--dark);opacity:.32}
-.bubble.me{margin-left:auto;background:linear-gradient(145deg,var(--ac2),var(--ac))}
-.bubble.me .bar{background:#fff;opacity:.55}
-.play{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;color:#fff;background:linear-gradient(145deg,var(--ac2),var(--ac));box-shadow:var(--sh-btn)}
-.play svg{width:16px;height:16px}
-.ring{
-  position:relative;width:98px;height:98px;border-radius:50%;
-  background:conic-gradient(var(--ac) 0 68%,var(--dark) 68% 100%);
-  box-shadow:var(--sh-s);display:grid;place-items:center;
-}
-.ring::after{content:"";position:absolute;inset:11px;border-radius:50%;background:var(--canvas);box-shadow:var(--sh-in-s)}
-.ring b{position:relative;z-index:1;font-family:var(--font-display);font-size:16px;letter-spacing:-.02em}
-.map{position:relative;flex:1;min-height:0;border-radius:14px;background:linear-gradient(160deg,#e9eef6,#dbe3ee);box-shadow:var(--sh-in-s);overflow:hidden}
-.map .rd{position:absolute;border-radius:999px;background:rgba(255,255,255,.78)}
-.map .rt{position:absolute;border-radius:999px;background:linear-gradient(180deg,var(--ac2),var(--ac))}
-.map .pin{
-  position:absolute;width:16px;height:16px;border-radius:50% 50% 50% 0;
-  transform:rotate(-45deg);background:linear-gradient(145deg,var(--ac2),var(--ac));box-shadow:var(--sh-s);
-}
-.view{position:relative;flex:1;min-height:0;border-radius:14px;overflow:hidden;background:linear-gradient(160deg,#3a4760,#202b3e);box-shadow:var(--sh-in-s)}
-.view::before,.view::after{content:"";position:absolute;background:rgba(255,255,255,.14)}
-.view::before{left:33.33%;top:0;width:1px;height:100%;box-shadow:33.34% 0 0 rgba(255,255,255,.14)}
-.view::after{top:33.33%;left:0;height:1px;width:100%;box-shadow:0 33.34% 0 rgba(255,255,255,.14)}
-.view .pin{position:absolute;left:50%;top:50%;width:26px;height:26px;margin:-13px 0 0 -13px;border-radius:50%;box-shadow:inset 0 0 0 1.5px var(--ac)}
-.shutter{width:38px;height:38px;border-radius:50%;background:var(--canvas);box-shadow:var(--sh-s);display:grid;place-items:center}
-.shutter::after{content:"";width:26px;height:26px;border-radius:50%;box-shadow:inset 0 0 0 2.5px var(--ac)}
-.day{aspect-ratio:1;border-radius:8px;display:grid;place-items:center;font-size:8px;font-weight:700;color:var(--muted);background:var(--canvas);box-shadow:var(--sh-s)}
-.day.on{color:#fff;background:linear-gradient(145deg,var(--ac2),var(--ac))}
-.day.off{background:transparent;box-shadow:none;opacity:.5}
-.dw{font-size:7px;font-weight:800;letter-spacing:.04em;text-align:center;color:var(--muted)}
-.stamp{aspect-ratio:1;border-radius:9px;display:grid;place-items:center;color:var(--muted);background:var(--canvas);box-shadow:var(--sh-s)}
-.stamp.on{color:#fff;background:linear-gradient(145deg,var(--ac2),var(--ac))}
-.stamp svg{width:12px;height:12px}
-
-/* ---- caption ---- */
-.app .cap{display:flex;align-items:center;gap:10px;margin-top:14px;padding:0 4px}
+/* ---------- caption ---------- */
+.app .cap{display:flex;align-items:center;gap:10px;margin-top:15px;padding:0 3px}
 .app .cap .n{
-  flex:none;width:30px;height:30px;border-radius:11px;display:grid;place-items:center;
-  font-family:var(--font-display);font-size:11px;font-weight:800;color:var(--acink);
-  background:var(--canvas);box-shadow:var(--sh-s);
+  flex:none;width:30px;height:30px;border-radius:50%;display:grid;place-items:center;
+  font-family:var(--font-display);font-size:11px;font-weight:800;color:#fff;
+  background:linear-gradient(145deg,#59637a,#2c3444);
 }
 .app .cap b{display:block;font-family:var(--font-display);font-size:13.5px;letter-spacing:-.01em}
 .app .cap small{display:block;font-size:10.5px;font-weight:600;color:var(--muted)}
 
+/* ============================================================
+   01 · Wallet — dark glass fintech
+   ============================================================ */
+.a01 .scr{background:radial-gradient(120% 62% at 88% 0%,#1d7f68 0%,rgba(29,127,104,0) 56%),linear-gradient(168deg,#0d1522,#131d2e 58%,#0a111c);color:#e9effb}
+.a01 .bd{padding:8px 14px;gap:9px}
+.a01 .hd1{display:flex;align-items:center;justify-content:space-between}
+.a01 .hd1 b{font-size:11.5px;font-family:var(--font-display);display:block}
+.a01 .hd1 span{display:block;font-size:7px;letter-spacing:.12em;text-transform:uppercase;color:#7c8ba6;font-weight:700;margin-top:2px}
+.a01 .ava{width:26px;height:26px;border-radius:50%;background:linear-gradient(145deg,#48e0a8,#12a37a)}
+.a01 .bal{border-radius:17px;padding:13px;display:grid;gap:8px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.13)}
+.a01 .bal .l{font-size:7px;letter-spacing:.14em;text-transform:uppercase;color:#8fa0bb;font-weight:800}
+.a01 .bal .v{font-family:var(--font-display);font-size:23px;font-weight:800;letter-spacing:-.03em;color:#fff}
+.a01 .bal .v i{font-size:12px;font-style:normal;color:#9fb0c9}
+.a01 .bal .foot1{display:flex;align-items:center;justify-content:space-between}
+.a01 .chip{width:31px;height:22px;border-radius:5px;background:linear-gradient(145deg,#ffd97a,#d99b2b)}
+.a01 .tag{font-size:7px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;padding:4px 9px;border-radius:999px;background:rgba(72,224,168,.16);color:#5ce6b0}
+.a01 .acts{display:grid;grid-template-columns:repeat(4,1fr);gap:7px}
+.a01 .acts span{display:grid;place-items:center;gap:4px;padding:8px 2px;border-radius:13px;font-size:6.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#9fb0c9;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1)}
+.a01 .acts svg{width:13px;height:13px;color:#5ce6b0}
+.a01 .lbl2{display:flex;justify-content:space-between;align-items:center;font-size:7px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:#8fa0bb}
+.a01 .row1{display:flex;align-items:center;gap:9px;padding:8px 10px;border-radius:13px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08)}
+.a01 .dot{width:22px;height:22px;border-radius:8px;flex:none}
+.a01 .row1 .gr{flex:1;display:grid;gap:4px}
+.a01 .bar1{height:6px;border-radius:999px;background:rgba(255,255,255,.16)}
+.a01 .amt{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;font-size:9.5px}
+.a01 .tb{display:flex;justify-content:space-around;align-items:center;padding:7px 8px 0;border-top:1px solid rgba(255,255,255,.09)}
+.a01 .tb span{width:26px;height:26px;border-radius:9px;display:grid;place-items:center;color:#6d7f9b}
+.a01 .tb span.on{color:#5ce6b0;background:rgba(92,230,176,.12)}
+.a01 .tb svg{width:13px;height:13px}
+
+/* ============================================================
+   02 · Music Player — neon synthwave
+   ============================================================ */
+.a02 .scr{background:linear-gradient(170deg,#1d0b33,#2b1050 52%,#120622);color:#f3e9ff}
+.a02 .bd{padding:8px 14px;gap:9px}
+.a02 .ttl{font-size:7px;letter-spacing:.26em;text-transform:uppercase;color:#b98cf0;font-weight:800}
+.a02 .art{position:relative;width:100%;aspect-ratio:1/.8;border-radius:16px;overflow:hidden;background:linear-gradient(135deg,#ff4fd8,#8b5cf6 48%,#22d3ee);box-shadow:0 0 26px rgba(255,79,216,.45),0 0 54px rgba(34,211,238,.22)}
+.a02 .art::after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(115deg,rgba(255,255,255,.18) 0 2px,transparent 2px 9px)}
+.a02 .art i{position:absolute;left:50%;top:50%;width:36%;aspect-ratio:1;transform:translate(-50%,-50%);border-radius:50%;background:radial-gradient(circle,#1a0a30 0 44%,transparent 45%);box-shadow:0 0 0 2px rgba(255,255,255,.55)}
+.a02 .song{font-family:var(--font-display);font-size:15px;font-weight:800;letter-spacing:-.02em;line-height:1.15}
+.a02 .artist{font-size:8.5px;color:#b98cf0;font-weight:700;letter-spacing:.1em;margin-top:2px}
+.a02 .wave{display:flex;align-items:center;gap:3px;height:22px}
+.a02 .wave i{flex:1;border-radius:2px;background:linear-gradient(180deg,#22d3ee,#ff4fd8);opacity:.8}
+.a02 .pr{position:relative;height:4px;border-radius:999px;background:rgba(255,255,255,.14)}
+.a02 .pr i{position:absolute;left:0;top:0;height:100%;width:46%;border-radius:999px;background:linear-gradient(90deg,#22d3ee,#ff4fd8);box-shadow:0 0 10px rgba(255,79,216,.7)}
+.a02 .times{display:flex;justify-content:space-between;font-size:8px;color:#a58ac9;font-weight:700}
+.a02 .ctr{display:flex;align-items:center;justify-content:center;gap:20px}
+.a02 .ctr svg{width:16px;height:16px;color:#c9b3ea}
+.a02 .play{width:42px;height:42px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(145deg,#22d3ee,#ff4fd8);box-shadow:0 0 22px rgba(255,79,216,.6)}
+.a02 .play svg{width:15px;height:15px;color:#150726}
+.a02 .tb{display:flex;justify-content:space-around;padding:7px 8px 0;border-top:1px solid rgba(255,255,255,.1)}
+.a02 .tb svg{width:13px;height:13px;color:#7e63b0}
+.a02 .tb .on{color:#22d3ee}
+
+/* ============================================================
+   03 · Fitness — brutalist
+   ============================================================ */
+.a03 .scr{background:#f4f2ec;color:#0d0d0d}
+.a03 .bd{padding:10px 13px;gap:9px}
+.a03 .kick{font-size:7.5px;font-weight:800;letter-spacing:.3em;text-transform:uppercase}
+.a03 .huge{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;font-size:44px;font-weight:800;line-height:.86;letter-spacing:-.06em}
+.a03 .blk{background:#0d0d0d;color:#f4f2ec;padding:7px 10px;font-size:7.5px;font-weight:800;letter-spacing:.2em;text-transform:uppercase;display:flex;justify-content:space-between;align-items:center}
+.a03 .bx{border:2px solid #0d0d0d;box-shadow:4px 4px 0 #0d0d0d;background:#fff;padding:8px;display:grid;gap:3px}
+.a03 .g3{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}
+.a03 .bx b{font-family:ui-monospace,"SF Mono",Menlo,monospace;font-size:15px;font-weight:800;line-height:1}
+.a03 .bx span{font-size:6.5px;font-weight:800;letter-spacing:.14em;text-transform:uppercase}
+.a03 .ch{display:flex;align-items:flex-end;gap:5px;height:48px;border-bottom:2px solid #0d0d0d}
+.a03 .ch i{flex:1;background:#0d0d0d}
+.a03 .ch i.o{background:#ff5a1f}
+.a03 .tb{display:flex;justify-content:space-around;padding:7px 8px 0;border-top:2px solid #0d0d0d}
+.a03 .tb span{width:26px;height:26px;display:grid;place-items:center}
+.a03 .tb svg{width:14px;height:14px}
+.a03 .tb .on{background:#0d0d0d;color:#f4f2ec}
+
+/* ============================================================
+   04 · Food Delivery — warm playful
+   ============================================================ */
+.a04 .scr{background:#fff8f0;color:#3d2416}
+.a04 .bd{padding:9px 13px;gap:8px}
+.a04 .loc{display:flex;align-items:center;justify-content:space-between}
+.a04 .loc b{font-size:12px;font-family:var(--font-display);display:block}
+.a04 .loc span{display:block;font-size:7.5px;color:#b07a52;font-weight:700;margin-top:2px}
+.a04 .loc .pin2{width:26px;height:26px;border-radius:50%;background:linear-gradient(145deg,#ffb35c,#ff7a1a)}
+.a04 .sr{display:flex;align-items:center;gap:7px;background:#fff;border-radius:999px;padding:9px 13px;box-shadow:0 8px 18px -10px rgba(255,122,26,.6)}
+.a04 .sr svg{width:13px;height:13px;color:#ff7a1a}
+.a04 .sr i{flex:1;height:7px;border-radius:999px;background:#ffe6cf}
+.a04 .cats{display:flex;flex-wrap:wrap;gap:6px}
+.a04 .cats span{font-size:7.5px;font-weight:800;padding:6px 10px;border-radius:999px;background:#fff;color:#a4643a;box-shadow:0 5px 12px -7px rgba(180,110,60,.8);white-space:nowrap}
+.a04 .cats span.on{background:linear-gradient(145deg,#ffb35c,#ff7a1a);color:#fff}
+.a04 .g2{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.a04 .fd{background:#fff;border-radius:16px;padding:8px;display:grid;gap:5px;box-shadow:0 10px 20px -14px rgba(150,90,40,.8)}
+.a04 .fd .im{aspect-ratio:16/10;border-radius:11px}
+.a04 .fd b{font-size:10px}
+.a04 .fd span{font-size:7.5px;color:#a97a52;font-weight:700}
+.a04 .tb{display:flex;justify-content:space-around;align-items:center;padding:5px 8px 0}
+.a04 .tb svg{width:14px;height:14px;color:#c49a78}
+.a04 .tb .mid{width:34px;height:34px;border-radius:50%;background:linear-gradient(145deg,#ffb35c,#ff7a1a);display:grid;place-items:center;box-shadow:0 8px 16px -8px rgba(255,122,26,.9)}
+.a04 .tb .mid svg{color:#fff}
+
+/* ============================================================
+   05 · Messages — clean light
+   ============================================================ */
+.a05 .scr{background:linear-gradient(165deg,#f2f7fd,#e6edf8);color:#0f172a}
+.a05 .bd{padding:0}
+.a05 .top{display:flex;align-items:center;gap:8px;padding:6px 13px 9px;background:#fff;border-bottom:1px solid #eef0f4}
+.a05 .top>svg{width:14px;height:14px;color:#0b84ff;flex:none}
+.a05 .top .nm{flex:1;text-align:center}
+.a05 .top .nm b{display:block;font-size:11px;font-weight:700}
+.a05 .top .nm span{display:block;font-size:7px;color:#8b95a7;font-weight:600}
+.a05 .av2{width:26px;height:26px;border-radius:50%;background:linear-gradient(145deg,#8ec5ff,#0b84ff);flex:none}
+.a05 .msgs{flex:1;min-height:0;display:flex;flex-direction:column;gap:6px;padding:10px 13px}
+.a05 .b{max-width:78%;padding:7px 11px;border-radius:16px;font-size:9.5px;line-height:1.35;font-weight:500}
+.a05 .b.in{background:#fff;border-bottom-left-radius:5px;align-self:flex-start;box-shadow:0 1px 2px rgba(15,23,42,.06)}
+.a05 .b.out{background:#0b84ff;color:#fff;border-bottom-right-radius:5px;align-self:flex-end}
+.a05 .tm{align-self:center;font-size:6.5px;font-weight:700;letter-spacing:.08em;color:#a3adbd;text-transform:uppercase}
+.a05 .typing{align-self:flex-start;display:flex;gap:3px;background:#fff;padding:9px 11px;border-radius:16px;box-shadow:0 1px 2px rgba(15,23,42,.06)}
+.a05 .typing i{width:5px;height:5px;border-radius:50%;background:#b3bccb}
+.a05 .comp{display:flex;align-items:center;gap:8px;padding:9px 13px 3px;background:#fff;border-top:1px solid #eef0f4}
+.a05 .comp .f{flex:1;height:30px;border-radius:999px;border:1px solid #e3e7ee;display:flex;align-items:center;padding:0 12px;font-size:8.5px;color:#a3adbd}
+.a05 .comp .snd{width:30px;height:30px;border-radius:50%;background:#0b84ff;display:grid;place-items:center;color:#fff;flex:none}
+.a05 .comp .snd svg{width:13px;height:13px}
+
+/* ============================================================
+   06 · Weather — full-bleed sky gradient
+   ============================================================ */
+.a06 .scr{background:linear-gradient(178deg,#2f9bff 0%,#63bdff 40%,#ffd48c 76%,#ff9a63 100%);color:#fff}
+.a06 .bd{padding:6px 15px;gap:6px}
+.a06 .city{text-align:center}
+.a06 .city b{font-size:13px;font-family:var(--font-display)}
+.a06 .city span{display:block;font-size:7.5px;opacity:.85;font-weight:600;letter-spacing:.06em;margin-top:1px}
+.a06 .temp{text-align:center;font-family:var(--font-display);font-size:58px;font-weight:700;line-height:1;letter-spacing:-.06em;text-shadow:0 8px 24px rgba(0,60,120,.28)}
+.a06 .cond{text-align:center;font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;opacity:.95}
+.a06 .sun{position:relative;width:52px;height:52px;margin:0 auto}
+.a06 .sun i{position:absolute;inset:0;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff6cf,#ffd15c);box-shadow:0 0 24px rgba(255,224,130,.9)}
+.a06 .sun b{position:absolute;left:20px;top:24px;width:34px;height:20px;border-radius:999px;background:rgba(255,255,255,.94)}
+.a06 .hrs{display:grid;grid-template-columns:repeat(4,1fr);gap:5px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.32);border-radius:15px;padding:8px 6px}
+.a06 .hrs div{text-align:center;font-size:8.5px;font-weight:700}
+.a06 .hrs div span{display:block;font-size:6.5px;font-weight:800;letter-spacing:.08em;opacity:.85;margin-bottom:3px}
+.a06 .days{background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.3);border-radius:15px;padding:8px 11px;display:grid;gap:5px}
+.a06 .days div{display:flex;align-items:center;gap:8px;font-size:8.5px;font-weight:700}
+.a06 .days div span{width:22px}
+.a06 .days div i{flex:1;height:3px;border-radius:999px;background:rgba(255,255,255,.5)}
+
+/* ============================================================
+   07 · Travel — editorial serif
+   ============================================================ */
+.a07 .scr{background:#fbfaf6;color:#191919;font-family:Georgia,"Times New Roman",serif}
+.a07 .bd{padding:9px 14px;gap:8px}
+.a07 .topb{display:flex;justify-content:space-between;align-items:baseline;border-bottom:1px solid #e4e0d6;padding-bottom:6px}
+.a07 .topb b{font-size:12px;letter-spacing:.26em;text-transform:uppercase;font-weight:400}
+.a07 .topb span{font-size:7px;letter-spacing:.18em;text-transform:uppercase;color:#8c8578}
+.a07 .hero2{position:relative;aspect-ratio:4/3;overflow:hidden;background:linear-gradient(160deg,#cfdcc6,#7f9a86 52%,#3d5047)}
+.a07 .hero2 span{position:absolute;left:10px;bottom:8px;color:#fff;font-size:16px;letter-spacing:.02em}
+.a07 .meta{font-size:7.5px;letter-spacing:.18em;text-transform:uppercase;color:#8c8578}
+.a07 .body{font-size:9px;line-height:1.6;color:#4a463d}
+.a07 .btn{display:inline-block;border:1px solid #191919;padding:7px 16px;font-size:8px;letter-spacing:.24em;text-transform:uppercase;align-self:flex-start}
+.a07 .strip{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-top:auto}
+.a07 .strip figure{margin:0;display:grid;gap:4px}
+.a07 .strip .im{display:block;aspect-ratio:3/4}
+.a07 .strip figcaption{font-size:6.5px;letter-spacing:.14em;text-transform:uppercase;color:#7d776b;text-align:center}
+
+/* ============================================================
+   08 · Shop — minimal monochrome
+   ============================================================ */
+.a08 .scr{background:#fff;color:#0a0a0a}
+.a08 .bd{padding:9px 14px;gap:9px}
+.a08 .topn{display:flex;justify-content:space-between;align-items:center;font-size:8.5px;letter-spacing:.36em;text-transform:uppercase;font-weight:600;border-bottom:1px solid #ededed;padding-bottom:7px}
+.a08 .topn svg{width:13px;height:13px}
+.a08 .big{position:relative;aspect-ratio:1/.8;background:#f4f4f4;overflow:hidden}
+.a08 .big i{position:absolute;left:50%;top:50%;width:54%;height:42%;transform:translate(-50%,-50%);background:linear-gradient(145deg,#dedede,#b6b6b6)}
+.a08 .pn{display:flex;justify-content:space-between;align-items:baseline}
+.a08 .pn b{font-size:11px;font-weight:500;letter-spacing:.05em}
+.a08 .pn span{font-family:ui-monospace,"SF Mono",Menlo,monospace;font-size:9.5px}
+.a08 .sub{font-size:7px;letter-spacing:.24em;text-transform:uppercase;color:#9a9a9a;margin-top:-4px}
+.a08 .g3{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}
+.a08 .g3 figure{margin:0;display:grid;gap:5px}
+.a08 .g3 .im{position:relative;aspect-ratio:1;background:#f4f4f4;display:block}
+.a08 .g3 .im i{position:absolute;inset:27%;background:#c9c9c9}
+.a08 .g3 figcaption{font-size:6.5px;letter-spacing:.14em;text-transform:uppercase;color:#7d7d7d}
+.a08 .tb{display:flex;justify-content:space-around;padding:7px 8px 0;border-top:1px solid #ededed;margin-top:auto}
+.a08 .tb svg{width:14px;height:14px}
+.a08 .tb .dim{color:#c8c8c8}
+
+/* ============================================================
+   09 · Crypto — terminal
+   ============================================================ */
+.a09 .scr{background:#070d09;color:#7ff0a8;font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace}
+.a09 .bd{padding:9px 13px;gap:9px}
+.a09 .hd2{display:flex;justify-content:space-between;font-size:7px;letter-spacing:.2em;text-transform:uppercase;color:#3f7f5c}
+.a09 .worth{border:1px solid #1d4a33;border-radius:6px;padding:11px;background:linear-gradient(180deg,rgba(20,60,40,.5),rgba(10,30,20,.25))}
+.a09 .worth span{display:block;font-size:7px;letter-spacing:.18em;text-transform:uppercase;color:#3f7f5c}
+.a09 .worth b{display:block;font-size:23px;font-weight:700;letter-spacing:-.02em;color:#a6ffcb;margin-top:4px}
+.a09 .worth i{font-style:normal;font-size:8.5px;color:#4ade80}
+.a09 .cs{display:flex;align-items:center;gap:4px;height:50px;border-bottom:1px solid #1d4a33;padding-bottom:2px}
+.a09 .cs i{flex:1;background:#4ade80;border-radius:1px}
+.a09 .cs i.dn{background:#f87171}
+.a09 .tk{display:grid;gap:7px;font-size:8.5px}
+.a09 .tk div{display:flex;justify-content:space-between;align-items:center;gap:6px}
+.a09 .tk .up{color:#4ade80}
+.a09 .tk .dn2{color:#f87171}
+.a09 .tk span{color:#3f7f5c}
+
+/* ============================================================
+   10 · Meditation — pastel calm
+   ============================================================ */
+.a10 .scr{background:linear-gradient(165deg,#f3e8ff 0%,#e9f0ff 48%,#ffe9f1 100%);color:#3b3355}
+.a10 .bd{padding:8px 14px;gap:10px;position:relative}
+.a10 .blob{position:absolute;border-radius:50%;filter:blur(16px);opacity:.75}
+.a10 .hd3{display:flex;justify-content:space-between;align-items:center;position:relative;z-index:1}
+.a10 .hd3 b{font-size:12px;font-family:var(--font-display)}
+.a10 .hd3 span{font-size:7px;letter-spacing:.16em;text-transform:uppercase;color:#8b83a8;font-weight:800}
+.a10 .ring2{position:relative;z-index:1;width:126px;height:126px;margin:2px auto 0;border-radius:50%;display:grid;place-items:center;background:conic-gradient(#c4a9ff 0 68%,rgba(255,255,255,.75) 68% 100%);box-shadow:0 18px 34px -18px rgba(120,90,200,.75)}
+.a10 .ring2::after{content:"";position:absolute;inset:13px;border-radius:50%;background:rgba(255,255,255,.75)}
+.a10 .ring2 b{position:relative;z-index:1;font-family:var(--font-display);font-size:21px;font-weight:700;letter-spacing:-.03em}
+.a10 .mid{text-align:center;position:relative;z-index:1}
+.a10 .mid b{font-size:11px;display:block}
+.a10 .mid span{font-size:7.5px;letter-spacing:.16em;text-transform:uppercase;color:#8b83a8;font-weight:700}
+.a10 .chips{display:flex;gap:7px;justify-content:center;position:relative;z-index:1;margin-top:auto}
+.a10 .chips span{font-size:7.5px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;padding:6px 13px;border-radius:999px;background:rgba(255,255,255,.78);color:#7b71a0;box-shadow:0 8px 18px -12px rgba(120,90,200,.95)}
+.a10 .chips span.on{background:linear-gradient(145deg,#b79cff,#8b5cf6);color:#fff}
+
+/* ============================================================
+   11 · Podcast — retro warm
+   ============================================================ */
+.a11 .scr{background:linear-gradient(170deg,#2a1113,#3a1a18 60%,#200c0e);color:#f7e8d6}
+.a11 .bd{padding:9px 14px;gap:9px}
+.a11 .kick2{font-size:7px;letter-spacing:.26em;text-transform:uppercase;color:#d9a05b;font-weight:800}
+.a11 .disc{position:relative;width:104px;height:104px;margin:0 auto;border-radius:50%;background:repeating-radial-gradient(circle,#1b0a0b 0 3px,#2b1113 3px 6px);display:grid;place-items:center;box-shadow:0 16px 30px -16px rgba(0,0,0,.95)}
+.a11 .disc::after{content:"";width:34%;height:34%;border-radius:50%;background:linear-gradient(145deg,#e8a33d,#c9761f)}
+.a11 .pt{text-align:center}
+.a11 .pt b{display:block;font-family:Georgia,serif;font-size:14px;color:#fdf3e6}
+.a11 .pt span{font-size:7.5px;letter-spacing:.18em;text-transform:uppercase;color:#c98f5a;font-weight:700}
+.a11 .wv{display:flex;align-items:center;gap:2.5px;height:20px}
+.a11 .wv i{flex:1;background:#e8a33d;border-radius:2px;opacity:.5}
+.a11 .wv i.on{opacity:1}
+.a11 .pr2{position:relative;height:3px;border-radius:999px;background:rgba(247,232,214,.2)}
+.a11 .pr2 i{position:absolute;left:0;top:0;height:100%;width:56%;background:#e8a33d;border-radius:999px}
+.a11 .ctrl{display:flex;align-items:center;justify-content:center;gap:18px}
+.a11 .ctrl svg{width:16px;height:16px;color:#e0c7a8}
+.a11 .pbtn{width:40px;height:40px;border-radius:50%;background:#f7e8d6;display:grid;place-items:center}
+.a11 .pbtn svg{width:14px;height:14px;color:#2a1113}
+.a11 .eps{border-top:1px solid rgba(247,232,214,.16);margin-top:auto}
+.a11 .eps div{display:flex;align-items:center;gap:9px;padding:7px 0;border-bottom:1px solid rgba(247,232,214,.16);font-size:8.5px}
+.a11 .eps b{font-family:ui-monospace,"SF Mono",Menlo,monospace;color:#e8a33d;font-size:7.5px}
+
+/* ============================================================
+   12 · Maps — map-first
+   ============================================================ */
+.a12 .scr{background:#eef1e9;color:#232a23}
+.a12 .m{position:absolute;inset:0;overflow:hidden;background:linear-gradient(160deg,#f0f3ea,#e2e7dd)}
+.a12 .m .rd{position:absolute;background:#fbfcf9;border-radius:2px}
+.a12 .m .bld{position:absolute;background:#e6e9e0;border-radius:2px}
+.a12 .m .pk{position:absolute;background:#cfe0c2;border-radius:50%}
+.a12 .m .wt{position:absolute;background:#c5e2ef;border-radius:50%}
+.a12 .me{position:absolute;left:50%;top:42%;width:14px;height:14px;margin-left:-7px;border-radius:50%;background:#1a73e8;box-shadow:0 0 0 6px rgba(26,115,232,.22),0 0 0 13px rgba(26,115,232,.1);z-index:1}
+.a12 .bd{position:relative;z-index:2;padding:0 12px}
+.a12 .srch{margin-top:38px;background:#fff;border-radius:12px;padding:10px 12px;display:flex;align-items:center;gap:8px;box-shadow:0 14px 26px -14px rgba(30,40,60,.5)}
+.a12 .srch svg{width:14px;height:14px;color:#e2483d}
+.a12 .srch span{flex:1;font-size:9.5px;color:#6d746e;font-weight:600}
+.a12 .sheet{margin-top:auto;background:#fff;border-radius:16px 16px 0 0;padding:11px 14px 3px;box-shadow:0 -12px 28px -12px rgba(30,40,60,.35);display:grid;gap:9px}
+.a12 .sheet .grab{width:34px;height:4px;border-radius:999px;background:#d5d9d2;margin:0 auto}
+.a12 .sheet b{font-size:11px;font-family:var(--font-display);display:block}
+.a12 .sheet span{font-size:8.5px;color:#6d746e;font-weight:600;display:block;margin-top:2px}
+.a12 .go2{background:#1a73e8;color:#fff;border-radius:999px;padding:9px;text-align:center;font-size:9.5px;font-weight:800;letter-spacing:.06em}
+
+/* ============================================================
+   13 · Calendar — paper planner
+   ============================================================ */
+.a13 .scr{background:#fdfcf7;color:#1b222c}
+.a13 .bd{padding:9px 14px;gap:8px}
+.a13 .hd4{display:flex;justify-content:space-between;align-items:baseline;border-bottom:1px solid #e7e2d6;padding-bottom:7px}
+.a13 .hd4 b{font-family:Georgia,serif;font-size:14px;font-weight:400;letter-spacing:.05em}
+.a13 .hd4 span{font-size:7.5px;letter-spacing:.22em;text-transform:uppercase;color:#9a9384}
+.a13 .wk{display:grid;grid-template-columns:repeat(7,1fr);font-size:6.5px;font-weight:800;letter-spacing:.08em;color:#a9a294;text-align:center;text-transform:uppercase}
+.a13 .dm{display:grid;grid-template-columns:repeat(7,1fr)}
+.a13 .dm span{position:relative;aspect-ratio:1;display:grid;place-items:center;font-size:8.5px;font-weight:600;color:#3c4652}
+.a13 .dm span.mute{color:#c8c3b6}
+.a13 .dm span.now::after{content:"";position:absolute;inset:10%;border:1.5px solid #d64533;border-radius:50%}
+.a13 .dm span.dot::before{content:"";position:absolute;bottom:10%;width:3px;height:3px;border-radius:50%;background:#d64533}
+.a13 .agenda{border-top:1px solid #e7e2d6;padding-top:8px;display:grid;gap:6px;margin-top:auto}
+.a13 .agenda div{display:flex;gap:8px;align-items:center;font-size:8.5px}
+.a13 .agenda b{font-family:ui-monospace,"SF Mono",Menlo,monospace;font-size:7.5px;color:#9a9384}
+.a13 .agenda i{flex:1;height:1px;background:#ece7dc}
+
+/* ============================================================
+   14 · Camera — pro black
+   ============================================================ */
+.a14 .scr{background:#000;color:#fff}
+.a14 .vf{position:absolute;inset:0;background:radial-gradient(120% 90% at 50% 18%,#2a3140 0%,#0b0e13 62%,#000 100%)}
+.a14 .vf::before,.a14 .vf::after{content:"";position:absolute;background:rgba(255,255,255,.13)}
+.a14 .vf::before{left:33.33%;top:0;width:1px;height:100%;box-shadow:33.34% 0 0 rgba(255,255,255,.13)}
+.a14 .vf::after{top:33.33%;left:0;height:1px;width:100%;box-shadow:0 33.34% 0 rgba(255,255,255,.13)}
+.a14 .focus{position:absolute;left:50%;top:32%;width:52px;height:52px;margin:-26px 0 0 -26px;border:1.5px solid #ffd60a;border-radius:6px;z-index:3}
+.a14 .focus::before{content:"";position:absolute;inset:-9px;border:1px solid rgba(255,214,10,.35);border-radius:9px}
+.a14 .bd{position:relative;z-index:2;padding:0 13px 4px}
+.a14 .ctrltop{display:flex;justify-content:space-between;font-size:7px;font-weight:800;letter-spacing:.14em;color:#ffd60a;padding:5px 0}
+.a14 .ctrltop span{color:rgba(255,255,255,.6)}
+.a14 .exp{margin-top:auto;display:flex;align-items:center;gap:7px;padding-bottom:11px}
+.a14 .exp span{font-size:7.5px;font-weight:800;color:#ffd60a}
+.a14 .exp i{flex:1;position:relative;height:2px;background:rgba(255,255,255,.25)}
+.a14 .exp i::after{content:"";position:absolute;left:58%;top:-4px;width:12px;height:10px;background:#ffd60a;border-radius:2px}
+.a14 .modes{display:flex;justify-content:center;gap:13px;font-size:7px;font-weight:800;letter-spacing:.16em;color:rgba(255,255,255,.5);padding-bottom:9px}
+.a14 .modes .on{color:#ffd60a}
+.a14 .shut2{display:flex;align-items:center;justify-content:space-between;padding-bottom:6px}
+.a14 .thumb2{width:28px;height:28px;border-radius:7px;background:linear-gradient(145deg,#5b6474,#2b3242);border:1px solid rgba(255,255,255,.3)}
+.a14 .shut3{width:50px;height:50px;border-radius:50%;background:#fff;display:grid;place-items:center}
+.a14 .shut3::after{content:"";width:40px;height:40px;border-radius:50%;border:2.5px solid #000}
+.a14 .flip{width:28px;height:28px;border-radius:50%;background:rgba(255,255,255,.16);display:grid;place-items:center}
+.a14 .flip svg{width:14px;height:14px}
+
+/* ============================================================
+   15 · Health — clinical
+   ============================================================ */
+.a15 .scr{background:#f5f8fc;color:#0f172a}
+.a15 .bd{padding:9px 13px;gap:8px}
+.a15 .hd5{display:flex;justify-content:space-between;align-items:center}
+.a15 .hd5 b{font-size:12px;font-family:var(--font-display)}
+.a15 .hd5 span{font-size:7px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:#64748b}
+.a15 .card2{background:#fff;border:1px solid #e6ecf3;border-radius:10px;padding:9px;display:grid;gap:5px}
+.a15 .card2 .l2{font-size:6.5px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:#7b8b9e}
+.a15 .card2 b{font-family:var(--font-display);font-size:15px;letter-spacing:-.02em}
+.a15 .card2 b i{font-size:7px;font-style:normal;color:#7b8b9e;font-weight:600}
+.a15 .spark{display:flex;align-items:flex-end;gap:2px;height:15px}
+.a15 .spark i{flex:1;border-radius:1px;background:#cbd5e1}
+.a15 .g2b{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.a15 .ecg{background:#fff;border:1px solid #e6ecf3;border-radius:10px;padding:9px;display:grid;gap:6px}
+.a15 .ecg .ttl2{display:flex;justify-content:space-between;font-size:6.5px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:#7b8b9e}
+.a15 .ecg svg{width:100%;height:32px}
+.a15 .acts2{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-top:auto}
+.a15 .acts2 span{border:1px solid #dbe4ee;border-radius:9px;padding:7px 0;text-align:center;font-size:7px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#3f6ea8}
+
+/* ============================================================
+   16 · Social Feed — story rings
+   ============================================================ */
+.a16 .scr{background:#fff;color:#0f172a}
+.a16 .bd{padding:0}
+.a16 .top2{display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px}
+.a16 .top2 b{font-family:Georgia,serif;font-size:15px;font-weight:400;letter-spacing:.01em}
+.a16 .top2 .ic{display:flex;gap:11px}
+.a16 .top2 svg{width:14px;height:14px}
+.a16 .stories{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;padding:0 12px 9px;border-bottom:1px solid #f0f0f0}
+.a16 .stories div{display:grid;justify-items:center;gap:4px;font-size:6.5px;font-weight:600;color:#5b6472;text-align:center}
+.a16 .ring3{width:38px;height:38px;border-radius:50%;padding:2px;background:conic-gradient(#f9ce34,#ee2a7b 45%,#6228d7 80%,#f9ce34)}
+.a16 .ring3 i{display:block;width:100%;height:100%;border-radius:50%;background:#fff;padding:2px}
+.a16 .ring3 i em{display:block;width:100%;height:100%;border-radius:50%;background:linear-gradient(145deg,#c7d2e8,#8494b3)}
+.a16 .pu{display:flex;align-items:center;gap:8px;padding:8px 14px 7px}
+.a16 .pu .av3{width:24px;height:24px;border-radius:50%;padding:1.5px;background:conic-gradient(#f9ce34,#ee2a7b,#6228d7,#f9ce34)}
+.a16 .pu .av3 i{display:block;width:100%;height:100%;border-radius:50%;background:#fff}
+.a16 .pu .av3 i em{display:block;width:100%;height:100%;border-radius:50%;background:linear-gradient(145deg,#ffd6a5,#e8875f)}
+.a16 .pu b{font-size:9px;font-weight:700;display:block}
+.a16 .pu span{font-size:7px;color:#8b95a7;display:block}
+.a16 .photo{aspect-ratio:1/.82;background:linear-gradient(160deg,#ffb37a,#ff6a88 46%,#7b5cff)}
+.a16 .pacts{display:flex;gap:13px;padding:8px 14px 3px}
+.a16 .pacts svg{width:15px;height:15px}
+.a16 .plikes{padding:0 14px;font-size:8.5px;font-weight:700}
+.a16 .pcap{padding:2px 14px 8px;font-size:8.5px;color:#5b6472}
+.a16 .tb2{display:flex;justify-content:space-around;align-items:center;padding:7px 8px 0;border-top:1px solid #f0f0f0;margin-top:auto}
+.a16 .tb2 svg{width:15px;height:15px}
+.a16 .avmini{width:20px;height:20px;border-radius:50%;background:linear-gradient(145deg,#ffd6a5,#e8875f);box-shadow:0 0 0 1.5px #0f172a}
+
+/* ============================================================
+   17 · Notes — legal pad
+   ============================================================ */
+.a17 .scr{background:repeating-linear-gradient(#fffbe8 0 15px,#ffe9a8 15px 16px);color:#3a3320}
+.a17 .bd{position:relative;padding:10px 12px 8px 30px}
+.a17 .margin{position:absolute;left:20px;top:0;bottom:0;width:1.5px;background:#efa8a8}
+.a17 .nh{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px}
+.a17 .nh b{font-family:Georgia,serif;font-size:14px}
+.a17 .nh span{font-size:6.5px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:#a08f5e}
+.a17 .ln2{font-size:9.5px;line-height:16px}
+.a17 .chk{margin-top:2px}
+.a17 .chk div{display:flex;align-items:center;gap:8px;height:16px;font-size:9.5px}
+.a17 .chk b{flex:none;position:relative;width:10px;height:10px;border:1.3px solid #8a7b4e;border-radius:2px}
+.a17 .chk div.done b{background:#8a7b4e}
+.a17 .chk div.done b::after{content:"";position:absolute;left:2px;top:1px;width:5px;height:2.5px;border-left:1.3px solid #fffbe8;border-bottom:1.3px solid #fffbe8;transform:rotate(-45deg)}
+.a17 .chk div.done span{text-decoration:line-through;color:#a08f5e}
+.a17 .tb3{display:flex;justify-content:space-around;padding:6px 8px 0;border-top:1px solid rgba(140,120,70,.3);background:#fffbe8;margin-top:auto}
+.a17 .tb3 svg{width:14px;height:14px;color:#8a7b4e}
+
+/* ============================================================
+   18 · Ride — night sheet
+   ============================================================ */
+.a18 .scr{background:#cfd6d2;color:#0d1b2a}
+.a18 .m3{position:absolute;inset:0;overflow:hidden;background:linear-gradient(160deg,#cdd6d2,#b9c4c0)}
+.a18 .m3 .rd4{position:absolute;background:#f2f5f3;border-radius:2px}
+.a18 .m3 .blk2{position:absolute;background:#c2cbc7;border-radius:3px}
+.a18 .rt2{position:absolute;left:38%;top:16%;width:6px;height:34%;background:linear-gradient(180deg,#ffcc00,#ff9f1c);border-radius:999px;transform:rotate(9deg)}
+.a18 .car2{position:absolute;left:41%;top:17%;width:15px;height:15px;border-radius:50%;background:#0d1b2a;box-shadow:0 0 0 5px rgba(255,204,0,.5)}
+.a18 .bd{position:relative;z-index:2;padding:0}
+.a18 .sheet2{margin-top:auto;background:#0d1b2a;color:#f3f6fa;border-radius:20px 20px 0 0;padding:12px 15px 3px;display:grid;gap:9px}
+.a18 .grab2{width:34px;height:4px;border-radius:999px;background:rgba(255,255,255,.25);margin:0 auto}
+.a18 .drv{display:flex;align-items:center;gap:10px}
+.a18 .av4{width:34px;height:34px;border-radius:50%;background:linear-gradient(145deg,#4a5a72,#22303f);flex:none}
+.a18 .drv b{display:block;font-size:10.5px}
+.a18 .drv span{display:block;font-size:7px;color:#93a3b8;font-weight:700;letter-spacing:.06em;margin-top:2px}
+.a18 .eta{display:flex;justify-content:space-between;border-top:1px solid rgba(255,255,255,.12);border-bottom:1px solid rgba(255,255,255,.12);padding:8px 0}
+.a18 .eta div{text-align:center;font-size:6.5px;color:#93a3b8;font-weight:800;letter-spacing:.12em;text-transform:uppercase}
+.a18 .eta div b{display:block;font-family:var(--font-display);font-size:13px;color:#fff;letter-spacing:-.02em;margin-top:3px}
+.a18 .confirm{background:#ffcc00;color:#0d1b2a;border-radius:12px;padding:10px;text-align:center;font-size:9.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase}
+
+/* ============================================================
+   19 · Coffee — kraft café
+   ============================================================ */
+.a19 .scr{background:linear-gradient(170deg,#f5e9d6,#efdfc6);color:#3a2a1c}
+.a19 .bd{padding:9px 13px;gap:9px}
+.a19 .hd6{display:flex;justify-content:space-between;align-items:center}
+.a19 .hd6 b{font-family:Georgia,serif;font-size:14px}
+.a19 .hd6 span{font-size:6.5px;font-weight:800;letter-spacing:.18em;text-transform:uppercase;color:#8b6f4e}
+.a19 .loy{position:relative;border-radius:14px;padding:12px;display:grid;gap:4px;overflow:hidden;background:linear-gradient(150deg,#5c4028,#3c2818);color:#f7ead8}
+.a19 .loy::after{content:"";position:absolute;right:-14px;bottom:-20px;width:78px;height:78px;border-radius:50%;background:radial-gradient(circle,rgba(232,163,61,.4),transparent 70%)}
+.a19 .loy span{font-size:6.5px;letter-spacing:.2em;text-transform:uppercase;opacity:.72}
+.a19 .loy b{font-family:Georgia,serif;font-size:21px;letter-spacing:-.01em}
+.a19 .loy em{font-style:normal;font-size:7px;letter-spacing:.16em;text-transform:uppercase;color:#e8c48d;font-weight:800}
+.a19 .lbl3{display:flex;justify-content:space-between;font-size:6.5px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:#8b6f4e}
+.a19 .stamps{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
+.a19 .stamps span{aspect-ratio:1;border-radius:50%;display:grid;place-items:center;border:1.3px dashed #b79a72;color:#c9ac85}
+.a19 .stamps span.on{background:linear-gradient(145deg,#8a5c30,#5c4028);border-style:solid;border-color:#3c2818;color:#f0d9b8}
+.a19 .stamps svg{width:11px;height:11px}
+.a19 .btn2{margin-top:auto;background:linear-gradient(145deg,#7b5330,#4a3220);color:#f7ead8;border-radius:999px;padding:10px;text-align:center;font-size:9px;font-weight:800;letter-spacing:.12em;text-transform:uppercase}
+.a19 .tb4{display:flex;justify-content:space-around;padding:7px 8px 0;border-top:1px solid rgba(140,110,70,.28)}
+.a19 .tb4 svg{width:14px;height:14px;color:#9c7f58}
+.a19 .tb4 .on{color:#5c4028}
+
+/* ============================================================
+   20 · Analytics — dark dashboard
+   ============================================================ */
+.a20 .scr{background:#101419;color:#e7eef7}
+.a20 .bd{padding:9px 13px;gap:8px}
+.a20 .hd7{display:flex;justify-content:space-between;align-items:center}
+.a20 .hd7 b{font-size:11.5px;font-family:var(--font-display)}
+.a20 .hd7 span{font-size:6.5px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:#5c6b80}
+.a20 .kpi{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.a20 .kpi div{background:#181e26;border:1px solid #202832;border-radius:11px;padding:9px;display:grid;gap:5px}
+.a20 .kpi .l3{font-size:6px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:#6c7c92}
+.a20 .kpi b{font-family:var(--font-display);font-size:14px;letter-spacing:-.02em}
+.a20 .kpi em{font-style:normal;justify-self:start;font-size:7px;font-weight:800;padding:3px 6px;border-radius:999px}
+.a20 .up2{background:rgba(52,211,153,.15);color:#34d399}
+.a20 .dn2{background:rgba(248,113,113,.15);color:#f87171}
+.a20 .chart2{background:#181e26;border:1px solid #202832;border-radius:11px;padding:9px;display:grid;gap:7px}
+.a20 .chart2 .ct{display:flex;justify-content:space-between;font-size:6px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:#6c7c92}
+.a20 .bars2{display:flex;align-items:flex-end;gap:5px;height:48px}
+.a20 .bars2 i{flex:1;border-radius:3px 3px 0 0;background:#2a3441}
+.a20 .bars2 i.a{background:linear-gradient(180deg,#5aa2ff,#2f6fd0)}
+.a20 .bars2 i.b{background:linear-gradient(180deg,#34d399,#128a5e)}
+.a20 .bars2 i.c{background:linear-gradient(180deg,#f5b041,#b3743a)}
+.a20 .tbl{display:grid;gap:6px}
+.a20 .tbl div{display:flex;align-items:center;gap:7px;font-size:8px;color:#93a3b8}
+.a20 .tbl .track{flex:1;height:5px;border-radius:999px;background:#1d242e;overflow:hidden}
+.a20 .tbl .track i{display:block;height:100%;border-radius:999px;background:#3f7fd6}
+
+/* ---------- responsive ---------- */
 @media (max-width:560px){
-  .appfaces .grid-apps{grid-template-columns:repeat(auto-fill,minmax(178px,1fr));gap:28px 18px}
-  .app .phone{border-radius:30px;padding:8px}
-  .screen{border-radius:22px}
-  .app .cap .n{width:26px;height:26px;border-radius:9px}
+  .appfaces .grid-apps{grid-template-columns:repeat(auto-fill,minmax(178px,1fr));gap:30px 16px}
+  .device{border-radius:32px;padding:8px}
+  .scr{border-radius:25px}
+  .app .cap .n{width:26px;height:26px;font-size:10px}
 }
 </style>
 </head>
@@ -205,20 +539,16 @@
   <symbol id="i-prev" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M18 5.3v13.4L8.6 12z"/><path d="M6 5v14" stroke="currentColor" stroke-width="2"/></symbol>
   <symbol id="i-next" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M6 5.3v13.4L15.4 12z"/><path d="M18 5v14" stroke="currentColor" stroke-width="2"/></symbol>
   <symbol id="i-cart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 4.5h2.2l2.1 10.6h10.3L20 8H6"/><circle cx="9" cy="19.5" r="1.4"/><circle cx="17.5" cy="19.5" r="1.4"/></symbol>
-  <symbol id="i-bell" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6.5 9.5a5.5 5.5 0 0 1 11 0c0 4.6 1.7 5.7 1.7 5.7H4.8s1.7-1.1 1.7-5.7Z"/><path d="M10 19.3a2.1 2.1 0 0 0 4 0"/></symbol>
   <symbol id="i-grid" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="3.5" width="7" height="7" rx="2"/><rect x="13.5" y="3.5" width="7" height="7" rx="2"/><rect x="3.5" y="13.5" width="7" height="7" rx="2"/><rect x="13.5" y="13.5" width="7" height="7" rx="2"/></symbol>
-  <symbol id="i-camera" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8.6a2 2 0 0 1 2-2h2l1.5-2h7L17 6.6h2a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z"/><circle cx="12" cy="13" r="3.4"/></symbol>
-  <symbol id="i-cal" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="15.5" rx="2.5"/><path d="M3.5 9.8h17M8 3v4M16 3v4"/></symbol>
-  <symbol id="i-map" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4 3.5 6.4v13.2L9 17.2l6 2.4 5.5-2.4V4L15 6.4 9 4Z"/><path d="M9 4v13.2M15 6.4v13.2"/></symbol>
-  <symbol id="i-music" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 17.5V6l10-2.2V15"/><circle cx="6.6" cy="17.6" r="2.4"/><circle cx="16.6" cy="15.2" r="2.4"/></symbol>
   <symbol id="i-chat" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5.5h16v11H9.5L4 20.5Z"/></symbol>
   <symbol id="i-wallet" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="18" height="13" rx="3"/><path d="M3 10.2h18"/><circle cx="16.8" cy="14.8" r="1.2"/></symbol>
-  <symbol id="i-clock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.3V12l3.1 2"/></symbol>
   <symbol id="i-star" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3.6 2.6 5.6 6.1.6-4.6 4.1 1.3 6-5.4-3.2-5.4 3.2 1.3-6L3.3 9.8l6.1-.6Z"/></symbol>
   <symbol id="i-send" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12 20.5 3.5 13 20.5l-2.4-6.1Z"/></symbol>
   <symbol id="i-activity" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h4l2.5-6.5 4.2 13.5 2.4-7H21"/></symbol>
   <symbol id="i-coffee" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8.5h13V14a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5Z"/><path d="M17 9.6h1.8a2.4 2.4 0 0 1 0 4.9H17"/><path d="M7 3.5c0 1 1 1.1 1 2.2M11 3.5c0 1 1 1.1 1 2.2"/></symbol>
-  <symbol id="i-car" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 16.5h14M4.2 16.5v-4.2L6.2 7h11.6l2 5.3v4.2"/><circle cx="7.6" cy="18" r="1.6"/><circle cx="16.4" cy="18" r="1.6"/></symbol>
+  <symbol id="i-chevleft" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5 8 12l7 7"/></symbol>
+  <symbol id="i-phone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h3.5l1.8 4.4-2.2 1.7a12 12 0 0 0 5.8 5.8l1.7-2.2L20 15.5V19a1.5 1.5 0 0 1-1.6 1.5C10.4 20 4 13.6 3.5 5.6A1.5 1.5 0 0 1 5 4Z"/></symbol>
+  <symbol id="i-flip" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 11a8 8 0 0 0-13.7-5.6L4 7.5"/><path d="M4 4v3.5h3.5"/><path d="M4 13a8 8 0 0 0 13.7 5.6L20 16.5"/><path d="M20 20v-3.5h-3.5"/></symbol>
 </svg>
 
 <!-- ================= NAV ================= -->
@@ -241,11 +571,11 @@
 
 <!-- ================= PAGE HEAD ================= -->
 <header class="page-head">
-  <div class="sec-head reveal" style="max-width:820px">
+  <div class="sec-head reveal" style="max-width:840px">
     <div class="kicker">Design Gallery · Collection D</div>
     <h2>RJ App Faces Gallery</h2>
-    <p>Twenty mobile app faces — wallets, players, fitness, delivery, chat, maps and more. Unlike the other collections, nothing here opens on a separate page: every app face is rendered live below, so you can compare all twenty at a glance.</p>
-    <div class="soft-chip" style="margin-top:20px"><span class="dot"></span> 20 app faces · shown directly, no click-through</div>
+    <p>Twenty mobile app faces, and twenty different design languages — dark glass, neon, brutalist, editorial, terminal, map-first, paper, pro-camera, kraft, dashboard and more. Nothing opens on a separate page: every face is rendered live below, so you can compare all twenty side by side.</p>
+    <div class="soft-chip" style="margin-top:20px"><span class="dot"></span> 20 faces · 20 distinct designs · no click-through</div>
   </div>
 </header>
 
@@ -254,630 +584,646 @@
   <div class="wrap">
     <div class="grid-apps">
 
-      <!-- 01 · Wallet -->
-      <figure class="app reveal">
-        <div class="phone">
-          <div class="screen">
+      <!-- 01 · Wallet — dark glass -->
+      <figure class="app a01 dk reveal">
+        <div class="device">
+          <div class="scr">
             <span class="notch"></span>
-            <div class="sbar"><span>9:41</span><span class="sright"><span class="sig"><i></i><i></i><i></i></span><span class="bat"></span></span></div>
-            <div class="sbody">
-              <div class="hd"><div><b>Good morning</b><span class="sub">Raunak Raj</span></div><span class="av"></span></div>
-              <div class="tile dark" style="gap:7px;padding:13px">
-                <span class="lbl">Total balance</span>
-                <span class="num-big" style="color:#fff">$12,480<span style="font-size:12px">.50</span></span>
-                <span class="pill solid" style="justify-self:start">+2.4% this month</span>
+            <div class="st"><span>9:41</span><span class="r"><span class="sig"><i></i><i></i><i></i></span><span class="bat"></span></span></div>
+            <div class="bd">
+              <div class="hd1"><div><b>Good morning</b><span>Priya Sharma</span></div><span class="ava"></span></div>
+              <div class="bal">
+                <span class="l">Total balance</span>
+                <span class="v">$12,480<i>.50</i></span>
+                <div class="foot1"><span class="tag">+2.4% this month</span><span class="chip"></span></div>
               </div>
-              <div class="g4">
-                <div class="tile in center" style="padding:8px 3px;gap:3px"><svg class="ico" viewBox="0 0 24 24"><use href="#i-send"/></svg><span class="lbl">Send</span></div>
-                <div class="tile in center" style="padding:8px 3px;gap:3px"><svg class="ico" viewBox="0 0 24 24"><use href="#i-plus"/></svg><span class="lbl">Top up</span></div>
-                <div class="tile in center" style="padding:8px 3px;gap:3px"><svg class="ico" viewBox="0 0 24 24"><use href="#i-cart"/></svg><span class="lbl">Pay</span></div>
-                <div class="tile in center" style="padding:8px 3px;gap:3px"><svg class="ico" viewBox="0 0 24 24"><use href="#i-grid"/></svg><span class="lbl">More</span></div>
+              <div class="acts">
+                <span><svg viewBox="0 0 24 24"><use href="#i-send"/></svg>Send</span>
+                <span><svg viewBox="0 0 24 24"><use href="#i-plus"/></svg>Top up</span>
+                <span><svg viewBox="0 0 24 24"><use href="#i-cart"/></svg>Pay</span>
+                <span><svg viewBox="0 0 24 24"><use href="#i-grid"/></svg>More</span>
               </div>
-              <div class="hd"><b>Recent</b><span class="sub">See all</span></div>
-              <div class="row"><span class="av sq sm"></span><div class="grow"><span class="bar" style="width:72%"></span><span class="bar h" style="width:44%"></span></div><b class="mono2" style="font-size:9.5px;color:var(--acink)">+$240</b></div>
-              <div class="row"><span class="av sq sm b"></span><div class="grow"><span class="bar" style="width:58%"></span><span class="bar h" style="width:36%"></span></div><b class="mono2" style="font-size:9.5px;color:var(--muted)">-$24</b></div>
-              <span class="spacer"></span>
+              <div class="lbl2"><span>Recent</span><span>See all</span></div>
+              <div class="row1">
+                <span class="dot" style="background:linear-gradient(145deg,#48e0a8,#12a37a)"></span>
+                <div class="gr"><span class="bar1" style="width:70%"></span><span class="bar1" style="width:40%;opacity:.6"></span></div>
+                <b class="amt" style="color:#5ce6b0">+$240</b>
+              </div>
+              <div class="row1">
+                <span class="dot" style="background:linear-gradient(145deg,#8b93f8,#5b63d3)"></span>
+                <div class="gr"><span class="bar1" style="width:56%"></span><span class="bar1" style="width:34%;opacity:.6"></span></div>
+                <b class="amt" style="color:#9fb0c9">-$24</b>
+              </div>
+              <span style="flex:1"></span>
             </div>
-            <nav class="tabbar">
+            <nav class="tb">
               <span class="on"><svg viewBox="0 0 24 24"><use href="#i-home"/></svg></span>
               <span><svg viewBox="0 0 24 24"><use href="#i-chart"/></svg></span>
               <span><svg viewBox="0 0 24 24"><use href="#i-wallet"/></svg></span>
               <span><svg viewBox="0 0 24 24"><use href="#i-user"/></svg></span>
             </nav>
-            <span class="homebar"></span>
+            <span class="hb"></span>
           </div>
         </div>
-        <figcaption class="cap"><span class="n">01</span><div><b>Wallet</b><small>Finance · Balance &amp; actions</small></div></figcaption>
+        <figcaption class="cap"><span class="n">01</span><div><b>Wallet</b><small>Finance · Dark glass</small></div></figcaption>
       </figure>
 
-      <!-- 02 · Music Player -->
-      <figure class="app d-violet reveal">
-        <div class="phone">
-          <div class="screen">
+      <!-- 02 · Music Player — neon synth -->
+      <figure class="app a02 dk reveal">
+        <div class="device">
+          <div class="scr">
             <span class="notch"></span>
-            <div class="sbar"><span>9:41</span><span class="sright"><span class="sig"><i></i><i></i><i></i></span><span class="bat"></span></span></div>
-            <div class="sbody">
-              <div class="hd"><div><b>Now playing</b><span class="sub">Night drive</span></div><span class="av sm" style="border-radius:50%"></span></div>
-              <div class="tile in center" style="gap:8px;padding:14px">
-                <span class="av" style="width:86px;height:86px;border-radius:24px"></span>
-                <b style="font-size:12.5px">Midnight Drive</b>
-                <span class="sub" style="font-size:7.5px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;color:var(--muted)">Neon Coast</span>
+            <div class="st"><span>9:41</span><span class="r"><span class="sig"><i></i><i></i><i></i></span><span class="bat"></span></span></div>
+            <div class="bd">
+              <span class="ttl">Now playing</span>
+              <div class="art"><i></i></div>
+              <div>
+                <div class="song">Midnight Drive</div>
+                <div class="artist">NEON COAST</div>
               </div>
-              <div class="prog"><i style="width:44%"></i></div>
-              <div class="row" style="justify-content:space-between;font-size:8px;font-weight:800;color:var(--muted)"><span>1:24</span><span>3:36</span></div>
-              <div class="row" style="justify-content:center;gap:18px">
-                <svg class="ico" viewBox="0 0 24 24" style="width:16px;height:16px;color:var(--muted)"><use href="#i-prev"/></svg>
+              <div class="wave">
+                <i style="height:26%"></i><i style="height:52%"></i><i style="height:78%"></i><i style="height:44%"></i><i style="height:96%"></i><i style="height:62%"></i><i style="height:34%"></i><i style="height:84%"></i><i style="height:50%"></i><i style="height:70%"></i><i style="height:28%"></i><i style="height:58%"></i>
+              </div>
+              <div class="pr"><i></i></div>
+              <div class="times"><span>1:24</span><span>3:36</span></div>
+              <div class="ctr">
+                <svg viewBox="0 0 24 24"><use href="#i-prev"/></svg>
                 <span class="play"><svg viewBox="0 0 24 24"><use href="#i-play"/></svg></span>
-                <svg class="ico" viewBox="0 0 24 24" style="width:16px;height:16px;color:var(--muted)"><use href="#i-next"/></svg>
+                <svg viewBox="0 0 24 24"><use href="#i-next"/></svg>
               </div>
-              <span class="spacer"></span>
+              <span style="flex:1"></span>
             </div>
-            <nav class="tabbar">
+            <nav class="tb">
               <span class="on"><svg viewBox="0 0 24 24"><use href="#i-home"/></svg></span>
               <span><svg viewBox="0 0 24 24"><use href="#i-search"/></svg></span>
-              <span><svg viewBox="0 0 24 24"><use href="#i-music"/></svg></span>
+              <span><svg viewBox="0 0 24 24"><use href="#i-heart"/></svg></span>
               <span><svg viewBox="0 0 24 24"><use href="#i-user"/></svg></span>
             </nav>
-            <span class="homebar"></span>
+            <span class="hb"></span>
           </div>
         </div>
-        <figcaption class="cap"><span class="n">02</span><div><b>Music Player</b><small>Audio · Now playing</small></div></figcaption>
+        <figcaption class="cap"><span class="n">02</span><div><b>Music Player</b><small>Audio · Neon synthwave</small></div></figcaption>
       </figure>
 
-      <!-- 03 · Fitness -->
-      <figure class="app d-coral reveal">
-        <div class="phone">
-          <div class="screen">
+      <!-- 03 · Fitness — brutalist -->
+      <figure class="app a03 reveal">
+        <div class="device">
+          <div class="scr">
             <span class="notch"></span>
-            <div class="sbar"><span>9:41</span><span class="sright"><span class="sig"><i></i><i></i><i></i></span><span class="bat"></span></span></div>
-            <div class="sbody">
-              <div class="hd"><div><b>Today</b><span class="sub">Wed · 15 Sep</span></div><span class="pill">Move</span></div>
-              <div class="tile in center" style="gap:4px;padding:14px">
-                <span class="num-big" style="color:var(--acink)">642</span>
-                <span class="lbl">kcal burned</span>
-              </div>
+            <div class="st"><span>9:41</span><span class="r"><span class="sig"><i></i><i></i><i></i></span><span class="bat"></span></span></div>
+            <div class="bd">
+              <span class="kick">Today / Wed 15</span>
+              <div class="huge">642</div>
+              <div class="blk"><span>Kcal burned</span><span>+12%</span></div>
               <div class="g3">
-                <div class="tile center" style="padding:8px 4px"><b>8.2k</b><span class="lbl">Steps</span></div>
-                <div class="tile center" style="padding:8px 4px"><b>5.4</b><span class="lbl">Km</span></div>
-                <div class="tile center" style="padding:8px 4px"><b>42</b><span class="lbl">Min</span></div>
+                <div class="bx"><b>8.2k</b><span>Steps</span></div>
+                <div class="bx"><b>5.4</b><span>Km</span></div>
+                <div class="bx"><b>42</b><span>Min</span></div>
               </div>
-              <div class="hd"><b>This week</b><span class="sub">Goal 80%</span></div>
-              <div class="chart">
-                <i style="height:38%"></i><i style="height:62%"></i><i style="height:48%"></i><i class="on" style="height:88%"></i><i style="height:54%"></i><i style="height:70%"></i><i style="height:44%"></i>
+              <span class="kick" style="margin-top:2px">Week / Goal 80%</span>
+              <div class="ch">
+                <i style="height:34%"></i><i style="height:58%"></i><i style="height:46%"></i><i class="o" style="height:92%"></i><i style="height:52%"></i><i style="height:68%"></i><i style="height:40%"></i>
               </div>
-              <span class="spacer"></span>
+              <span style="flex:1"></span>
             </div>
-            <nav class="tabbar">
+            <nav class="tb">
               <span class="on"><svg viewBox="0 0 24 24"><use href="#i-home"/></svg></span>
               <span><svg viewBox="0 0 24 24"><use href="#i-activity"/></svg></span>
               <span><svg viewBox="0 0 24 24"><use href="#i-plus"/></svg></span>
               <span><svg viewBox="0 0 24 24"><use href="#i-user"/></svg></span>
             </nav>
-            <span class="homebar"></span>
+            <span class="hb"></span>
           </div>
         </div>
-        <figcaption class="cap"><span class="n">03</span><div><b>Fitness</b><small>Health · Daily activity</small></div></figcaption>
+        <figcaption class="cap"><span class="n">03</span><div><b>Fitness</b><small>Health · Brutalist</small></div></figcaption>
       </figure>
 
-      <!-- 04 · Food Delivery -->
-      <figure class="app d-amber reveal">
-        <div class="phone">
-          <div class="screen">
+      <!-- 04 · Food Delivery — warm playful -->
+      <figure class="app a04 reveal">
+        <div class="device">
+          <div class="scr">
             <span class="notch"></span>
-            <div class="sbar"><span>9:41</span><span class="sright"><span class="sig"><i></i><i></i><i></i></span><span class="bat"></span></span></div>
-            <div class="sbody">
-              <div class="hd"><div><b>Deliver to</b><span class="sub">Home · 12 min</span></div><span class="av sm a"></span></div>
-              <div class="searchbar"><svg class="ico" viewBox="0 0 24 24"><use href="#i-search"/></svg><span class="bar"></span></div>
+            <div class="st"><span>9:41</span><span class="r"><span class="sig"><i></i><i></i><i></i></span><span class="bat"></span></span></div>
+            <div class="bd">
+              <div class="loc"><div><b>Deliver to</b><span>Home · 12 min</span></div><span class="pin2"></span></div>
+              <div class="sr"><svg viewBox="0 0 24 24"><use href="#i-search"/></svg><i></i></div>
+              <div class="cats"><span class="on">Burgers</span><span>Pizza</span><span>Sushi</span><span>Salad</span></div>
               <div class="g2">
-                <div class="tile" style="gap:7px"><span class="thumb" style="background:linear-gradient(145deg,#ffd08a,#f5b041)"></span><b>Burger</b><span class="lbl">$8.50 · 4.8</span></div>
-                <div class="tile" style="gap:7px"><span class="thumb" style="background:linear-gradient(145deg,#ffb3a7,#f8716a)"></span><b>Sushi</b><span class="lbl">$14.0 · 4.9</span></div>
-                <div class="tile" style="gap:7px"><span class="thumb" style="background:linear-gradient(145deg,#5eead4,#14b8a6)"></span><b>Salad</b><span class="lbl">$9.20 · 4.7</span></div>
-                <div class="tile" style="gap:7px"><span class="thumb" style="background:linear-gradient(145deg,#c4b5fd,#8b5cf6)"></span><b>Pasta</b><span class="lbl">$11.4 · 4.8</span></div>
+                <div class="fd"><span class="im" style="background:linear-gradient(145deg,#ffd08a,#f5a623)"></span><b>Smash Burger</b><span>$8.50 · 4.8★</span></div>
+                <div class="fd"><span class="im" style="background:linear-gradient(145deg,#ffb3a7,#f8716a)"></span><b>Salmon Sushi</b><span>$14.0 · 4.9★</span></div>
+                <div class="fd"><span class="im" style="background:linear-gradient(145deg,#5eead4,#14b8a6)"></span><b>Green Bowl</b><span>$9.20 · 4.7★</span></div>
+                <div class="fd"><span class="im" style="background:linear-gradient(145deg,#c4b5fd,#8b5cf6)"></span><b>Truffle Pasta</b><span>$11.4 · 4.8★</span></div>
               </div>
-              <span class="spacer"></span>
+              <span style="flex:1"></span>
             </div>
-            <nav class="tabbar">
+            <nav class="tb">
               <span><svg viewBox="0 0 24 24"><use href="#i-home"/></svg></span>
-              <span class="on"><svg viewBox="0 0 24 24"><use href="#i-search"/></svg></span>
+              <span><svg viewBox="0 0 24 24"><use href="#i-search"/></svg></span>
+              <span class="mid"><svg viewBox="0 0 24 24"><use href="#i-plus"/></svg></span>
               <span><svg viewBox="0 0 24 24"><use href="#i-cart"/></svg></span>
               <span><svg viewBox="0 0 24 24"><use href="#i-user"/></svg></span>
             </nav>
-            <span class="homebar"></span>
+            <span class="hb"></span>
           </div>
         </div>
-        <figcaption class="cap"><span class="n">04</span><div><b>Food Delivery</b><small>Ordering · Nearby menu</small></div></figcaption>
+        <figcaption class="cap"><span class="n">04</span><div><b>Food Delivery</b><small>Ordering · Warm playful</small></div></figcaption>
       </figure>
 
-      <!-- 05 · Messages -->
-      <figure class="app d-sky reveal">
-        <div class="phone">
-          <div class="screen">
+      <!-- 05 · Messages — clean light -->
+      <figure class="app a05 reveal">
+        <div class="device">
+          <div class="scr">
             <span class="notch"></span>
-            <div class="sbar"><span>9:41</span><span class="sright"><span class="sig"><i></i><i></i><i></i></span><span class="bat"></span></span></div>
-            <div class="sbody">
-              <div class="hd"><span class="av sm b"></span><div><b>Aarav Mehta</b><span class="sub">Active now</span></div><svg class="ico" viewBox="0 0 24 24" style="margin-left:auto"><use href="#i-bell"/></svg></div>
-              <div class="bubble"><span class="bar" style="width:88%"></span><span class="bar" style="width:58%"></span></div>
-              <div class="bubble me"><span class="bar" style="width:78%"></span><span class="bar" style="width:50%"></span></div>
-              <div class="bubble"><span class="bar" style="width:66%"></span></div>
-              <div class="bubble me"><span class="bar" style="width:62%"></span><span class="bar" style="width:38%"></span></div>
-              <span class="spacer"></span>
-              <div class="searchbar"><span class="bar"></span><svg class="ico" viewBox="0 0 24 24"><use href="#i-send"/></svg></div>
+            <div class="st"><span>9:41</span><span class="r"><span class="sig"><i></i><i></i><i></i></span><span class="bat"></span></span></div>
+            <div class="bd">
+              <div class="top">
+                <svg viewBox="0 0 24 24"><use href="#i-chevleft"/></svg>
+                <span class="av2"></span>
+                <span class="nm"><b>Aarav Mehta</b><span>Active now</span></span>
+                <svg viewBox="0 0 24 24" style="color:#0b84ff"><use href="#i-phone"/></svg>
+              </div>
+              <div class="msgs">
+                <span class="tm">Today 9:38</span>
+                <div class="b in">Hey! Did you see the new app faces gallery?</div>
+                <div class="b out">Just opened it — twenty completely different screens.</div>
+                <div class="b in">The dark dashboard one is my favourite.</div>
+                <div class="b out">Mine too. Sending you the link now.</div>
+                <div class="typing"><i></i><i></i><i></i></div>
+              </div>
+              <div class="comp">
+                <span class="f">Message</span>
+                <span class="snd"><svg viewBox="0 0 24 24"><use href="#i-send"/></svg></span>
+              </div>
             </div>
-            <span class="homebar"></span>
+            <span class="hb"></span>
           </div>
         </div>
-        <figcaption class="cap"><span class="n">05</span><div><b>Messages</b><small>Social · Chat thread</small></div></figcaption>
+        <figcaption class="cap"><span class="n">05</span><div><b>Messages</b><small>Social · Clean light</small></div></figcaption>
       </figure>
 
-      <!-- 06 · Weather -->
-      <figure class="app d-teal reveal">
-        <div class="phone">
-          <div class="screen">
+      <!-- 06 · Weather — sky gradient -->
+      <figure class="app a06 reveal">
+        <div class="device">
+          <div class="scr">
             <span class="notch"></span>
-            <div class="sbar"><span>9:41</span><span class="sright"><span class="sig"><i></i><i></i><i></i></span><span class="bat"></span></span></div>
-            <div class="sbody">
-              <div class="hd"><div><b>Mumbai</b><span class="sub">Partly cloudy</span></div><svg class="ico" viewBox="0 0 24 24"><use href="#i-map"/></svg></div>
-              <div class="tile in center" style="gap:2px;padding:16px">
-                <span class="num-big" style="font-size:34px;color:var(--acink)">27°</span>
-                <span class="lbl">Feels like 30°</span>
+            <div class="st"><span>9:41</span><span class="r"><span class="sig"><i></i><i></i><i></i></span><span class="bat"></span></span></div>
+            <div class="bd">
+              <div class="city"><b>Mumbai</b><span>Maharashtra</span></div>
+              <div class="temp">27°</div>
+              <div class="sun"><i></i><b></b></div>
+              <div class="cond">Partly cloudy</div>
+              <div class="hrs">
+                <div><span>9AM</span>26°</div>
+                <div><span>12PM</span>29°</div>
+                <div><span>3PM</span>31°</div>
+                <div><span>6PM</span>28°</div>
               </div>
-              <div class="g4">
-                <div class="tile center" style="padding:7px 3px"><b style="font-size:10px">9AM</b><span class="lbl">26°</span></div>
-                <div class="tile center" style="padding:7px 3px"><b style="font-size:10px">12PM</b><span class="lbl">29°</span></div>
-                <div class="tile center" style="padding:7px 3px"><b style="font-size:10px">3PM</b><span class="lbl">31°</span></div>
-                <div class="tile center" style="padding:7px 3px"><b style="font-size:10px">6PM</b><span class="lbl">28°</span></div>
+              <div class="days">
+                <div><span>Mon</span><i></i><b>28°</b></div>
+                <div><span>Tue</span><i style="width:60%"></i><b>30°</b></div>
+                <div><span>Wed</span><i style="width:40%"></i><b>29°</b></div>
               </div>
-              <div class="tile" style="gap:7px">
-                <div class="row"><span class="lbl" style="flex:1">Mon</span><span class="bar h" style="width:30%"></span><b style="font-size:9.5px">28°</b></div>
-                <div class="row"><span class="lbl" style="flex:1">Tue</span><span class="bar h" style="width:44%"></span><b style="font-size:9.5px">30°</b></div>
-                <div class="row"><span class="lbl" style="flex:1">Wed</span><span class="bar h" style="width:36%"></span><b style="font-size:9.5px">29°</b></div>
-              </div>
-              <span class="spacer"></span>
+              <span style="flex:1"></span>
             </div>
-            <nav class="tabbar">
+            <span class="hb"></span>
+          </div>
+        </div>
+        <figcaption class="cap"><span class="n">06</span><div><b>Weather</b><small>Utility · Sky gradient</small></div></figcaption>
+      </figure>
+
+      <!-- 07 · Travel — editorial serif -->
+      <figure class="app a07 reveal">
+        <div class="device">
+          <div class="scr">
+            <span class="notch"></span>
+            <div class="st"><span>9:41</span><span class="r"><span class="sig"><i></i><i></i><i></i></span><span class="bat"></span></span></div>
+            <div class="bd">
+              <div class="topb"><b>Voyage</b><span>Issue 07</span></div>
+              <div class="hero2"><span>Kyoto</span></div>
+              <span class="meta">Japan · 7 nights</span>
+              <p class="body">Temple lanes, quiet gardens and a city that slows you down. Our winter route follows the old walking paths north of the river.</p>
+              <span class="btn">Read the guide</span>
+              <div class="strip">
+                <figure><span class="im" style="background:linear-gradient(160deg,#b9c9b3,#5f7a68)"></span><figcaption>Oslo</figcaption></figure>
+                <figure><span class="im" style="background:linear-gradient(160deg,#e5c9a8,#a9713f)"></span><figcaption>Cairo</figcaption></figure>
+                <figure><span class="im" style="background:linear-gradient(160deg,#a9c3d6,#4c6b86)"></span><figcaption>Lima</figcaption></figure>
+              </div>
+            </div>
+            <span class="hb"></span>
+          </div>
+        </div>
+        <figcaption class="cap"><span class="n">07</span><div><b>Travel</b><small>Booking · Editorial serif</small></div></figcaption>
+      </figure>
+
+      <!-- 08 · Shop — minimal monochrome -->
+      <figure class="app a08 reveal">
+        <div class="device">
+          <div class="scr">
+            <span class="notch"></span>
+            <div class="st"><span>9:41</span><span class="r"><span class="sig"><i></i><i></i><i></i></span><span class="bat"></span></span></div>
+            <div class="bd">
+              <div class="topn"><span>Shop</span><svg viewBox="0 0 24 24"><use href="#i-search"/></svg></div>
+              <div class="big"><i></i></div>
+              <div class="pn"><b>Field Jacket</b><span>$180</span></div>
+              <span class="sub">New season · 4 colours</span>
+              <div class="g3">
+                <figure><span class="im"><i></i></span><figcaption>Tee</figcaption></figure>
+                <figure><span class="im"><i></i></span><figcaption>Cap</figcaption></figure>
+                <figure><span class="im"><i></i></span><figcaption>Boot</figcaption></figure>
+              </div>
+              <span style="flex:1"></span>
+            </div>
+            <nav class="tb">
               <span><svg viewBox="0 0 24 24"><use href="#i-home"/></svg></span>
-              <span class="on"><svg viewBox="0 0 24 24"><use href="#i-map"/></svg></span>
-              <span><svg viewBox="0 0 24 24"><use href="#i-cal"/></svg></span>
-              <span><svg viewBox="0 0 24 24"><use href="#i-user"/></svg></span>
-            </nav>
-            <span class="homebar"></span>
-          </div>
-        </div>
-        <figcaption class="cap"><span class="n">06</span><div><b>Weather</b><small>Utility · Forecast</small></div></figcaption>
-      </figure>
-
-      <!-- 07 · Travel -->
-      <figure class="app d-indigo reveal">
-        <div class="phone">
-          <div class="screen">
-            <span class="notch"></span>
-            <div class="sbar"><span>9:41</span><span class="sright"><span class="sig"><i></i><i></i><i></i></span><span class="bat"></span></span></div>
-            <div class="sbody">
-              <div class="hd"><div><b>Explore</b><span class="sub">Where to next?</span></div><span class="av sm"></span></div>
-              <div class="searchbar"><svg class="ico" viewBox="0 0 24 24"><use href="#i-search"/></svg><span class="bar"></span></div>
-              <div class="tile" style="padding:0;overflow:hidden;gap:0">
-                <span style="display:block;aspect-ratio:16/9;background:linear-gradient(145deg,#8b93f8,#6366f1)"></span>
-                <div style="padding:9px;display:grid;gap:4px"><b>Kyoto, Japan</b><span class="lbl">7 nights · from $840</span></div>
-              </div>
-              <div class="g2">
-                <div class="tile center" style="padding:9px 4px"><b>Bali</b><span class="lbl">$520</span></div>
-                <div class="tile center" style="padding:9px 4px"><b>Paris</b><span class="lbl">$690</span></div>
-              </div>
-              <span class="spacer"></span>
-            </div>
-            <nav class="tabbar">
               <span><svg viewBox="0 0 24 24"><use href="#i-search"/></svg></span>
-              <span class="on"><svg viewBox="0 0 24 24"><use href="#i-map"/></svg></span>
               <span><svg viewBox="0 0 24 24"><use href="#i-heart"/></svg></span>
-              <span><svg viewBox="0 0 24 24"><use href="#i-user"/></svg></span>
+              <span class="dim"><svg viewBox="0 0 24 24"><use href="#i-cart"/></svg></span>
             </nav>
-            <span class="homebar"></span>
+            <span class="hb"></span>
           </div>
         </div>
-        <figcaption class="cap"><span class="n">07</span><div><b>Travel</b><small>Booking · Find a stay</small></div></figcaption>
+        <figcaption class="cap"><span class="n">08</span><div><b>Shop</b><small>Commerce · Minimal mono</small></div></figcaption>
       </figure>
 
-      <!-- 08 · Shop -->
-      <figure class="app d-rose reveal">
-        <div class="phone">
-          <div class="screen">
+      <!-- 09 · Crypto — terminal -->
+      <figure class="app a09 dk reveal">
+        <div class="device">
+          <div class="scr">
             <span class="notch"></span>
-            <div class="sbar"><span>9:41</span><span class="sright"><span class="sig"><i></i><i></i><i></i></span><span class="bat"></span></span></div>
-            <div class="sbody">
-              <div class="hd"><div><b>Shop</b><span class="sub">New arrivals</span></div><svg class="ico" viewBox="0 0 24 24"><use href="#i-cart"/></svg></div>
-              <div class="g2">
-                <div class="tile" style="gap:7px"><span class="thumb" style="background:linear-gradient(145deg,#ffc2cb,#fb7185)"></span><b>Sneakers</b><span class="lbl">$96</span></div>
-                <div class="tile" style="gap:7px"><span class="thumb" style="background:linear-gradient(145deg,#c4b5fd,#8b5cf6)"></span><b>Backpack</b><span class="lbl">$74</span></div>
-                <div class="tile" style="gap:7px"><span class="thumb" style="background:linear-gradient(145deg,#7dd3fc,#0ea5e9)"></span><b>Watch</b><span class="lbl">$180</span></div>
-                <div class="tile" style="gap:7px"><span class="thumb" style="background:linear-gradient(145deg,#ffd08a,#f5b041)"></span><b>Camera</b><span class="lbl">$320</span></div>
+            <div class="st"><span>9:41</span><span class="r"><span class="sig"><i></i><i></i><i></i></span><span class="bat"></span></span></div>
+            <div class="bd">
+              <div class="hd2"><span>PORTFOLIO</span><span>3 ASSETS</span></div>
+              <div class="worth">
+                <span>Net worth</span>
+                <b>$8,214.90</b>
+                <i>+5.8% today</i>
               </div>
-              <span class="spacer"></span>
+              <div class="cs">
+                <i style="height:32%"></i><i style="height:54%"></i><i class="dn" style="height:44%"></i><i style="height:70%"></i><i class="dn" style="height:36%"></i><i style="height:62%"></i><i style="height:88%"></i><i class="dn" style="height:50%"></i><i style="height:74%"></i><i style="height:96%"></i>
+              </div>
+              <div class="tk">
+                <div><b>BTC</b><span>42,180</span><span class="up">+2.41%</span></div>
+                <div><b>ETH</b><span>2,240</span><span class="up">+1.08%</span></div>
+                <div><b>SOL</b><span>118.4</span><span class="dn2">-0.62%</span></div>
+              </div>
+              <span style="flex:1"></span>
             </div>
-            <nav class="tabbar">
-              <span><svg viewBox="0 0 24 24"><use href="#i-home"/></svg></span>
-              <span><svg viewBox="0 0 24 24"><use href="#i-search"/></svg></span>
-              <span class="on"><svg viewBox="0 0 24 24"><use href="#i-cart"/></svg></span>
-              <span><svg viewBox="0 0 24 24"><use href="#i-user"/></svg></span>
-            </nav>
-            <span class="homebar"></span>
+            <span class="hb"></span>
           </div>
         </div>
-        <figcaption class="cap"><span class="n">08</span><div><b>Shop</b><small>Commerce · Product grid</small></div></figcaption>
+        <figcaption class="cap"><span class="n">09</span><div><b>Crypto</b><small>Finance · Terminal</small></div></figcaption>
       </figure>
 
-      <!-- 09 · Crypto -->
-      <figure class="app d-amber reveal">
-        <div class="phone">
-          <div class="screen">
+      <!-- 10 · Meditation — pastel calm -->
+      <figure class="app a10 reveal">
+        <div class="device">
+          <div class="scr">
             <span class="notch"></span>
-            <div class="sbar"><span>9:41</span><span class="sright"><span class="sig"><i></i><i></i><i></i></span><span class="bat"></span></span></div>
-            <div class="sbody">
-              <div class="hd"><div><b>Portfolio</b><span class="sub">3 assets</span></div><span class="av sm a"></span></div>
-              <div class="tile dark" style="gap:6px;padding:13px">
-                <span class="lbl">Net worth</span>
-                <span class="num-big" style="color:#fff">$8,214<span style="font-size:12px">.90</span></span>
-                <span class="pill solid" style="justify-self:start">+5.8% today</span>
-              </div>
-              <div class="chart" style="height:46px">
-                <i style="height:34%"></i><i style="height:52%"></i><i style="height:44%"></i><i style="height:68%"></i><i style="height:58%"></i><i class="on" style="height:92%"></i><i style="height:74%"></i>
-              </div>
-              <div class="row"><span class="av sm a"></span><div class="grow"><b style="font-size:10px">Bitcoin</b><span class="lbl">BTC</span></div><b style="font-size:10px">$42,180</b></div>
-              <div class="row"><span class="av sm b"></span><div class="grow"><b style="font-size:10px">Ethereum</b><span class="lbl">ETH</span></div><b style="font-size:10px">$2,240</b></div>
-              <span class="spacer"></span>
+            <div class="st"><span>9:41</span><span class="r"><span class="sig"><i></i><i></i><i></i></span><span class="bat"></span></span></div>
+            <div class="bd">
+              <span class="blob" style="left:-30px;top:34%;width:120px;height:120px;background:#c9b6ff"></span>
+              <span class="blob" style="right:-24px;top:8%;width:96px;height:96px;background:#ffc7dd"></span>
+              <span class="blob" style="right:10%;bottom:12%;width:88px;height:88px;background:#bcd6ff"></span>
+              <div class="hd3"><b>Breathe</b><span>Evening</span></div>
+              <div class="ring2"><b>04:32</b></div>
+              <div class="mid"><b>Inhale slowly</b><span>Cycle 3 of 6</span></div>
+              <div class="chips"><span class="on">Deep</span><span>Focus</span><span>Sleep</span></div>
             </div>
-            <nav class="tabbar">
-              <span><svg viewBox="0 0 24 24"><use href="#i-home"/></svg></span>
-              <span class="on"><svg viewBox="0 0 24 24"><use href="#i-chart"/></svg></span>
-              <span><svg viewBox="0 0 24 24"><use href="#i-wallet"/></svg></span>
-              <span><svg viewBox="0 0 24 24"><use href="#i-user"/></svg></span>
-            </nav>
-            <span class="homebar"></span>
+            <span class="hb"></span>
           </div>
         </div>
-        <figcaption class="cap"><span class="n">09</span><div><b>Crypto</b><small>Finance · Coins &amp; chart</small></div></figcaption>
+        <figcaption class="cap"><span class="n">10</span><div><b>Meditation</b><small>Wellness · Pastel calm</small></div></figcaption>
       </figure>
 
-      <!-- 10 · Meditation -->
-      <figure class="app d-teal reveal">
-        <div class="phone">
-          <div class="screen">
+      <!-- 11 · Podcast — retro warm -->
+      <figure class="app a11 dk reveal">
+        <div class="device">
+          <div class="scr">
             <span class="notch"></span>
-            <div class="sbar"><span>9:41</span><span class="sright"><span class="sig"><i></i><i></i><i></i></span><span class="bat"></span></span></div>
-            <div class="sbody">
-              <div class="hd"><div><b>Breathe</b><span class="sub">Evening wind-down</span></div><span class="pill">4-7-8</span></div>
-              <div style="display:grid;justify-items:center;gap:12px;padding-top:12px">
-                <div class="ring"><b>04:32</b></div>
-                <b style="font-size:11px">Inhale slowly</b>
-                <span class="lbl">Cycle 3 of 6</span>
+            <div class="st"><span>9:41</span><span class="r"><span class="sig"><i></i><i></i><i></i></span><span class="bat"></span></span></div>
+            <div class="bd">
+              <span class="kick2">Episode 42</span>
+              <div class="disc"></div>
+              <div class="pt"><b>Design systems, slowly</b><span>With Aarav Mehta</span></div>
+              <div class="wv">
+                <i class="on" style="height:40%"></i><i class="on" style="height:72%"></i><i class="on" style="height:96%"></i><i class="on" style="height:58%"></i><i class="on" style="height:84%"></i><i class="on" style="height:46%"></i><i style="height:70%"></i><i style="height:38%"></i><i style="height:62%"></i><i style="height:30%"></i><i style="height:54%"></i><i style="height:26%"></i>
               </div>
-              <span class="spacer"></span>
-              <div class="row" style="justify-content:center;gap:10px">
-                <span class="pill solid">Deep</span>
-                <span class="pill">Focus</span>
-                <span class="pill">Sleep</span>
+              <div class="pr2"><i></i></div>
+              <div class="ctrl">
+                <svg viewBox="0 0 24 24"><use href="#i-prev"/></svg>
+                <span class="pbtn"><svg viewBox="0 0 24 24"><use href="#i-play"/></svg></span>
+                <svg viewBox="0 0 24 24"><use href="#i-next"/></svg>
+              </div>
+              <div class="eps">
+                <div><b>41</b><span>The case for less motion</span></div>
+                <div><b>40</b><span>Type at small sizes</span></div>
               </div>
             </div>
-            <span class="homebar"></span>
+            <span class="hb"></span>
           </div>
         </div>
-        <figcaption class="cap"><span class="n">10</span><div><b>Meditation</b><small>Wellness · Breathe timer</small></div></figcaption>
+        <figcaption class="cap"><span class="n">11</span><div><b>Podcast</b><small>Audio · Retro warm</small></div></figcaption>
       </figure>
 
-      <!-- 11 · Podcast -->
-      <figure class="app d-violet reveal">
-        <div class="phone">
-          <div class="screen">
+      <!-- 12 · Maps — map-first -->
+      <figure class="app a12 reveal">
+        <div class="device">
+          <div class="scr">
             <span class="notch"></span>
-            <div class="sbar"><span>9:41</span><span class="sright"><span class="sig"><i></i><i></i><i></i></span><span class="bat"></span></span></div>
-            <div class="sbody">
-              <div class="hd"><div><b>Up next</b><span class="sub">Your queue</span></div><span class="av sq sm"></span></div>
-              <div class="tile in row" style="gap:9px;padding:9px">
-                <span class="av sq"></span>
-                <div class="grow"><b style="font-size:10px">Ep. 42 — Design systems</b><span class="bar h" style="width:62%;margin-top:5px"></span></div>
-              </div>
-              <div class="prog"><i style="width:62%"></i></div>
-              <div class="row" style="justify-content:space-between"><span class="lbl">28:14 left</span><span class="lbl">1.0×</span></div>
-              <div class="hd"><b>Episodes</b><span class="sub">12</span></div>
-              <div class="row"><span class="av sq sm b"></span><div class="grow"><span class="bar" style="width:72%"></span><span class="bar h" style="width:40%"></span></div></div>
-              <div class="row"><span class="av sq sm t"></span><div class="grow"><span class="bar" style="width:58%"></span><span class="bar h" style="width:34%"></span></div></div>
-              <span class="spacer"></span>
+            <div class="st" style="color:#33403a"><span>9:41</span><span class="r"><span class="sig"><i></i><i></i><i></i></span><span class="bat"></span></span></div>
+            <div class="m">
+              <span class="rd" style="left:-8%;top:28%;width:120%;height:9px"></span>
+              <span class="rd" style="left:-8%;top:66%;width:120%;height:7px"></span>
+              <span class="rd" style="left:26%;top:-10%;width:8px;height:120%"></span>
+              <span class="rd" style="left:72%;top:-10%;width:6px;height:120%"></span>
+              <span class="bld" style="left:34%;top:34%;width:22%;height:16%"></span>
+              <span class="bld" style="left:60%;top:36%;width:16%;height:12%"></span>
+              <span class="bld" style="left:36%;top:72%;width:26%;height:14%"></span>
+              <span class="pk" style="left:-12%;top:74%;width:34%;height:30%"></span>
+              <span class="pk" style="left:80%;top:6%;width:28%;height:22%"></span>
+              <span class="wt" style="left:78%;top:70%;width:34%;height:26%"></span>
             </div>
-            <nav class="tabbar">
-              <span class="on"><svg viewBox="0 0 24 24"><use href="#i-home"/></svg></span>
-              <span><svg viewBox="0 0 24 24"><use href="#i-play"/></svg></span>
-              <span><svg viewBox="0 0 24 24"><use href="#i-heart"/></svg></span>
-              <span><svg viewBox="0 0 24 24"><use href="#i-user"/></svg></span>
-            </nav>
-            <span class="homebar"></span>
-          </div>
-        </div>
-        <figcaption class="cap"><span class="n">11</span><div><b>Podcast</b><small>Audio · Episode queue</small></div></figcaption>
-      </figure>
-
-      <!-- 12 · Maps -->
-      <figure class="app d-sky reveal">
-        <div class="phone">
-          <div class="screen">
-            <span class="notch"></span>
-            <div class="sbar"><span>9:41</span><span class="sright"><span class="sig"><i></i><i></i><i></i></span><span class="bat"></span></span></div>
-            <div class="sbody">
-              <div class="hd"><div><b>Navigation</b><span class="sub">22 min · 8.4 km</span></div><span class="pill">Fastest</span></div>
-              <div class="map">
-                <span class="rd" style="left:-10%;top:26%;width:130%;height:9px"></span>
-                <span class="rd" style="left:32%;top:-10%;width:8px;height:130%"></span>
-                <span class="rd" style="left:-10%;top:70%;width:130%;height:7px"></span>
-                <span class="rt" style="left:34%;top:28%;width:7px;height:44%"></span>
-                <span class="pin" style="left:30%;top:64%"></span>
-                <span class="pin" style="left:60%;top:22%"></span>
-              </div>
-              <div class="tile row" style="padding:9px">
-                <span class="av sq sm"></span>
-                <div class="grow"><b style="font-size:10px">Office — Bandra</b><span class="lbl">Arrive 9:42 AM</span></div>
-                <span class="pill solid">Go</span>
+            <span class="me"></span>
+            <div class="bd">
+              <div class="srch"><svg viewBox="0 0 24 24"><use href="#i-search"/></svg><span>Search along the route</span></div>
+              <div class="sheet">
+                <span class="grab"></span>
+                <div><b>Bandra Kurla Complex</b><span>22 min · 8.4 km · Arrive 9:42 AM</span></div>
+                <div class="go2">Start navigation</div>
               </div>
             </div>
-            <span class="homebar"></span>
+            <span class="hb" style="color:#4a5a52"></span>
           </div>
         </div>
-        <figcaption class="cap"><span class="n">12</span><div><b>Maps</b><small>Utility · Navigation</small></div></figcaption>
+        <figcaption class="cap"><span class="n">12</span><div><b>Maps</b><small>Utility · Map-first</small></div></figcaption>
       </figure>
 
-      <!-- 13 · Calendar -->
-      <figure class="app d-coral reveal">
-        <div class="phone">
-          <div class="screen">
+      <!-- 13 · Calendar — paper planner -->
+      <figure class="app a13 reveal">
+        <div class="device">
+          <div class="scr">
             <span class="notch"></span>
-            <div class="sbar"><span>9:41</span><span class="sright"><span class="sig"><i></i><i></i><i></i></span><span class="bat"></span></span></div>
-            <div class="sbody">
-              <div class="hd"><div><b>September</b><span class="sub">2026</span></div><span class="av sq sm c"></span></div>
-              <div class="g7">
-                <span class="dw">M</span><span class="dw">T</span><span class="dw">W</span><span class="dw">T</span><span class="dw">F</span><span class="dw">S</span><span class="dw">S</span>
-                <span class="day off"></span><span class="day">1</span><span class="day">2</span><span class="day">3</span><span class="day">4</span><span class="day">5</span><span class="day">6</span>
-                <span class="day">7</span><span class="day">8</span><span class="day">9</span><span class="day">10</span><span class="day">11</span><span class="day">12</span><span class="day">13</span>
-                <span class="day">14</span><span class="day on">15</span><span class="day">16</span><span class="day">17</span><span class="day">18</span><span class="day">19</span><span class="day">20</span>
-                <span class="day">21</span><span class="day">22</span><span class="day">23</span><span class="day">24</span><span class="day">25</span><span class="day">26</span><span class="day">27</span>
+            <div class="st"><span>9:41</span><span class="r"><span class="sig"><i></i><i></i><i></i></span><span class="bat"></span></span></div>
+            <div class="bd">
+              <div class="hd4"><b>September</b><span>2026</span></div>
+              <div class="wk"><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span><span>S</span></div>
+              <div class="dm">
+                <span class="mute"></span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span>
+                <span>7</span><span>8</span><span class="dot">9</span><span>10</span><span>11</span><span>12</span><span>13</span>
+                <span>14</span><span class="now">15</span><span>16</span><span class="dot">17</span><span>18</span><span>19</span><span>20</span>
+                <span>21</span><span>22</span><span>23</span><span>24</span><span>25</span><span>26</span><span class="mute">27</span>
               </div>
-              <div class="tile row" style="padding:9px">
-                <span class="av sq sm c"></span>
-                <div class="grow"><b style="font-size:10px">Design review</b><span class="lbl">3:00 PM · Studio</span></div>
-              </div>
-              <span class="spacer"></span>
-            </div>
-            <nav class="tabbar">
-              <span class="on"><svg viewBox="0 0 24 24"><use href="#i-cal"/></svg></span>
-              <span><svg viewBox="0 0 24 24"><use href="#i-clock"/></svg></span>
-              <span><svg viewBox="0 0 24 24"><use href="#i-plus"/></svg></span>
-              <span><svg viewBox="0 0 24 24"><use href="#i-user"/></svg></span>
-            </nav>
-            <span class="homebar"></span>
-          </div>
-        </div>
-        <figcaption class="cap"><span class="n">13</span><div><b>Calendar</b><small>Productivity · Month view</small></div></figcaption>
-      </figure>
-
-      <!-- 14 · Camera -->
-      <figure class="app d-indigo reveal">
-        <div class="phone">
-          <div class="screen">
-            <span class="notch"></span>
-            <div class="sbar"><span>9:41</span><span class="sright"><span class="sig"><i></i><i></i><i></i></span><span class="bat"></span></span></div>
-            <div class="sbody">
-              <div class="hd"><div><b>Camera</b><span class="sub">Photo · Auto</span></div><span class="pill">HDR</span></div>
-              <div class="view"><span class="pin"></span></div>
-              <div class="row" style="justify-content:space-between;align-items:center;padding:0 6px">
-                <span class="av sq sm b"></span>
-                <span class="shutter"></span>
-                <span class="av sq sm"></span>
+              <div class="agenda">
+                <div><b>09:30</b><span>Studio standup</span><i></i></div>
+                <div><b>15:00</b><span>Design review</span><i></i></div>
+                <div><b>18:30</b><span>Ship gallery v2</span><i></i></div>
               </div>
             </div>
-            <span class="homebar"></span>
+            <span class="hb"></span>
           </div>
         </div>
-        <figcaption class="cap"><span class="n">14</span><div><b>Camera</b><small>Media · Capture screen</small></div></figcaption>
+        <figcaption class="cap"><span class="n">13</span><div><b>Calendar</b><small>Planner · Paper</small></div></figcaption>
       </figure>
 
-      <!-- 15 · Health -->
-      <figure class="app reveal">
-        <div class="phone">
-          <div class="screen">
+      <!-- 14 · Camera — pro black -->
+      <figure class="app a14 dk reveal">
+        <div class="device">
+          <div class="scr">
             <span class="notch"></span>
-            <div class="sbar"><span>9:41</span><span class="sright"><span class="sig"><i></i><i></i><i></i></span><span class="bat"></span></span></div>
-            <div class="sbody">
-              <div class="hd"><div><b>Health</b><span class="sub">Vitals · Today</span></div><span class="pill">Live</span></div>
-              <div class="g2">
-                <div class="tile"><span class="lbl">Heart</span><b style="color:var(--acink)">72 <span style="font-size:8px">bpm</span></b><div class="prog"><i style="width:56%"></i></div></div>
-                <div class="tile"><span class="lbl">SpO₂</span><b>98%</b><div class="prog"><i style="width:88%"></i></div></div>
-                <div class="tile"><span class="lbl">Sleep</span><b>7h 20m</b><div class="prog"><i style="width:74%"></i></div></div>
-                <div class="tile"><span class="lbl">Steps</span><b>8.2k</b><div class="prog"><i style="width:66%"></i></div></div>
+            <div class="vf"></div>
+            <div class="st"><span>9:41</span><span class="r"><span class="sig"><i></i><i></i><i></i></span><span class="bat"></span></span></div>
+            <span class="focus"></span>
+            <div class="bd">
+              <div class="ctrltop"><span>RAW</span><span>1/125 · f1.8 · ISO 200</span></div>
+              <div class="exp"><span>EV</span><i></i><span>+0.3</span></div>
+              <div class="modes"><span class="on">PHOTO</span><span>VIDEO</span><span>PORTRAIT</span></div>
+              <div class="shut2">
+                <span class="thumb2"></span>
+                <span class="shut3"></span>
+                <span class="flip"><svg viewBox="0 0 24 24"><use href="#i-flip"/></svg></span>
               </div>
-              <div class="hd"><b>Heart rate</b><span class="sub">24h</span></div>
-              <div class="chart" style="height:52px">
-                <i style="height:42%"></i><i style="height:66%"></i><i style="height:38%"></i><i style="height:74%"></i><i class="on" style="height:90%"></i><i style="height:52%"></i><i style="height:60%"></i>
-              </div>
-              <span class="spacer"></span>
             </div>
-            <nav class="tabbar">
-              <span><svg viewBox="0 0 24 24"><use href="#i-home"/></svg></span>
-              <span class="on"><svg viewBox="0 0 24 24"><use href="#i-activity"/></svg></span>
-              <span><svg viewBox="0 0 24 24"><use href="#i-heart"/></svg></span>
-              <span><svg viewBox="0 0 24 24"><use href="#i-user"/></svg></span>
-            </nav>
-            <span class="homebar"></span>
+            <span class="hb"></span>
           </div>
         </div>
-        <figcaption class="cap"><span class="n">15</span><div><b>Health</b><small>Health · Vitals dashboard</small></div></figcaption>
+        <figcaption class="cap"><span class="n">14</span><div><b>Camera</b><small>Media · Pro black</small></div></figcaption>
       </figure>
 
-      <!-- 16 · Social Feed -->
-      <figure class="app d-rose reveal">
-        <div class="phone">
-          <div class="screen">
+      <!-- 15 · Health — clinical -->
+      <figure class="app a15 reveal">
+        <div class="device">
+          <div class="scr">
             <span class="notch"></span>
-            <div class="sbar"><span>9:41</span><span class="sright"><span class="sig"><i></i><i></i><i></i></span><span class="bat"></span></span></div>
-            <div class="sbody">
-              <div class="hd"><div><b>Feed</b><span class="sub">Following</span></div><span class="av sm c"></span></div>
-              <div class="tile" style="gap:8px;padding:9px">
-                <div class="row"><span class="av sm b"></span><div class="grow"><span class="bar" style="width:52%"></span><span class="bar h" style="width:30%"></span></div></div>
-                <span class="thumb" style="background:linear-gradient(145deg,#ffc2cb,#fb7185)"></span>
-                <div class="row" style="gap:12px;color:var(--muted)">
-                  <svg class="ico" viewBox="0 0 24 24"><use href="#i-heart"/></svg>
-                  <svg class="ico" viewBox="0 0 24 24"><use href="#i-chat"/></svg>
-                  <svg class="ico" viewBox="0 0 24 24"><use href="#i-send"/></svg>
+            <div class="st"><span>9:41</span><span class="r"><span class="sig"><i></i><i></i><i></i></span><span class="bat"></span></span></div>
+            <div class="bd">
+              <div class="hd5"><b>Health record</b><span>Today</span></div>
+              <div class="g2b">
+                <div class="card2">
+                  <span class="l2">Heart rate</span>
+                  <b>72 <i>bpm</i></b>
+                  <div class="spark"><i style="height:40%;background:#0ea5a0"></i><i style="height:66%;background:#0ea5a0"></i><i style="height:44%;background:#0ea5a0"></i><i style="height:78%;background:#0ea5a0"></i><i style="height:52%;background:#0ea5a0"></i><i style="height:62%;background:#0ea5a0"></i></div>
+                </div>
+                <div class="card2">
+                  <span class="l2">SpO₂</span>
+                  <b>98 <i>%</i></b>
+                  <div class="spark"><i style="height:62%;background:#3b82f6"></i><i style="height:58%;background:#3b82f6"></i><i style="height:74%;background:#3b82f6"></i><i style="height:66%;background:#3b82f6"></i><i style="height:80%;background:#3b82f6"></i><i style="height:70%;background:#3b82f6"></i></div>
+                </div>
+                <div class="card2">
+                  <span class="l2">Sleep</span>
+                  <b>7h 20m</b>
+                  <div class="spark"><i style="height:30%;background:#8b5cf6"></i><i style="height:72%;background:#8b5cf6"></i><i style="height:46%;background:#8b5cf6"></i><i style="height:64%;background:#8b5cf6"></i><i style="height:38%;background:#8b5cf6"></i><i style="height:56%;background:#8b5cf6"></i></div>
+                </div>
+                <div class="card2">
+                  <span class="l2">Steps</span>
+                  <b>8.2k</b>
+                  <div class="spark"><i style="height:44%;background:#f59e0b"></i><i style="height:58%;background:#f59e0b"></i><i style="height:52%;background:#f59e0b"></i><i style="height:70%;background:#f59e0b"></i><i style="height:60%;background:#f59e0b"></i><i style="height:62%;background:#f59e0b"></i></div>
                 </div>
               </div>
-              <div class="tile row" style="gap:9px;padding:9px">
-                <span class="av sm t"></span>
-                <div class="grow"><span class="bar" style="width:64%"></span><span class="bar h" style="width:38%"></span></div>
+              <div class="ecg">
+                <div class="ttl2"><span>ECG · Lead II</span><span>Normal</span></div>
+                <svg viewBox="0 0 120 32" preserveAspectRatio="none"><polyline points="0,16 10,16 14,16 17,6 20,26 23,14 27,16 40,16 44,16 47,10 50,22 53,15 57,16 72,16 76,16 79,7 82,25 85,15 89,16 104,16 108,16 111,11 114,21 117,16 120,16" fill="none" stroke="#0ea5a0" stroke-width="1.4" stroke-linejoin="round"/></svg>
               </div>
-              <span class="spacer"></span>
+              <div class="acts2"><span>Log vitals</span><span>Export</span><span>Share</span></div>
             </div>
-            <nav class="tabbar">
-              <span class="on"><svg viewBox="0 0 24 24"><use href="#i-home"/></svg></span>
+            <span class="hb"></span>
+          </div>
+        </div>
+        <figcaption class="cap"><span class="n">15</span><div><b>Health</b><small>Vitals · Clinical</small></div></figcaption>
+      </figure>
+
+      <!-- 16 · Social Feed — story rings -->
+      <figure class="app a16 reveal">
+        <div class="device">
+          <div class="scr">
+            <span class="notch"></span>
+            <div class="st"><span>9:41</span><span class="r"><span class="sig"><i></i><i></i><i></i></span><span class="bat"></span></span></div>
+            <div class="bd">
+              <div class="top2"><b>Feed</b><span class="ic"><svg viewBox="0 0 24 24"><use href="#i-heart"/></svg><svg viewBox="0 0 24 24"><use href="#i-send"/></svg></span></div>
+              <div class="stories">
+                <div><span class="ring3"><i><em></em></i></span>Neha</div>
+                <div><span class="ring3"><i><em style="background:linear-gradient(145deg,#b8e0c8,#5f9e7a)"></em></i></span>Arjun</div>
+                <div><span class="ring3"><i><em style="background:linear-gradient(145deg,#e6c9f0,#a06fc0)"></em></i></span>Meera</div>
+                <div><span class="ring3"><i><em style="background:linear-gradient(145deg,#f5d3a8,#c98b4a)"></em></i></span>Kabir</div>
+              </div>
+              <div class="pu">
+                <span class="av3"><i><em></em></i></span>
+                <div><b>neha.builds</b><span>Kyoto, Japan</span></div>
+              </div>
+              <div class="photo"></div>
+              <div class="pacts"><svg viewBox="0 0 24 24"><use href="#i-heart"/></svg><svg viewBox="0 0 24 24"><use href="#i-chat"/></svg><svg viewBox="0 0 24 24"><use href="#i-send"/></svg></div>
+              <div class="plikes">2,418 likes</div>
+              <div class="pcap">Morning light on the old streets. Shot on a slow walk.</div>
+            </div>
+            <nav class="tb2">
+              <span><svg viewBox="0 0 24 24"><use href="#i-home"/></svg></span>
+              <span><svg viewBox="0 0 24 24"><use href="#i-search"/></svg></span>
+              <span><svg viewBox="0 0 24 24"><use href="#i-plus"/></svg></span>
+              <span><svg viewBox="0 0 24 24"><use href="#i-heart"/></svg></span>
+              <span class="avmini"></span>
+            </nav>
+            <span class="hb"></span>
+          </div>
+        </div>
+        <figcaption class="cap"><span class="n">16</span><div><b>Social Feed</b><small>Social · Story rings</small></div></figcaption>
+      </figure>
+
+      <!-- 17 · Notes — legal pad -->
+      <figure class="app a17 reveal">
+        <div class="device">
+          <div class="scr">
+            <span class="notch"></span>
+            <div class="st"><span>9:41</span><span class="r"><span class="sig"><i></i><i></i><i></i></span><span class="bat"></span></span></div>
+            <div class="bd">
+              <span class="margin"></span>
+              <div class="nh"><b>Gallery ideas</b><span>Sep 15</span></div>
+              <div class="ln2">Twenty faces, all unique.</div>
+              <div class="ln2">Ship before the review.</div>
+              <div class="chk">
+                <div class="done"><b></b><span>Pick the palettes</span></div>
+                <div class="done"><b></b><span>Build the phone shell</span></div>
+                <div><b></b><span>Write the case study</span></div>
+                <div><b></b><span>Post to the gallery</span></div>
+                <div><b></b><span>Ask Raunak for feedback</span></div>
+              </div>
+              <span style="flex:1"></span>
+            </div>
+            <nav class="tb3">
+              <span><svg viewBox="0 0 24 24"><use href="#i-grid"/></svg></span>
               <span><svg viewBox="0 0 24 24"><use href="#i-search"/></svg></span>
               <span><svg viewBox="0 0 24 24"><use href="#i-plus"/></svg></span>
               <span><svg viewBox="0 0 24 24"><use href="#i-user"/></svg></span>
             </nav>
-            <span class="homebar"></span>
+            <span class="hb"></span>
           </div>
         </div>
-        <figcaption class="cap"><span class="n">16</span><div><b>Social Feed</b><small>Social · Post stream</small></div></figcaption>
+        <figcaption class="cap"><span class="n">17</span><div><b>Notes</b><small>Productivity · Legal pad</small></div></figcaption>
       </figure>
 
-      <!-- 17 · Notes -->
-      <figure class="app d-amber reveal">
-        <div class="phone">
-          <div class="screen">
+      <!-- 18 · Ride — night sheet -->
+      <figure class="app a18 dk reveal">
+        <div class="device">
+          <div class="scr">
             <span class="notch"></span>
-            <div class="sbar"><span>9:41</span><span class="sright"><span class="sig"><i></i><i></i><i></i></span><span class="bat"></span></span></div>
-            <div class="sbody">
-              <div class="hd"><div><b>Notes</b><span class="sub">12 notes</span></div><span class="pill">New</span></div>
-              <div class="tile in" style="gap:6px;padding:10px">
-                <b style="font-size:10.5px">Gallery ideas</b>
-                <span class="bar h" style="width:86%"></span>
-                <span class="bar h" style="width:64%"></span>
-                <span class="bar h" style="width:44%"></span>
-              </div>
-              <div class="tile" style="gap:6px"><b style="font-size:10.5px">Client kickoff</b><span class="bar h" style="width:70%"></span><span class="bar h" style="width:48%"></span></div>
-              <div class="tile" style="gap:6px"><b style="font-size:10.5px">Shopping</b><span class="bar h" style="width:52%"></span></div>
-              <span class="spacer"></span>
+            <div class="st" style="color:#28343a"><span>9:41</span><span class="r"><span class="sig"><i></i><i></i><i></i></span><span class="bat"></span></span></div>
+            <div class="m3">
+              <span class="rd4" style="left:-8%;top:20%;width:120%;height:9px"></span>
+              <span class="rd4" style="left:-8%;top:54%;width:120%;height:8px"></span>
+              <span class="rd4" style="left:-8%;top:82%;width:120%;height:6px"></span>
+              <span class="rd4" style="left:56%;top:-10%;width:8px;height:120%"></span>
+              <span class="blk2" style="left:12%;top:26%;width:26%;height:18%"></span>
+              <span class="blk2" style="left:64%;top:58%;width:22%;height:16%"></span>
+              <span class="blk2" style="left:20%;top:60%;width:20%;height:14%"></span>
+              <span class="rt2"></span>
+              <span class="car2"></span>
             </div>
-            <nav class="tabbar">
-              <span class="on"><svg viewBox="0 0 24 24"><use href="#i-home"/></svg></span>
-              <span><svg viewBox="0 0 24 24"><use href="#i-search"/></svg></span>
-              <span><svg viewBox="0 0 24 24"><use href="#i-grid"/></svg></span>
-              <span><svg viewBox="0 0 24 24"><use href="#i-user"/></svg></span>
-            </nav>
-            <span class="homebar"></span>
+            <div class="bd">
+              <div class="sheet2">
+                <span class="grab2"></span>
+                <div class="drv">
+                  <span class="av4"></span>
+                  <div><b>Ravi · RJ 4821</b><span>Toyota Prius · 4.9★</span></div>
+                </div>
+                <div class="eta">
+                  <div>Arrives<b>3 min</b></div>
+                  <div>Trip<b>18 min</b></div>
+                  <div>Fare<b>$12.40</b></div>
+                </div>
+                <div class="confirm">Confirm pickup</div>
+              </div>
+            </div>
+            <span class="hb" style="color:#3d4a52"></span>
           </div>
         </div>
-        <figcaption class="cap"><span class="n">17</span><div><b>Notes</b><small>Productivity · Notebook</small></div></figcaption>
+        <figcaption class="cap"><span class="n">18</span><div><b>Ride</b><small>Transport · Night sheet</small></div></figcaption>
       </figure>
 
-      <!-- 18 · Ride -->
-      <figure class="app d-sky reveal">
-        <div class="phone">
-          <div class="screen">
+      <!-- 19 · Coffee — kraft café -->
+      <figure class="app a19 reveal">
+        <div class="device">
+          <div class="scr">
             <span class="notch"></span>
-            <div class="sbar"><span>9:41</span><span class="sright"><span class="sig"><i></i><i></i><i></i></span><span class="bat"></span></span></div>
-            <div class="sbody">
-              <div class="hd"><div><b>Your ride</b><span class="sub">Arriving in 3 min</span></div><span class="av sm"></span></div>
-              <div class="map">
-                <span class="rd" style="left:-10%;top:18%;width:130%;height:8px"></span>
-                <span class="rd" style="left:-10%;top:58%;width:130%;height:8px"></span>
-                <span class="rd" style="left:46%;top:-10%;width:7px;height:130%"></span>
-                <span class="rt" style="left:49%;top:22%;width:6px;height:36%"></span>
-                <span class="pin" style="left:44%;top:16%"></span>
-                <span class="pin" style="left:60%;top:56%"></span>
+            <div class="st"><span>9:41</span><span class="r"><span class="sig"><i></i><i></i><i></i></span><span class="bat"></span></span></div>
+            <div class="bd">
+              <div class="hd6"><b>Aurora Coffee</b><span>Gold</span></div>
+              <div class="loy">
+                <span>Free drinks earned</span>
+                <b>03</b>
+                <em>Member since 2024</em>
               </div>
-              <div class="tile row" style="padding:9px">
-                <span class="av sq"></span>
-                <div class="grow"><b style="font-size:10px">Ravi · RJ 4821</b><span class="lbl">Toyota Prius · 4.9</span></div>
-                <b class="mono2" style="font-size:11px">$12</b>
+              <div class="lbl3"><span>Stamp card</span><span>6 / 10</span></div>
+              <div class="stamps">
+                <span class="on"><svg viewBox="0 0 24 24"><use href="#i-coffee"/></svg></span>
+                <span class="on"><svg viewBox="0 0 24 24"><use href="#i-coffee"/></svg></span>
+                <span class="on"><svg viewBox="0 0 24 24"><use href="#i-coffee"/></svg></span>
+                <span class="on"><svg viewBox="0 0 24 24"><use href="#i-coffee"/></svg></span>
+                <span class="on"><svg viewBox="0 0 24 24"><use href="#i-coffee"/></svg></span>
+                <span class="on"><svg viewBox="0 0 24 24"><use href="#i-coffee"/></svg></span>
+                <span></span><span></span><span></span><span></span>
               </div>
-              <div class="row" style="gap:8px">
-                <span class="pill solid" style="flex:1;padding:9px">Confirm</span>
-                <span class="pill" style="padding:9px 14px">Cancel</span>
-              </div>
+              <div class="btn2">Scan to earn</div>
             </div>
-            <span class="homebar"></span>
-          </div>
-        </div>
-        <figcaption class="cap"><span class="n">18</span><div><b>Ride</b><small>Transport · Book a ride</small></div></figcaption>
-      </figure>
-
-      <!-- 19 · Coffee -->
-      <figure class="app d-coral reveal">
-        <div class="phone">
-          <div class="screen">
-            <span class="notch"></span>
-            <div class="sbar"><span>9:41</span><span class="sright"><span class="sig"><i></i><i></i><i></i></span><span class="bat"></span></span></div>
-            <div class="sbody">
-              <div class="hd"><div><b>Rewards</b><span class="sub">Aurora Coffee</span></div><span class="av sm c"></span></div>
-              <div class="tile dark" style="gap:6px;padding:13px">
-                <span class="lbl">Free drinks earned</span>
-                <span class="num-big" style="color:#fff">03</span>
-                <span class="pill solid" style="justify-self:start">Gold member</span>
-              </div>
-              <div class="hd"><b>Stamp card</b><span class="sub">6 of 10</span></div>
-              <div class="g5">
-                <span class="stamp on"><svg viewBox="0 0 24 24"><use href="#i-coffee"/></svg></span>
-                <span class="stamp on"><svg viewBox="0 0 24 24"><use href="#i-coffee"/></svg></span>
-                <span class="stamp on"><svg viewBox="0 0 24 24"><use href="#i-coffee"/></svg></span>
-                <span class="stamp on"><svg viewBox="0 0 24 24"><use href="#i-coffee"/></svg></span>
-                <span class="stamp on"><svg viewBox="0 0 24 24"><use href="#i-coffee"/></svg></span>
-                <span class="stamp on"><svg viewBox="0 0 24 24"><use href="#i-coffee"/></svg></span>
-                <span class="stamp"><svg viewBox="0 0 24 24"><use href="#i-coffee"/></svg></span>
-                <span class="stamp"><svg viewBox="0 0 24 24"><use href="#i-coffee"/></svg></span>
-                <span class="stamp"><svg viewBox="0 0 24 24"><use href="#i-coffee"/></svg></span>
-                <span class="stamp"><svg viewBox="0 0 24 24"><use href="#i-coffee"/></svg></span>
-              </div>
-              <span class="spacer"></span>
-              <div class="row" style="justify-content:center">
-                <span class="pill solid" style="padding:9px 22px">Scan to earn</span>
-              </div>
-            </div>
-            <nav class="tabbar">
+            <nav class="tb4">
               <span><svg viewBox="0 0 24 24"><use href="#i-home"/></svg></span>
               <span class="on"><svg viewBox="0 0 24 24"><use href="#i-coffee"/></svg></span>
               <span><svg viewBox="0 0 24 24"><use href="#i-star"/></svg></span>
               <span><svg viewBox="0 0 24 24"><use href="#i-user"/></svg></span>
             </nav>
-            <span class="homebar"></span>
+            <span class="hb"></span>
           </div>
         </div>
-        <figcaption class="cap"><span class="n">19</span><div><b>Coffee</b><small>Loyalty · Rewards card</small></div></figcaption>
+        <figcaption class="cap"><span class="n">19</span><div><b>Coffee</b><small>Loyalty · Kraft café</small></div></figcaption>
       </figure>
 
-      <!-- 20 · Analytics -->
-      <figure class="app d-indigo reveal">
-        <div class="phone">
-          <div class="screen">
+      <!-- 20 · Analytics — dark dashboard -->
+      <figure class="app a20 dk reveal">
+        <div class="device">
+          <div class="scr">
             <span class="notch"></span>
-            <div class="sbar"><span>9:41</span><span class="sright"><span class="sig"><i></i><i></i><i></i></span><span class="bat"></span></span></div>
-            <div class="sbody">
-              <div class="hd"><div><b>Overview</b><span class="sub">Last 7 days</span></div><span class="pill">Live</span></div>
-              <div class="g2">
-                <div class="tile" style="gap:6px"><span class="lbl">Visitors</span><b>24.8k</b><span class="pill solid" style="justify-self:start">+18%</span></div>
-                <div class="tile" style="gap:6px"><span class="lbl">Revenue</span><b>$9.2k</b><span class="pill" style="justify-self:start">+6%</span></div>
+            <div class="st"><span>9:41</span><span class="r"><span class="sig"><i></i><i></i><i></i></span><span class="bat"></span></span></div>
+            <div class="bd">
+              <div class="hd7"><b>Overview</b><span>Last 7 days</span></div>
+              <div class="kpi">
+                <div><span class="l3">Visitors</span><b>24,812</b><em class="up2">+18.2%</em></div>
+                <div><span class="l3">Revenue</span><b>$9.2k</b><em class="up2">+6.4%</em></div>
+                <div><span class="l3">Bounce</span><b>32.1%</b><em class="dn2">-1.8%</em></div>
+                <div><span class="l3">Session</span><b>3m 12s</b><em class="up2">+4.9%</em></div>
               </div>
-              <div class="hd"><b>Traffic</b><span class="sub">Weekly</span></div>
-              <div class="chart" style="height:56px">
-                <i style="height:40%"></i><i style="height:58%"></i><i style="height:46%"></i><i style="height:72%"></i><i style="height:62%"></i><i style="height:84%"></i><i class="on" style="height:96%"></i>
+              <div class="chart2">
+                <div class="ct"><span>Traffic</span><span>Weekly</span></div>
+                <div class="bars2">
+                  <i style="height:40%"></i><i class="a" style="height:58%"></i><i style="height:46%"></i><i class="b" style="height:72%"></i><i style="height:62%"></i><i class="c" style="height:84%"></i><i class="a" style="height:96%"></i>
+                </div>
               </div>
-              <div class="row"><span class="lbl" style="flex:1">Bounce rate</span><b class="mono2" style="font-size:10px">32%</b></div>
-              <div class="row"><span class="lbl" style="flex:1">Avg. session</span><b class="mono2" style="font-size:10px">3m 12s</b></div>
-              <span class="spacer"></span>
+              <div class="tbl">
+                <div><span style="width:52px">/gallery</span><i class="track"><i style="width:88%"></i></i><b>8.4k</b></div>
+                <div><span style="width:52px">/portfolio</span><i class="track"><i style="width:62%"></i></i><b>5.9k</b></div>
+              </div>
+              <span style="flex:1"></span>
             </div>
-            <nav class="tabbar">
-              <span><svg viewBox="0 0 24 24"><use href="#i-home"/></svg></span>
-              <span class="on"><svg viewBox="0 0 24 24"><use href="#i-chart"/></svg></span>
-              <span><svg viewBox="0 0 24 24"><use href="#i-grid"/></svg></span>
-              <span><svg viewBox="0 0 24 24"><use href="#i-user"/></svg></span>
-            </nav>
-            <span class="homebar"></span>
+            <span class="hb"></span>
           </div>
         </div>
-        <figcaption class="cap"><span class="n">20</span><div><b>Analytics</b><small>Business · Live metrics</small></div></figcaption>
+        <figcaption class="cap"><span class="n">20</span><div><b>Analytics</b><small>Business · Dark dashboard</small></div></figcaption>
       </figure>
 
     </div>
