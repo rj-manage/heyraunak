@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>RJ App Faces Gallery — RJ</title>
-<meta name="description" content="Twenty mobile app faces by RJ, each on its own page with its own front screen and its own set of inside screens — a map canvas for Maps, a viewfinder for Camera, a vinyl for Podcast. Four categories, eighty screens, every one built differently." />
+<title>02 · Music Player — RJ App Faces</title>
+<meta name="description" content="A synthwave player where the album art is built from stripes rather than pixels. Face 02 of 20 in the RJ App Faces Gallery — Audio · Neon synthwave, Intermediate level." />
 <meta name="theme-color" content="#E3E9F0" />
 <link rel="icon" type="image/png" href="../assets/RJ_Logo_Black.png" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -13,10 +13,7 @@
 <link rel="stylesheet" href="../css/site.css" />
 <link rel="stylesheet" href="css/appfaces.css" />
 </head>
-<body>
-
-<div id="progress"></div>
-<button id="toTop" type="button" aria-label="Back to top">↑</button>
+<body data-face="2">
 
 <!-- ================= NAV ================= -->
 <nav class="nav">
@@ -33,33 +30,48 @@
     <a href="../works/" data-nav>Works</a>
     <a href="../about/" data-nav>About Company</a>
   </div>
-  <a class="soft-btn cta" href="../gallery/">Back to Gallery</a>
+  <a class="soft-btn cta" href="index.html">← All app faces</a>
   <button class="burger" id="burger" type="button" aria-label="Menu" aria-expanded="false">☰</button>
 </nav>
 
-<!-- ================= PAGE HEAD ================= -->
-<header class="page-head">
-  <div class="sec-head reveal" style="max-width:840px">
-    <div class="kicker">Design Gallery · Collection D</div>
-    <h2>RJ App Faces Gallery</h2>
-    <p>Twenty mobile apps, and no two built the same way. Each face now has <b>its own page</b> — open one and step through its four screens, from the map canvas in Maps to the viewfinder in Camera and the vinyl in Podcast.</p>
-    <div class="soft-chip" style="margin-top:20px"><span class="dot"></span> 20 faces · 4 categories · 80 screens</div>
+<!-- ================= FACE HEAD ================= -->
+<header class="page-head face">
+  <div class="face-kicker">
+    <a class="lnk" href="index.html">← All app faces</a>
+    <span class="sep"></span>
+    <span class="lnk">Face 02 of 20</span>
+    <span class="sep"></span>
+    <span class="lv lv-m">Intermediate</span>
+  </div>
+  <h1 class="face-title">Music Player</h1>
+  <div class="face-style">Audio · Neon synthwave · Media & Social</div>
+  <p class="face-blurb">A synthwave player where the album art is built from stripes rather than pixels. The waveform under the title is real markup, so the shape of the song is data you can change.</p>
+  <div class="face-chips">
+    <span class="soft-chip"><span class="dot"></span> 4 screens inside</span>
+    <span class="soft-chip"><span class="dot"></span> Dark theme</span>
+    <span class="soft-chip"><span class="dot"></span> 100% CSS art</span>
   </div>
 </header>
 
-<!-- ================= CATEGORY RAIL ================= -->
-<nav class="rail" id="rail" aria-label="App face categories"></nav>
+<!-- ================= STAGE + PANELS ================= -->
+<section class="face-main">
+  <div id="stage"></div>
+  <aside class="face-side" id="side"></aside>
+</section>
 
-<!-- ================= FACES ================= -->
-<section class="appfaces" style="padding-top:6px">
-  <div class="wrap">
-    <div class="grid-note reveal">
-      <span class="soft-btn sm ghost" style="cursor:default">Every face is one click away</span>
-      <span style="font-size:12.5px;color:var(--muted)">Each card is the app's real front screen, rendered live — not a screenshot.</span>
-    </div>
-    <main id="grid"></main>
-    <noscript><p style="margin-top:30px;color:var(--muted)">This gallery needs JavaScript to render the app faces.</p></noscript>
+<!-- ================= THE FOUR SCREENS ================= -->
+<section class="face-screens" style="padding-top:64px">
+  <div class="sec-head reveal" style="max-width:660px">
+    <div class="kicker">Inside this face</div>
+    <h2>The four screens</h2>
+    <p>Every app opens on its front screen and carries three more behind it. Click any screen to bring it onto the stage above.</p>
   </div>
+  <div id="screens"></div>
+</section>
+
+<!-- ================= PREV / NEXT ================= -->
+<section class="wrap" style="padding-top:56px">
+  <div class="face-next reveal" id="next"></div>
 </section>
 
 <!-- ================= CTA ================= -->
@@ -68,12 +80,12 @@
     <div class="cta-band reveal">
       <span class="glow"></span>
       <div>
-        <div class="kicker">Want one of these?</div>
-        <h2>Any app here can become your product.</h2>
-        <p>Tell us which face caught your eye and we will adapt it to your brand, content and goals.</p>
+        <div class="kicker">Want this face?</div>
+        <h2>Music Player can become your product.</h2>
+        <p>Tell us which screen caught your eye and we will adapt it to your brand, content and goals.</p>
         <div class="cta-actions">
           <a class="soft-btn" href="mailto:theprofessionalrj@gmail.com">Get in touch</a>
-          <a class="soft-btn ghost" href="../facesgallery/">See the Web Faces</a>
+          <a class="soft-btn ghost" href="index.html">See all 20 faces</a>
         </div>
       </div>
       <img class="band-logo" src="../assets/RJ_Logo.png" alt="RJ" />
@@ -90,17 +102,16 @@
         <span><b>RJ</b><small>Design &amp; Development</small></span>
       </a>
       <div class="flinks">
-        <a href="../portfolio/">Portfolio</a>
-        <a href="../services/">Services</a>
-        <a href="../gallery/">Design Gallery</a>
+        <a href="index.html">All App Faces</a>
         <a href="../facesgallery/">Web Faces</a>
+        <a href="../gallery/">Design Gallery</a>
         <a href="../works/">Works</a>
         <a href="../about/">About Company</a>
       </div>
     </div>
     <div class="foot-tag">
       <span>© 2026 RJ · We design digital experiences.</span>
-      <a href="../gallery/">← All collections</a>
+      <a href="index.html">← Back to the collection</a>
     </div>
   </div>
 </footer>
