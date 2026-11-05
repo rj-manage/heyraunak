@@ -6,9 +6,7 @@
   <title>RJ Web Faces — Website UI/UX Design Gallery</title>
   <meta name="description" content="A gallery of 20 complete website-interface designs by RJ — from simple static layouts to 3D, animated and cinematic web experiences. Beginner to professional." />
   <link rel="icon" href="assets/img/RJ_Logo_Black.png" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Sora:wght@500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/fonts.css" />
   <link rel="stylesheet" href="css/common.css" />
   <style>
     body { background: radial-gradient(1200px 600px at 80% -10%, #eef2ff 0%, transparent 60%), var(--paper); }
@@ -364,7 +362,8 @@
     .grid .card.reveal { transition-delay: calc(var(--i, 0) * 80ms); }
 
     /* Card hover: 3D tilt + glare + mini zoom */
-    .card { position: relative; transform-style: preserve-3d; will-change: transform; }
+    .card { position: relative; transform-style: preserve-3d; }
+    .card:hover { will-change: transform; }
     .card .spot { position: absolute; inset: 0; z-index: 2; pointer-events: none; opacity: 0; transition: opacity .25s ease;
       background: radial-gradient(320px 180px at var(--mx,50%) var(--my,50%), rgba(255,255,255,.55), transparent 70%); }
     .card:hover .spot { opacity: 1; }
@@ -578,6 +577,7 @@
     }
   
     /* ---- audit repair: contrast-safe accent text + fluid card grid ---- */
+    .hero h1 em{ -webkit-text-fill-color:var(--mint-ink) !important; color:var(--mint-ink) !important; }
     .category-head .kicker{ color:var(--mint-ink) !important; }
     .card .go{ color:var(--mint-ink) !important; }
     .card .go::after{ background:var(--mint-ink) !important; }
@@ -1141,17 +1141,26 @@
     document.querySelectorAll('.card').forEach((card) => {
       const spot = card.querySelector('.spot');
       if (!spot) return;
+      let r = null, queued = false, lx = 0, ly = 0;
+      card.addEventListener('mouseenter', () => { r = card.getBoundingClientRect(); });
       card.addEventListener('mousemove', (e) => {
-        const r = card.getBoundingClientRect();
-        const px = (e.clientX - r.left) / r.width;
-        const py = (e.clientY - r.top) / r.height;
-        const rx = (0.5 - py) * 8;
-        const ry = (px - 0.5) * 10;
-        card.style.transform = `translateY(-6px) perspective(900px) rotateX(${rx}deg) rotateY(${ry}deg)`;
-        spot.style.setProperty('--mx', (px * 100) + '%');
-        spot.style.setProperty('--my', (py * 100) + '%');
+        lx = e.clientX; ly = e.clientY;
+        if (queued) return;
+        queued = true;
+        requestAnimationFrame(() => {
+          queued = false;
+          if (!r) r = card.getBoundingClientRect();
+          const px = (lx - r.left) / r.width;
+          const py = (ly - r.top) / r.height;
+          const rx = (0.5 - py) * 8;
+          const ry = (px - 0.5) * 10;
+          card.style.transform = `translateY(-6px) perspective(900px) rotateX(${rx}deg) rotateY(${ry}deg)`;
+          spot.style.setProperty('--mx', (px * 100) + '%');
+          spot.style.setProperty('--my', (py * 100) + '%');
+        });
       });
       card.addEventListener('mouseleave', () => {
+        r = null;
         card.style.transform = '';
       });
     });

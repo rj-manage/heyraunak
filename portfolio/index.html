@@ -6,9 +6,7 @@
 <title>Raunak Raj - Portfolio</title>
 <meta name="description" content="Portfolio of Raunak Raj — Full-Stack Web/Software Developer from Bengaluru. Scroll to walk through his journey.">
 <link rel="icon" type="image/png" href="RJ_Logo.png">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Sora:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/fonts.css" />
 <style>
   :root{
     --bg:#e3e3e3;                 /* matches the RJ walk frame background */
@@ -779,6 +777,7 @@
     if(requested[k]) return;
     requested[k] = true;
     var im = new Image();
+    im.decoding = "async";
     im.src = k;
   }
 
@@ -809,27 +808,28 @@
   window.addEventListener("scroll", onScroll, { passive:true });
   window.addEventListener("resize", onScroll);
 
-  /* preload the whole walk sequence into the browser cache during idle time so
-     scrubbing never has to wait on the network (prevents blank/flashing frames) */
-  var preloading = false;
-  function preloadAll(){
-    if(preloading) return;
-    preloading = true;
+  /* Warm only a bounded lead-in window during idle time. The scroll handler keeps
+     a moving window warm, so scrubbing stays smooth without downloading all 450
+     frames up-front (which competed with the intro video and first interaction). */
+  var warmed = false;
+  function warmLead(){
+    if(warmed) return;
+    warmed = true;
+    var limit = Math.min(TOTAL, 120);
     var i = 0;
-    var BATCH = 40;
+    var BATCH = 30;
     function step(){
-      var end = Math.min(i + BATCH, TOTAL);
+      var end = Math.min(i + BATCH, limit);
       for(; i < end; i++) warm(i);
-      if(i < TOTAL){
-        if("requestIdleCallback" in window) requestIdleCallback(step, { timeout: 2000 });
-        else setTimeout(step, 50);
+      if(i < limit){
+        if("requestIdleCallback" in window) requestIdleCallback(step, { timeout: 1000 });
+        else setTimeout(step, 60);
       }
     }
-    if("requestIdleCallback" in window) requestIdleCallback(step, { timeout: 3000 });
-    else setTimeout(step, 250);
+    if("requestIdleCallback" in window) requestIdleCallback(step, { timeout: 1500 });
+    else setTimeout(step, 200);
   }
-  window.addEventListener("load", preloadAll);
-  setTimeout(preloadAll, 1000);
+  window.addEventListener("load", warmLead);
 
   /* pre-warm the first frames so the animation starts instantly */
   update();

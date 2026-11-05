@@ -109,7 +109,7 @@ button { font: inherit; color: inherit; background: none; border: none; }
 /* ---------- Reduced motion: calm everything ---------- */
 @media (prefers-reduced-motion: reduce) {
   .reveal { opacity: 1; transform: none; transition: none; }
-  * { animation-duration: .001s !important; animation-iteration-count: 1 !important; }
+  * { animation-duration: .001s !important; animation-delay: 0s !important; animation-iteration-count: 1 !important; }
 }
 /* ---- audit repair: clip parallax layers + allow shrink/wrap ---- */
 .par { overflow: hidden; }

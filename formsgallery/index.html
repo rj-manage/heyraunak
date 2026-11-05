@@ -6,9 +6,7 @@
   <title>RJ_MANAGE — Forms Design Gallery</title>
   <meta name="description" content="A gallery of 20 unique form designs by RJ_MANAGE — from classic layouts to high-tech 3D animated UI/UX." />
   <link rel="icon" href="assets/img/RJ_Logo_Black.png" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Sora:wght@500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/fonts.css" />
   <link rel="stylesheet" href="css/common.css" />
   <style>
     body { background: radial-gradient(1200px 600px at 80% -10%, #eef2ff 0%, transparent 60%), var(--paper); }
@@ -329,7 +327,8 @@
     .grid .card.reveal { transition-delay: calc(var(--i, 0) * 80ms); }
 
     /* ---------- Card hover: lift + 3D tilt + glare ---------- */
-    .card { position: relative; transform-style: preserve-3d; will-change: transform; }
+    .card { position: relative; transform-style: preserve-3d; }
+    .card:hover { will-change: transform; }
     .card .spot { position: absolute; inset: 0; z-index: 2; pointer-events: none; opacity: 0; transition: opacity .25s ease;
       background: radial-gradient(320px 180px at var(--mx,50%) var(--my,50%), rgba(255,255,255,.55), transparent 70%); }
     .card:hover .spot { opacity: 1; }
@@ -551,6 +550,7 @@
     }
   
     /* ---- audit repair: contrast-safe accent text + fluid card grid ---- */
+    .hero h1 em{ -webkit-text-fill-color:var(--mint-ink) !important; color:var(--mint-ink) !important; }
     .category-head .kicker{ color:var(--mint-ink) !important; }
     .card .go{ color:var(--mint-ink) !important; }
     .card .go::after{ background:var(--mint-ink) !important; }

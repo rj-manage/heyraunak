@@ -142,7 +142,7 @@ img { max-width: 100%; display: block; }
 
 @media (prefers-reduced-motion: reduce) {
   .reveal { opacity: 1; transform: none; transition: none; }
-  * { animation-duration: .001s !important; animation-iteration-count: 1 !important; }
+  * { animation-duration: .001s !important; animation-delay: 0s !important; animation-iteration-count: 1 !important; }
 }
 
 /* ---- audit repair: never let demo layout force horizontal scroll ---- */

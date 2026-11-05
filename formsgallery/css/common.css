@@ -158,3 +158,14 @@ a { color: inherit; }
 /* ---- audit repair: never let demo layout force horizontal scroll ---- */
 .wrap, .reveal, .section, .container { min-width: 0; }
 img, svg, video, canvas { max-width: 100%; }
+
+/* ---- audit repair: complete reduced-motion handling ---- */
+@media (prefers-reduced-motion: reduce) {
+  .reveal { opacity: 1; transform: none; transition: none; }
+  *, *::before, *::after {
+    animation-duration: .001s !important;
+    animation-delay: 0s !important;
+    animation-iteration-count: 1 !important;
+    transition-delay: 0s !important;
+  }
+}

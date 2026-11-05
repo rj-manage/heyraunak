@@ -1254,6 +1254,17 @@ footer {
   }
 }
 
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-delay: 0s !important;
+    animation-duration: 0.001s !important;
+    animation-iteration-count: 1 !important;
+    transition-delay: 0s !important;
+  }
+}
+
 /* ============================================================
    ACCESSIBILITY + RESPONSIVE HARDENING (audit repair)
    ============================================================ */
