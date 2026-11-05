@@ -154,3 +154,7 @@ a { color: inherit; }
 .demo-head h2 { font-size: clamp(26px, 4vw, 38px); letter-spacing: -.02em; }
 
 .demo-head p { color: var(--ink-600); max-width: 560px; margin: 10px auto 0; font-size: 15.5px; }
+
+/* ---- audit repair: never let demo layout force horizontal scroll ---- */
+.wrap, .reveal, .section, .container { min-width: 0; }
+img, svg, video, canvas { max-width: 100%; }

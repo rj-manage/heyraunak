@@ -12,6 +12,18 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Sora:wght@500;600;700;800&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="../css/site.css" />
 <link rel="stylesheet" href="css/appfaces.css" />
+
+  <link rel="canonical" href="https://www.heyraunak.site/appfacesgallery/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="RJ — Design &amp; Development Studio" />
+  <meta property="og:title" content="RJ App Faces Gallery — RJ" />
+  <meta property="og:description" content="Twenty mobile app faces by RJ, each on its own page with its own front screen and its own set of inside screens — a map canvas for Maps, a viewfinder for Camera, a vinyl for Podcast. Four categories, eighty screens, every one built differently." />
+  <meta property="og:url" content="https://www.heyraunak.site/appfacesgallery/" />
+  <meta property="og:image" content="https://www.heyraunak.site/assets/og-image.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="RJ App Faces Gallery — RJ" />
+  <meta name="twitter:description" content="Twenty mobile app faces by RJ, each on its own page with its own front screen and its own set of inside screens — a map canvas for Maps, a viewfinder for Camera, a vinyl for Podcast. Four categories, eighty screens, every one built differently." />
+  <meta name="twitter:image" content="https://www.heyraunak.site/assets/og-image.png" />
 </head>
 <body>
 
@@ -19,7 +31,7 @@
 <button id="toTop" type="button" aria-label="Back to top">↑</button>
 
 <!-- ================= NAV ================= -->
-<nav class="nav">
+<nav class="nav" aria-label="Primary">
   <a class="brand" href="../index.html">
     <span class="logo"><img src="../assets/RJ_Logo_Black.png" alt="RJ logo" /></span>
     <span><b>RJ</b><small>Design &amp; Development</small></span>
@@ -37,11 +49,12 @@
   <button class="burger" id="burger" type="button" aria-label="Menu" aria-expanded="false">☰</button>
 </nav>
 
+<main>
 <!-- ================= PAGE HEAD ================= -->
 <header class="page-head">
   <div class="sec-head reveal" style="max-width:840px">
     <div class="kicker">Design Gallery · Collection D</div>
-    <h2>RJ App Faces Gallery</h2>
+    <h1>RJ App Faces Gallery</h1>
     <p>Twenty mobile apps, and no two built the same way. Each face now has <b>its own page</b> — open one and step through its four screens, from the map canvas in Maps to the viewfinder in Camera and the vinyl in Podcast.</p>
     <div class="soft-chip" style="margin-top:20px"><span class="dot"></span> 20 faces · 4 categories · 80 screens</div>
   </div>
@@ -57,7 +70,7 @@
       <span class="soft-btn sm ghost" style="cursor:default">Every face is one click away</span>
       <span style="font-size:12.5px;color:var(--muted)">Each card is the app's real front screen, rendered live — not a screenshot.</span>
     </div>
-    <main id="grid"></main>
+    <div id="grid"></div>
     <noscript><p style="margin-top:30px;color:var(--muted)">This gallery needs JavaScript to render the app faces.</p></noscript>
   </div>
 </section>
@@ -80,6 +93,8 @@
     </div>
   </div>
 </section>
+
+</main>
 
 <!-- ================= FOOTER ================= -->
 <footer>
@@ -107,5 +122,18 @@
 
 <script src="js/appfaces.js"></script>
 <script src="../js/site.js"></script>
+<script>
+/* The card previews are illustrative mock screens, not real UI — hide them
+   from assistive tech (the card's own heading/description names the link). */
+(function () {
+  var grid = document.getElementById("grid");
+  if (!grid) return;
+  function hide() {
+    grid.querySelectorAll(".scr").forEach(function (s) { s.setAttribute("aria-hidden", "true"); });
+  }
+  new MutationObserver(hide).observe(grid, { childList: true, subtree: true });
+  hide();
+})();
+</script>
 </body>
 </html>

@@ -14,7 +14,7 @@
     --bg:#e3e3e3;                 /* matches the RJ walk frame background */
     --ink:#111827;
     --ink-70:#3f4756;
-    --muted:#6b7280;
+    --muted:#575f6d;
     --accent:#4338ca;
     --accent-2:#0e7490;
     --card:rgba(255,255,255,.62);
@@ -57,7 +57,7 @@
     /* home-page design tokens, scoped to the nav so the pill matches exactly
        without touching the rest of this page's theme */
     --canvas:#e3e9f0; --light:#f7fafe; --dark:#c3cdda;
-    --ink:#2a3444; --muted:#8c98a9; --mint-ink:#1f9d6a; --mint-2:#2bb87e; --mint-3:#4ed7a0;
+    --ink:#2a3444; --muted:#5b6675; --mint-ink:#156a47; --mint-2:#2bb87e; --mint-3:#4ed7a0;
     --sh-r:10px 10px 22px var(--dark), -10px -10px 22px var(--light);
     --sh-s:5px 5px 9px var(--dark), -5px -5px 9px var(--light);
     --sh-in-s:inset 3px 3px 6px var(--dark), inset -3px -3px 6px var(--light);
@@ -370,11 +370,23 @@
     .site-nav .nav-brand small{ display:none; }
   }
 </style>
+
+  <link rel="canonical" href="https://www.heyraunak.site/portfolio/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="RJ — Design &amp; Development Studio" />
+  <meta property="og:title" content="Raunak Raj - Portfolio" />
+  <meta property="og:description" content="Portfolio of Raunak Raj — Full-Stack Web/Software Developer from Bengaluru. Scroll to walk through his journey." />
+  <meta property="og:url" content="https://www.heyraunak.site/portfolio/" />
+  <meta property="og:image" content="https://www.heyraunak.site/assets/og-image.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Raunak Raj - Portfolio" />
+  <meta name="twitter:description" content="Portfolio of Raunak Raj — Full-Stack Web/Software Developer from Bengaluru. Scroll to walk through his journey." />
+  <meta name="twitter:image" content="https://www.heyraunak.site/assets/og-image.png" />
 </head>
 <body>
 
 <!-- ======================= INTRO ======================= -->
-<div id="intro" aria-label="Intro">
+<div id="intro" role="region" aria-label="Intro">
   <video id="intro-video" autoplay muted playsinline preload="auto" tabindex="-1"
          src="Log_Intro_web.mp4"></video>
   <div id="intro-ui">
@@ -403,7 +415,7 @@
   <button class="nav-burger" id="burger" type="button" aria-label="Menu" aria-expanded="false">☰</button>
 </nav>
 
-<div class="side-tag">scroll to walk through<br>the story <span class="dot">●</span></div>
+<div class="side-tag" role="complementary" aria-label="Studio">scroll to walk through<br>the story <span class="dot">●</span></div>
 
 <!-- ======================= CENTRAL WALK ======================= -->
 <div id="stage" aria-hidden="true">
@@ -666,14 +678,14 @@
 
         <div class="two-col">
           <div class="box">
-            <h4>Leadership</h4>
+            <h3>Leadership</h3>
             <ul>
               <li>President, SPARK Club @ REVA University (2025 – Present)</li>
               <li>Event Management Team, GDSC Event (Jun 2024)</li>
             </ul>
           </div>
           <div class="box">
-            <h4>Languages &amp; Interests</h4>
+            <h3>Languages &amp; Interests</h3>
             <ul>
               <li>English &amp; Hindi</li>
               <li>Web/Software Development</li>

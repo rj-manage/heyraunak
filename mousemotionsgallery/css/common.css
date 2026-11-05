@@ -111,3 +111,10 @@ button { font: inherit; color: inherit; background: none; border: none; }
   .reveal { opacity: 1; transform: none; transition: none; }
   * { animation-duration: .001s !important; animation-iteration-count: 1 !important; }
 }
+/* ---- audit repair: clip parallax layers + allow shrink/wrap ---- */
+.par { overflow: hidden; }
+.wrap, .reveal, .container, .section { min-width: 0; }
+@media (max-width: 560px) {
+  .nav { flex-wrap: wrap; row-gap: 10px; }
+  .nav-links { flex-wrap: wrap; gap: 10px 16px; }
+}

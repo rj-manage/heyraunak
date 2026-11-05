@@ -144,3 +144,17 @@ img { max-width: 100%; display: block; }
   .reveal { opacity: 1; transform: none; transition: none; }
   * { animation-duration: .001s !important; animation-iteration-count: 1 !important; }
 }
+
+/* ---- audit repair: never let demo layout force horizontal scroll ---- */
+.wrap, .reveal, .panel-tall, .split, .cards, .sec-head { min-width: 0; }
+.checks li, .cards p, .panel-tall p { overflow-wrap: anywhere; }
+@media (max-width: 560px) {
+  .nav { flex-wrap: wrap; row-gap: 10px; }
+  .nav-links { flex-wrap: wrap; gap: 10px 16px; }
+}
+
+/* audit repair: stat grid must fit narrow screens */
+.stat-grid { min-width: 0; }
+@media (max-width: 560px) {
+  .stat-grid { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
+}

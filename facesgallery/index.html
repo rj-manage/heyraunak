@@ -68,7 +68,7 @@
     .category-head h2 { font-size: 26px; letter-spacing: -.02em; line-height: 1.15; }
     .category-head p { color: var(--ink-600); font-size: 14px; margin-top: 2px; }
 
-    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 24px; margin-top: 22px; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(320px, 100%), 1fr)); gap: 24px; margin-top: 22px; }
 
     /* ---------- Cards ---------- */
     .card {
@@ -407,8 +407,8 @@
        ============================================================ */
     :root{
       --canvas:#E3E9F0; --light:#F7FAFE; --dark:#C3CDDA;
-      --ink:#2A3444; --muted:#8C98A9;
-      --mint:#3CCF91; --mint-ink:#1F9D6A; --coral:#FF8E7F; --indigo:#6366F1;
+      --ink:#2A3444; --muted:#5B6675;
+      --mint:#3CCF91; --mint-ink:#156A47; --coral:#FF8E7F; --indigo:#6366F1;
       --sh-r:10px 10px 22px var(--dark), -10px -10px 22px var(--light);
       --sh-s:5px 5px 9px var(--dark), -5px -5px 9px var(--light);
       --sh-in:inset 5px 5px 10px var(--dark), inset -5px -5px 10px var(--light);
@@ -511,7 +511,7 @@
     .cat-3d .icon{ color:#0EA5E9 !important; }
     .cat-high .icon{ color:var(--coral) !important; }
 
-    .grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:24px; margin-top:24px; }
+    .grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(min(300px,100%),1fr)); gap:24px; margin-top:24px; }
     .card{ background:var(--canvas) !important; border-radius:26px; overflow:hidden; text-decoration:none;
       display:flex; flex-direction:column; border:none !important; box-shadow:var(--sh-r) !important;
       transition:transform .25s ease, box-shadow .25s ease; }
@@ -529,7 +529,7 @@
       padding:5px 12px; border-radius:999px; background:var(--canvas) !important; box-shadow:var(--sh-in-s); }
     .lvl{ color:var(--indigo) !important; }
     .lvl-s{ color:#64748B !important; }
-    .lvl-m{ color:#1F9D6A !important; }
+    .lvl-m{ color:#156A47 !important; }
     .lvl-a{ color:#EA580C !important; }
     .lvl-x{ color:#E11D48 !important; }
     .card .go{ font-size:13px; font-weight:800; color:var(--mint) !important; margin-top:8px; }
@@ -576,7 +576,26 @@
     @media (prefers-reduced-motion:reduce){
       .soft-chip .dot,.hero .chip .dot{ animation:none !important; }
     }
-  </style>
+  
+    /* ---- audit repair: contrast-safe accent text + fluid card grid ---- */
+    .category-head .kicker{ color:var(--mint-ink) !important; }
+    .card .go{ color:var(--mint-ink) !important; }
+    .card .go::after{ background:var(--mint-ink) !important; }
+    .rail a.active{ color:#fff !important; background:linear-gradient(145deg,#1F9D6A,#156A47) !important; }
+
+</style>
+
+  <link rel="canonical" href="https://www.heyraunak.site/facesgallery/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="RJ — Design &amp; Development Studio" />
+  <meta property="og:title" content="RJ Web Faces — Website UI/UX Design Gallery" />
+  <meta property="og:description" content="A gallery of 20 complete website-interface designs by RJ — from simple static layouts to 3D, animated and cinematic web experiences. Beginner to professional." />
+  <meta property="og:url" content="https://www.heyraunak.site/facesgallery/" />
+  <meta property="og:image" content="https://www.heyraunak.site/assets/og-image.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="RJ Web Faces — Website UI/UX Design Gallery" />
+  <meta name="twitter:description" content="A gallery of 20 complete website-interface designs by RJ — from simple static layouts to 3D, animated and cinematic web experiences. Beginner to professional." />
+  <meta name="twitter:image" content="https://www.heyraunak.site/assets/og-image.png" />
 </head>
 <body>
   <!-- Decorative animated background -->
@@ -586,7 +605,7 @@
   <div id="progress"></div>
   <button id="toTop" aria-label="Back to top">↑</button>
 
-  <nav class="nav">
+  <nav class="nav" aria-label="Primary">
     <a class="brand" href="../index.html">
       <span class="logo"><img src="assets/img/RJ_Logo_Black.png" alt="RJ logo" /></span>
       <span><b>RJ</b><small>Design &amp; Development</small></span>
