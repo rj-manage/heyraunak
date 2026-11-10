@@ -15,7 +15,7 @@
     --muted:#575f6d;
     --accent:#4338ca;
     --accent-2:#0e7490;
-    --card:rgba(255,255,255,.62);
+    --card:rgba(255,255,255,.82);
     --line:rgba(17,24,39,.12);
     --stage-w:min(56.25vh, 100vw);   /* frame is 540x960 => width = height*0.5625 */
     --ease:cubic-bezier(.22,.9,.24,1);
@@ -117,19 +117,27 @@
   /* ---------- fixed central walking stage ---------- */
   #stage{
     position:fixed; top:0; left:50%; transform:translateX(-50%);
-    width:var(--stage-w); z-index:1; pointer-events:none;
-  }
-  #stage img{
-    display:block; width:100%; height:auto; user-select:none;
+    width:var(--stage-w); aspect-ratio:540/960; z-index:1; pointer-events:none;
+    contain:layout paint; will-change:transform;
     /* The walk sequence is a full-height rectangle whose own background does
        not match the page exactly, so its straight vertical edges read as a
        visible box around the walker. Feather the left/right edges into the
-       page background to dissolve that box. */
+       page background to dissolve that box. The mask lives on this single
+       static container so it is not re-rasterised as frames swap. */
     -webkit-mask-image:linear-gradient(to right,transparent 0,#000 7%,#000 93%,transparent 100%);
     mask-image:linear-gradient(to right,transparent 0,#000 7%,#000 93%,transparent 100%);
     -webkit-mask-repeat:no-repeat; mask-repeat:no-repeat;
     -webkit-mask-size:100% 100%; mask-size:100% 100%;
   }
+  /* Double buffer: two stacked frames, only one of which is opaque. A new frame
+     is promoted to the front only once its bitmap has decoded, so the walker
+     never blanks out mid-scroll and the live layer is never re-fetched. */
+  #stage .walk-layer{
+    position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
+    opacity:0; user-select:none; -webkit-user-select:none;
+    transform:translateZ(0); backface-visibility:hidden;
+  }
+  #stage .walk-layer.is-front{ opacity:1; }
 
   /* ---------- content slots: 3 columns with a reserved center lane ---------- */
   main{ position:relative; z-index:2; }
@@ -170,8 +178,10 @@
     border-radius:22px;
     padding:clamp(24px,2.4vw,38px);
     box-shadow:0 24px 50px -30px rgba(17,24,39,.35);
-    backdrop-filter:blur(9px);
-    -webkit-backdrop-filter:blur(9px);
+    /* The walker repaints behind these cards on every scroll step, so a
+       backdrop-filter here had to re-blur its whole backdrop each frame -
+       the single biggest source of desktop scroll jank. The frosted look is
+       kept with a slightly more opaque translucent fill instead. */
     max-width:min(500px,calc(100% - 6vw));
   }
   .kicker{
@@ -335,10 +345,9 @@
       padding:0; width:100%; display:flex; justify-content:center;
       --x:0px; --y:56px;
     }
-    /* frosted look kept via higher opacity; the blur is dropped because it is
-       very expensive on phones while the walker repaints behind the cards */
-    .card{ max-width:620px; width:100%; background:rgba(255,255,255,.75);
-      backdrop-filter:none; -webkit-backdrop-filter:none; }
+    /* the walker sits directly behind these cards on phones, so keep them a
+       little more see-through than the desktop default */
+    .card{ max-width:620px; width:100%; background:rgba(255,255,255,.75); }
     .hero{ text-align:center; }
     .hero .kicker{ justify-content:center; }
     .hero .chips, .hero .cta-row{ justify-content:center; }
@@ -417,7 +426,8 @@
 
 <!-- ======================= CENTRAL WALK ======================= -->
 <div id="stage" aria-hidden="true">
-  <img id="walker" alt="" width="540" height="960" draggable="false">
+  <img class="walk-layer is-front" alt="" width="540" height="960" draggable="false">
+  <img class="walk-layer" alt="" width="540" height="960" draggable="false">
 </div>
 
 <main>
@@ -748,21 +758,37 @@
     });
   }
 
-  /* ---------- scroll-scrubbed central walk ---------- */
-  var TOTAL   = 450;                       /* frame_0000 .. frame_0449  */
-  var PREFIX  = "RJ_Walk_Final/webp/frame_";
-  var walker  = document.getElementById("walker");
-  var stage   = document.getElementById("stage");
-  var current = -1;
-  var requested = {};
-
-  /* if the walk frames are not deployed, hide the stage rather than painting a
-     broken-image placeholder over the content */
-  walker.addEventListener("error", function(){
-    if(stage) stage.style.display = "none";
-  });
+  /* ---------- scroll-scrubbed central walk ----------
+     The walk is 450 separate frame images. They are drawn through two stacked
+     <img> layers used as a double buffer: a frame is only promoted to the front
+     once its bitmap has decoded, so the walker never blanks out mid-scroll, and
+     the visible layer is never re-fetched so a fast scrub cannot abort it. */
+  var TOTAL  = 450;                        /* frame_0000 .. frame_0449  */
+  var PREFIX = "RJ_Walk_Final/webp/frame_";
+  var stage  = document.getElementById("stage");
+  var layers = stage ? stage.querySelectorAll(".walk-layer") : [];
+  var cache  = new Array(TOTAL);            /* decoded-frame pool by index */
+  var shown  = -1;                          /* frame index on screen now  */
+  var front  = 0;                           /* which layer is visible     */
+  var target = -1;                          /* frame index we want next   */
+  var swapId = 0;                           /* discards superseded swaps  */
+  var ready  = false;                       /* at least one frame painted */
+  var warmed = {};                          /* frames already decoded     */
 
   function src(i){ return PREFIX + ("0000" + i).slice(-4) + ".webp"; }
+
+  function clamp(i){ return i < 0 ? 0 : (i >= TOTAL ? TOTAL - 1 : i); }
+
+  function ensure(i){
+    i = clamp(i);
+    var im = cache[i];
+    if(!im){
+      im = cache[i] = new Image();
+      im.decoding = "async";
+      im.src = src(i);
+    }
+    return im;
+  }
 
   function frameFromScroll(){
     var max = document.documentElement.scrollHeight - window.innerHeight;
@@ -770,28 +796,73 @@
     return Math.round(p * (TOTAL - 1));
   }
 
-  /* ask the browser to cache a frame (temp Image, reference dropped afterwards) */
+  /* decode a frame ahead of time so it is instant when it is finally needed */
   function warm(i){
-    if(i < 0 || i >= TOTAL) return;
-    var k = src(i);
-    if(requested[k]) return;
-    requested[k] = true;
-    var im = new Image();
-    im.decoding = "async";
-    im.src = k;
+    if(i < 0 || i >= TOTAL || warmed[i]) return;
+    warmed[i] = true;
+    var im = ensure(i);
+    if(im.decode) im.decode()["catch"](function(){});
+  }
+
+  /* promote frame i to the front layer; if its bitmap is not ready yet, keep
+     the current frame on screen and retry the moment the bitmap lands */
+  function paint(i){
+    if(!layers.length || i === shown) return;
+    var im = ensure(i);
+    if(!(im.complete && im.naturalWidth > 0)){
+      if(!im.__waiting){
+        im.__waiting = true;
+        im.addEventListener("load", function(){
+          im.__waiting = false;
+          if(target === i) paint(i);
+        });
+        im.addEventListener("error", function(){ im.__waiting = false; });
+      }
+      return;
+    }
+    var next  = 1 - front;
+    var layer = layers[next];
+    var url   = im.currentSrc || im.src;
+    var id    = ++swapId;
+    function commit(){
+      if(id !== swapId || shown === i) return;
+      layer.classList.add("is-front");
+      layers[front].classList.remove("is-front");
+      front = next;
+      shown = i;
+      ready = true;
+    }
+    if(layer.getAttribute("src") === im.getAttribute("src") &&
+       layer.complete && layer.naturalWidth > 0){
+      commit();
+      return;
+    }
+    var onLoad = function(){
+      layer.removeEventListener("load", onLoad);
+      commit();
+    };
+    layer.addEventListener("load", onLoad);
+    layer.src = url;
+    if(layer.complete && layer.naturalWidth > 0) commit();
   }
 
   function update(){
-    var target = frameFromScroll();
-    if(target !== current){
-      current = target;
-      walker.src = src(target);
+    target = frameFromScroll();
+    paint(target);
+    /* keep a small neighbourhood decoded so scrubbing stays responsive */
+    for(var d = 1; d <= 10; d++){
+      warm(target + d);
+      warm(target - d);
     }
-    /* keep a window of upcoming + past frames ready for smooth scrubbing */
-    for(var d = 1; d <= 14; d++){
-      warm(current + d);
-      warm(current - d);
-    }
+  }
+
+  /* Only a failure of the very first frame means the sequence is missing on the
+     host - hide the stage then rather than show a broken image. Errors while
+     scrubbing are ignored: one dropped frame must never blank the walker. */
+  if(layers.length){
+    ensure(0).addEventListener("error", function(){
+      if(!ready && stage) stage.style.display = "none";
+    });
   }
 
   var ticking = false;
@@ -808,20 +879,18 @@
   window.addEventListener("scroll", onScroll, { passive:true });
   window.addEventListener("resize", onScroll);
 
-  /* Warm only a bounded lead-in window during idle time. The scroll handler keeps
-     a moving window warm, so scrubbing stays smooth without downloading all 450
-     frames up-front (which competed with the intro video and first interaction). */
-  var warmed = false;
+  /* Once the intro has cleared, decode the rest of the sequence in small idle
+     batches. Idle callbacks simply do not run while the user is scrolling, so
+     the whole walk is ready without ever competing with active scrolling. */
+  var leadStarted = false;
   function warmLead(){
-    if(warmed) return;
-    warmed = true;
-    var limit = Math.min(TOTAL, 120);
-    var i = 0;
-    var BATCH = 30;
+    if(leadStarted) return;
+    leadStarted = true;
+    var i = 0, BATCH = 24;
     function step(){
-      var end = Math.min(i + BATCH, limit);
+      var end = Math.min(i + BATCH, TOTAL);
       for(; i < end; i++) warm(i);
-      if(i < limit){
+      if(i < TOTAL){
         if("requestIdleCallback" in window) requestIdleCallback(step, { timeout: 1000 });
         else setTimeout(step, 60);
       }
@@ -829,10 +898,10 @@
     if("requestIdleCallback" in window) requestIdleCallback(step, { timeout: 1500 });
     else setTimeout(step, 200);
   }
-  window.addEventListener("load", warmLead);
 
-  /* pre-warm the first frames so the animation starts instantly */
-  update();
+  /* paint the first frame immediately so the walker is there from the start */
+  target = frameFromScroll();
+  paint(target);
 
   /* ---------- fullscreen intro → portfolio ---------- */
   var intro      = document.getElementById("intro");
@@ -857,6 +926,7 @@
     document.documentElement.classList.remove("no-scroll");
     update();                                   /* reset the walk to frame 0 */
     paintBar();
+    warmLead();                                 /* pre-decode the sequence once idle */
     setTimeout(function(){ intro.classList.add("hidden"); }, 1050);
   }
 
