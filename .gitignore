@@ -9,18 +9,35 @@
 Thumbs.db
 
 # ---------------------------------------------------------------
+# Node / Next.js build output and secrets
+# ---------------------------------------------------------------
+node_modules/
+.next/
+out/
+*.tsbuildinfo
+next-env.d.ts
+.env
+.env.*.local
+.env.production.local
+.env.development.local
+
+# Test output
+playwright-report/
+test-results/
+coverage/
+
+# ---------------------------------------------------------------
 # Assets that are NOT used at runtime.
 # They stay on disk locally but are left out of the repository so the
 # published site stays small and every page deploys completely.
 # ---------------------------------------------------------------
 /Default Assets/
 /Errors/
-/portfolio/RJ_Walk_Final/*.jpg
-/portfolio/Log_Intro.MP4
-/portfolio/Log_Intro_Inverted_web.mp4
-/formsgallery/assets/Frame_Fin_Video_WEBP_500_frames.zip
-/formsgallery/assets/videos/
+/public/portfolio/RJ_Walk_Final/*.jpg
+/public/portfolio/Log_Intro.MP4
+/public/portfolio/Log_Intro_Inverted_web.mp4
+/public/formsgallery/assets/Frame_Fin_Video_WEBP_500_frames.zip
+/public/formsgallery/assets/videos/
 
 # Internal audit evidence - never published
 /AUDIT/
-.vercel
