@@ -81,8 +81,13 @@ function config() {
 
 function sheetConfigured(cfg) {
   return /^https:\/\/script\.google\.com\//.test(cfg.scriptUrl) &&
-    cfg.secret.length >= MIN_SECRET_LENGTH &&
-    !!cfg.adminEmail && !!cfg.emailKey && !!cfg.sender;
+    cfg.secret.length >= MIN_SECRET_LENGTH;
+}
+
+/* email is a courtesy, storage is the promise: a missing provider must
+   never stop an enquiry being saved */
+function emailConfigured(cfg) {
+  return !!(cfg.adminEmail && cfg.emailKey && cfg.sender);
 }
 
 function isValidEmail(value) {
@@ -468,23 +473,28 @@ module.exports = async function handler(req, res) {
 
   /* the row is saved - from here on failures are logged, never fatal,
      and never cause a second row */
-  let emailState = "sent";
-  try {
-    await sendEmail(cfg, {
-      from: cfg.sender,
-      to: [cfg.adminEmail],
-      subject: "New Project Enquiry Received - RJ Studio",
-      html: adminHtml(data, id, at),
-      text: adminText(data, id, at),
-      reply_to: data.email
-    });
-  } catch (err) {
-    emailState = "failed";
-    console.error("enquiry: admin email failed for " + id + " -", err && err.message);
+  let emailState = "disabled";
+  if (emailConfigured(cfg)) {
+    emailState = "sent";
+    try {
+      await sendEmail(cfg, {
+        from: cfg.sender,
+        to: [cfg.adminEmail],
+        subject: "New Project Enquiry Received - RJ Studio",
+        html: adminHtml(data, id, at),
+        text: adminText(data, id, at),
+        reply_to: data.email
+      });
+    } catch (err) {
+      emailState = "failed";
+      console.error("enquiry: admin email failed for " + id + " -", err && err.message);
+    }
+  } else {
+    console.warn("enquiry: email not configured - saved " + id + " without a notification");
   }
 
   let ackState = "disabled";
-  if (cfg.ack) {
+  if (cfg.ack && emailConfigured(cfg)) {
     try {
       await sendEmail(cfg, {
         from: cfg.sender,
@@ -523,5 +533,6 @@ module.exports.__test = {
   adminText,
   saveToSheet,
   sheetConfigured,
+  emailConfigured,
   HEADERS
 };
