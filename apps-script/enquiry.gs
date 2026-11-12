@@ -150,7 +150,9 @@ function doGet() {
 /* Run this once from the editor to confirm setup. */
 function selfTest() {
   var sheet = getSheet();
-  var secret = PropertiesService.getScriptProperties().getProperty(SECRET_PROPERTY);
+  var secret = String(
+    PropertiesService.getScriptProperties().getProperty(SECRET_PROPERTY) || ""
+  ).trim();
   var report = {
     spreadsheet: SPREADSHEET_ID ? "set" : "MISSING",
     sheet: sheet.getName(),
@@ -165,9 +167,14 @@ function selfTest() {
 /* ---------- helpers ---------- */
 
 function isAuthorised(given) {
-  var expected = PropertiesService.getScriptProperties().getProperty(SECRET_PROPERTY);
-  if (!expected || expected.length < MIN_SECRET_LENGTH) return false;
-  if (typeof given !== "string" || given.length !== expected.length) return false;
+  /* trim: a pasted property often carries a trailing newline */
+  var expected = String(
+    PropertiesService.getScriptProperties().getProperty(SECRET_PROPERTY) || ""
+  ).trim();
+  if (expected.length < MIN_SECRET_LENGTH) return false;
+  if (typeof given !== "string") return false;
+  given = given.trim();
+  if (given.length !== expected.length) return false;
 
   /* length-independent comparison */
   var diff = 0;
