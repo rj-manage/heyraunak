@@ -436,6 +436,24 @@
     color: var(--muted);
     font-size: 14.5px;
   }
+  .f-note {
+    background: var(--canvas);
+    box-shadow: var(--sh-in-s);
+    border-radius: 18px;
+    padding: 14px 18px;
+    margin-bottom: 22px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--ink);
+  }
+  .f-hint-gap {
+    margin-top: 16px;
+  }
+  .f-chips-unsure {
+    margin-top: 14px;
+    padding-top: 14px;
+    border-top: 1px solid rgba(60, 80, 110, 0.14);
+  }
   .f-chips {
     display: flex;
     flex-wrap: wrap;
@@ -702,7 +720,7 @@
         </button>
         <div class="svc-body" id="svc-web">
           <div class="svc-inner">
-            <div class="enq">
+            <div class="enq" data-enq-category="web">
               <span class="enq-label" id="enq-label">Choose the service you need</span>
               <div class="enq-row">
                 <select class="enq-select" id="enq-service" aria-labelledby="enq-label"></select>
@@ -721,8 +739,8 @@
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m8.5 8.5-4 3.5 4 3.5"/><path d="m15.5 8.5 4 3.5-4 3.5"/><path d="M13.6 6.4 10.4 17.6"/></svg>
           </span>
           <span class="svc-title">
-            <b>Software &amp; Product Builds</b>
-            <small>Startup solutions and the tools a team actually works in — from a first MVP to a shipped product.</small>
+            <b>Software &amp; Product Development</b>
+            <small>Custom software and digital products engineered to simplify operations, solve complex challenges, and help businesses scale.</small>
           </span>
           <span class="svc-num">02</span>
           <span class="svc-chev">
@@ -731,14 +749,14 @@
         </button>
         <div class="svc-body" id="svc-software">
           <div class="svc-inner">
-            <ul class="bullets">
-              <li><span class="tic">✓</span> Startup MVPs</li>
-              <li><span class="tic">✓</span> Web applications</li>
-              <li><span class="tic">✓</span> Dashboards &amp; admin panels</li>
-              <li><span class="tic">✓</span> API &amp; third-party integrations</li>
-              <li><span class="tic">✓</span> Internal tools &amp; automation</li>
-              <li><span class="tic">✓</span> Database design</li>
-            </ul>
+            <div class="enq" data-enq-category="software">
+              <span class="enq-label" id="enq-label-software">Choose the software service you need</span>
+              <div class="enq-row">
+                <select class="enq-select" id="enq-service-software" aria-labelledby="enq-label-software"></select>
+                <button class="soft-btn" type="button" id="enq-connect-software" disabled>Let’s Connect</button>
+              </div>
+              <p class="enq-hint">30 services across custom systems, SaaS, industry platforms and technical builds.</p>
+            </div>
           </div>
         </div>
       </article>
@@ -889,7 +907,7 @@
   <div class="enq-dialog" id="enq-dialog" role="dialog" aria-modal="true" aria-labelledby="enq-title">
     <div class="enq-head">
       <div class="enq-headline">
-        <div class="kicker">Web Design &amp; Development</div>
+        <div class="kicker" id="enq-cat">Web Design &amp; Development</div>
         <h2 id="enq-title">Service</h2>
       </div>
       <button class="enq-x" type="button" id="enq-close" aria-label="Close enquiry form">
@@ -931,5 +949,7 @@
 })();
 </script>
 <script src="../js/service-enquiry.js"></script>
+<script src="../js/enquiry-web.js"></script>
+<script src="../js/enquiry-software.js"></script>
 </body>
 </html>
