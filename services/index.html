@@ -81,7 +81,7 @@
     display: grid;
     gap: 10px;
   }
-  .svc-controls .enq-select,
+  .svc-controls .enq-combo,
   .svc-controls .soft-btn {
     width: 100%;
   }
@@ -90,10 +90,62 @@
     padding: 14px 16px;
   }
 
+  /* ---------- global service finder ---------- */
+  .svc-finder {
+    display: grid;
+    gap: 20px;
+    padding: 30px;
+    border-radius: 26px;
+    background: var(--canvas);
+    box-shadow: var(--sh-r);
+  }
+  /* grid items default to min-width:auto, which lets the search input's
+     intrinsic width blow the track out on narrow screens */
+  .svc-finder > * {
+    min-width: 0;
+  }
+  .svc-finder h2 {
+    font-size: clamp(23px, 2.8vw, 30px);
+  }
+  .svc-finder p {
+    margin-top: 12px;
+    max-width: 560px;
+    color: var(--muted);
+    font-size: 15px;
+  }
+  .svc-finder-bar {
+    display: flex;
+    align-items: stretch;
+    gap: 14px;
+  }
+  .svc-finder-bar .enq-combo {
+    flex: 1;
+    min-width: 0;
+  }
+  .svc-finder-cta {
+    flex: none;
+    padding-left: 34px;
+    padding-right: 34px;
+  }
+
   @media (max-width: 860px) {
     .svc-list {
       grid-template-columns: 1fr;
       gap: 16px;
+    }
+  }
+  @media (max-width: 620px) {
+    .svc-finder {
+      padding: 24px;
+    }
+    .svc-finder-bar {
+      flex-direction: column;
+    }
+    .svc-finder-cta {
+      width: 100%;
+    }
+    .enq-combo-list {
+      max-height: 260px;
     }
   }
   @media (max-width: 560px) {
@@ -115,46 +167,190 @@
   }
 
   /* ------------------------------------------------------------
-     Enquiry - Category 01 service picker + modal wizard.
+     Enquiry - searchable service picker + modal wizard.
      Fields reuse the site's inset soft-UI treatment (--sh-in /
      --sh-in-s) exactly as .brand-tile and .shot .url do.
      The one functional addition is the error red: --coral-2 is
      too light for text on --canvas, so errors use a darker coral.
      ------------------------------------------------------------ */
-  .enq-select {
+
+  /* ---------- searchable service picker (combobox) ---------- */
+  .enq-combo {
+    position: relative;
     min-width: 0;
-    -webkit-appearance: none;
-    appearance: none;
+  }
+  .enq-combo-field {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    min-height: 54px;
+    padding: 0 9px 0 16px;
+    border-radius: 16px;
+    background: var(--canvas);
+    box-shadow: var(--sh-in-s);
+    transition: box-shadow 0.18s ease;
+  }
+  .enq-combo-field:focus-within {
+    outline: 3px solid var(--mint-ink);
+    outline-offset: 2px;
+  }
+  .enq-combo-ico {
+    flex: none;
+    width: 17px;
+    height: 17px;
+    color: var(--muted);
+  }
+  .enq-combo-input {
+    flex: 1;
+    min-width: 0;
     font: inherit;
     font-size: 15px;
     font-weight: 600;
     color: var(--ink);
-    background-color: var(--canvas);
-    background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%235b6675' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: right 18px center;
-    background-size: 15px;
+    background: transparent;
     border: 0;
-    border-radius: 16px;
-    box-shadow: var(--sh-in-s);
-    padding: 15px 46px 15px 18px;
-    cursor: pointer;
-    transition: box-shadow 0.18s ease, color 0.18s ease;
+    border-radius: 0;
+    padding: 15px 0;
+    outline: none;
   }
-  .enq-select:focus-visible,
-  .f-input:focus-visible {
-    outline: 3px solid var(--mint-ink);
-    outline-offset: 2px;
+  .enq-combo-input::placeholder {
+    color: var(--muted);
+    opacity: 1;
+    font-weight: 600;
+  }
+  .enq-combo-clear,
+  .enq-combo-toggle {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 34px;
+    height: 34px;
+    border: 0;
+    border-radius: 50%;
+    background: transparent;
+    color: var(--muted);
+    cursor: pointer;
+    transition: color 0.16s ease, background 0.16s ease;
+  }
+  .enq-combo-clear:hover,
+  .enq-combo-toggle:hover {
+    color: var(--ink);
+    background: rgba(255, 255, 255, 0.55);
+  }
+  .enq-combo-clear svg,
+  .enq-combo-toggle svg {
+    width: 16px;
+    height: 16px;
+  }
+  .enq-combo-toggle svg {
+    transition: transform 0.22s var(--ease);
+  }
+  .enq-combo.open .enq-combo-toggle svg {
+    transform: rotate(180deg);
   }
   /* selection feedback only - the inset deepens for a moment.
      The coloured mint ring that used to animate here was a border glow. */
-  .enq-select.picked {
+  .enq-combo.picked .enq-combo-field {
     animation: enqPick 0.4s var(--ease);
   }
   @keyframes enqPick {
     0% { box-shadow: var(--sh-in-s); }
     50% { box-shadow: var(--sh-in); }
     100% { box-shadow: var(--sh-in-s); }
+  }
+
+  /* suggestions */
+  .enq-combo-list {
+    position: absolute;
+    z-index: 40;
+    top: calc(100% + 8px);
+    left: 0;
+    right: 0;
+    max-height: 288px;
+    overflow-y: auto;
+    margin: 0;
+    padding: 8px;
+    list-style: none;
+    border-radius: 18px;
+    background: var(--canvas);
+    box-shadow: var(--sh-r);
+    animation: comboDrop 0.18s var(--ease);
+  }
+  @keyframes comboDrop {
+    from { opacity: 0; transform: translateY(-6px); }
+    to { opacity: 1; transform: none; }
+  }
+  .enq-combo-opt {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 11px 13px;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: background 0.14s ease, box-shadow 0.14s ease;
+  }
+  .enq-combo-opt:hover,
+  .enq-combo-opt.is-active {
+    background: rgba(255, 255, 255, 0.6);
+  }
+  .enq-combo-opt.is-active {
+    box-shadow: var(--sh-in-s);
+  }
+  .enq-combo-name {
+    min-width: 0;
+    font-size: 14.5px;
+    font-weight: 600;
+    color: var(--ink);
+    overflow-wrap: break-word;
+  }
+  .enq-combo-opt[aria-selected="true"] .enq-combo-name {
+    color: var(--mint-ink);
+  }
+  .enq-combo-sub {
+    flex: none;
+    max-width: 52%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--muted);
+    background: var(--canvas);
+    box-shadow: var(--sh-s);
+    border-radius: 999px;
+    padding: 5px 10px;
+  }
+  .enq-combo mark {
+    background: rgba(60, 207, 145, 0.3);
+    color: inherit;
+    border-radius: 4px;
+    padding: 0 1px;
+  }
+  .enq-combo-empty {
+    padding: 16px 12px;
+    text-align: center;
+    font-size: 13.5px;
+    font-weight: 600;
+    color: var(--muted);
+  }
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    clip-path: inset(50%);
+    white-space: nowrap;
+    border: 0;
+  }
+  .f-input:focus-visible {
+    outline: 3px solid var(--mint-ink);
+    outline-offset: 2px;
   }
   .soft-btn:disabled {
     cursor: not-allowed;
@@ -607,11 +803,15 @@
   @media (prefers-reduced-motion: reduce) {
     .enq-modal,
     .enq-dialog,
-    .enq-select,
+    .enq-combo-field,
+    .enq-combo-list,
+    .enq-combo-opt,
+    .enq-combo-toggle svg,
     .f-chip {
       transition: none;
+      animation: none;
     }
-    .enq-select.picked {
+    .enq-combo.picked .enq-combo-field {
       animation: none;
     }
   }
@@ -650,6 +850,20 @@
 <!-- ================= CATALOG ================= -->
 <section style="padding-top:52px">
   <div class="wrap">
+
+    <!-- ================= GLOBAL SERVICE SEARCH ================= -->
+    <div class="svc-finder reveal" data-global-search>
+      <div class="svc-finder-copy">
+        <div class="kicker">Service finder</div>
+        <h2>Find the Service You Need</h2>
+        <p>Search across our services or explore a category below.</p>
+      </div>
+      <div class="svc-finder-bar">
+        <div class="enq-combo" data-enq-combo></div>
+        <button class="soft-btn svc-finder-cta" type="button" data-enq-connect disabled aria-label="Open the enquiry form for the selected service">Connect</button>
+      </div>
+    </div>
+
     <div class="svc-list">
 
       <!-- 01 · Web -->
@@ -662,8 +876,8 @@
         </div>
         <h2 class="svc-title">Web Design &amp; Development</h2>
         <div class="svc-controls" data-enq-category="web">
-          <select class="enq-select" aria-label="Choose a Web Design and Development service"></select>
-          <button class="soft-btn" type="button" disabled>Let’s Connect</button>
+          <div class="enq-combo" data-enq-combo></div>
+          <button class="soft-btn" type="button" data-enq-connect disabled>Let’s Connect</button>
         </div>
       </article>
 
@@ -677,8 +891,8 @@
         </div>
         <h2 class="svc-title">Software &amp; Product Development</h2>
         <div class="svc-controls" data-enq-category="software">
-          <select class="enq-select" aria-label="Choose a Software and Product Development service"></select>
-          <button class="soft-btn" type="button" disabled>Let’s Connect</button>
+          <div class="enq-combo" data-enq-combo></div>
+          <button class="soft-btn" type="button" data-enq-connect disabled>Let’s Connect</button>
         </div>
       </article>
 
@@ -692,8 +906,8 @@
         </div>
         <h2 class="svc-title">Digital Marketing &amp; Growth</h2>
         <div class="svc-controls" data-enq-category="marketing">
-          <select class="enq-select" aria-label="Choose a Digital Marketing and Growth service"></select>
-          <button class="soft-btn" type="button" disabled>Let’s Connect</button>
+          <div class="enq-combo" data-enq-combo></div>
+          <button class="soft-btn" type="button" data-enq-connect disabled>Let’s Connect</button>
         </div>
       </article>
 

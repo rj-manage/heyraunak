@@ -149,59 +149,377 @@
   }
 
   /* ============================================================
-     Category controls - dropdown + Let's Connect
+     Searchable service picker (combobox)
+     ------------------------------------------------------------
+     One component drives both the global search above the cards and
+     the dropdown inside each category card. It is a text input that
+     filters the centralized catalog as the visitor types. The card
+     controls and the global search both call the same open() above,
+     so no enquiry form or payload is duplicated.
      ============================================================ */
+
+  var comboSeq = 0;
+
+  function normText(s) {
+    return String(s == null ? "" : s).toLowerCase().replace(/\s+/g, " ").trim();
+  }
+
+  /* punctuation-free form, so "e-commerce" is reachable as "ecom" or
+     "ecommerce" and "web site" meets "Website" */
+  function collapse(s) {
+    return String(s == null ? "" : s).toLowerCase().replace(/[^a-z0-9]+/g, "");
+  }
+
+  /* every word of the query must appear in the haystack - partial,
+     case-insensitive and order-independent */
+  function matches(haystack, query) {
+    var parts = String(query == null ? "" : query)
+      .toLowerCase().replace(/[^a-z0-9]+/g, " ").trim().split(" ")
+      .filter(Boolean);
+    if (!parts.length) return true;
+    var hay = collapse(haystack);
+    for (var i = 0; i < parts.length; i++) {
+      if (hay.indexOf(parts[i]) < 0) return false;
+    }
+    return true;
+  }
+
+  function rxEsc(s) {
+    return s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  }
+
+  /* escape the service name, wrapping every matched word in <mark> */
+  function highlight(text, query) {
+    var str = String(text == null ? "" : text);
+    var parts = normText(query).split(" ").filter(Boolean);
+    if (!parts.length) return esc(str);
+    var re = new RegExp("(" + parts.map(rxEsc).join("|") + ")", "ig");
+    var out = "", last = 0, m;
+    while ((m = re.exec(str))) {
+      out += esc(str.slice(last, m.index)) + "<mark>" + esc(m[0]) + "</mark>";
+      last = m.index + m[0].length;
+      if (m[0] === "") re.lastIndex++;
+    }
+    return out + esc(str.slice(last));
+  }
+
+  /* the flat, per-category item shape both searches use */
+  function serviceItems(cat) {
+    return cat.services.map(function (svc, i) {
+      return {
+        catId: cat.id,
+        catLabel: cat.label,
+        svcId: svc.id,
+        name: svc.name,
+        group: svc.group || "",
+        no: i + 1
+      };
+    });
+  }
+
+  function createCombo(cfg) {
+    var uid = "enq-combo-" + (++comboSeq);
+    var root = cfg.root;
+    var items = cfg.items || [];
+    var subLabel = cfg.subLabel || null;
+
+    root.classList.add("enq-combo");
+    root.innerHTML =
+      '<div class="enq-combo-field">' +
+        '<svg class="enq-combo-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.4-3.4"/></svg>' +
+        '<input class="enq-combo-input" id="' + uid + '-input" type="text" role="combobox" autocomplete="off" autocapitalize="off" spellcheck="false" aria-haspopup="listbox" aria-expanded="false" aria-autocomplete="list" aria-controls="' + uid + '-list" aria-label="' + esc(cfg.ariaLabel || "Search services") + '" placeholder="' + esc(cfg.placeholder || "") + '" />' +
+        '<button class="enq-combo-clear" type="button" tabindex="-1" aria-label="Clear selection" hidden>' +
+          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>' +
+        "</button>" +
+        '<button class="enq-combo-toggle" type="button" tabindex="-1" aria-label="Show options">' +
+          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>' +
+        "</button>" +
+      "</div>" +
+      '<ul class="enq-combo-list" id="' + uid + '-list" role="listbox" aria-label="' + esc(cfg.ariaLabel || "Services") + '" hidden></ul>' +
+      '<p class="enq-combo-status sr-only" role="status" aria-live="polite"></p>';
+
+    var input = root.querySelector(".enq-combo-input");
+    var list = root.querySelector(".enq-combo-list");
+    var clearBtn = root.querySelector(".enq-combo-clear");
+    var toggleBtn = root.querySelector(".enq-combo-toggle");
+    var statusEl = root.querySelector(".enq-combo-status");
+
+    var chosen = null;
+    var isOpen = false;
+    var dirty = false;
+    var active = -1;
+    var visible = [];
+
+    function syncClear() {
+      clearBtn.hidden = !(chosen || input.value);
+    }
+
+    function indexOfChosen() {
+      if (!chosen) return -1;
+      for (var i = 0; i < visible.length; i++) {
+        if (visible[i].svcId === chosen.svcId) return i;
+      }
+      return -1;
+    }
+
+    function setActive(i) {
+      active = i;
+      var opts = list.querySelectorAll(".enq-combo-opt");
+      for (var n = 0; n < opts.length; n++) opts[n].classList.toggle("is-active", n === i);
+      if (i >= 0 && opts[i]) {
+        input.setAttribute("aria-activedescendant", opts[i].id);
+        if (opts[i].scrollIntoView) opts[i].scrollIntoView({ block: "nearest" });
+      } else {
+        input.removeAttribute("aria-activedescendant");
+      }
+    }
+
+    function optHTML(item, i, query) {
+      var sub = subLabel ? subLabel(item) : "";
+      var isSel = chosen && item.svcId === chosen.svcId;
+      return '<li class="enq-combo-opt" role="option" id="' + uid + "-opt-" + i +
+        '" data-i="' + i + '" aria-selected="' + (isSel ? "true" : "false") + '">' +
+        '<span class="enq-combo-name">' + highlight(item.name, query) + "</span>" +
+        (sub ? '<span class="enq-combo-sub">' + esc(sub) + "</span>" : "") +
+        "</li>";
+    }
+
+    function render(query) {
+      visible = items.filter(function (it) {
+        return matches(it.name + " " + (it.group || "") + " " + (it.catLabel || ""), query);
+      });
+
+      if (!visible.length) {
+        list.innerHTML = '<li class="enq-combo-empty" role="presentation">' +
+          (query
+            ? "No services match \u201C" + esc(query) + "\u201D."
+            : "No services available.") +
+          "</li>";
+        statusEl.textContent = "No services found.";
+        setActive(-1);
+        return;
+      }
+
+      list.innerHTML = visible.map(function (it, i) {
+        return optHTML(it, i, query);
+      }).join("");
+
+      statusEl.textContent = visible.length +
+        (visible.length === 1 ? " service found." : " services found.");
+      setActive(indexOfChosen());
+    }
+
+    function openList() {
+      if (isOpen) return;
+      isOpen = true;
+      root.classList.add("open");
+      list.hidden = false;
+      input.setAttribute("aria-expanded", "true");
+      render(dirty ? input.value : "");
+    }
+
+    function syncInput() {
+      input.value = chosen ? chosen.name : "";
+      syncClear();
+    }
+
+    function closeList(revert) {
+      if (!isOpen) {
+        if (revert !== false) syncInput();
+        return;
+      }
+      isOpen = false;
+      root.classList.remove("open");
+      list.hidden = true;
+      input.setAttribute("aria-expanded", "false");
+      input.removeAttribute("aria-activedescendant");
+      if (revert !== false) syncInput();
+    }
+
+    function choose(item) {
+      chosen = item;
+      dirty = false;
+      syncInput();
+      closeList(false);
+      if (cfg.onSelect) cfg.onSelect(item);
+    }
+
+    function clearSelection(fire) {
+      chosen = null;
+      dirty = false;
+      input.value = "";
+      syncClear();
+      if (fire !== false && cfg.onClear) cfg.onClear();
+    }
+
+    function move(delta) {
+      if (!visible.length) return;
+      var n = active + delta;
+      if (n < 0) n = visible.length - 1;
+      if (n >= visible.length) n = 0;
+      setActive(n);
+    }
+
+    input.addEventListener("input", function () {
+      dirty = true;
+      syncClear();
+      openList();
+      render(input.value);
+    });
+
+    input.addEventListener("focus", function () { openList(); });
+
+    input.addEventListener("keydown", function (e) {
+      if (e.key === "ArrowDown") {
+        e.preventDefault();
+        if (!isOpen) openList();
+        move(1);
+      } else if (e.key === "ArrowUp") {
+        e.preventDefault();
+        if (!isOpen) openList();
+        move(-1);
+      } else if (e.key === "Enter") {
+        if (isOpen && visible.length) {
+          e.preventDefault();
+          choose(visible[active >= 0 ? active : 0]);
+        }
+      } else if (e.key === "Escape") {
+        if (isOpen) { e.preventDefault(); closeList(true); }
+      } else if (e.key === "Home" && isOpen) {
+        e.preventDefault();
+        setActive(0);
+      } else if (e.key === "End" && isOpen) {
+        e.preventDefault();
+        setActive(visible.length - 1);
+      } else if (e.key === "Tab") {
+        closeList(true);
+      }
+    });
+
+    toggleBtn.addEventListener("click", function (e) {
+      e.preventDefault();
+      if (isOpen) closeList(false);
+      else { input.focus(); openList(); }
+    });
+
+    /* keep focus on the input so the option click lands before blur */
+    clearBtn.addEventListener("mousedown", function (e) { e.preventDefault(); });
+    clearBtn.addEventListener("click", function () {
+      clearSelection(true);
+      if (isOpen) render("");
+    });
+
+    list.addEventListener("mousedown", function (e) { e.preventDefault(); });
+    list.addEventListener("click", function (e) {
+      var opt = e.target.closest ? e.target.closest(".enq-combo-opt") : null;
+      if (!opt) return;
+      var i = Number(opt.getAttribute("data-i"));
+      if (visible[i]) choose(visible[i]);
+    });
+
+    document.addEventListener("click", function (e) {
+      if (isOpen && !root.contains(e.target)) closeList(true);
+    });
+
+    return {
+      root: root,
+      selection: function () { return chosen; },
+      select: function (item) { if (item) choose(item); },
+      clear: function () { clearSelection(false); syncInput(); },
+      open: openList,
+      close: closeList
+    };
+  }
+
+  /* ============================================================
+     Category controls - searchable dropdown + Let's Connect
+     ============================================================ */
+
+  var cards = {};
 
   function buildControls() {
     var hosts = document.querySelectorAll("[data-enq-category]");
 
     Array.prototype.forEach.call(hosts, function (host) {
       var cat = getCategory(host.getAttribute("data-enq-category"));
-      var select = host.querySelector("select");
-      var btn = host.querySelector("button");
-      if (!cat || !select || !btn) return;
+      if (!cat) return;
+      var comboRoot = host.querySelector("[data-enq-combo]");
+      var btn = host.querySelector("[data-enq-connect]");
+      if (!comboRoot || !btn) return;
 
-      select.innerHTML = optionsHTML(cat);
-
-      function sync() {
-        btn.disabled = !select.value;
-      }
-
-      select.addEventListener("change", function () {
-        sync();
-        select.classList.remove("picked");
-        void select.offsetWidth;
-        select.classList.add("picked");
+      var combo = createCombo({
+        root: comboRoot,
+        items: serviceItems(cat),
+        placeholder: "Select a service\u2026",
+        ariaLabel: "Choose a " + cat.label + " service",
+        subLabel: function (it) { return it.group; },
+        onSelect: function () {
+          btn.disabled = false;
+          comboRoot.classList.remove("picked");
+          void comboRoot.offsetWidth;
+          comboRoot.classList.add("picked");
+        },
+        onClear: function () { btn.disabled = true; }
       });
 
       btn.addEventListener("click", function () {
-        if (!select.value) return;
+        var it = combo.selection();
+        if (!it) return;
         store.lastFocus = btn;
-        open(cat.id, select.value);
+        open(cat.id, it.svcId);
       });
 
-      sync();
+      cards[cat.id] = { combo: combo, btn: btn };
     });
   }
 
-  function optionsHTML(cat) {
-    var html = '<option value="" selected>Select a service…</option>';
-    var openGroup = null;
+  /* ============================================================
+     Global service search - same catalog, same open()
+     ============================================================ */
 
-    cat.services.forEach(function (svc) {
-      if (svc.group && svc.group !== openGroup) {
-        if (openGroup !== null) html += "</optgroup>";
-        html += '<optgroup label="' + esc(svc.group) + '">';
-        openGroup = svc.group;
-      } else if (!svc.group && openGroup !== null) {
-        html += "</optgroup>";
-        openGroup = null;
-      }
-      html += '<option value="' + esc(svc.id) + '">' + esc(svc.name) + "</option>";
+  var globalCombo = null;
+
+  function catalogItems() {
+    var out = [];
+    var seen = {};
+    CATEGORIES.forEach(function (cat) {
+      serviceItems(cat).forEach(function (it) {
+        var key = it.catId + "::" + it.svcId;
+        if (seen[key]) return;
+        seen[key] = true;
+        out.push(it);
+      });
+    });
+    return out;
+  }
+
+  function buildGlobalSearch() {
+    var host = document.querySelector("[data-global-search]");
+    if (!host) return;
+    var comboRoot = host.querySelector("[data-enq-combo]");
+    var btn = host.querySelector("[data-enq-connect]");
+    if (!comboRoot || !btn) return;
+
+    globalCombo = createCombo({
+      root: comboRoot,
+      items: catalogItems(),
+      placeholder: "Search for a service\u2026",
+      ariaLabel: "Search all RJ services",
+      subLabel: function (it) { return it.catLabel; },
+      onSelect: function (it) {
+        btn.disabled = false;
+        /* keep the matching category card in step with the global pick */
+        if (cards[it.catId]) cards[it.catId].combo.select(it);
+      },
+      onClear: function () { btn.disabled = true; }
     });
 
-    if (openGroup !== null) html += "</optgroup>";
-    return html;
+    btn.addEventListener("click", function () {
+      var it = globalCombo.selection();
+      if (!it) return;
+      store.lastFocus = btn;
+      open(it.catId, it.svcId);
+    });
   }
 
   /* ============================================================
@@ -919,6 +1237,7 @@
   function boot() {
     if (!cacheModal()) return;
     buildControls();
+    buildGlobalSearch();
   }
 
   function ready(fn) {
@@ -932,6 +1251,8 @@
     define: define,
     categories: CATEGORIES,
     index: INDEX,
+    cards: cards,
+    catalog: catalogItems,
     open: open,
     close: close,
     payload: payload,
