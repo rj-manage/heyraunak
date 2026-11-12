@@ -44,11 +44,11 @@
       unsure: "Not Sure Yet"
     },
     services: [
-      /* ---------- A. Custom Software & Business Systems ---------- */
+      /* ---------- Custom Software & Business Systems ---------- */
       {
         id: "sw-custom-software",
         name: "Custom Software Development",
-        group: "A. Custom Software & Business Systems",
+        group: "Custom Software & Business Systems",
         fields: [
           { k: "software_name", l: "Software / Product Name", t: "text", req: true },
           { k: "industry", l: "Business / Industry", t: "text" },
@@ -67,7 +67,7 @@
       {
         id: "sw-crm",
         name: "CRM Development",
-        group: "A. Custom Software & Business Systems",
+        group: "Custom Software & Business Systems",
         fields: [
           { k: "company_name", l: "Company Name", t: "text", req: true },
           { k: "business_type", l: "Business Type", t: "text" },
@@ -86,7 +86,7 @@
       {
         id: "sw-erp",
         name: "ERP Development",
-        group: "A. Custom Software & Business Systems",
+        group: "Custom Software & Business Systems",
         fields: [
           { k: "company_name", l: "Company Name", t: "text", req: true },
           { k: "industry", l: "Industry", t: "text" },
@@ -105,7 +105,7 @@
       {
         id: "sw-business-mgmt",
         name: "Business Management Software",
-        group: "A. Custom Software & Business Systems",
+        group: "Custom Software & Business Systems",
         fields: [
           { k: "business_name", l: "Business Name", t: "text", req: true },
           { k: "business_type", l: "Business Type", t: "text" },
@@ -122,7 +122,7 @@
       {
         id: "sw-inventory",
         name: "Inventory Management Software",
-        group: "A. Custom Software & Business Systems",
+        group: "Custom Software & Business Systems",
         fields: [
           { k: "business_name", l: "Business Name", t: "text", req: true },
           { k: "industry", l: "Industry", t: "text" },
@@ -140,7 +140,7 @@
       {
         id: "sw-billing",
         name: "Billing & Invoicing Software",
-        group: "A. Custom Software & Business Systems",
+        group: "Custom Software & Business Systems",
         fields: [
           { k: "business_name", l: "Business Name", t: "text", req: true },
           { k: "business_type", l: "Business Type", t: "text" },
@@ -158,7 +158,7 @@
       {
         id: "sw-hr",
         name: "HR & Employee Management Software",
-        group: "A. Custom Software & Business Systems",
+        group: "Custom Software & Business Systems",
         fields: [
           { k: "company_name", l: "Company Name", t: "text", req: true },
           { k: "employee_count", l: "Number of Employees", t: "text" },
@@ -176,7 +176,7 @@
       {
         id: "sw-project-mgmt",
         name: "Project Management Software",
-        group: "A. Custom Software & Business Systems",
+        group: "Custom Software & Business Systems",
         fields: [
           { k: "company_name", l: "Company Name", t: "text", req: true },
           { k: "team_size", l: "Team Size", t: "text" },
@@ -194,7 +194,7 @@
       {
         id: "sw-pos",
         name: "POS Software Development",
-        group: "A. Custom Software & Business Systems",
+        group: "Custom Software & Business Systems",
         fields: [
           { k: "business_name", l: "Business Name", t: "text", req: true },
           { k: "business_type", l: "Business Type", t: "text" },
@@ -212,7 +212,7 @@
       {
         id: "sw-dms",
         name: "Document Management Systems",
-        group: "A. Custom Software & Business Systems",
+        group: "Custom Software & Business Systems",
         fields: [
           { k: "org_name", l: "Organization Name", t: "text", req: true },
           { k: "document_types", l: "Document Types", t: "textarea" },
@@ -229,7 +229,7 @@
       {
         id: "sw-workflow",
         name: "Workflow Management Systems",
-        group: "A. Custom Software & Business Systems",
+        group: "Custom Software & Business Systems",
         fields: [
           { k: "business_name", l: "Business Name", t: "text", req: true },
           { k: "current_workflow", l: "Current Workflow", t: "textarea" },
@@ -245,7 +245,7 @@
       {
         id: "sw-ticketing",
         name: "Customer Support & Ticketing Systems",
-        group: "A. Custom Software & Business Systems",
+        group: "Custom Software & Business Systems",
         fields: [
           { k: "company_name", l: "Company Name", t: "text", req: true },
           { k: "agents", l: "Expected Support Agents", t: "text" },
@@ -260,11 +260,11 @@
         ]
       },
 
-      /* ---------- B. SaaS & Digital Products ---------- */
+      /* ---------- SaaS & Digital Products ---------- */
       {
         id: "sw-saas",
         name: "SaaS Product Development",
-        group: "B. SaaS & Digital Products",
+        group: "SaaS & Digital Products",
         fields: [
           { k: "product_name", l: "Product Name", t: "text", req: true },
           { k: "product_desc", l: "Product Description", t: "textarea" },
@@ -285,7 +285,7 @@
       {
         id: "sw-multi-tenant",
         name: "Multi-Tenant Software Development",
-        group: "B. SaaS & Digital Products",
+        group: "SaaS & Digital Products",
         fields: [
           { k: "product_name", l: "Product / Company Name", t: "text", req: true },
           { k: "industry", l: "Industry", t: "text" },
@@ -302,7 +302,7 @@
       {
         id: "sw-marketplace",
         name: "Multi-Vendor Marketplace Development",
-        group: "B. SaaS & Digital Products",
+        group: "SaaS & Digital Products",
         fields: [
           { k: "marketplace_name", l: "Marketplace Name", t: "text", req: true },
           { k: "marketplace_type", l: "Marketplace Type", t: "text" },
@@ -321,7 +321,7 @@
       {
         id: "sw-portals",
         name: "Customer & Enterprise Portals",
-        group: "B. SaaS & Digital Products",
+        group: "SaaS & Digital Products",
         fields: [
           { k: "org_name", l: "Organization Name", t: "text", req: true },
           { k: "portal_type", l: "Portal Type", t: "select", o: PORTAL_TYPE },
@@ -338,7 +338,7 @@
       {
         id: "sw-analytics",
         name: "Dashboard & Analytics Software",
-        group: "B. SaaS & Digital Products",
+        group: "SaaS & Digital Products",
         fields: [
           { k: "business_name", l: "Business Name", t: "text", req: true },
           { k: "industry", l: "Industry", t: "text" },
@@ -355,7 +355,7 @@
       {
         id: "sw-fintech",
         name: "FinTech Software Development",
-        group: "B. SaaS & Digital Products",
+        group: "SaaS & Digital Products",
         note: "Regulated financial functionality requires appropriate legal, compliance and security review before development begins.",
         fields: [
           { k: "company_name", l: "Company / Product Name", t: "text", req: true },
@@ -371,11 +371,11 @@
         ]
       },
 
-      /* ---------- C. Industry-Specific Software ---------- */
+      /* ---------- Industry-Specific Software ---------- */
       {
         id: "sw-school",
         name: "School & College Management Software",
-        group: "C. Industry-Specific Software",
+        group: "Industry-Specific Software",
         fields: [
           { k: "institution_name", l: "Institution Name", t: "text", req: true },
           { k: "institution_type", l: "Institution Type", t: "text" },
@@ -393,7 +393,7 @@
       {
         id: "sw-lms",
         name: "Learning Management System (LMS)",
-        group: "C. Industry-Specific Software",
+        group: "Industry-Specific Software",
         fields: [
           { k: "org_name", l: "Organization Name", t: "text", req: true },
           { k: "education_type", l: "Education Type", t: "text" },
@@ -412,7 +412,7 @@
       {
         id: "sw-healthcare",
         name: "Healthcare Management Software",
-        group: "C. Industry-Specific Software",
+        group: "Industry-Specific Software",
         note: "Health data is sensitive and regulated - a privacy and regulatory compliance review is required before implementation.",
         fields: [
           { k: "healthcare_org", l: "Healthcare Organization", t: "text", req: true },
@@ -431,7 +431,7 @@
       {
         id: "sw-real-estate",
         name: "Real Estate Management Software",
-        group: "C. Industry-Specific Software",
+        group: "Industry-Specific Software",
         fields: [
           { k: "company_name", l: "Company Name", t: "text", req: true },
           { k: "property_type", l: "Property Type", t: "text" },
@@ -449,7 +449,7 @@
       {
         id: "sw-restaurant",
         name: "Restaurant Management Software",
-        group: "C. Industry-Specific Software",
+        group: "Industry-Specific Software",
         fields: [
           { k: "restaurant_name", l: "Restaurant Name", t: "text", req: true },
           { k: "restaurant_type", l: "Restaurant Type", t: "text" },
@@ -467,7 +467,7 @@
       {
         id: "sw-logistics",
         name: "Logistics & Fleet Management Software",
-        group: "C. Industry-Specific Software",
+        group: "Industry-Specific Software",
         fields: [
           { k: "company_name", l: "Company Name", t: "text", req: true },
           { k: "fleet_size", l: "Fleet Size", t: "text" },
@@ -485,7 +485,7 @@
       {
         id: "sw-booking",
         name: "Booking & Reservation Software",
-        group: "C. Industry-Specific Software",
+        group: "Industry-Specific Software",
         fields: [
           { k: "business_name", l: "Business Name", t: "text", req: true },
           { k: "booking_type", l: "Booking Type", t: "text" },
@@ -501,11 +501,11 @@
         ]
       },
 
-      /* ---------- D. Application & Technical Development ---------- */
+      /* ---------- Application & Technical Development ---------- */
       {
         id: "sw-desktop",
         name: "Desktop Application Development",
-        group: "D. Application & Technical Development",
+        group: "Application & Technical Development",
         fields: [
           { k: "app_name", l: "Application Name", t: "text", req: true },
           { k: "industry", l: "Business / Industry", t: "text" },
@@ -523,7 +523,7 @@
       {
         id: "sw-mobile",
         name: "Mobile Application Development",
-        group: "D. Application & Technical Development",
+        group: "Application & Technical Development",
         fields: [
           { k: "app_name", l: "App Name", t: "text", req: true },
           { k: "app_type", l: "Application Type", t: "select", o: APP_TYPE },
@@ -542,7 +542,7 @@
       {
         id: "sw-api-backend",
         name: "API & Backend Development",
-        group: "D. Application & Technical Development",
+        group: "Application & Technical Development",
         fields: [
           { k: "product_name", l: "Product / Company Name", t: "text", req: true },
           { k: "purpose", l: "Backend Purpose", t: "textarea" },
@@ -560,7 +560,7 @@
       {
         id: "sw-database",
         name: "Database Design & Development",
-        group: "D. Application & Technical Development",
+        group: "Application & Technical Development",
         fields: [
           { k: "project_name", l: "Project / Company Name", t: "text", req: true },
           { k: "purpose", l: "Database Purpose", t: "textarea" },
@@ -578,7 +578,7 @@
       {
         id: "sw-ai",
         name: "AI-Powered Software Solutions",
-        group: "D. Application & Technical Development",
+        group: "Application & Technical Development",
         note: "AI capabilities are assessed for technical feasibility before any commitment - we will confirm what is realistically achievable.",
         fields: [
           { k: "company_name", l: "Company / Product Name", t: "text", req: true },
