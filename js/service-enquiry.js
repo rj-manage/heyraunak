@@ -98,8 +98,6 @@
     return i < 0 ? null : CATEGORIES[i];
   }
 
-  function pad(n) { return (n < 10 ? "0" : "") + n; }
-
   /* ---------- budget scale ($10 – $100,000, logarithmic) ---------- */
 
   var SLIDER_MAX = 1000;
@@ -189,7 +187,7 @@
     var html = '<option value="" selected>Select a service…</option>';
     var openGroup = null;
 
-    cat.services.forEach(function (svc, i) {
+    cat.services.forEach(function (svc) {
       if (svc.group && svc.group !== openGroup) {
         if (openGroup !== null) html += "</optgroup>";
         html += '<optgroup label="' + esc(svc.group) + '">';
@@ -198,7 +196,7 @@
         html += "</optgroup>";
         openGroup = null;
       }
-      html += '<option value="' + esc(svc.id) + '">' + pad(i + 1) + " · " + esc(svc.name) + "</option>";
+      html += '<option value="' + esc(svc.id) + '">' + esc(svc.name) + "</option>";
     });
 
     if (openGroup !== null) html += "</optgroup>";
