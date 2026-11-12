@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Services — Coming Soon · RJ</title>
-<meta name="description" content="Services by RJ — website &amp; software builds, social media and cybersecurity. This panel is coming soon." />
+<title>Services — RJ</title>
+<meta name="description" content="Services by RJ — web design &amp; development, software product builds, digital marketing, social media management, branding and cybersecurity." />
 <meta name="theme-color" content="#E3E9F0" />
 <link rel="icon" type="image/png" href="../assets/RJ_Logo.png" />
 <link rel="apple-touch-icon" href="../assets/RJ_Logo.png" />
@@ -14,14 +14,151 @@
   <link rel="canonical" href="https://www.heyraunak.site/services/" />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="RJ — Design &amp; Development Studio" />
-  <meta property="og:title" content="Services — Coming Soon · RJ" />
-  <meta property="og:description" content="Services by RJ — website &amp; software builds, social media and cybersecurity. This panel is coming soon." />
+  <meta property="og:title" content="Services — RJ" />
+  <meta property="og:description" content="Services by RJ — web design &amp; development, software product builds, digital marketing, social media management, branding and cybersecurity." />
   <meta property="og:url" content="https://www.heyraunak.site/services/" />
   <meta property="og:image" content="https://www.heyraunak.site/assets/og-image.png" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Services — Coming Soon · RJ" />
-  <meta name="twitter:description" content="Services by RJ — website &amp; software builds, social media and cybersecurity. This panel is coming soon." />
+  <meta name="twitter:title" content="Services — RJ" />
+  <meta name="twitter:description" content="Services by RJ — web design &amp; development, software product builds, digital marketing, social media management, branding and cybersecurity." />
   <meta name="twitter:image" content="https://www.heyraunak.site/assets/og-image.png" />
+
+<style>
+  /* ------------------------------------------------------------
+     Services catalog — page-scoped only.
+     Every value below comes from the existing design tokens in
+     css/site.css (canvas / ink / muted / mint-ink, --sh-s / --sh-r,
+     --font-display, --ease). Nothing global is redefined.
+     ------------------------------------------------------------ */
+  .svc-list {
+    display: grid;
+    gap: 16px;
+    margin-top: 46px;
+  }
+  .svc {
+    border-radius: 26px;
+    background: var(--canvas);
+    box-shadow: var(--sh-r);
+  }
+  .svc-head {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    padding: 22px 26px;
+    border: 0;
+    border-radius: 26px;
+    background: none;
+    font: inherit;
+    color: inherit;
+    text-align: left;
+    cursor: pointer;
+  }
+  .svc-head:focus-visible {
+    border-radius: 26px;
+  }
+  .svc-title {
+    flex: 1;
+    min-width: 0;
+  }
+  .svc-title b {
+    display: block;
+    font-family: var(--font-display);
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    transition: color 0.18s ease;
+  }
+  .svc-title small {
+    display: block;
+    margin-top: 5px;
+    font-size: 14px;
+    color: var(--muted);
+  }
+  .svc-head:hover .svc-title b {
+    color: var(--mint-ink);
+  }
+  .svc-num {
+    font-family: var(--font-display);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    color: var(--muted);
+  }
+  .svc-chev {
+    flex: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    color: var(--muted);
+    background: var(--canvas);
+    box-shadow: var(--sh-s);
+    transition: transform 0.32s var(--ease), color 0.18s ease;
+  }
+  .svc-chev svg {
+    width: 17px;
+    height: 17px;
+  }
+  .svc.open .svc-chev {
+    transform: rotate(180deg);
+    color: var(--mint-ink);
+  }
+  /* expanded body: 0fr -> 1fr keeps it smooth without magic heights */
+  .svc-body {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 0.34s var(--ease);
+  }
+  .svc.open .svc-body {
+    grid-template-rows: 1fr;
+  }
+  .svc-body > .svc-inner {
+    overflow: hidden;
+    min-height: 0;
+    visibility: hidden;
+    transition: visibility 0s linear 0.34s;
+  }
+  .svc.open .svc-body > .svc-inner {
+    visibility: visible;
+    transition-delay: 0s;
+  }
+  .svc-body .bullets {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px 26px;
+    margin: 0;
+    padding: 22px 26px 26px;
+    border-top: 1px solid rgba(60, 80, 110, 0.14);
+  }
+
+  @media (max-width: 720px) {
+    .svc-head {
+      gap: 14px;
+      padding: 20px;
+    }
+    .svc-title b {
+      font-size: 18px;
+    }
+    .svc-title small {
+      font-size: 13px;
+    }
+    .svc-num {
+      display: none;
+    }
+    .svc-body .bullets {
+      grid-template-columns: 1fr;
+      padding: 20px 20px 22px;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .svc-body,
+    .svc-chev,
+    .svc-title b {
+      transition: none;
+    }
+  }
+</style>
 </head>
 <body>
 
@@ -42,25 +179,215 @@
   <button class="burger" id="burger" type="button" aria-label="Menu" aria-expanded="false">☰</button>
 </nav>
 
-<main class="soon-wrap">
-  <div class="soon-card reveal">
-    <span class="soon-badge">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 2 7l10 5 10-5-10-5Z"/><path d="m2 17 10 5 10-5"/><path d="m2 12 10 5 10-5"/></svg>
-    </span>
+<main>
+<!-- ================= PAGE HEAD ================= -->
+<header class="page-head">
+  <div class="sec-head reveal" style="max-width:760px">
     <div class="kicker">Panel 02 · Services</div>
-    <h1>Coming <span class="soon-word">Soon</span></h1>
-    <p>Website &amp; software builds, social media management and cybersecurity — the full service catalog is being written up. Check back shortly.</p>
-    <div class="soon-meta">
-      <span class="soft-chip">Web &amp; Software</span>
-      <span class="soft-chip">Social Media</span>
-      <span class="soft-chip">Cybersecurity</span>
-    </div>
-    <div class="soon-dots"><i></i><i></i><i></i></div>
-    <div class="soon-actions">
-      <a class="soft-btn" href="../index.html">Back to home</a>
-      <a class="soft-btn ghost" href="../gallery/">Browse the design gallery</a>
+    <h1>Six things we do properly.</h1>
+    <p>A complete range of digital services to build, launch and grow your brand — from websites and software to marketing, branding and creative solutions. Open a category to see everything inside it.</p>
+    <div class="soft-chip" style="margin-top:20px"><span class="dot"></span> 6 categories · 32 services</div>
+  </div>
+</header>
+
+<!-- ================= CATALOG ================= -->
+<section style="padding-top:52px">
+  <div class="wrap">
+    <div class="svc-list">
+
+      <!-- 01 · Web -->
+      <article class="svc open reveal">
+        <button class="svc-head" type="button" aria-expanded="true" aria-controls="svc-web">
+          <span class="panel-ico">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4.5" width="18" height="14" rx="2.5"/><path d="M3 9h18"/><path d="M12 18.5V21"/><path d="M8.5 21h7"/></svg>
+          </span>
+          <span class="svc-title">
+            <b>Web Design &amp; Development</b>
+            <small>Corporate sites, online stores, portfolios and CMS platforms — fast, accessible and easy to keep updated.</small>
+          </span>
+          <span class="svc-num">01</span>
+          <span class="svc-chev">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+          </span>
+        </button>
+        <div class="svc-body" id="svc-web">
+          <div class="svc-inner">
+            <ul class="bullets">
+              <li><span class="tic">✓</span> Corporate &amp; business websites</li>
+              <li><span class="tic">✓</span> E-commerce stores</li>
+              <li><span class="tic">✓</span> Portfolios &amp; personal sites</li>
+              <li><span class="tic">✓</span> CMS platforms &amp; headless builds</li>
+              <li><span class="tic">✓</span> Landing pages &amp; campaigns</li>
+              <li><span class="tic">✓</span> Redesigns &amp; migrations</li>
+            </ul>
+          </div>
+        </div>
+      </article>
+
+      <!-- 02 · Software -->
+      <article class="svc reveal">
+        <button class="svc-head" type="button" aria-expanded="false" aria-controls="svc-software">
+          <span class="panel-ico">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m8.5 8.5-4 3.5 4 3.5"/><path d="m15.5 8.5 4 3.5-4 3.5"/><path d="M13.6 6.4 10.4 17.6"/></svg>
+          </span>
+          <span class="svc-title">
+            <b>Software &amp; Product Builds</b>
+            <small>Startup solutions and the tools a team actually works in — from a first MVP to a shipped product.</small>
+          </span>
+          <span class="svc-num">02</span>
+          <span class="svc-chev">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+          </span>
+        </button>
+        <div class="svc-body" id="svc-software">
+          <div class="svc-inner">
+            <ul class="bullets">
+              <li><span class="tic">✓</span> Startup MVPs</li>
+              <li><span class="tic">✓</span> Web applications</li>
+              <li><span class="tic">✓</span> Dashboards &amp; admin panels</li>
+              <li><span class="tic">✓</span> API &amp; third-party integrations</li>
+              <li><span class="tic">✓</span> Internal tools &amp; automation</li>
+              <li><span class="tic">✓</span> Database design</li>
+            </ul>
+          </div>
+        </div>
+      </article>
+
+      <!-- 03 · Marketing -->
+      <article class="svc reveal">
+        <button class="svc-head" type="button" aria-expanded="false" aria-controls="svc-marketing">
+          <span class="panel-ico">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 17.5 9 12l3.5 3.2L20.5 7"/><path d="M15.5 7h5v5"/></svg>
+          </span>
+          <span class="svc-title">
+            <b>Digital Marketing</b>
+            <small>Being found, and being chosen — search, content and campaigns that compound over time.</small>
+          </span>
+          <span class="svc-num">03</span>
+          <span class="svc-chev">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+          </span>
+        </button>
+        <div class="svc-body" id="svc-marketing">
+          <div class="svc-inner">
+            <ul class="bullets">
+              <li><span class="tic">✓</span> Search engine optimisation</li>
+              <li><span class="tic">✓</span> Content strategy</li>
+              <li><span class="tic">✓</span> Email campaigns</li>
+              <li><span class="tic">✓</span> Conversion &amp; funnel reviews</li>
+              <li><span class="tic">✓</span> Analytics &amp; reporting</li>
+            </ul>
+          </div>
+        </div>
+      </article>
+
+      <!-- 04 · Social -->
+      <article class="svc reveal">
+        <button class="svc-head" type="button" aria-expanded="false" aria-controls="svc-social">
+          <span class="panel-ico">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5.5h16v11H9.5L4 20.5Z"/><path d="M8.5 10.5h7"/><path d="M8.5 13.2h4.5"/></svg>
+          </span>
+          <span class="svc-title">
+            <b>Social Media Management</b>
+            <small>A steady, on-brand presence — planned, designed and published for you.</small>
+          </span>
+          <span class="svc-num">04</span>
+          <span class="svc-chev">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+          </span>
+        </button>
+        <div class="svc-body" id="svc-social">
+          <div class="svc-inner">
+            <ul class="bullets">
+              <li><span class="tic">✓</span> Content calendar &amp; scheduling</li>
+              <li><span class="tic">✓</span> Post &amp; story design</li>
+              <li><span class="tic">✓</span> Community management</li>
+              <li><span class="tic">✓</span> Paid social campaigns</li>
+              <li><span class="tic">✓</span> Monthly performance reports</li>
+            </ul>
+          </div>
+        </div>
+      </article>
+
+      <!-- 05 · Branding -->
+      <article class="svc reveal">
+        <button class="svc-head" type="button" aria-expanded="false" aria-controls="svc-branding">
+          <span class="panel-ico">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 3.5 2.1 5.4 5.4 2.1-5.4 2.1L12 18.5l-2.1-5.4L4.5 11l5.4-2.1Z"/><path d="m18.6 15.6.8 2 2 .8-2 .8-.8 2-.8-2-2-.8 2-.8Z"/></svg>
+          </span>
+          <span class="svc-title">
+            <b>Branding &amp; Creative</b>
+            <small>Identity, type and art direction — the pieces that make a brand recognisable at a glance.</small>
+          </span>
+          <span class="svc-num">05</span>
+          <span class="svc-chev">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+          </span>
+        </button>
+        <div class="svc-body" id="svc-branding">
+          <div class="svc-inner">
+            <ul class="bullets">
+              <li><span class="tic">✓</span> Brand identity &amp; logo</li>
+              <li><span class="tic">✓</span> Visual systems &amp; guidelines</li>
+              <li><span class="tic">✓</span> Design systems &amp; UI kits</li>
+              <li><span class="tic">✓</span> Art direction</li>
+              <li><span class="tic">✓</span> Print &amp; collateral</li>
+            </ul>
+          </div>
+        </div>
+      </article>
+
+      <!-- 06 · Security -->
+      <article class="svc reveal">
+        <button class="svc-head" type="button" aria-expanded="false" aria-controls="svc-security">
+          <span class="panel-ico">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3.2 19 6v5.6c0 4.5-2.9 7.9-7 9.2-4.1-1.3-7-4.7-7-9.2V6Z"/><path d="m9 12 2.2 2.2L15.4 10"/></svg>
+          </span>
+          <span class="svc-title">
+            <b>Cybersecurity &amp; Care</b>
+            <small>Keeping everything safe, fast and quietly running long after launch.</small>
+          </span>
+          <span class="svc-num">06</span>
+          <span class="svc-chev">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+          </span>
+        </button>
+        <div class="svc-body" id="svc-security">
+          <div class="svc-inner">
+            <ul class="bullets">
+              <li><span class="tic">✓</span> Security headers &amp; hardening</li>
+              <li><span class="tic">✓</span> Vulnerability review</li>
+              <li><span class="tic">✓</span> Backups &amp; uptime monitoring</li>
+              <li><span class="tic">✓</span> Performance tuning</li>
+              <li><span class="tic">✓</span> Ongoing maintenance</li>
+            </ul>
+          </div>
+        </div>
+      </article>
+
     </div>
   </div>
+</section>
+
+<!-- ================= CTA ================= -->
+<section style="padding-top:20px">
+  <div class="wrap">
+    <div class="cta-band reveal">
+      <span class="glow"></span>
+      <div>
+        <div class="kicker">Not sure where to start?</div>
+        <h2>Tell us what needs building.</h2>
+        <p>Send over the idea, the brief or just the problem — we will come back with the right mix of services and what it takes to ship.</p>
+        <div class="cta-actions">
+          <a class="soft-btn" href="mailto:theprofessionalrj@gmail.com">Get in touch</a>
+          <a class="soft-btn ghost" href="../request-demo.html">Request a demo</a>
+        </div>
+      </div>
+      <img class="band-logo" src="../assets/RJ_Logo.png" alt="RJ" />
+    </div>
+  </div>
+</section>
+
 </main>
 
 <footer>
@@ -86,5 +413,28 @@
 </footer>
 
 <script src="../js/site.js"></script>
+<script>
+(function () {
+  "use strict";
+
+  var items = document.querySelectorAll(".svc");
+
+  Array.prototype.forEach.call(items, function (item) {
+    var head = item.querySelector(".svc-head");
+    if (!head) return;
+
+    function set(open) {
+      item.classList.toggle("open", open);
+      head.setAttribute("aria-expanded", open ? "true" : "false");
+    }
+
+    head.addEventListener("click", function () {
+      set(!item.classList.contains("open"));
+    });
+
+    set(item.classList.contains("open"));
+  });
+})();
+</script>
 </body>
 </html>
