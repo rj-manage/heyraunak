@@ -32,21 +32,20 @@
 
    SUBMISSION
    ----------
-   This site has no backend: no API, no form endpoint, no email
-   service, no database, no CRM. The only contact channel it has
-   ever used is mailto:theprofessionalrj@gmail.com.
+   Enquiries POST to /api/enquiry (api/enquiry.js), which stores the
+   row in Google Sheets and emails the administrator. Success is only
+   shown when that endpoint confirms it saved the enquiry.
 
-   Set ENQUIRY_ENDPOINT to a URL and enquiries POST there as JSON;
-   a success screen then appears only when the server answers OK.
-   With no endpoint configured the enquiry is handed to the
-   visitor's email app instead - never reported as "sent".
+   If the endpoint replies that it is not configured (503), or fails,
+   the visitor sees an error plus a "Send by email instead" fallback -
+   never a false success.
    ============================================================ */
 (function () {
   "use strict";
 
-  /* ---------- integration point (configure this) ---------- */
+  /* ---------- integration point ---------- */
 
-  var ENQUIRY_ENDPOINT = "";
+  var ENQUIRY_ENDPOINT = "/api/enquiry";
   var CONTACT_EMAIL = "theprofessionalrj@gmail.com";
   var MAX_MAILTO = 1800;
 
@@ -140,6 +139,7 @@
     budgetTouched: {},
     adSpendTouched: {},
     sending: false,
+    startedAt: 0,
     lastFocus: null
   };
 
@@ -281,6 +281,7 @@
     titleEl.textContent = hit.svc.name;
     store.step = 1;
     store.sending = false;
+    store.startedAt = Date.now();
     paint();
     var firstField = dialog.querySelector("select, input, textarea");
     if (firstField) firstField.focus();
@@ -425,7 +426,12 @@
     }
     return '<div class="f-grid">' + list.map(function (f) {
       return fieldHTML(f, "__contact");
-    }).join("") + "</div>";
+    }).join("") + "</div>" +
+      /* honeypot: hidden from people, filled by naive bots */
+      '<div class="f-hp" aria-hidden="true">' +
+      '<label for="f-hp">Leave this field empty</label>' +
+      '<input type="text" id="f-hp" name="website" tabindex="-1" autocomplete="off" />' +
+      "</div>";
   }
 
   function platformBlock() {
@@ -713,32 +719,69 @@
     };
   }
 
-  function submit() {
-    if (!validate(store.step)) return;
+  /* ---------- idempotency key ----------
+     One key per service, reused while a submission is unresolved, so a
+     retry after a network error can never create a second sheet row. */
+
+  var KEYS = {};
+
+  function keyFor(svcId) {
+    if (KEYS[svcId]) return KEYS[svcId];
+    var k = null;
+    try { k = window.sessionStorage.getItem("rj-enq-" + svcId); } catch (e) {}
+    if (!k) {
+      k = (window.crypto && window.crypto.randomUUID)
+        ? window.crypto.randomUUID()
+        : "k" + Date.now().toString(36) + Math.random().toString(36).slice(2, 10);
+      try { window.sessionStorage.setItem("rj-enq-" + svcId, k); } catch (e) {}
+    }
+    KEYS[svcId] = k;
+    return k;
+  }
+
+  function keyUsed(svcId) {
+    delete KEYS[svcId];
+    try { window.sessionStorage.removeItem("rj-enq-" + svcId); } catch (e) {}
+  }
+
+  function envelope() {
     var data = payload();
+    var hp = el("f-hp");
+    data.idempotency_key = keyFor(store.serviceId);
+    data.form_started_at = store.startedAt || 0;
+    data.hp = hp ? hp.value : "";
+    return data;
+  }
+
+  function submit() {
+    if (store.sending) return;
+    if (!validate(store.step)) return;
+
+    var data = envelope();
     store.sending = true;
     setBusy(true);
-
-    if (!ENQUIRY_ENDPOINT) {
-      handoff(data);
-      return;
-    }
 
     fetch(ENQUIRY_ENDPOINT, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data)
     }).then(function (res) {
-      if (!res.ok) throw new Error("Server responded " + res.status);
-      return res.json().catch(function () { return {}; });
-    }).then(function () {
+      return res.json().catch(function () { return {}; }).then(function (json) {
+        return { ok: res.ok, status: res.status, json: json || {} };
+      });
+    }).then(function (r) {
       setBusy(false);
       store.sending = false;
-      success();
-    }).catch(function (err) {
+      if (r.ok && r.json.ok) {
+        keyUsed(store.serviceId);
+        success({ id: r.json.id });
+        return;
+      }
+      failed(r.json.message, r.status);
+    }).catch(function () {
       setBusy(false);
       store.sending = false;
-      failed(err && err.message ? err.message : "The request could not be completed.");
+      failed(null, 0);
     });
   }
 
@@ -786,10 +829,38 @@
     success({ handedOff: true, truncated: truncated, mailto: href });
   }
 
-  function failed(msg) {
+  function clearAlert() {
+    var a = bodyEl.querySelector(".f-alert");
+    if (a && a.parentNode) a.parentNode.removeChild(a);
+  }
+
+  function failed(msg, status) {
+    clearAlert();
+
+    var text = msg || "Something went wrong while sending your enquiry.";
+    if (status === 503) {
+      text = "Our enquiry form is not connected yet, so your message was not saved.";
+    } else if (status === 429) {
+      text = "Too many submissions from this connection. Please try again in a few minutes.";
+    } else if (status === 0) {
+      text = "We could not reach the server. Check your connection and try again.";
+    }
+
     bodyEl.insertAdjacentHTML("afterbegin",
-      '<div class="f-alert" role="alert">Couldn’t send your enquiry - ' + esc(msg) +
-      ". Please try again, or email <a href=\"mailto:" + CONTACT_EMAIL + "\">" + CONTACT_EMAIL + "</a>.</div>");
+      '<div class="f-alert" role="alert">' +
+      "<b>Your enquiry was not sent.</b> " + esc(text) +
+      '<div class="f-alert-actions">' +
+      '<button class="soft-btn sm" type="button" id="f-retry">Try again</button>' +
+      '<button class="soft-btn ghost sm" type="button" id="f-email">Send by email instead</button>' +
+      "</div></div>");
+
+    var retry = el("f-retry");
+    if (retry) retry.addEventListener("click", function () { clearAlert(); submit(); });
+
+    var mail = el("f-email");
+    if (mail) mail.addEventListener("click", function () { clearAlert(); handoff(payload()); });
+
+    statusEl.textContent = "Your enquiry was not sent.";
   }
 
   function success(opts) {
@@ -805,11 +876,11 @@
       bodyEl.innerHTML =
         '<div class="f-done">' +
         '<span class="f-done-ico">✓</span>' +
-        "<h3>Enquiry sent</h3>" +
-        "<p>Thanks - your enquiry for <b>" + esc(d.service) + "</b> has reached us. We usually reply within one to two business days.</p>" +
-        '<p class="f-hint">Reference: ' + esc(d.submitted_at) + "</p>" +
+        "<h3>Your enquiry has been received!</h3>" +
+        "<p>Thank you for considering RJ Studio. We&rsquo;ve received your project details and will get back to you soon.</p>" +
+        (opts.id ? '<p class="f-hint">Reference: <b>' + esc(opts.id) + "</b></p>" : "") +
         "</div>";
-      statusEl.textContent = "Enquiry sent successfully.";
+      statusEl.textContent = "Your enquiry has been received.";
       return;
     }
 
@@ -817,7 +888,7 @@
       '<div class="f-done">' +
       '<span class="f-done-ico">✉</span>' +
       "<h3>Your enquiry is ready</h3>" +
-      "<p>Online submission isn’t connected on this site yet, so we’ll hand your enquiry to your email app - it’s already filled in and addressed to <b>" + CONTACT_EMAIL + "</b>. Just press send.</p>" +
+      "<p>So you don’t have to retype anything, we’ve prepared your enquiry for <b>" + esc(d.service) + "</b> and addressed it to <b>" + CONTACT_EMAIL + "</b>. Open it and press send.</p>" +
       (opts.truncated ? '<p class="f-hint">The summary was shortened to fit an email link - reply and we’ll ask for anything missing.</p>' : "") +
       '<div class="f-done-actions">' +
       '<a class="soft-btn" href="' + esc(opts.mailto) + '">Open in email app</a>' +
