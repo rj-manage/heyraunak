@@ -1,65 +1,91 @@
 /* ============================================================
    RJ - Category 03 data · Digital Marketing & Growth
    Registers with the shared enquiry engine (service-enquiry.js).
+   Three steps for every service: Project Requirements ->
+   Budget & Timeline -> Personal Information.
 
-   24 services in the four approved groups. Category 03 has no
-   per-service field specification yet, so every service shares one
-   marketing brief - the same questions a marketing engagement
-   needs whatever the channel. Replace BRIEF with per-service field
-   sets when those are signed off; the engine needs no changes.
+   Services in the Paid Advertising group carry adSpend: true, which
+   adds a separate optional "Advertising Spend Budget" to step 2 so
+   platform spend is never confused with the RJ service fee.
    ============================================================ */
 (function () {
   "use strict";
 
-  var BRIEF = [
-    { k: "profile_url", l: "Website / Profile URL", t: "url" },
-    { k: "presence", l: "Current Online Presence", t: "textarea" },
-    { k: "audience", l: "Target Audience", t: "text" },
-    { k: "goals", l: "Primary Goals & KPIs", t: "textarea" },
-    { k: "competitors", l: "Main Competitors", t: "text" },
-    { k: "additional", l: "Additional Requirements", t: "textarea" }
+  function withDescription(fields) {
+    return fields.concat([
+      { k: "requirements", l: "Campaign Requirements", t: "textarea" }
+    ]);
+  }
+
+  var OBJECTIVE_SOCIAL = [
+    "Brand awareness", "Engagement", "Follower growth", "Lead generation", "Sales"
   ];
+  var OBJECTIVE_ADS = [
+    "Lead generation", "Sales", "Website traffic", "Retargeting", "Brand awareness"
+  ];
+  var OBJECTIVE_SEO = [
+    "Higher rankings", "More organic traffic", "More leads", "Local visibility", "Fixing SEO issues"
+  ];
+  var OBJECTIVE_DIRECT = [
+    "Nurturing leads", "Retention", "Sales & offers", "Announcements"
+  ];
+
+  function service(id, name, group, objective, adSpend) {
+    var svc = {
+      id: id,
+      name: name,
+      group: group,
+      fields: withDescription([
+        { k: "profile_url", l: "Website / Social Profile URL", t: "url" },
+        { k: "objective", l: "Marketing objective", t: "select", o: objective },
+        { k: "audience", l: "Target audience", t: "text" }
+      ])
+    };
+    if (adSpend) svc.adSpend = true;
+    return svc;
+  }
 
   window.RJEnquiry.define({
     id: "marketing",
     label: "Digital Marketing & Growth",
+    dedupeOrg: true,
     steps: [
-      { title: "Campaign Requirements", kind: "fields", fieldStep: 1 },
+      { title: "Project Requirements", kind: "fields", fieldStep: 1 },
       { title: "Budget & Timeline", kind: "budget" },
-      { title: "Contact Information", kind: "contact" }
+      { title: "Personal Information", kind: "contact" }
     ],
     services: [
       /* ---------- Social Media Marketing ---------- */
-      { id: "mkt-social-media", name: "Social Media Marketing", group: "Social Media Marketing", fields: BRIEF },
-      { id: "mkt-instagram", name: "Instagram Marketing", group: "Social Media Marketing", fields: BRIEF },
-      { id: "mkt-facebook", name: "Facebook Marketing", group: "Social Media Marketing", fields: BRIEF },
-      { id: "mkt-linkedin", name: "LinkedIn Marketing", group: "Social Media Marketing", fields: BRIEF },
-      { id: "mkt-youtube", name: "YouTube Marketing", group: "Social Media Marketing", fields: BRIEF },
-      { id: "mkt-x", name: "X (Twitter) Marketing", group: "Social Media Marketing", fields: BRIEF },
-      { id: "mkt-pinterest", name: "Pinterest Marketing", group: "Social Media Marketing", fields: BRIEF },
+      service("mkt-social-media", "Social Media Marketing", "Social Media Marketing", OBJECTIVE_SOCIAL),
+      service("mkt-instagram", "Instagram Marketing", "Social Media Marketing", OBJECTIVE_SOCIAL),
+      service("mkt-facebook", "Facebook Marketing", "Social Media Marketing", OBJECTIVE_SOCIAL),
+      service("mkt-linkedin", "LinkedIn Marketing", "Social Media Marketing", OBJECTIVE_SOCIAL),
+      service("mkt-youtube", "YouTube Marketing", "Social Media Marketing", OBJECTIVE_SOCIAL),
+      service("mkt-x", "X (Twitter) Marketing", "Social Media Marketing", OBJECTIVE_SOCIAL),
+      service("mkt-pinterest", "Pinterest Marketing", "Social Media Marketing", OBJECTIVE_SOCIAL),
 
       /* ---------- Paid Advertising ---------- */
-      { id: "mkt-meta-ads", name: "Meta Ads Management", group: "Paid Advertising", fields: BRIEF },
-      { id: "mkt-google-ads", name: "Google Ads Management", group: "Paid Advertising", fields: BRIEF },
-      { id: "mkt-youtube-ads", name: "YouTube Advertising", group: "Paid Advertising", fields: BRIEF },
-      { id: "mkt-linkedin-ads", name: "LinkedIn Advertising", group: "Paid Advertising", fields: BRIEF },
-      { id: "mkt-display-ads", name: "Display Advertising", group: "Paid Advertising", fields: BRIEF },
-      { id: "mkt-retargeting", name: "Remarketing & Retargeting", group: "Paid Advertising", fields: BRIEF },
-      { id: "mkt-lead-gen", name: "Paid Lead Generation", group: "Paid Advertising", fields: BRIEF },
+      service("mkt-meta-ads", "Meta Ads Management", "Paid Advertising", OBJECTIVE_ADS, true),
+      service("mkt-google-ads", "Google Ads Management", "Paid Advertising", OBJECTIVE_ADS, true),
+      service("mkt-youtube-ads", "YouTube Advertising", "Paid Advertising", OBJECTIVE_ADS, true),
+      service("mkt-linkedin-ads", "LinkedIn Advertising", "Paid Advertising", OBJECTIVE_ADS, true),
+      service("mkt-display-ads", "Display Advertising", "Paid Advertising", OBJECTIVE_ADS, true),
+      service("mkt-retargeting", "Remarketing & Retargeting", "Paid Advertising", OBJECTIVE_ADS, true),
+      service("mkt-lead-gen", "Paid Lead Generation", "Paid Advertising", OBJECTIVE_ADS, true),
 
       /* ---------- Search Engine Optimization ---------- */
-      { id: "mkt-onpage-seo", name: "On-Page SEO", group: "Search Engine Optimization (SEO)", fields: BRIEF },
-      { id: "mkt-offpage-seo", name: "Off-Page SEO", group: "Search Engine Optimization (SEO)", fields: BRIEF },
-      { id: "mkt-technical-seo", name: "Technical SEO", group: "Search Engine Optimization (SEO)", fields: BRIEF },
-      { id: "mkt-local-seo", name: "Local SEO", group: "Search Engine Optimization (SEO)", fields: BRIEF },
-      { id: "mkt-keyword-research", name: "Keyword Research", group: "Search Engine Optimization (SEO)", fields: BRIEF },
-      { id: "mkt-seo-audit", name: "Website SEO Audit", group: "Search Engine Optimization (SEO)", fields: BRIEF },
+      service("mkt-onpage-seo", "On-Page SEO", "Search Engine Optimization (SEO)", OBJECTIVE_SEO),
+      service("mkt-offpage-seo", "Off-Page SEO", "Search Engine Optimization (SEO)", OBJECTIVE_SEO),
+      service("mkt-technical-seo", "Technical SEO", "Search Engine Optimization (SEO)", OBJECTIVE_SEO),
+      service("mkt-local-seo", "Local SEO", "Search Engine Optimization (SEO)", OBJECTIVE_SEO),
+      service("mkt-keyword-research", "Keyword Research", "Search Engine Optimization (SEO)", OBJECTIVE_SEO),
+      service("mkt-seo-audit", "Website SEO Audit", "Search Engine Optimization (SEO)", OBJECTIVE_SEO),
 
       /* ---------- Email & Direct Marketing ---------- */
-      { id: "mkt-email", name: "Email Marketing", group: "Email & Direct Marketing", fields: BRIEF },
-      { id: "mkt-whatsapp", name: "WhatsApp Marketing", group: "Email & Direct Marketing", fields: BRIEF },
-      { id: "mkt-sms", name: "SMS Marketing", group: "Email & Direct Marketing", fields: BRIEF },
-      { id: "mkt-newsletter", name: "Newsletter Campaigns", group: "Email & Direct Marketing", fields: BRIEF }
+      service("mkt-email", "Email Marketing", "Email & Direct Marketing", OBJECTIVE_DIRECT),
+      service("mkt-whatsapp", "WhatsApp Marketing", "Email & Direct Marketing", OBJECTIVE_DIRECT),
+      service("mkt-sms", "SMS Marketing", "Email & Direct Marketing", OBJECTIVE_DIRECT),
+      service("mkt-newsletter", "Newsletter Campaigns", "Email & Direct Marketing", OBJECTIVE_DIRECT)
     ]
   });
 })();

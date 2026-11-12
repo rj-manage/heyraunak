@@ -70,7 +70,7 @@
   var ORG_KEYS = [
     "business_name", "company_name", "org_name", "organization_name",
     "institution_name", "agency_name", "marketplace_name",
-    "restaurant_name", "healthcare_org", "software_name"
+    "restaurant_name", "healthcare_org", "software_name", "brand_name"
   ];
 
   /* ---------- registry ---------- */
@@ -138,6 +138,7 @@
     byService: {},
     contact: {},
     budgetTouched: {},
+    adSpendTouched: {},
     sending: false,
     lastFocus: null
   };
@@ -330,19 +331,19 @@
     stepsEl.innerHTML = c.steps.map(function (s, i) {
       var n = i + 1;
       var cls = n === store.step ? "on" : (n < store.step ? "done" : "");
-      return '<li class="' + cls + '"><i>' + n + "</i><span>" + esc(s.title) + "</span></li>";
+      var label = (n < 10 ? "0" : "") + n;
+      return '<li class="' + cls + '"><i>' + label + "</i><span>" + esc(s.title) + "</span></li>";
     }).join("");
 
     var kind = c.steps[store.step - 1].kind;
     bodyEl.innerHTML =
       kind === "budget" ? budgetStep() :
       kind === "contact" ? contactStep() :
-      kind === "platform" ? platformStep() :
       fieldsStep(c.steps[store.step - 1]);
 
     backBtn.hidden = store.step === 1;
     nextBtn.hidden = false;
-    nextBtn.textContent = store.step === steps().length ? "Send enquiry" : "Continue";
+    nextBtn.textContent = store.step === steps().length ? "Submit Enquiry" : "Continue";
     bindFields();
   }
 
@@ -395,14 +396,19 @@
     var s = svc();
     var want = stepCfg.fieldStep || 1;
     var list = s.fields.filter(function (f) { return (f.s || 1) === want; });
-    var note = (want === 1 && s.note) ? '<p class="f-note">' + esc(s.note) + "</p>" : "";
+    var html = (want === 1 && s.note) ? '<p class="f-note">' + esc(s.note) + "</p>" : "";
 
-    if (!list.length) {
-      return note + '<p class="f-empty">Nothing else needed here - continue to the next step.</p>';
+    if (list.length) {
+      html += '<div class="f-grid">' + list.map(function (f) {
+        return fieldHTML(f, s.id);
+      }).join("") + "</div>";
     }
-    return note + '<div class="f-grid">' + list.map(function (f) {
-      return fieldHTML(f, s.id);
-    }).join("") + "</div>";
+
+    /* categories that need a platform answer show it inside the
+       requirements step rather than as a step of its own */
+    html += platformBlock();
+
+    return html || '<p class="f-empty">Nothing else needed here - continue to the next step.</p>';
   }
 
   function contactStep() {
@@ -422,7 +428,7 @@
     }).join("") + "</div>";
   }
 
-  function platformStep() {
+  function platformBlock() {
     var c = cat();
     var p = c.platforms;
     if (!p) return "";
@@ -453,32 +459,59 @@
     return html + "</div>";
   }
 
+  function sliderBlock(id, label, hint, touched, value, aria) {
+    var out = touched && typeof value === "number" ? money(value) : "Not specified";
+    var pos = touched && typeof value === "number" ? sliderFor(value) : 0;
+    return '<div class="f-field">' +
+      '<span class="f-lbl">' + esc(label) + "</span>" +
+      '<p class="f-hint">' + esc(hint) + "</p>" +
+      '<div class="bg-wrap">' +
+      '<output class="bg-out' + (touched ? "" : " idle") + '" id="' + id + '-out" for="' + id + '">' + esc(out) + "</output>" +
+      '<input class="bg-range" type="range" id="' + id + '" min="0" max="' + SLIDER_MAX + '" step="1" value="' + pos + '"' +
+      ' aria-label="' + esc(aria) + '" />' +
+      '<div class="bg-ends"><span>' + money(10) + "</span><span>" + money(100000) + "</span></div>" +
+      "</div></div>";
+  }
+
   function budgetStep() {
     var svcId = store.serviceId;
-    var touched = !!store.budgetTouched[svcId];
-    var val = answers(svcId).__budget;
-    var out = touched && typeof val === "number" ? money(val) : "Not specified";
-    var sliderPos = touched && typeof val === "number" ? sliderFor(val) : 0;
-    var timeline = answers(svcId).__timeline || "";
-    var tKey = svcId + ".__timeline";
+    var s = svc();
+    var a = answers(svcId);
+    var paidAds = !!s.adSpend;
 
+    var html = sliderBlock(
+      "enq-budget",
+      paidAds ? "RJ Service Fee Budget" : "Project Budget",
+      paidAds
+        ? "What you are allocating for RJ's work. This is separate from what you spend on the ad platform."
+        : "Select the approximate budget you have allocated for this project.",
+      !!store.budgetTouched[svcId], a.__budget,
+      "Project budget in US dollars"
+    );
+
+    var tKey = svcId + ".__timeline";
+    var timeline = a.__timeline || "";
     var opts = '<option value="">Select a timeline…</option>' + TIMELINES.map(function (t) {
       return '<option value="' + esc(t) + '"' + (timeline === t ? " selected" : "") + ">" + esc(t) + "</option>";
     }).join("");
 
-    return '<div class="f-field">' +
-      '<span class="f-lbl">Estimated Project Budget</span>' +
-      '<p class="f-hint">Select the approximate budget you have allocated for this project.</p>' +
-      '<div class="bg-wrap">' +
-      '<output class="bg-out' + (touched ? "" : " idle") + '" id="enq-budget-out" for="enq-budget">' + esc(out) + "</output>" +
-      '<input class="bg-range" type="range" id="enq-budget" min="0" max="' + SLIDER_MAX + '" step="1" value="' + sliderPos + '"' +
-      ' aria-label="Estimated project budget in US dollars" />' +
-      '<div class="bg-ends"><span>' + money(10) + "</span><span>" + money(100000) + "</span></div>" +
-      "</div></div>" +
-      '<div class="f-field">' +
+    html += '<div class="f-field">' +
       '<label for="f-timeline">Expected Project Timeline</label>' +
       '<select class="f-input f-select" id="f-timeline" data-key="' + esc(tKey) + '" required aria-required="true">' + opts + "</select>" +
       '<p class="f-err" data-err="' + esc(tKey) + '" hidden></p></div>';
+
+    /* paid advertising: a second, clearly separate platform spend */
+    if (paidAds) {
+      html += sliderBlock(
+        "enq-adspend",
+        "Advertising Spend Budget",
+        "Optional - the monthly amount you plan to put into the ad platform itself.",
+        !!store.adSpendTouched[svcId], a.__adspend,
+        "Advertising spend budget in US dollars"
+      );
+    }
+
+    return html;
   }
 
   /* ============================================================
@@ -496,8 +529,10 @@
       box.addEventListener("change", function () { writePlatform(box); });
     });
 
-    var range = el("enq-budget");
-    if (range) range.addEventListener("input", function () { onBudget(range); });
+    ["enq-budget", "enq-adspend"].forEach(function (id) {
+      var range = el(id);
+      if (range) range.addEventListener("input", function () { onSlider(id); });
+    });
   }
 
   function splitKey(name) {
@@ -553,12 +588,21 @@
     });
   }
 
-  function onBudget(range) {
+  function onSlider(id) {
+    var range = el(id);
+    if (!range) return;
     var svcId = store.serviceId;
     var dollars = budgetFromSlider(Number(range.value));
-    answers(svcId).__budget = dollars;
-    store.budgetTouched[svcId] = true;
-    var out = el("enq-budget-out");
+
+    if (id === "enq-adspend") {
+      answers(svcId).__adspend = dollars;
+      store.adSpendTouched[svcId] = true;
+    } else {
+      answers(svcId).__budget = dollars;
+      store.budgetTouched[svcId] = true;
+    }
+
+    var out = el(id + "-out");
     if (out) {
       out.textContent = money(dollars);
       out.classList.remove("idle");
@@ -599,8 +643,6 @@
       if (firstBad) { firstBad.focus(); return false; }
       return true;
     }
-
-    if (kind === "platform") return true;   /* platforms are always optional */
 
     var list = kind === "contact" ? CONTACT_FIELDS.slice() : s.fields.filter(function (f) {
       return (f.s || 1) === (c.steps[step - 1].fieldStep || 1);
@@ -663,6 +705,7 @@
       project_details: project,
       platforms: Array.isArray(a.__platforms) ? a.__platforms.slice() : [],
       budget_usd: typeof a.__budget === "number" ? a.__budget : null,
+      advertising_spend_usd: typeof a.__adspend === "number" ? a.__adspend : null,
       timeline: a.__timeline || null,
       contact: contact,
       submitted_at: new Date().toISOString(),
@@ -704,7 +747,7 @@
     nextBtn.disabled = on;
     backBtn.disabled = on;
     closeBtn.disabled = on;
-    nextBtn.textContent = on ? "Sending…" : (store.step === steps().length ? "Send enquiry" : "Continue");
+    nextBtn.textContent = on ? "Sending…" : (store.step === steps().length ? "Submit Enquiry" : "Continue");
   }
 
   function summaryText(d) {
@@ -713,10 +756,15 @@
     Object.keys(d.project_details).forEach(function (k) {
       lines.push(k + ": " + d.project_details[k]);
     });
-    lines.push("", "- Platforms -");
-    lines.push(d.platforms.length ? d.platforms.join(", ") : "Not specified");
+    if (d.platforms.length) {
+      lines.push("", "- Platforms -");
+      lines.push(d.platforms.join(", "));
+    }
     lines.push("", "- Budget & timeline -");
-    lines.push("Estimated Project Budget: " + (d.budget_usd == null ? "Not specified" : money(d.budget_usd) + " USD"));
+    lines.push("Project Budget: " + (d.budget_usd == null ? "Not specified" : money(d.budget_usd) + " USD"));
+    if (d.advertising_spend_usd != null) {
+      lines.push("Advertising Spend Budget: " + money(d.advertising_spend_usd) + " USD");
+    }
     lines.push("Expected Project Timeline: " + (d.timeline || "Not specified"));
     lines.push("", "- Contact -");
     Object.keys(d.contact).forEach(function (k) { lines.push(k + ": " + d.contact[k]); });
