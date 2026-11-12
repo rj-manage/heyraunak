@@ -6,17 +6,20 @@
    administrator. Runs on Vercel as a serverless function and uses
    only Node built-ins (no dependencies).
 
+   Storage goes through a Google Apps Script web app (see
+   apps-script/enquiry.gs), so no Google service-account key is
+   needed. Email is sent with Resend.
+
    Configuration (Vercel -> Project -> Settings -> Environment
    Variables). Nothing here is ever exposed to the browser:
 
-     GOOGLE_SERVICE_ACCOUNT_CREDENTIALS  service-account JSON (raw or base64)
-     GOOGLE_SPREADSHEET_ID               id from the sheet URL
-     GOOGLE_SHEET_NAME                   tab name (default "Enquiries")
-     ADMIN_NOTIFICATION_EMAIL            where enquiries are emailed
-     EMAIL_PROVIDER_API_KEY              Resend API key
-     EMAIL_SENDER_ADDRESS                verified sender, e.g. "RJ Studio <enquiries@yourdomain.com>"
-     CUSTOMER_ACK_ENABLED                "true" to also email the client
-     ENQUIRY_ALLOWED_ORIGIN              optional, locks the endpoint to one origin
+     GOOGLE_APPS_SCRIPT_URL    deployed web-app URL (ends in /exec)
+     RJ_ENQUIRY_SHARED_SECRET  shared secret, also set in the Apps Script
+     ADMIN_NOTIFICATION_EMAIL  where enquiries are emailed
+     EMAIL_PROVIDER_API_KEY    Resend API key
+     EMAIL_SENDER_ADDRESS      verified sender, e.g. "RJ Studio <enquiries@yourdomain.com>"
+     CUSTOMER_ACK_ENABLED      "true" to also email the client
+     ENQUIRY_ALLOWED_ORIGIN    optional, locks the endpoint to one origin
 
    If a required variable is missing the endpoint answers 503
    { error: "not_configured" } and never pretends to have saved
@@ -27,10 +30,7 @@
 
 const crypto = require("crypto");
 
-const SHEETS_API = "https://sheets.googleapis.com/v4/spreadsheets";
-const TOKEN_URL = "https://oauth2.googleapis.com/token";
 const RESEND_URL = "https://api.resend.com/emails";
-const SCOPE = "https://www.googleapis.com/auth/spreadsheets";
 
 const MAX_BODY_BYTES = 32 * 1024;
 const MAX_TEXT = 2000;
@@ -39,6 +39,8 @@ const MAX_DETAIL_KEYS = 40;
 const RATE_WINDOW_MS = 10 * 60 * 1000;
 const RATE_MAX = 6;
 const MIN_FILL_MS = 2000;
+const SHEET_TIMEOUT_MS = 15000;
+const MIN_SECRET_LENGTH = 16;
 
 const HEADERS = [
   "Enquiry ID",
@@ -67,15 +69,20 @@ function env(name) {
 
 function config() {
   return {
-    creds: env("GOOGLE_SERVICE_ACCOUNT_CREDENTIALS"),
-    sheetId: env("GOOGLE_SPREADSHEET_ID"),
-    sheetName: env("GOOGLE_SHEET_NAME") || "Enquiries",
+    scriptUrl: env("GOOGLE_APPS_SCRIPT_URL"),
+    secret: env("RJ_ENQUIRY_SHARED_SECRET"),
     adminEmail: env("ADMIN_NOTIFICATION_EMAIL"),
     emailKey: env("EMAIL_PROVIDER_API_KEY"),
     sender: env("EMAIL_SENDER_ADDRESS"),
     ack: env("CUSTOMER_ACK_ENABLED").toLowerCase() === "true",
     allowedOrigin: env("ENQUIRY_ALLOWED_ORIGIN")
   };
+}
+
+function sheetConfigured(cfg) {
+  return /^https:\/\/script\.google\.com\//.test(cfg.scriptUrl) &&
+    cfg.secret.length >= MIN_SECRET_LENGTH &&
+    !!cfg.adminEmail && !!cfg.emailKey && !!cfg.sender;
 }
 
 function isValidEmail(value) {
@@ -98,10 +105,6 @@ function safeCell(value) {
   if (typeof value === "number") return value;
   const s = String(value);
   return /^[=+\-@\t\r]/.test(s) ? "'" + s : s;
-}
-
-function b64url(input) {
-  return Buffer.from(input).toString("base64url");
 }
 
 function round(value, min, max) {
@@ -225,63 +228,55 @@ function validate(body) {
   return { data, errors };
 }
 
-/* ---------- Google Sheets ---------- */
+/* ---------- Google Apps Script storage ----------
+   The web app always answers HTTP 200 (ContentService cannot set a
+   status), and may first redirect through script.googleusercontent.com,
+   so the only trustworthy signal is a JSON body with success && saved.
+   An HTML page - usually a Google sign-in screen - is a failure. */
 
-async function accessToken(creds) {
-  const now = Math.floor(Date.now() / 1000);
-  const header = b64url(JSON.stringify({ alg: "RS256", typ: "JWT" }));
-  const claim = b64url(JSON.stringify({
-    iss: creds.client_email,
-    scope: SCOPE,
-    aud: TOKEN_URL,
-    iat: now,
-    exp: now + 3600
-  }));
-  const input = header + "." + claim;
-  const signature = crypto.createSign("RSA-SHA256").update(input).sign(creds.private_key, "base64url");
+async function saveToSheet(cfg, row, id) {
+  const controller = typeof AbortController !== "undefined" ? new AbortController() : null;
+  const timer = controller ? setTimeout(() => controller.abort(), SHEET_TIMEOUT_MS) : null;
 
-  const res = await fetch(TOKEN_URL, {
-    method: "POST",
-    headers: { "Content-Type": "application/x-www-form-urlencoded" },
-    body:
-      "grant_type=" + encodeURIComponent("urn:ietf:params:oauth:grant-type:jwt-bearer") +
-      "&assertion=" + encodeURIComponent(input + "." + signature)
-  });
-  if (!res.ok) throw new Error("google_token_" + res.status);
-  const json = await res.json();
-  if (!json.access_token) throw new Error("google_token_empty");
-  return json.access_token;
-}
-
-function sheetPath(cfg, suffix) {
-  return SHEETS_API + "/" + encodeURIComponent(cfg.sheetId) +
-    "/values/" + encodeURIComponent(cfg.sheetName) + suffix;
-}
-
-async function rowExists(cfg, token, id) {
-  const res = await fetch(sheetPath(cfg, "!A2:A"), {
-    headers: { Authorization: "Bearer " + token }
-  });
-  if (!res.ok) throw new Error("google_read_" + res.status);
-  const json = await res.json().catch(() => ({}));
-  const rows = Array.isArray(json.values) ? json.values : [];
-  return rows.some((row) => row && row[0] === id);
-}
-
-async function appendRow(cfg, token, row) {
-  const res = await fetch(
-    sheetPath(cfg, "!A:P:append") + "?valueInputOption=RAW&insertDataOption=INSERT_ROWS",
-    {
+  let res;
+  try {
+    res = await fetch(cfg.scriptUrl, {
       method: "POST",
-      headers: {
-        Authorization: "Bearer " + token,
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({ values: [row] })
-    }
-  );
-  if (!res.ok) throw new Error("google_append_" + res.status);
-  return res.json().catch(() => ({}));
+      redirect: "follow",
+      /* text/plain keeps the request body as a plain string and avoids
+         any preflight; Apps Script reads it from e.postData.contents */
+      headers: { "Content-Type": "text/plain;charset=utf-8" },
+      body: JSON.stringify({
+        auth: cfg.secret,
+        enquiryId: id,
+        row: row
+      }),
+      signal: controller ? controller.signal : undefined
+    });
+  } catch (err) {
+    throw new Error("apps_script_unreachable");
+  } finally {
+    if (timer) clearTimeout(timer);
+  }
+
+  const text = await res.text().catch(() => "");
+
+  let payload = null;
+  try {
+    payload = JSON.parse(text);
+  } catch (err) {
+    /* redirect to a login page, an HTML error, or an empty body */
+    throw new Error("apps_script_bad_response");
+  }
+
+  if (!payload || payload.success !== true || payload.saved !== true) {
+    throw new Error("apps_script_rejected");
+  }
+
+  return {
+    duplicate: payload.duplicate === true,
+    enquiryId: payload.enquiryId || id
+  };
 }
 
 function buildRow(data, id, at) {
@@ -447,18 +442,7 @@ module.exports = async function handler(req, res) {
 
   /* configuration check happens after validation so a misconfigured
      deployment still reports bad input honestly */
-  let creds;
-  try {
-    const raw = cfg.creds.startsWith("{") ? cfg.creds : Buffer.from(cfg.creds, "base64").toString("utf8");
-    creds = JSON.parse(raw);
-    if (!creds.client_email || !creds.private_key) throw new Error("incomplete");
-  } catch (err) {
-    return send(res, 503, {
-      error: "not_configured",
-      message: "Enquiry storage is not configured yet."
-    });
-  }
-  if (!cfg.sheetId || !cfg.adminEmail || !cfg.emailKey || !cfg.sender) {
+  if (!sheetConfigured(cfg)) {
     return send(res, 503, {
       error: "not_configured",
       message: "Enquiry storage is not configured yet."
@@ -469,31 +453,17 @@ module.exports = async function handler(req, res) {
   const id = enquiryId(data.idempotencyKey, now);
   const at = stamp(now);
 
-  let token;
+  /* the Apps Script side dedupes on the same ID, so a retry of the same
+     submission can never create a second row */
+  let save;
   try {
-    token = await accessToken(creds);
+    save = await saveToSheet(cfg, buildRow(data, id, at), id);
   } catch (err) {
-    console.error("enquiry: google auth failed", err && err.message);
-    return send(res, 502, { error: "save_failed", message: "We could not save your enquiry." });
-  }
-
-  /* idempotency: the ID is derived from the client's key, so a retry
-     of the same submission never creates a second row */
-  let exists = false;
-  try {
-    exists = await rowExists(cfg, token, id);
-  } catch (err) {
-    console.error("enquiry: sheet lookup failed", err && err.message);
-    return send(res, 502, { error: "save_failed", message: "We could not save your enquiry." });
-  }
-
-  if (!exists) {
-    try {
-      await appendRow(cfg, token, buildRow(data, id, at));
-    } catch (err) {
-      console.error("enquiry: append failed", err && err.message);
-      return send(res, 502, { error: "save_failed", message: "We could not save your enquiry." });
-    }
+    console.error("enquiry: sheet save failed for " + id + " -", err && err.message);
+    return send(res, 502, {
+      error: "save_failed",
+      message: "We could not save your enquiry, so nothing was sent."
+    });
   }
 
   /* the row is saved - from here on failures are logged, never fatal,
@@ -535,10 +505,10 @@ module.exports = async function handler(req, res) {
 
   return send(res, 200, {
     ok: true,
-    id: id,
+    id: save.enquiryId || id,
     email: emailState,
     ack: ackState,
-    duplicate: exists
+    duplicate: save.duplicate
   });
 };
 
@@ -551,5 +521,7 @@ module.exports.__test = {
   clean,
   adminHtml,
   adminText,
+  saveToSheet,
+  sheetConfigured,
   HEADERS
 };
