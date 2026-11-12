@@ -10,8 +10,8 @@
  * 1. Open the spreadsheet "RJ Studio - Client Enquiries".
  * 2. Extensions -> Apps Script.
  * 3. Replace everything in Code.gs with this file.
- * 4. Put the spreadsheet ID in SPREADSHEET_ID below (the long id
- *    in the sheet URL, between /d/ and /edit).
+ * 4. SPREADSHEET_ID below is already set for the RJ Studio sheet.
+ *    (An "Enquiries" tab is created with headers on first use.)
  * 5. Project Settings (gear icon) -> Script Properties -> Add:
  *       RJ_ENQUIRY_SHARED_SECRET = <the same secret you put in Vercel>
  * 6. Save, then Deploy -> New deployment -> Web app.
@@ -38,7 +38,7 @@
 
 /* ---------- configuration ---------- */
 
-var SPREADSHEET_ID = "PASTE_YOUR_SPREADSHEET_ID_HERE";
+var SPREADSHEET_ID = "1gshj9zkvr5tOEDR91Z1GOf1QxfbSwg7f2k4ljDouSe8";
 var SHEET_NAME = "Enquiries";
 
 var SECRET_PROPERTY = "RJ_ENQUIRY_SHARED_SECRET";
