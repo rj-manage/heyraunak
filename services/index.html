@@ -33,118 +33,61 @@
   .svc-list {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    align-items: start;
+    grid-auto-rows: 1fr;
     gap: 22px;
     margin-top: 46px;
   }
   .svc {
     min-width: 0;
+    display: flex;
+    flex-direction: column;
+    padding: 26px;
     border-radius: 26px;
     background: var(--canvas);
     box-shadow: var(--sh-r);
   }
-  .svc-head {
-    width: 100%;
+  .svc-top {
     display: flex;
-    align-items: center;
-    gap: 18px;
-    padding: 22px 26px;
-    border: 0;
-    border-radius: 26px;
-    background: none;
-    font: inherit;
-    color: inherit;
-    text-align: left;
-    cursor: pointer;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
   }
-  .svc-head:focus-visible {
-    border-radius: 26px;
+  .svc .panel-ico {
+    transition: transform 0.22s var(--ease);
   }
-  /* placeholder category - not expandable */
-  .svc-static .svc-head {
-    cursor: default;
-  }
-  .svc-static .svc-head:hover .svc-title b {
-    color: inherit;
-  }
-  .svc-static .status-pill {
-    flex: none;
-    margin-left: 4px;
-  }
-  .svc-title {
-    flex: 1;
-    min-width: 0;
-  }
-  .svc-title b {
-    display: block;
-    font-family: var(--font-display);
-    font-size: 20px;
-    font-weight: 700;
-    letter-spacing: -0.02em;
-    overflow-wrap: break-word;
-    transition: color 0.18s ease;
-  }
-  .svc-title small {
-    display: block;
-    margin-top: 5px;
-    font-size: 14px;
-    color: var(--muted);
-  }
-  .svc-head:hover .svc-title b {
-    color: var(--mint-ink);
+  .svc:hover .panel-ico {
+    transform: translateY(-3px);
   }
   .svc-num {
+    padding-top: 4px;
     font-family: var(--font-display);
     font-size: 12px;
     font-weight: 700;
     letter-spacing: 0.18em;
     color: var(--muted);
   }
-  .svc-chev {
-    flex: none;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
+  .svc-title {
+    margin-top: 20px;
+    font-size: 21px;
+    line-height: 1.22;
+    letter-spacing: -0.02em;
+    overflow-wrap: break-word;
+  }
+  /* controls are pushed to the bottom edge, so a two-line heading
+     can never shift the dropdown or button */
+  .svc-controls {
+    margin-top: auto;
+    padding-top: 26px;
     display: grid;
-    place-items: center;
-    color: var(--muted);
-    background: var(--canvas);
-    box-shadow: var(--sh-s);
-    transition: transform 0.32s var(--ease), color 0.18s ease;
+    gap: 10px;
   }
-  .svc-chev svg {
-    width: 17px;
-    height: 17px;
+  .svc-controls .enq-select,
+  .svc-controls .soft-btn {
+    width: 100%;
   }
-  .svc.open .svc-chev {
-    transform: rotate(180deg);
-    color: var(--mint-ink);
-  }
-  /* expanded body: 0fr -> 1fr keeps it smooth without magic heights */
-  .svc-body {
-    display: grid;
-    grid-template-rows: 0fr;
-    transition: grid-template-rows 0.34s var(--ease);
-  }
-  .svc.open .svc-body {
-    grid-template-rows: 1fr;
-  }
-  .svc-body > .svc-inner {
-    overflow: hidden;
-    min-height: 0;
-    visibility: hidden;
-    transition: visibility 0s linear 0.34s;
-  }
-  .svc.open .svc-body > .svc-inner {
-    visibility: visible;
-    transition-delay: 0s;
-  }
-  .svc-body .bullets {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 12px 26px;
-    margin: 0;
-    padding: 22px 26px 26px;
-    border-top: 1px solid rgba(60, 80, 110, 0.14);
+  .svc-controls-soon .status-pill {
+    justify-content: center;
+    padding: 14px 16px;
   }
 
   @media (max-width: 860px) {
@@ -153,42 +96,20 @@
       gap: 16px;
     }
   }
-  @media (max-width: 720px) {
-    .svc-head {
-      gap: 14px;
-      padding: 20px;
+  @media (max-width: 560px) {
+    .svc {
+      padding: 22px;
     }
-    .svc-title b {
-      font-size: 18px;
+    .svc-title {
+      margin-top: 16px;
+      font-size: 19px;
     }
-    .svc-title small {
-      font-size: 13px;
-    }
-    .svc-num {
-      display: none;
-    }
-    .svc-body .bullets {
-      grid-template-columns: 1fr;
-      padding: 20px 20px 22px;
-    }
-  }
-  /* narrow phones: let the placeholder badge drop to its own line
-     instead of squeezing the category title */
-  @media (max-width: 520px) {
-    .svc-static .svc-head {
-      flex-wrap: wrap;
-      row-gap: 12px;
-    }
-    .svc-static .status-pill {
-      flex: 0 0 100%;
-      justify-content: center;
-      margin-left: 0;
+    .svc-controls {
+      padding-top: 22px;
     }
   }
   @media (prefers-reduced-motion: reduce) {
-    .svc-body,
-    .svc-chev,
-    .svc-title b {
+    .svc .panel-ico {
       transition: none;
     }
   }
@@ -200,22 +121,7 @@
      The one functional addition is the error red: --coral-2 is
      too light for text on --canvas, so errors use a darker coral.
      ------------------------------------------------------------ */
-  .enq-label {
-    display: block;
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--muted);
-    margin-bottom: 12px;
-  }
-  .enq-row {
-    display: flex;
-    gap: 14px;
-    align-items: stretch;
-  }
   .enq-select {
-    flex: 1;
     min-width: 0;
     -webkit-appearance: none;
     appearance: none;
@@ -247,11 +153,6 @@
     0% { box-shadow: var(--sh-in-s); }
     45% { box-shadow: inset 3px 3px 6px var(--dark), inset -3px -3px 6px var(--light), 0 0 0 3px rgba(60, 207, 145, 0.35); }
     100% { box-shadow: var(--sh-in-s); }
-  }
-  .enq-hint {
-    margin-top: 12px;
-    font-size: 12.5px;
-    color: var(--muted);
   }
   .soft-btn:disabled {
     cursor: not-allowed;
@@ -658,12 +559,6 @@
     .f-grid {
       grid-template-columns: 1fr;
     }
-    .enq-row {
-      flex-direction: column;
-    }
-    .enq-row .soft-btn {
-      width: 100%;
-    }
   }
   @media (max-width: 620px) {
     .enq-modal {
@@ -738,103 +633,60 @@
     <div class="svc-list">
 
       <!-- 01 · Web -->
-      <article class="svc open reveal">
-        <button class="svc-head" type="button" aria-expanded="true" aria-controls="svc-web">
+      <article class="svc reveal">
+        <div class="svc-top">
           <span class="panel-ico">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4.5" width="18" height="14" rx="2.5"/><path d="M3 9h18"/><path d="M12 18.5V21"/><path d="M8.5 21h7"/></svg>
           </span>
-          <span class="svc-title">
-            <b>Web Design &amp; Development</b>
-            <small>From business websites to custom web applications, we design and develop digital solutions tailored to your business needs.</small>
-          </span>
           <span class="svc-num">01</span>
-          <span class="svc-chev">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
-          </span>
-        </button>
-        <div class="svc-body" id="svc-web">
-          <div class="svc-inner">
-            <div class="enq" data-enq-category="web">
-              <span class="enq-label" id="enq-label">Choose the service you need</span>
-              <div class="enq-row">
-                <select class="enq-select" id="enq-service" aria-labelledby="enq-label"></select>
-                <button class="soft-btn" type="button" id="enq-connect" disabled>Let’s Connect</button>
-              </div>
-              <p class="enq-hint">15 services. Pick the closest match and a short form opens - about two minutes.</p>
-            </div>
-          </div>
+        </div>
+        <h2 class="svc-title">Web Design &amp; Development</h2>
+        <div class="svc-controls" data-enq-category="web">
+          <select class="enq-select" aria-label="Choose a Web Design and Development service"></select>
+          <button class="soft-btn" type="button" disabled>Let’s Connect</button>
         </div>
       </article>
 
       <!-- 02 · Software -->
       <article class="svc reveal">
-        <button class="svc-head" type="button" aria-expanded="false" aria-controls="svc-software">
+        <div class="svc-top">
           <span class="panel-ico">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m8.5 8.5-4 3.5 4 3.5"/><path d="m15.5 8.5 4 3.5-4 3.5"/><path d="M13.6 6.4 10.4 17.6"/></svg>
           </span>
-          <span class="svc-title">
-            <b>Software &amp; Product Development</b>
-            <small>Custom software and digital products engineered to simplify operations, solve complex challenges, and help businesses scale.</small>
-          </span>
           <span class="svc-num">02</span>
-          <span class="svc-chev">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
-          </span>
-        </button>
-        <div class="svc-body" id="svc-software">
-          <div class="svc-inner">
-            <div class="enq" data-enq-category="software">
-              <span class="enq-label" id="enq-label-software">Choose the software service you need</span>
-              <div class="enq-row">
-                <select class="enq-select" id="enq-service-software" aria-labelledby="enq-label-software"></select>
-                <button class="soft-btn" type="button" id="enq-connect-software" disabled>Let’s Connect</button>
-              </div>
-              <p class="enq-hint">30 services across custom systems, SaaS, industry platforms and technical builds.</p>
-            </div>
-          </div>
+        </div>
+        <h2 class="svc-title">Software &amp; Product Development</h2>
+        <div class="svc-controls" data-enq-category="software">
+          <select class="enq-select" aria-label="Choose a Software and Product Development service"></select>
+          <button class="soft-btn" type="button" disabled>Let’s Connect</button>
         </div>
       </article>
 
       <!-- 03 · Digital Marketing & Growth -->
       <article class="svc reveal">
-        <button class="svc-head" type="button" aria-expanded="false" aria-controls="svc-marketing">
+        <div class="svc-top">
           <span class="panel-ico">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 17.5 9 12l3.5 3.2L20.5 7"/><path d="M15.5 7h5v5"/></svg>
           </span>
-          <span class="svc-title">
-            <b>Digital Marketing &amp; Growth</b>
-            <small>Social, paid media, search and direct marketing - campaigns built to turn attention into customers.</small>
-          </span>
           <span class="svc-num">03</span>
-          <span class="svc-chev">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
-          </span>
-        </button>
-        <div class="svc-body" id="svc-marketing">
-          <div class="svc-inner">
-            <div class="enq" data-enq-category="marketing">
-              <span class="enq-label" id="enq-label-marketing">Choose the marketing service you need</span>
-              <div class="enq-row">
-                <select class="enq-select" id="enq-service-marketing" aria-labelledby="enq-label-marketing"></select>
-                <button class="soft-btn" type="button" id="enq-connect-marketing" disabled>Let’s Connect</button>
-              </div>
-              <p class="enq-hint">24 services across social media, paid advertising, SEO and direct marketing.</p>
-            </div>
-          </div>
+        </div>
+        <h2 class="svc-title">Digital Marketing &amp; Growth</h2>
+        <div class="svc-controls" data-enq-category="marketing">
+          <select class="enq-select" aria-label="Choose a Digital Marketing and Growth service"></select>
+          <button class="soft-btn" type="button" disabled>Let’s Connect</button>
         </div>
       </article>
 
       <!-- 04 · Social Media Management (SMM) - placeholder -->
-      <article class="svc svc-static reveal">
-        <div class="svc-head">
+      <article class="svc reveal">
+        <div class="svc-top">
           <span class="panel-ico">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5.5h16v11H9.5L4 20.5Z"/><path d="M8.5 10.5h7"/><path d="M8.5 13.2h4.5"/></svg>
           </span>
-          <span class="svc-title">
-            <b>Social Media Management (SMM)</b>
-            <small>Always-on management of your social presence - planning, publishing and community handled for you.</small>
-          </span>
           <span class="svc-num">04</span>
+        </div>
+        <h2 class="svc-title">Social Media Management (SMM)</h2>
+        <div class="svc-controls svc-controls-soon">
           <span class="status-pill soon"><span class="pdot"></span> Coming soon</span>
         </div>
       </article>
@@ -891,35 +743,6 @@
 </div>
 
 <script src="../js/site.js"></script>
-<script>
-(function () {
-  "use strict";
-
-  var items = document.querySelectorAll(".svc");
-
-  function setOpen(item, open) {
-    var head = item.querySelector("button.svc-head");
-    item.classList.toggle("open", open);
-    if (head) head.setAttribute("aria-expanded", open ? "true" : "false");
-  }
-
-  Array.prototype.forEach.call(items, function (item) {
-    var head = item.querySelector("button.svc-head");
-    if (!head) return;
-
-    head.addEventListener("click", function () {
-      var open = !item.classList.contains("open");
-      /* one category at a time keeps the two-column grid balanced */
-      Array.prototype.forEach.call(items, function (other) {
-        if (other !== item) setOpen(other, false);
-      });
-      setOpen(item, open);
-    });
-
-    setOpen(item, item.classList.contains("open"));
-  });
-})();
-</script>
 <script src="../js/service-enquiry.js"></script>
 <script src="../js/enquiry-web.js"></script>
 <script src="../js/enquiry-software.js"></script>
