@@ -146,12 +146,14 @@
     outline: 3px solid var(--mint-ink);
     outline-offset: 2px;
   }
+  /* selection feedback only - the inset deepens for a moment.
+     The coloured mint ring that used to animate here was a border glow. */
   .enq-select.picked {
-    animation: enqPick 0.45s var(--ease);
+    animation: enqPick 0.4s var(--ease);
   }
   @keyframes enqPick {
     0% { box-shadow: var(--sh-in-s); }
-    45% { box-shadow: inset 3px 3px 6px var(--dark), inset -3px -3px 6px var(--light), 0 0 0 3px rgba(60, 207, 145, 0.35); }
+    50% { box-shadow: var(--sh-in); }
     100% { box-shadow: var(--sh-in-s); }
   }
   .soft-btn:disabled {
@@ -192,7 +194,9 @@
     flex-direction: column;
     border-radius: 34px;
     background: var(--canvas);
-    box-shadow: var(--sh-r);
+    /* one soft, neutral elevation. The old neumorphic --sh-r threw a
+       near-white halo onto the dark scrim, which read as an outer glow. */
+    box-shadow: 0 22px 60px -20px rgba(32, 43, 62, 0.55);
     overflow: hidden;
     transform: translateY(18px) scale(0.985);
     transition: transform 0.3s var(--ease);
@@ -584,6 +588,7 @@
       height: 100%;
       max-height: 100%;
       border-radius: 0;
+      box-shadow: none;
     }
     .enq-head,
     .enq-body,
