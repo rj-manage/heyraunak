@@ -158,6 +158,7 @@ function selfTest() {
     sheet: sheet.getName(),
     columns: sheet.getLastColumn(),
     secretConfigured: !!(secret && secret.length >= MIN_SECRET_LENGTH),
+    secretLength: secret.length,     /* must be 64 */
     rows: Math.max(0, sheet.getLastRow() - 1)
   };
   console.log(JSON.stringify(report, null, 2));
