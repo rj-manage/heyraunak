@@ -5,11 +5,16 @@
    build step, no dependencies).
 
    Scoped to the single image in the home-page "The studio"
-   card (`.brand-tile .brand-mark`). The original <img> is left
-   exactly as it is and stays the visible, sharp artwork at rest:
-   a canvas is laid over it and only fades in while the pointer
-   is over the image. When the pointer leaves, the influence eases
-   back to zero, the canvas fades out and rendering stops.
+   card (`.brand-tile .brand-mark`).
+
+   While the effect runs the canvas is the only thing drawn over
+   that spot — the original <img> is hidden, so the sharp artwork
+   never ghosts underneath the warped one. The image is baked into
+   the texture at exactly the canvas' pixel size, so the canvas
+   reproduces it faithfully and handing over is invisible.
+
+   At rest the canvas is hidden and the untouched <img> is shown,
+   perfectly sharp.
 
    Nothing is created up front — the WebGL context is built on the
    first real hover, so a device that never hovers never pays for
@@ -45,12 +50,10 @@
     "precision highp float;",
     "varying vec2 vUv;",
     "uniform sampler2D uTex;",
-    "uniform vec2  uMouse;",      // smoothed pointer, box uv space (y up)
+    "uniform vec2  uMouse;",      // smoothed pointer, uv space (y up)
     "uniform vec2  uVel;",        // smoothed pointer velocity, uv / second
     "uniform float uTime;",
     "uniform float uInfluence;",  // 0 at rest, 1 fully engaged
-    "uniform vec2  uScale;",      // object-fit: contain mapping
-    "uniform vec2  uOffset;",
     "uniform float uAspect;",
     "",
     "float hash(vec2 p) {",
@@ -105,13 +108,11 @@
     "",
     "  uv -= disp * fall * uInfluence;",
     "",
-    "  /* object-fit: contain -> texture coordinates */",
-    "  vec2 t = (uv - uOffset) / uScale;",
-    "  if (t.x < 0.0 || t.x > 1.0 || t.y < 0.0 || t.y > 1.0) {",
+    "  if (uv.x < 0.0 || uv.x > 1.0 || uv.y < 0.0 || uv.y > 1.0) {",
     "    gl_FragColor = vec4(0.0);",
     "    return;",
     "  }",
-    "  gl_FragColor = texture2D(uTex, t);",
+    "  gl_FragColor = texture2D(uTex, uv);",
     "}"
   ].join("\n");
 
@@ -119,11 +120,12 @@
 
   var canvas = null;
   var gl = null;
+  var source = null;      // offscreen 2D canvas the texture is baked from
+  var sourceCtx = null;
   var ready = false;
   var armed = false;
 
   var box = { aspect: 1 };
-  var fit = { sx: 1, sy: 1, ox: 0, oy: 0 };
 
   var target = [0.5, 0.5];
   var mouse = [0.5, 0.5];
@@ -159,7 +161,6 @@
     s.pointerEvents = "none";
     s.opacity = "0";
     s.zIndex = "2";
-    s.willChange = "opacity";
 
     gl = canvas.getContext("webgl", {
       alpha: true,
@@ -198,8 +199,6 @@
     var tex = gl.createTexture();
     gl.bindTexture(gl.TEXTURE_2D, tex);
     gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
-    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, img);
-    /* 384x380 is not a power of two -> clamp + linear, no mipmaps */
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
@@ -213,9 +212,13 @@
     uLoc.uVel = gl.getUniformLocation(program, "uVel");
     uLoc.uTime = gl.getUniformLocation(program, "uTime");
     uLoc.uInfluence = gl.getUniformLocation(program, "uInfluence");
-    uLoc.uScale = gl.getUniformLocation(program, "uScale");
-    uLoc.uOffset = gl.getUniformLocation(program, "uOffset");
     uLoc.uAspect = gl.getUniformLocation(program, "uAspect");
+
+    source = document.createElement("canvas");
+    sourceCtx = source.getContext("2d");
+    if (sourceCtx.imageSmoothingQuality) {
+      sourceCtx.imageSmoothingQuality = "high";
+    }
 
     card.appendChild(canvas);
     return true;
@@ -223,6 +226,9 @@
 
   /* ---------- layout ---------- */
 
+  /* The artwork is drawn into an offscreen canvas at the exact pixel size of
+     the GL buffer, using the same object-fit: contain box the <img> uses.
+     GL then samples it 1:1, so the canvas is a faithful copy of the original. */
   function syncGeometry() {
     var cr = card.getBoundingClientRect();
     var r = img.getBoundingClientRect();
@@ -243,21 +249,22 @@
       canvas.width = bw;
       canvas.height = bh;
       gl.viewport(0, 0, bw, bh);
+
+      var nw = img.naturalWidth || bw;
+      var nh = img.naturalHeight || bh;
+      var scale = Math.min(bw / nw, bh / nh);
+      var dw = nw * scale;
+      var dh = nh * scale;
+      source.width = bw;
+      source.height = bh;
+      sourceCtx.clearRect(0, 0, bw, bh);
+      sourceCtx.drawImage(img, (bw - dw) / 2, (bh - dh) / 2, dw, dh);
+      gl.texImage2D(
+        gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, source
+      );
     }
 
     box.aspect = w / h;
-
-    /* reproduce object-fit: contain so the canvas matches the <img> exactly */
-    var nw = img.naturalWidth || w;
-    var nh = img.naturalHeight || h;
-    var scale = Math.min(w / nw, h / nh);
-    var dw = nw * scale;
-    var dh = nh * scale;
-    fit.sx = dw / w;
-    fit.sy = dh / h;
-    fit.ox = (w - dw) / 2 / w;
-    fit.oy = (h - dh) / 2 / h;
-
     return true;
   }
 
@@ -276,8 +283,6 @@
     gl.uniform2f(uLoc.uVel, vel[0], vel[1]);
     gl.uniform1f(uLoc.uTime, clock);
     gl.uniform1f(uLoc.uInfluence, influence);
-    gl.uniform2f(uLoc.uScale, fit.sx, fit.sy);
-    gl.uniform2f(uLoc.uOffset, fit.ox, fit.oy);
     gl.uniform1f(uLoc.uAspect, box.aspect);
     gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
   }
@@ -311,13 +316,14 @@
 
     if (!hovering && influence < 0.002) {
       influence = 0;
-      canvas.style.opacity = "0";
+      render();                      /* exactly the undistorted image */
+      canvas.style.opacity = "0";    /* hand the spot back to the <img> */
+      img.style.opacity = "";
       last = 0;
       return;
     }
 
     render();
-    canvas.style.opacity = influence.toFixed(3);
     raf = requestAnimationFrame(loop);
   }
 
@@ -337,6 +343,14 @@
     vel[0] = vel[1] = 0;
     hovering = true;
     wantInfluence = 1;
+
+    /* paint the untouched image, then take over from the <img> in the same
+       frame — identical pixels, so nothing flickers. The <img> is kept
+       hoverable (opacity, not visibility) so it stays the pointer target. */
+    influence = 0;
+    render();
+    canvas.style.opacity = "1";
+    img.style.opacity = "0";
     start();
   }
 
@@ -386,8 +400,11 @@
       if (canvas.parentNode) canvas.parentNode.removeChild(canvas);
     }
     detachInteraction();
+    img.style.opacity = "";
     canvas = null;
     gl = null;
+    source = null;
+    sourceCtx = null;
     ready = false;
   }
 
