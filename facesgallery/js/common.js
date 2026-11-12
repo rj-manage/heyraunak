@@ -1,5 +1,5 @@
 /* ============================================================
-   RJ Web Faces — Shared helpers for all face demos
+   RJ Web Faces - Shared helpers for all face demos
    ============================================================ */
 
 /** Collect visible [data-field] inputs inside a form into an object. */

@@ -1,5 +1,5 @@
 /* ============================================================
-   Hero brand-mark — cursor-driven liquid distortion
+   Hero brand-mark - cursor-driven liquid distortion
    ------------------------------------------------------------
    Raw WebGL, no libraries (matches the rest of the site: no
    build step, no dependencies).
@@ -8,7 +8,7 @@
    card (`.brand-tile .brand-mark`).
 
    While the effect runs the canvas is the only thing drawn over
-   that spot — the original <img> is hidden, so the sharp artwork
+   that spot - the original <img> is hidden, so the sharp artwork
    never ghosts underneath the warped one. The image is baked into
    the texture at exactly the canvas' pixel size, so the canvas
    reproduces it faithfully and handing over is invisible.
@@ -16,7 +16,7 @@
    At rest the canvas is hidden and the untouched <img> is shown,
    perfectly sharp.
 
-   Nothing is created up front — the WebGL context is built on the
+   Nothing is created up front - the WebGL context is built on the
    first real hover, so a device that never hovers never pays for
    it. The plain <img> remains the fallback when WebGL is missing,
    the pointer is coarse (touch), prefers-reduced-motion is set,
@@ -345,7 +345,7 @@
     wantInfluence = 1;
 
     /* paint the untouched image, then take over from the <img> in the same
-       frame — identical pixels, so nothing flickers. The <img> is kept
+       frame - identical pixels, so nothing flickers. The <img> is kept
        hoverable (opacity, not visibility) so it stays the pointer target. */
     influence = 0;
     render();
@@ -429,7 +429,7 @@
     window.addEventListener("scroll", onResize, { passive: true });
   }
 
-  /* the WebGL context is built here — on the first real hover only */
+  /* the WebGL context is built here - on the first real hover only */
   function onFirstEnter(e) {
     if (ready) return;
     if (!enabled() || !initGL() || !syncGeometry()) {

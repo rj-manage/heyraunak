@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>16 · CORE://OS Console — RJ Web Faces</title>
-  <meta name="description" content="CORE://OS — a mission-control interface website: ticking UTC clock, live telemetry meters, an animated uplink map, streaming logs and an alert queue. Face 16 of the RJ Web Faces Gallery — Expert level." />
+  <title>16 · CORE://OS Console - RJ Web Faces</title>
+  <meta name="description" content="CORE://OS - a mission-control interface website: ticking UTC clock, live telemetry meters, an animated uplink map, streaming logs and an alert queue. Face 16 of the RJ Web Faces Gallery - Expert level." />
   <link rel="icon" type="image/png" href="../assets/RJ_Logo.png" />
   <link rel="apple-touch-icon" href="../assets/RJ_Logo.png" />
   <link rel="stylesheet" href="../css/fonts.css" />
@@ -196,14 +196,14 @@
 
   <link rel="canonical" href="https://www.heyraunak.site/facesgallery/face-16.html" />
   <meta property="og:type" content="website" />
-  <meta property="og:site_name" content="RJ — Design &amp; Development Studio" />
-  <meta property="og:title" content="16 · CORE://OS Console — RJ Web Faces" />
-  <meta property="og:description" content="CORE://OS — a mission-control interface website: ticking UTC clock, live telemetry meters, an animated uplink map, streaming logs and an alert queue. Face 16 of the RJ Web Faces Gallery — Expert level." />
+  <meta property="og:site_name" content="RJ - Design &amp; Development Studio" />
+  <meta property="og:title" content="16 · CORE://OS Console - RJ Web Faces" />
+  <meta property="og:description" content="CORE://OS - a mission-control interface website: ticking UTC clock, live telemetry meters, an animated uplink map, streaming logs and an alert queue. Face 16 of the RJ Web Faces Gallery - Expert level." />
   <meta property="og:url" content="https://www.heyraunak.site/facesgallery/face-16.html" />
   <meta property="og:image" content="https://www.heyraunak.site/assets/og-image.png" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="16 · CORE://OS Console — RJ Web Faces" />
-  <meta name="twitter:description" content="CORE://OS — a mission-control interface website: ticking UTC clock, live telemetry meters, an animated uplink map, streaming logs and an alert queue. Face 16 of the RJ Web Faces Gallery — Expert level." />
+  <meta name="twitter:title" content="16 · CORE://OS Console - RJ Web Faces" />
+  <meta name="twitter:description" content="CORE://OS - a mission-control interface website: ticking UTC clock, live telemetry meters, an animated uplink map, streaming logs and an alert queue. Face 16 of the RJ Web Faces Gallery - Expert level." />
   <meta name="twitter:image" content="https://www.heyraunak.site/assets/og-image.png" />
 </head>
 <body>
@@ -230,10 +230,10 @@
     <header class="boot">
       <div class="boot-in">
         <p class="kicker">Mission control interface · field test 07</p>
-        <h1>CORE://OS — every node, <span class="g">one console</span></h1>
-        <p class="intro">This is the operations deck teams open before coffee — live telemetry from your fleet, a single stream of truth, and alerts that demand a human only when they should. What follows is a real session against the demo grid.</p>
+        <h1>CORE://OS - every node, <span class="g">one console</span></h1>
+        <p class="intro">This is the operations deck teams open before coffee - live telemetry from your fleet, a single stream of truth, and alerts that demand a human only when they should. What follows is a real session against the demo grid.</p>
         <div id="bootLines"></div>
-        <p class="boot-done" id="bootDone">▸ handshake complete — <a href="#console">enter console ↓</a></p>
+        <p class="boot-done" id="bootDone">▸ handshake complete - <a href="#console">enter console ↓</a></p>
       </div>
     </header>
 
@@ -241,7 +241,7 @@
     <main class="console" id="console">
       <div class="console-head">
         <h2>// Live operations console</h2>
-        <span class="stat-line">GRID <b id="statGrid">—</b> · OPEN ALERTS <b id="statAlerts">—</b> · MODE <b>NOMINAL</b></span>
+        <span class="stat-line">GRID <b id="statGrid">-</b> · OPEN ALERTS <b id="statAlerts">-</b> · MODE <b>NOMINAL</b></span>
       </div>
 
       <div class="grid">
@@ -293,7 +293,7 @@
           </div>
 
           <div class="pnl log-pnl">
-            <div class="pnl-title">Event stream<span class="rt" id="logRate">— /min</span></div>
+            <div class="pnl-title">Event stream<span class="rt" id="logRate">- /min</span></div>
             <div class="logbox" id="logbox"></div>
           </div>
         </div>
@@ -359,7 +359,7 @@
   <div class="standby" aria-hidden="true">
     <div class="standby-in">
       <div class="big">STANDBY</div>
-      <p>CORE://OS suspended — press ⏻ power to resume</p>
+      <p>CORE://OS suspended - press ⏻ power to resume</p>
     </div>
   </div>
 
@@ -369,7 +369,7 @@
     const powerBtn = document.getElementById("powerBtn");
     powerBtn.addEventListener("click", () => {
       const off = document.body.classList.toggle("off");
-      showToast(off ? "⏻ CORE://OS — entering standby" : "⏻ CORE://OS — back online · all systems nominal");
+      showToast(off ? "⏻ CORE://OS - entering standby" : "⏻ CORE://OS - back online · all systems nominal");
     });
 
     // ---------- ticking UTC clock ----------
@@ -381,13 +381,13 @@
     // ---------- boot sequence typewriter ----------
     const bootLines = document.getElementById("bootLines");
     const bootLinesData = [
-      { t: "> CORE://OS v4.2.1 — mission control interface", c: "ok" },
+      { t: "> CORE://OS v4.2.1 - mission control interface", c: "ok" },
       { t: "> boot: kernel 6.9 … ok · drivers 214/214", c: "ok" },
       { t: "> uplink: mumbai-1 · frankfurt-2 · singapore-1 · bengaluru-1 … ok", c: "cy" },
       { t: "> telemetry bus online · 32 nodes reporting @1.2s", c: "ok" },
       { t: "> policy engine: 1,204 rules loaded · drift 0", c: "cy" },
       { t: "> operator: RJ · clearance LVL-4 · handshake OK", c: "ok" },
-      { t: "> all systems nominal — entering live console", c: "di" }
+      { t: "> all systems nominal - entering live console", c: "di" }
     ];
     let li = 0, chi = 0, booting = true;
     function typeLine() {

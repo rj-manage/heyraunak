@@ -1,5 +1,5 @@
 /* ============================================================
-   RJ App Faces Gallery — shared registry
+   RJ App Faces Gallery - shared registry
    One APPS table, one screen builder per app, two renderers:
    the gallery index and the single-face pages.
    ============================================================ */
@@ -7,7 +7,7 @@
   "use strict";
 
   /* ============================================================
-     0 · icon sprite — injected once per page
+     0 · icon sprite - injected once per page
      ============================================================ */
   var SPRITE =
     '<svg xmlns="http://www.w3.org/2000/svg" style="position:absolute;width:0;height:0;overflow:hidden" aria-hidden="true">' +
@@ -104,7 +104,7 @@
       id: "life",
       icon: "▤",
       name: "Life & Utility",
-      tag: "The everyday tools — sky, maps, dates and paper.",
+      tag: "The everyday tools - sky, maps, dates and paper.",
       ids: ["weather", "travel", "maps", "calendar", "notes"]
     },
     {
@@ -130,7 +130,7 @@
       levelName: "Intermediate",
       pages: ["Home", "Cards", "Activity", "Profile"],
       blurb:
-        "Dark-glass banking — a gradient balance card, four quick actions, stacked cards and a running activity ledger.",
+        "Dark-glass banking - a gradient balance card, four quick actions, stacked cards and a running activity ledger.",
       parts: [
         "Balance card",
         "Quick actions",
@@ -139,7 +139,7 @@
         "Avatar header"
       ],
       notes: [
-        "The balance card is one gradient plus a hairline border — no image, no blur.",
+        "The balance card is one gradient plus a hairline border - no image, no blur.",
         "Card stack overlaps by negative margin, so three cards read as a deck."
       ],
       swatches: ["#48e0a8", "#12a37a", "#0d1522", "#e9effb"]
@@ -154,7 +154,7 @@
       levelName: "Intermediate",
       pages: ["Playing", "Library", "Playlists", "Profile"],
       blurb:
-        "Neon synthwave player — grooved album art, a live waveform, gradient transport controls and a tile library.",
+        "Neon synthwave player - grooved album art, a live waveform, gradient transport controls and a tile library.",
       parts: [
         "Album art with grooves",
         "Waveform",
@@ -163,7 +163,7 @@
         "Tile grid"
       ],
       notes: [
-        "The album art is a gradient under repeating diagonal stripes — the grooves come free.",
+        "The album art is a gradient under repeating diagonal stripes - the grooves come free.",
         "The waveform bars are inline heights, so the shape is data you can change."
       ],
       swatches: ["#ff4fd8", "#8b5cf6", "#22d3ee", "#1d0b33"]
@@ -177,7 +177,7 @@
       levelName: "Beginner",
       pages: ["Today", "Workouts", "Stats", "Profile"],
       blurb:
-        "Brutalist training screen — offset black boxes, a huge calorie numeral and a hard-edged weekly bar chart.",
+        "Brutalist training screen - offset black boxes, a huge calorie numeral and a hard-edged weekly bar chart.",
       parts: [
         "Giant numeral",
         "Slab header",
@@ -187,7 +187,7 @@
       ],
       notes: [
         "Hard shadows are offset with box-shadow instead of blur, so nothing goes soft.",
-        "Monospace carries the whole voice — no display font anywhere in this face."
+        "Monospace carries the whole voice - no display font anywhere in this face."
       ],
       swatches: ["#ff5a1f", "#0d0d0d", "#f4f2ec", "#ff7a3d"]
     },
@@ -200,7 +200,7 @@
       levelName: "Beginner",
       pages: ["Home", "Menu", "Orders", "Profile"],
       blurb:
-        "Warm ordering flow — pill search, category chips, dish cards with gradient thumbnails and live order rows.",
+        "Warm ordering flow - pill search, category chips, dish cards with gradient thumbnails and live order rows.",
       parts: [
         "Pill search",
         "Category chips",
@@ -223,7 +223,7 @@
       levelName: "Starter",
       pages: ["Chats", "Thread", "Contacts", "Profile"],
       blurb:
-        "Clean chat — conversation rows with unread badges, a real thread of bubbles and a message composer.",
+        "Clean chat - conversation rows with unread badges, a real thread of bubbles and a message composer.",
       parts: [
         "Conversation rows",
         "Unread badge",
@@ -232,7 +232,7 @@
         "Round avatars"
       ],
       notes: [
-        "In and out bubbles are one component flipped — corner radius does the talking.",
+        "In and out bubbles are one component flipped - corner radius does the talking.",
         "The thread has no bottom tabs; a conversation should not look like a menu."
       ],
       swatches: ["#0b84ff", "#4aa3ff", "#f2f7fd", "#0f172a"]
@@ -246,7 +246,7 @@
       levelName: "Starter",
       pages: ["Now", "Hourly", "Weekly", "Places"],
       blurb:
-        "Sky-gradient forecast — the temperature as the whole hero, a CSS sun and cloud, hourly and weekly bars.",
+        "Sky-gradient forecast - the temperature as the whole hero, a CSS sun and cloud, hourly and weekly bars.",
       parts: [
         "Sky gradient",
         "Sun and cloud art",
@@ -255,7 +255,7 @@
         "Weekly range bars"
       ],
       notes: [
-        "The whole mood is one background gradient — there is no weather imagery at all.",
+        "The whole mood is one background gradient - there is no weather imagery at all.",
         "Sun and cloud are two divs; the cloud is a rounded rectangle over a glowing disc."
       ],
       swatches: ["#2f9bff", "#ffd48c", "#ff9a63", "#1b4f7c"]
@@ -269,7 +269,7 @@
       levelName: "Beginner",
       pages: ["Discover", "Search", "Trips", "Profile"],
       blurb:
-        "Editorial serif booking — a photo hero, a three-up destination strip and fare rows in old-style numerals.",
+        "Editorial serif booking - a photo hero, a three-up destination strip and fare rows in old-style numerals.",
       parts: [
         "Serif masthead",
         "Photo hero",
@@ -279,7 +279,7 @@
       ],
       notes: [
         "Only two typefaces: one serif for everything, letterspaced caps for labels.",
-        "Fares are set like a printed price list — ruled rows, nothing boxed."
+        "Fares are set like a printed price list - ruled rows, nothing boxed."
       ],
       swatches: ["#7f9a86", "#fbfaf6", "#191919", "#a9713f"]
     },
@@ -292,7 +292,7 @@
       levelName: "Starter",
       pages: ["Shop", "Item", "Bag", "Profile"],
       blurb:
-        "Minimal monochrome commerce — a lettered masthead, product frame, size selector and a plain cart ledger.",
+        "Minimal monochrome commerce - a lettered masthead, product frame, size selector and a plain cart ledger.",
       parts: [
         "Lettered masthead",
         "Product frame",
@@ -302,7 +302,7 @@
       ],
       notes: [
         "Zero border radius. Every corner is square and every divider is a hairline.",
-        "The product is a grey rectangle — the layout is doing the selling."
+        "The product is a grey rectangle - the layout is doing the selling."
       ],
       swatches: ["#0a0a0a", "#8a8a8a", "#f4f4f4", "#ededed"]
     },
@@ -316,7 +316,7 @@
       levelName: "Advanced",
       pages: ["Portfolio", "Markets", "Trade", "Profile"],
       blurb:
-        "Terminal finance — a bordered net-worth block, candlestick bars, monospace price rows and a buy/sell switch.",
+        "Terminal finance - a bordered net-worth block, candlestick bars, monospace price rows and a buy/sell switch.",
       parts: [
         "Terminal header",
         "Candlestick bars",
@@ -325,7 +325,7 @@
         "Monospace rows"
       ],
       notes: [
-        "Everything is 4px radius and 1px borders — a terminal, not an app-store listing.",
+        "Everything is 4px radius and 1px borders - a terminal, not an app-store listing.",
         "Candlesticks are flex bars with a down-day class, so the chart reads as real data."
       ],
       swatches: ["#4ade80", "#16a34a", "#070d09", "#a6ffcb"]
@@ -339,7 +339,7 @@
       levelName: "Intermediate",
       pages: ["Breathe", "Sessions", "Progress", "Profile"],
       blurb:
-        "Pastel calm — soft blur blobs behind a conic progress ring, session cards and a week of dots.",
+        "Pastel calm - soft blur blobs behind a conic progress ring, session cards and a week of dots.",
       parts: [
         "Blur blobs",
         "Progress ring",
@@ -363,7 +363,7 @@
       levelName: "Intermediate",
       pages: ["Now", "Episodes", "Saved", "Profile"],
       blurb:
-        "Retro warm audio — a vinyl with real grooves, episode rows, an amber waveform and a scrubber.",
+        "Retro warm audio - a vinyl with real grooves, episode rows, an amber waveform and a scrubber.",
       parts: [
         "Vinyl disc",
         "Amber waveform",
@@ -372,7 +372,7 @@
         "Serif headings"
       ],
       notes: [
-        "The vinyl's grooves are a repeating radial gradient — nothing else is needed to sell the disc.",
+        "The vinyl's grooves are a repeating radial gradient - nothing else is needed to sell the disc.",
         "Amber on near-black, with a serif that carries the retro warmth."
       ],
       swatches: ["#e8a33d", "#c9761f", "#2a1113", "#f7e8d6"]
@@ -386,7 +386,7 @@
       levelName: "Advanced",
       pages: ["Map", "Route", "Places", "Profile"],
       blurb:
-        "Map-first utility — a real CSS map canvas of roads, parks and water, a search bar and a bottom sheet.",
+        "Map-first utility - a real CSS map canvas of roads, parks and water, a search bar and a bottom sheet.",
       parts: [
         "Map canvas",
         "Roads & blocks",
@@ -395,7 +395,7 @@
         "Bottom sheet"
       ],
       notes: [
-        "The map is absolutely positioned divs — roads, blocks, parks and water, all CSS.",
+        "The map is absolutely positioned divs - roads, blocks, parks and water, all CSS.",
         "The location puck is one dot with two spread shadows for the accuracy halo."
       ],
       swatches: ["#1a73e8", "#cfe0c2", "#c5e2ef", "#eef1e9"]
@@ -409,7 +409,7 @@
       levelName: "Beginner",
       pages: ["Month", "Day", "Agenda", "Profile"],
       blurb:
-        "Paper planner — a serif month grid, a ringed today, event dots and a day agenda.",
+        "Paper planner - a serif month grid, a ringed today, event dots and a day agenda.",
       parts: [
         "Month grid",
         "Today ring",
@@ -433,7 +433,7 @@
       levelName: "Advanced",
       pages: ["Photo", "Modes", "Gallery", "Settings"],
       blurb:
-        "Pro-black viewfinder — a rule-of-thirds grid, focus reticle, EV scale, shutter and a photo grid.",
+        "Pro-black viewfinder - a rule-of-thirds grid, focus reticle, EV scale, shutter and a photo grid.",
       parts: [
         "Viewfinder",
         "Rule-of-thirds grid",
@@ -442,7 +442,7 @@
         "Shutter button"
       ],
       notes: [
-        "The thirds grid is one div with two pseudo-elements — six hairlines from a single box.",
+        "The thirds grid is one div with two pseudo-elements - six hairlines from a single box.",
         "Chrome is amber on black; nothing else competes with the frame."
       ],
       swatches: ["#ffd60a", "#2a3140", "#05070a", "#ffffff"]
@@ -456,7 +456,7 @@
       levelName: "Intermediate",
       pages: ["Vitals", "Trends", "Records", "Profile"],
       blurb:
-        "Clinical vitals — bordered cards, sparklines, a real ECG polyline and record rows.",
+        "Clinical vitals - bordered cards, sparklines, a real ECG polyline and record rows.",
       parts: [
         "Vitals cards",
         "Sparklines",
@@ -465,7 +465,7 @@
         "Teal accent"
       ],
       notes: [
-        "The ECG is a real SVG polyline — change the points and the trace changes.",
+        "The ECG is a real SVG polyline - change the points and the trace changes.",
         "White cards on a faint blue ground keep the clinical tone without harshness."
       ],
       swatches: ["#0ea5a0", "#38bdb8", "#f7fafd", "#0f172a"]
@@ -479,7 +479,7 @@
       levelName: "Intermediate",
       pages: ["Feed", "Story", "Activity", "Profile"],
       blurb:
-        "Story rings — conic-gradient avatars, a post photo, an engagement bar and notification rows.",
+        "Story rings - conic-gradient avatars, a post photo, an engagement bar and notification rows.",
       parts: [
         "Story rings",
         "Post photo",
@@ -488,7 +488,7 @@
         "Serif wordmark"
       ],
       notes: [
-        "Story rings are conic gradients with a padded inner ring — one element each.",
+        "Story rings are conic gradients with a padded inner ring - one element each.",
         "The story bar is a progress strip you can advance with a single class."
       ],
       swatches: ["#ee2a7b", "#f9ce34", "#6228d7", "#ffffff"]
@@ -502,7 +502,7 @@
       levelName: "Starter",
       pages: ["Notes", "Note", "Tags", "Profile"],
       blurb:
-        "Legal pad — ruled paper with a red margin line, checkboxes that strike through and tag chips.",
+        "Legal pad - ruled paper with a red margin line, checkboxes that strike through and tag chips.",
       parts: [
         "Ruled paper",
         "Red margin",
@@ -526,7 +526,7 @@
       levelName: "Advanced",
       pages: ["Ride", "Driver", "Trips", "Profile"],
       blurb:
-        "Night sheet — a street-grid map with a route and car marker, a dark driver sheet and ETA metrics.",
+        "Night sheet - a street-grid map with a route and car marker, a dark driver sheet and ETA metrics.",
       parts: [
         "Street-grid map",
         "Route line",
@@ -549,7 +549,7 @@
       levelName: "Beginner",
       pages: ["Card", "Stamps", "Rewards", "Profile"],
       blurb:
-        "Kraft café loyalty — a dark roast card, a dashed stamp grid and reward rows.",
+        "Kraft café loyalty - a dark roast card, a dashed stamp grid and reward rows.",
       parts: [
         "Roast card",
         "Dashed stamp grid",
@@ -573,7 +573,7 @@
       levelName: "Advanced",
       pages: ["Overview", "Traffic", "Reports", "Settings"],
       blurb:
-        "Dark dashboard — KPI cards with deltas, a stacked bar chart, a conic donut and tracker rows.",
+        "Dark dashboard - KPI cards with deltas, a stacked bar chart, a conic donut and tracker rows.",
       parts: [
         "KPI cards",
         "Delta pills",
@@ -583,7 +583,7 @@
       ],
       notes: [
         "Panels sit one shade above the canvas, separated by a 1px line rather than a shadow.",
-        "The donut is a conic gradient with the middle punched out — no chart library."
+        "The donut is a conic gradient with the middle punched out - no chart library."
       ],
       swatches: ["#3f7fd6", "#34d399", "#f5b041", "#12171e"]
     }
@@ -783,7 +783,7 @@
         '<div class="ms-top">' + ic("chevleft") + '<i class="av"></i><b class="ttl" style="text-align:center">Aarav</b>' + ic("phone") + '</div>' +
         '<div class="ms-thread">' +
         '<div class="ms-bub in">Hey! Did you see the new app faces gallery?</div>' +
-        '<div class="ms-bub out">Just opened it — twenty screens now.</div>' +
+        '<div class="ms-bub out">Just opened it - twenty screens now.</div>' +
         '<div class="ms-bub in">The dashboard one is my favourite.</div>' +
         '<div class="ms-bub out">Mine too. Sending the link.</div>' +
         '</div>' +
@@ -1676,7 +1676,7 @@
       side.innerHTML =
         '<div class="face-panel">' +
         "<h3>Built from</h3>" +
-        '<p class="lead">Components that belong to this app alone — nothing borrowed from the other nineteen faces.</p>' +
+        '<p class="lead">Components that belong to this app alone - nothing borrowed from the other nineteen faces.</p>' +
         '<div class="face-parts">' +
         app.parts.map(function (p) { return "<span>" + esc(p) + "</span>"; }).join("") +
         "</div></div>" +

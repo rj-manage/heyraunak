@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>17 · Flip Card — Rj_Manage</title>
-  <meta name="description" content="A live, hand-built form design demo by RJ — open it and interact with the real, accessible form." />
+  <title>17 · Flip Card - Rj_Manage</title>
+  <meta name="description" content="A live, hand-built form design demo by RJ - open it and interact with the real, accessible form." />
   <link rel="icon" type="image/png" href="../assets/RJ_Logo.png" />
   <link rel="apple-touch-icon" href="../assets/RJ_Logo.png" />
   <link rel="stylesheet" href="../css/fonts.css" />
@@ -85,14 +85,14 @@
 
   <link rel="canonical" href="https://www.heyraunak.site/formsgallery/form-17.html" />
   <meta property="og:type" content="website" />
-  <meta property="og:site_name" content="RJ — Design &amp; Development Studio" />
-  <meta property="og:title" content="17 · Flip Card — Rj_Manage" />
-  <meta property="og:description" content="A live, hand-built form design demo by RJ — open it and interact with the real, accessible form." />
+  <meta property="og:site_name" content="RJ - Design &amp; Development Studio" />
+  <meta property="og:title" content="17 · Flip Card - Rj_Manage" />
+  <meta property="og:description" content="A live, hand-built form design demo by RJ - open it and interact with the real, accessible form." />
   <meta property="og:url" content="https://www.heyraunak.site/formsgallery/form-17.html" />
   <meta property="og:image" content="https://www.heyraunak.site/assets/og-image.png" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="17 · Flip Card — Rj_Manage" />
-  <meta name="twitter:description" content="A live, hand-built form design demo by RJ — open it and interact with the real, accessible form." />
+  <meta name="twitter:title" content="17 · Flip Card - Rj_Manage" />
+  <meta name="twitter:description" content="A live, hand-built form design demo by RJ - open it and interact with the real, accessible form." />
   <meta name="twitter:image" content="https://www.heyraunak.site/assets/og-image.png" />
 </head>
 <body>
@@ -101,7 +101,7 @@
     <div style="width:100%;max-width:680px">
       <div class="head">
         <h2>Flip to register</h2>
-        <p class="sub">Tap the card — it flips around to the registration form.</p>
+        <p class="sub">Tap the card - it flips around to the registration form.</p>
       </div>
 
       <div class="flip-scene" id="flipScene">
@@ -136,9 +136,9 @@
                   <label for="ticket">Ticket type *</label>
                   <select id="ticket" required data-field="Ticket">
                     <option value="">Select…</option>
-                    <option>Standard — $149</option>
-                    <option>VIP — $349</option>
-                    <option>Student — $79</option>
+                    <option>Standard - $149</option>
+                    <option>VIP - $349</option>
+                    <option>Student - $79</option>
                   </select>
                 </div>
                 <div class="f-field">
@@ -174,7 +174,7 @@
       const form = e.target;
       if (!form.checkValidity()) { form.reportValidity(); return; }
       const d = collectForm(form);
-      showToast("🎉 Registered " + d["Name"] + " — " + d["Ticket"]);
+      showToast("🎉 Registered " + d["Name"] + " - " + d["Ticket"]);
       form.reset();
       scene.classList.remove("flipped");
     });

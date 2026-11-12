@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>08 · 3D Tilt Card — Rj_Manage</title>
-  <meta name="description" content="A live, hand-built form design demo by RJ — open it and interact with the real, accessible form." />
+  <title>08 · 3D Tilt Card - Rj_Manage</title>
+  <meta name="description" content="A live, hand-built form design demo by RJ - open it and interact with the real, accessible form." />
   <link rel="icon" type="image/png" href="../assets/RJ_Logo.png" />
   <link rel="apple-touch-icon" href="../assets/RJ_Logo.png" />
   <link rel="stylesheet" href="../css/fonts.css" />
@@ -72,14 +72,14 @@
 
   <link rel="canonical" href="https://www.heyraunak.site/formsgallery/form-8.html" />
   <meta property="og:type" content="website" />
-  <meta property="og:site_name" content="RJ — Design &amp; Development Studio" />
-  <meta property="og:title" content="08 · 3D Tilt Card — Rj_Manage" />
-  <meta property="og:description" content="A live, hand-built form design demo by RJ — open it and interact with the real, accessible form." />
+  <meta property="og:site_name" content="RJ - Design &amp; Development Studio" />
+  <meta property="og:title" content="08 · 3D Tilt Card - Rj_Manage" />
+  <meta property="og:description" content="A live, hand-built form design demo by RJ - open it and interact with the real, accessible form." />
   <meta property="og:url" content="https://www.heyraunak.site/formsgallery/form-8.html" />
   <meta property="og:image" content="https://www.heyraunak.site/assets/og-image.png" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="08 · 3D Tilt Card — Rj_Manage" />
-  <meta name="twitter:description" content="A live, hand-built form design demo by RJ — open it and interact with the real, accessible form." />
+  <meta name="twitter:title" content="08 · 3D Tilt Card - Rj_Manage" />
+  <meta name="twitter:description" content="A live, hand-built form design demo by RJ - open it and interact with the real, accessible form." />
   <meta name="twitter:image" content="https://www.heyraunak.site/assets/og-image.png" />
 </head>
 <body>
@@ -87,7 +87,7 @@
   <section class="section">
     <div class="head">
       <h2>Event RSVP Card</h2>
-      <p>Move your cursor — the card follows with real depth.</p>
+      <p>Move your cursor - the card follows with real depth.</p>
       <span class="hint-chip">← tilt me →</span>
     </div>
 
@@ -96,7 +96,7 @@
         <div class="glare" id="glare"></div>
         <div class="inner">
           <h3>Reserve your seat</h3>
-          <p class="sub">Rj_Manage · Design Summit 2026 — RSVP in 3D.</p>
+          <p class="sub">Rj_Manage · Design Summit 2026 - RSVP in 3D.</p>
           <form id="rsvpForm" novalidate>
             <div class="row">
               <div class="t-field">
@@ -118,8 +118,8 @@
               <label for="day">Day *</label>
               <select id="day" required data-field="Day">
                 <option value="">Select…</option>
-                <option>Day 1 — Talks</option>
-                <option>Day 2 — Workshops</option>
+                <option>Day 1 - Talks</option>
+                <option>Day 2 - Workshops</option>
                 <option>Both days</option>
               </select>
             </div>
@@ -160,7 +160,7 @@
       const form = e.target;
       if (!form.checkValidity()) { form.reportValidity(); return; }
       const d = collectForm(form);
-      showToast("✅ RSVP confirmed for " + d["Name"] + " — " + d["Ticket"]);
+      showToast("✅ RSVP confirmed for " + d["Name"] + " - " + d["Ticket"]);
       form.reset();
     });
   </script>

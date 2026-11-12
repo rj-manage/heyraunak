@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>08 · Liquid Distortion — RJ Motion Gallery</title>
-  <meta name="description" content="A WebGL surface that flows around the cursor like syrup — fbm domain-warping with radial ripples and swirl. Experiment 08 of the RJ Motion Gallery — Advanced level." />
+  <title>08 · Liquid Distortion - RJ Motion Gallery</title>
+  <meta name="description" content="A WebGL surface that flows around the cursor like syrup - fbm domain-warping with radial ripples and swirl. Experiment 08 of the RJ Motion Gallery - Advanced level." />
   <link rel="icon" type="image/png" href="../assets/RJ_Logo.png" />
   <link rel="apple-touch-icon" href="../assets/RJ_Logo.png" />
   <link rel="stylesheet" href="../css/fonts.css" />
@@ -69,14 +69,14 @@
 
   <link rel="canonical" href="https://www.heyraunak.site/mousemotionsgallery/experiment-8.html" />
   <meta property="og:type" content="website" />
-  <meta property="og:site_name" content="RJ — Design &amp; Development Studio" />
-  <meta property="og:title" content="08 · Liquid Distortion — RJ Motion Gallery" />
-  <meta property="og:description" content="A WebGL surface that flows around the cursor like syrup — fbm domain-warping with radial ripples and swirl. Experiment 08 of the RJ Motion Gallery — Advanced level." />
+  <meta property="og:site_name" content="RJ - Design &amp; Development Studio" />
+  <meta property="og:title" content="08 · Liquid Distortion - RJ Motion Gallery" />
+  <meta property="og:description" content="A WebGL surface that flows around the cursor like syrup - fbm domain-warping with radial ripples and swirl. Experiment 08 of the RJ Motion Gallery - Advanced level." />
   <meta property="og:url" content="https://www.heyraunak.site/mousemotionsgallery/experiment-8.html" />
   <meta property="og:image" content="https://www.heyraunak.site/assets/og-image.png" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="08 · Liquid Distortion — RJ Motion Gallery" />
-  <meta name="twitter:description" content="A WebGL surface that flows around the cursor like syrup — fbm domain-warping with radial ripples and swirl. Experiment 08 of the RJ Motion Gallery — Advanced level." />
+  <meta name="twitter:title" content="08 · Liquid Distortion - RJ Motion Gallery" />
+  <meta name="twitter:description" content="A WebGL surface that flows around the cursor like syrup - fbm domain-warping with radial ripples and swirl. Experiment 08 of the RJ Motion Gallery - Advanced level." />
   <meta name="twitter:image" content="https://www.heyraunak.site/assets/og-image.png" />
 </head>
 <body>
@@ -96,8 +96,8 @@
 
   <header class="hero reveal">
     <span class="kicker"><span style="width:7px;height:7px;border-radius:50%;background:var(--green-600);display:inline-block;animation:pulse 1.8s infinite;"></span> Experiment 08 · Advanced</span>
-    <h1>Liquid <em>Distortion</em> — WebGL you can stir.</h1>
-    <p>A GPU surface that flows around the cursor like syrup — the pattern bends, ripples and settles as you stir the canvas.</p>
+    <h1>Liquid <em>Distortion</em> - WebGL you can stir.</h1>
+    <p>A GPU surface that flows around the cursor like syrup - the pattern bends, ripples and settles as you stir the canvas.</p>
     <div class="meta">
       <span>Technique · <b>WebGL ripple distortion</b></span>
       <span>Hint · <b>Stir the surface</b></span>
@@ -109,7 +109,7 @@
     <div class="stage reveal">
       <span class="stage__tag">Demo 08 · Liquid Distortion</span>
       <div class="ds" id="demo"></div>
-      <p class="stage__cap">WebGL ripple field — <b>stir</b> the surface</p>
+      <p class="stage__cap">WebGL ripple field - <b>stir</b> the surface</p>
       <div class="stage__controls">
         <button class="btn" id="pauseBtn">Pause</button>
         <button class="btn" id="resetBtn">Reset</button>
@@ -120,19 +120,19 @@
   <section id="explain">
     <div class="sec-head reveal">
       <div class="kicker">Technique</div>
-      <h2>Raw WebGL — no three.js required</h2>
+      <h2>Raw WebGL - no three.js required</h2>
       <p>This page uses a minimal WebGL setup: a fullscreen triangle, a <code>ShaderMaterial</code>-style program and a fragment shader doing domain-warped FBM noise. Cursor position is streamed in as a uniform each frame.</p>
     </div>
     <div class="grid2">
       <article class="card reveal">
         <span class="ico">〜</span>
         <h3>Domain-warped FBM</h3>
-        <p>Five octaves of value noise get warped twice, then re-sampled — creating the organic liquid veins, filaments and accent valleys in the <code>FRAG</code> shader.</p>
+        <p>Five octaves of value noise get warped twice, then re-sampled - creating the organic liquid veins, filaments and accent valleys in the <code>FRAG</code> shader.</p>
       </article>
       <article class="card reveal">
         <span class="ico">◎</span>
         <h3>Radial ripples + swirl</h3>
-        <p>Around the cursor, two sine ripples propagate outward and a tangential swirl rotates the field — damped <code>uStrength</code> keeps motion smooth and jitter-free.</p>
+        <p>Around the cursor, two sine ripples propagate outward and a tangential swirl rotates the field - damped <code>uStrength</code> keeps motion smooth and jitter-free.</p>
       </article>
     </div>
   </section>
@@ -162,7 +162,7 @@
       </div>
     </div>
     <div class="foot-copy">
-      <span>© 2026 RJ Motion Gallery · Experiment 08 of 10 — Liquid Distortion</span>
+      <span>© 2026 RJ Motion Gallery · Experiment 08 of 10 - Liquid Distortion</span>
       <span><a href="index.html">← View all 10 experiments</a></span>
     </div>
   </footer>

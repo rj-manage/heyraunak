@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Raunak Raj - Portfolio</title>
-<meta name="description" content="Portfolio of Raunak Raj — Full-Stack Web/Software Developer from Bengaluru. Scroll to walk through his journey.">
+<meta name="description" content="Portfolio of Raunak Raj - Full-Stack Web/Software Developer from Bengaluru. Scroll to walk through his journey.">
 <link rel="icon" type="image/png" href="../assets/RJ_Logo.png" />
 <link rel="apple-touch-icon" href="../assets/RJ_Logo.png" />
 <link rel="stylesheet" href="../css/fonts.css" />
@@ -157,7 +157,7 @@
   .slot .side[data-opposite]{ grid-column:3; justify-self:end; padding-left:0;
     padding-right:clamp(20px,4.5vw,72px); }
 
-  /* reveal animation — content is hidden until its slot is in view */
+  /* reveal animation - content is hidden until its slot is in view */
   .side{ --x:-80px; --y:0px; opacity:0; transform:translate(var(--x),var(--y));
     transition:opacity .9s var(--ease), transform 1s var(--ease); }
   .slot[data-side=right] .side,
@@ -307,7 +307,7 @@
     position:fixed; inset:0; z-index:100; background:#000;
     display:grid; place-items:center; overflow:hidden;
   }
-  /* show the full landscape video, never cropped — on portrait phones it
+  /* show the full landscape video, never cropped - on portrait phones it
      becomes a centered band with a black backdrop that matches its frame */
   #intro-video{
     width:100%; height:100%; object-fit:contain; background:#000;
@@ -381,14 +381,14 @@
 
   <link rel="canonical" href="https://www.heyraunak.site/portfolio/" />
   <meta property="og:type" content="website" />
-  <meta property="og:site_name" content="RJ — Design &amp; Development Studio" />
+  <meta property="og:site_name" content="RJ - Design &amp; Development Studio" />
   <meta property="og:title" content="Raunak Raj - Portfolio" />
-  <meta property="og:description" content="Portfolio of Raunak Raj — Full-Stack Web/Software Developer from Bengaluru. Scroll to walk through his journey." />
+  <meta property="og:description" content="Portfolio of Raunak Raj - Full-Stack Web/Software Developer from Bengaluru. Scroll to walk through his journey." />
   <meta property="og:url" content="https://www.heyraunak.site/portfolio/" />
   <meta property="og:image" content="https://www.heyraunak.site/assets/og-image.png" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Raunak Raj - Portfolio" />
-  <meta name="twitter:description" content="Portfolio of Raunak Raj — Full-Stack Web/Software Developer from Bengaluru. Scroll to walk through his journey." />
+  <meta name="twitter:description" content="Portfolio of Raunak Raj - Full-Stack Web/Software Developer from Bengaluru. Scroll to walk through his journey." />
   <meta name="twitter:image" content="https://www.heyraunak.site/assets/og-image.png" />
 </head>
 <body>
@@ -570,7 +570,7 @@
         <h2>Learning journey</h2>
 
         <div class="entry">
-          <h3>B.Tech — Computer Science &amp; Engineering</h3>
+          <h3>B.Tech - Computer Science &amp; Engineering</h3>
           <div class="meta"><span class="org">REVA University</span><span class="dates">Sep 2023 – Jun 2027</span><span class="loc">· Bengaluru</span></div>
           <ul><li>CGPA: 8 / 10</li></ul>
         </div>
@@ -912,8 +912,8 @@
   var launched   = false;   /* portfolio revealed */
   var playQueued = false;
   var started    = false;   /* the intro video actually began playing */
-  /* safety net: if the intro never starts — the video file is missing on the
-     host, the codec is unsupported, or autoplay is blocked — do not strand the
+  /* safety net: if the intro never starts - the video file is missing on the
+     host, the codec is unsupported, or autoplay is blocked - do not strand the
      visitor on a black screen */
   var introWatchdog = setTimeout(function(){
     if(!started){ ended = true; launchPortfolio(); }
@@ -974,7 +974,7 @@
   if("IntersectionObserver" in window){
     var io = new IntersectionObserver(function(entries){
       entries.forEach(function(e){
-        /* reveal once and keep revealed — re-hiding on scroll-up is what made
+        /* reveal once and keep revealed - re-hiding on scroll-up is what made
            cards flicker (they faded out, then replayed their entry animation) */
         if(e.isIntersecting) e.target.classList.add("in");
       });

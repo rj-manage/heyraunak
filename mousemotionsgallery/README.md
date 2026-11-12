@@ -1,8 +1,8 @@
-# RJ Motion Gallery — Cursor Interaction Experiments
+# RJ Motion Gallery - Cursor Interaction Experiments
 
-A gallery of **10 mouse-driven interaction experiments** by **RJ_MANAGE** — from simple parallax to liquid physics, magnetic typography and a full gravity field. Every "experiment" is a full, standalone demo page built by hand with pure HTML, CSS and vanilla JS (no frameworks, no images — every visual is CSS art, and even the WebGL demo uses raw WebGL with no three.js).
+A gallery of **10 mouse-driven interaction experiments** by **RJ_MANAGE** - from simple parallax to liquid physics, magnetic typography and a full gravity field. Every "experiment" is a full, standalone demo page built by hand with pure HTML, CSS and vanilla JS (no frameworks, no images - every visual is CSS art, and even the WebGL demo uses raw WebGL with no three.js).
 
-> Built to sit side-by-side with the **RJ Web Faces Gallery** — same design language, same typography (Sora + Inter), same light-indigo branding — so both sites clearly belong to the same company.
+> Built to sit side-by-side with the **RJ Web Faces Gallery** - same design language, same typography (Sora + Inter), same light-indigo branding - so both sites clearly belong to the same company.
 
 ## Getting started
 
@@ -57,14 +57,14 @@ Open `index.html` in any browser, or serve the folder. Two VS Code-friendly ways
     └── RJ_Logo_Black.png    # Black RJ monogram (light pages, favicon)
 ```
 
-No build step, no dependencies, no external images — everything is hand-written CSS art and vanilla JS. Open and explore.
+No build step, no dependencies, no external images - everything is hand-written CSS art and vanilla JS. Open and explore.
 
 ## Performance choices
 
-- Every demo writes only `transform` / `opacity` / canvas — no layout reads per frame (element rects are cached and measured on enter / resize).
-- Pointer handlers update refs only — no re-renders per move.
+- Every demo writes only `transform` / `opacity` / canvas - no layout reads per frame (element rects are cached and measured on enter / resize).
+- Pointer handlers update refs only - no re-renders per move.
 - Animation loops run only while the section is near the viewport and respect `prefers-reduced-motion`.
-- The WebGL demo uses raw WebGL (a fullscreen-triangle + one fragment shader) — no three.js bundle.
+- The WebGL demo uses raw WebGL (a fullscreen-triangle + one fragment shader) - no three.js bundle.
 - Physics use dt-scaled integration (frame-rate independent), not per-frame constants.
 
 ## Accessibility

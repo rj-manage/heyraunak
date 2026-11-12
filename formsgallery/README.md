@@ -1,6 +1,6 @@
-# Rj_Manage — Forms Design Gallery
+# Rj_Manage - Forms Design Gallery
 
-A gallery of **20 different form designs** — from simple classic layouts to high-tech 3D animated experiences. Every form is fully interactive with working validation and a submit toast, and is ready to use.
+A gallery of **20 different form designs** - from simple classic layouts to high-tech 3D animated experiences. Every form is fully interactive with working validation and a submit toast, and is ready to use.
 
 ## Getting started
 
@@ -68,4 +68,4 @@ Rj_Manage/
 └── js/common.js        # Shared helpers (collectForm, showToast)
 ```
 
-No build step, no dependencies — just open and use.
+No build step, no dependencies - just open and use.

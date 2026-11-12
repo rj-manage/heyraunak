@@ -1,5 +1,5 @@
 /* ============================================================
-   RJ — Category 01 data · Web Design & Development
+   RJ - Category 01 data · Web Design & Development
    Registers with the shared enquiry engine (service-enquiry.js).
    ============================================================ */
 (function () {

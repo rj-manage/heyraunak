@@ -1,6 +1,6 @@
-# RJ Web Faces — Website UI/UX Design Gallery
+# RJ Web Faces - Website UI/UX Design Gallery
 
-A gallery of **20 complete website-interface designs** by **RJ_MANAGE** — from simple, static layouts to 3D, animated and cinematic web experiences. Every "face" is a full, standalone demo page built by hand with pure HTML, CSS and vanilla JS (no frameworks, no images — every visual is CSS art).
+A gallery of **20 complete website-interface designs** by **RJ_MANAGE** - from simple, static layouts to 3D, animated and cinematic web experiences. Every "face" is a full, standalone demo page built by hand with pure HTML, CSS and vanilla JS (no frameworks, no images - every visual is CSS art).
 
 ## Getting started
 
@@ -73,4 +73,4 @@ Open `index.html` in any browser, or serve the folder. Two VS Code-friendly ways
     └── RJ_Logo_Black.png    # Black RJ monogram (light pages, favicon)
 ```
 
-No build step, no dependencies, no external images — everything is hand-written CSS art and vanilla JS. Open and explore.
+No build step, no dependencies, no external images - everything is hand-written CSS art and vanilla JS. Open and explore.

@@ -1,6 +1,6 @@
-# RJ App Faces — Mobile App UI Design Gallery
+# RJ App Faces - Mobile App UI Design Gallery
 
-A gallery of **20 mobile-app faces** by **RJ_MANAGE**, each with its own front screen and its own set of inside screens. Every face is a standalone page built by hand with pure HTML, CSS and vanilla JS — no frameworks, no images, no chart libraries. Every visual is CSS art.
+A gallery of **20 mobile-app faces** by **RJ_MANAGE**, each with its own front screen and its own set of inside screens. Every face is a standalone page built by hand with pure HTML, CSS and vanilla JS - no frameworks, no images, no chart libraries. Every visual is CSS art.
 
 Structured like the [RJ Web Faces Gallery](../facesgallery/): one page per face, plus a categorised index that links out to them.
 
@@ -54,13 +54,13 @@ Open `index.html` in any browser, or serve the folder. Two VS Code-friendly ways
 | 15 | Health | Intermediate | Clinical vitals: bordered cards, sparklines, real SVG ECG polyline |
 | 18 | Ride | Advanced | Night sheet: street-grid map, route and car marker, driver sheet, ETA metrics |
 
-Each of the twenty is also annotated with a skill level — **Starter**, **Beginner**, **Intermediate**, **Advanced** or **Expert**.
+Each of the twenty is also annotated with a skill level - **Starter**, **Beginner**, **Intermediate**, **Advanced** or **Expert**.
 
 ## Structure
 
 ```
 appfacesgallery/
-├── index.html              # Gallery landing — 4 categories, live device thumbnails
+├── index.html              # Gallery landing - 4 categories, live device thumbnails
 ├── app-face-1.html … 20    # One standalone page per face (stage + its four screens)
 ├── css/appfaces.css        # Device chrome, shared atoms, all 20 app themes, page layout
 └── js/appfaces.js          # The APPS registry + the 80 screen builders + both renderers
@@ -68,7 +68,7 @@ appfacesgallery/
 
 ### How it fits together
 
-- **`js/appfaces.js`** is the single source of truth. It holds the `APPS` table (name, style, category, level, copy, components, palette) and a screen builder for every app. `V.wallet[0]` is Wallet's front screen, `V.wallet[1]` its second screen, and so on — 20 apps × 4 screens.
+- **`js/appfaces.js`** is the single source of truth. It holds the `APPS` table (name, style, category, level, copy, components, palette) and a screen builder for every app. `V.wallet[0]` is Wallet's front screen, `V.wallet[1]` its second screen, and so on - 20 apps × 4 screens.
 - **`css/appfaces.css`** carries one token block per app (`[data-app="wallet"]{…}`). The same components restyle themselves from those tokens, which is why no two faces look alike.
 - **`index.html`** renders the catalogue: four categories, a sticky category rail, and twenty cards whose thumbnails are the apps' real front screens.
 - **Each `app-face-N.html`** sets `data-face="N"` on `<body>` and boots the same registry into a stage, a four-screen rail and a side panel.
@@ -81,6 +81,6 @@ Everything lives in the registry, so a face is edited in one place:
 2. Add its theme tokens to `css/appfaces.css` (`[data-app="your-id"]{…}`).
 3. Write its four screen builders into `V['your-id']`.
 4. Add the id to the right category in `CATS`.
-5. Add the matching `app-face-N.html` page (copy an existing one — only `data-face` and the prose change).
+5. Add the matching `app-face-N.html` page (copy an existing one - only `data-face` and the prose change).
 
-No build step, no dependencies, no external images — open and explore.
+No build step, no dependencies, no external images - open and explore.

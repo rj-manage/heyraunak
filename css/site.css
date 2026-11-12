@@ -1,5 +1,5 @@
 /* ============================================================
-   RJ — soft-UI design system · LIGHT THEME ONLY
+   RJ - soft-UI design system · LIGHT THEME ONLY
    Visual language derived from face-8 "Pillow"
    (13. rj-web-faces-gallery/face-8.html)
    ============================================================ */
@@ -252,7 +252,7 @@ section {
 }
 
 /* ============================================================
-   NAV — floating soft pill
+   NAV - floating soft pill
    ============================================================ */
 .nav {
   position: sticky;
@@ -877,12 +877,12 @@ section {
   object-fit: cover;
   object-position: top center;
 }
-/* portfolio shot uses the project's own 16:9 thumbnail — match it exactly
+/* portfolio shot uses the project's own 16:9 thumbnail - match it exactly
    so the framing (logo, scroll hint, full figure) is never cropped */
 .shot.wide .frame {
   aspect-ratio: 1600 / 909;
 }
-/* App Faces collection preview — a stack of CSS-art phones (no image) */
+/* App Faces collection preview - a stack of CSS-art phones (no image) */
 .shot .frame.phoneshot {
   display: flex;
   align-items: center;
@@ -924,7 +924,7 @@ section {
 }
 
 /* ============================================================
-   CTA BAND (dark ink contrast — uses the light logo)
+   CTA BAND (dark ink contrast - uses the light logo)
    ============================================================ */
 .cta-band {
   position: relative;

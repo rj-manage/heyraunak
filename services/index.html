@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Services — RJ</title>
-<meta name="description" content="Services by RJ — web design &amp; development, software product builds, digital marketing, social media management, branding and cybersecurity." />
+<title>Services - RJ</title>
+<meta name="description" content="Services by RJ - web design &amp; development, software product builds, digital marketing, social media management, branding and cybersecurity." />
 <meta name="theme-color" content="#E3E9F0" />
 <link rel="icon" type="image/png" href="../assets/RJ_Logo.png" />
 <link rel="apple-touch-icon" href="../assets/RJ_Logo.png" />
@@ -13,29 +13,32 @@
 
   <link rel="canonical" href="https://www.heyraunak.site/services/" />
   <meta property="og:type" content="website" />
-  <meta property="og:site_name" content="RJ — Design &amp; Development Studio" />
-  <meta property="og:title" content="Services — RJ" />
-  <meta property="og:description" content="Services by RJ — web design &amp; development, software product builds, digital marketing, social media management, branding and cybersecurity." />
+  <meta property="og:site_name" content="RJ - Design &amp; Development Studio" />
+  <meta property="og:title" content="Services - RJ" />
+  <meta property="og:description" content="Services by RJ - web design &amp; development, software product builds, digital marketing, social media management, branding and cybersecurity." />
   <meta property="og:url" content="https://www.heyraunak.site/services/" />
   <meta property="og:image" content="https://www.heyraunak.site/assets/og-image.png" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Services — RJ" />
-  <meta name="twitter:description" content="Services by RJ — web design &amp; development, software product builds, digital marketing, social media management, branding and cybersecurity." />
+  <meta name="twitter:title" content="Services - RJ" />
+  <meta name="twitter:description" content="Services by RJ - web design &amp; development, software product builds, digital marketing, social media management, branding and cybersecurity." />
   <meta name="twitter:image" content="https://www.heyraunak.site/assets/og-image.png" />
 
 <style>
   /* ------------------------------------------------------------
-     Services catalog — page-scoped only.
+     Services catalog - page-scoped only.
      Every value below comes from the existing design tokens in
      css/site.css (canvas / ink / muted / mint-ink, --sh-s / --sh-r,
      --font-display, --ease). Nothing global is redefined.
      ------------------------------------------------------------ */
   .svc-list {
     display: grid;
-    gap: 16px;
+    grid-template-columns: repeat(2, 1fr);
+    align-items: start;
+    gap: 22px;
     margin-top: 46px;
   }
   .svc {
+    min-width: 0;
     border-radius: 26px;
     background: var(--canvas);
     box-shadow: var(--sh-r);
@@ -57,6 +60,17 @@
   .svc-head:focus-visible {
     border-radius: 26px;
   }
+  /* placeholder category - not expandable */
+  .svc-static .svc-head {
+    cursor: default;
+  }
+  .svc-static .svc-head:hover .svc-title b {
+    color: inherit;
+  }
+  .svc-static .status-pill {
+    flex: none;
+    margin-left: 4px;
+  }
   .svc-title {
     flex: 1;
     min-width: 0;
@@ -67,6 +81,7 @@
     font-size: 20px;
     font-weight: 700;
     letter-spacing: -0.02em;
+    overflow-wrap: break-word;
     transition: color 0.18s ease;
   }
   .svc-title small {
@@ -132,6 +147,12 @@
     border-top: 1px solid rgba(60, 80, 110, 0.14);
   }
 
+  @media (max-width: 860px) {
+    .svc-list {
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+  }
   @media (max-width: 720px) {
     .svc-head {
       gap: 14px;
@@ -151,6 +172,19 @@
       padding: 20px 20px 22px;
     }
   }
+  /* narrow phones: let the placeholder badge drop to its own line
+     instead of squeezing the category title */
+  @media (max-width: 520px) {
+    .svc-static .svc-head {
+      flex-wrap: wrap;
+      row-gap: 12px;
+    }
+    .svc-static .status-pill {
+      flex: 0 0 100%;
+      justify-content: center;
+      margin-left: 0;
+    }
+  }
   @media (prefers-reduced-motion: reduce) {
     .svc-body,
     .svc-chev,
@@ -160,7 +194,7 @@
   }
 
   /* ------------------------------------------------------------
-     Enquiry — Category 01 service picker + modal wizard.
+     Enquiry - Category 01 service picker + modal wizard.
      Fields reuse the site's inset soft-UI treatment (--sh-in /
      --sh-in-s) exactly as .brand-tile and .shot .url do.
      The one functional addition is the error red: --coral-2 is
@@ -692,9 +726,9 @@
 <header class="page-head">
   <div class="sec-head reveal" style="max-width:760px">
     <div class="kicker">Panel 02 · Services</div>
-    <h1>Six things we do properly.</h1>
-    <p>A complete range of digital services to build, launch and grow your brand — from websites and software to marketing, branding and creative solutions. Open a category to see everything inside it.</p>
-    <div class="soft-chip" style="margin-top:20px"><span class="dot"></span> 6 categories · 32 services</div>
+    <h1>Four things we do properly.</h1>
+    <p>A complete range of digital services to build, launch and grow your brand - from websites and software to marketing and social. Open a category to see everything inside it.</p>
+    <div class="soft-chip" style="margin-top:20px"><span class="dot"></span> 4 categories · 69 services</div>
   </div>
 </header>
 
@@ -726,7 +760,7 @@
                 <select class="enq-select" id="enq-service" aria-labelledby="enq-label"></select>
                 <button class="soft-btn" type="button" id="enq-connect" disabled>Let’s Connect</button>
               </div>
-              <p class="enq-hint">15 services. Pick the closest match and a short form opens — about two minutes.</p>
+              <p class="enq-hint">15 services. Pick the closest match and a short form opens - about two minutes.</p>
             </div>
           </div>
         </div>
@@ -761,15 +795,15 @@
         </div>
       </article>
 
-      <!-- 03 · Marketing -->
+      <!-- 03 · Digital Marketing & Growth -->
       <article class="svc reveal">
         <button class="svc-head" type="button" aria-expanded="false" aria-controls="svc-marketing">
           <span class="panel-ico">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 17.5 9 12l3.5 3.2L20.5 7"/><path d="M15.5 7h5v5"/></svg>
           </span>
           <span class="svc-title">
-            <b>Digital Marketing</b>
-            <small>Being found, and being chosen — search, content and campaigns that compound over time.</small>
+            <b>Digital Marketing &amp; Growth</b>
+            <small>Social, paid media, search and direct marketing - campaigns built to turn attention into customers.</small>
           </span>
           <span class="svc-num">03</span>
           <span class="svc-chev">
@@ -778,98 +812,30 @@
         </button>
         <div class="svc-body" id="svc-marketing">
           <div class="svc-inner">
-            <ul class="bullets">
-              <li><span class="tic">✓</span> Search engine optimisation</li>
-              <li><span class="tic">✓</span> Content strategy</li>
-              <li><span class="tic">✓</span> Email campaigns</li>
-              <li><span class="tic">✓</span> Conversion &amp; funnel reviews</li>
-              <li><span class="tic">✓</span> Analytics &amp; reporting</li>
-            </ul>
+            <div class="enq" data-enq-category="marketing">
+              <span class="enq-label" id="enq-label-marketing">Choose the marketing service you need</span>
+              <div class="enq-row">
+                <select class="enq-select" id="enq-service-marketing" aria-labelledby="enq-label-marketing"></select>
+                <button class="soft-btn" type="button" id="enq-connect-marketing" disabled>Let’s Connect</button>
+              </div>
+              <p class="enq-hint">24 services across social media, paid advertising, SEO and direct marketing.</p>
+            </div>
           </div>
         </div>
       </article>
 
-      <!-- 04 · Social -->
-      <article class="svc reveal">
-        <button class="svc-head" type="button" aria-expanded="false" aria-controls="svc-social">
+      <!-- 04 · Social Media Management (SMM) - placeholder -->
+      <article class="svc svc-static reveal">
+        <div class="svc-head">
           <span class="panel-ico">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5.5h16v11H9.5L4 20.5Z"/><path d="M8.5 10.5h7"/><path d="M8.5 13.2h4.5"/></svg>
           </span>
           <span class="svc-title">
-            <b>Social Media Management</b>
-            <small>A steady, on-brand presence — planned, designed and published for you.</small>
+            <b>Social Media Management (SMM)</b>
+            <small>Always-on management of your social presence - planning, publishing and community handled for you.</small>
           </span>
           <span class="svc-num">04</span>
-          <span class="svc-chev">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
-          </span>
-        </button>
-        <div class="svc-body" id="svc-social">
-          <div class="svc-inner">
-            <ul class="bullets">
-              <li><span class="tic">✓</span> Content calendar &amp; scheduling</li>
-              <li><span class="tic">✓</span> Post &amp; story design</li>
-              <li><span class="tic">✓</span> Community management</li>
-              <li><span class="tic">✓</span> Paid social campaigns</li>
-              <li><span class="tic">✓</span> Monthly performance reports</li>
-            </ul>
-          </div>
-        </div>
-      </article>
-
-      <!-- 05 · Branding -->
-      <article class="svc reveal">
-        <button class="svc-head" type="button" aria-expanded="false" aria-controls="svc-branding">
-          <span class="panel-ico">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 3.5 2.1 5.4 5.4 2.1-5.4 2.1L12 18.5l-2.1-5.4L4.5 11l5.4-2.1Z"/><path d="m18.6 15.6.8 2 2 .8-2 .8-.8 2-.8-2-2-.8 2-.8Z"/></svg>
-          </span>
-          <span class="svc-title">
-            <b>Branding &amp; Creative</b>
-            <small>Identity, type and art direction — the pieces that make a brand recognisable at a glance.</small>
-          </span>
-          <span class="svc-num">05</span>
-          <span class="svc-chev">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
-          </span>
-        </button>
-        <div class="svc-body" id="svc-branding">
-          <div class="svc-inner">
-            <ul class="bullets">
-              <li><span class="tic">✓</span> Brand identity &amp; logo</li>
-              <li><span class="tic">✓</span> Visual systems &amp; guidelines</li>
-              <li><span class="tic">✓</span> Design systems &amp; UI kits</li>
-              <li><span class="tic">✓</span> Art direction</li>
-              <li><span class="tic">✓</span> Print &amp; collateral</li>
-            </ul>
-          </div>
-        </div>
-      </article>
-
-      <!-- 06 · Security -->
-      <article class="svc reveal">
-        <button class="svc-head" type="button" aria-expanded="false" aria-controls="svc-security">
-          <span class="panel-ico">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3.2 19 6v5.6c0 4.5-2.9 7.9-7 9.2-4.1-1.3-7-4.7-7-9.2V6Z"/><path d="m9 12 2.2 2.2L15.4 10"/></svg>
-          </span>
-          <span class="svc-title">
-            <b>Cybersecurity &amp; Care</b>
-            <small>Keeping everything safe, fast and quietly running long after launch.</small>
-          </span>
-          <span class="svc-num">06</span>
-          <span class="svc-chev">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
-          </span>
-        </button>
-        <div class="svc-body" id="svc-security">
-          <div class="svc-inner">
-            <ul class="bullets">
-              <li><span class="tic">✓</span> Security headers &amp; hardening</li>
-              <li><span class="tic">✓</span> Vulnerability review</li>
-              <li><span class="tic">✓</span> Backups &amp; uptime monitoring</li>
-              <li><span class="tic">✓</span> Performance tuning</li>
-              <li><span class="tic">✓</span> Ongoing maintenance</li>
-            </ul>
-          </div>
+          <span class="status-pill soon"><span class="pdot"></span> Coming soon</span>
         </div>
       </article>
 
@@ -931,25 +897,32 @@
 
   var items = document.querySelectorAll(".svc");
 
+  function setOpen(item, open) {
+    var head = item.querySelector("button.svc-head");
+    item.classList.toggle("open", open);
+    if (head) head.setAttribute("aria-expanded", open ? "true" : "false");
+  }
+
   Array.prototype.forEach.call(items, function (item) {
-    var head = item.querySelector(".svc-head");
+    var head = item.querySelector("button.svc-head");
     if (!head) return;
 
-    function set(open) {
-      item.classList.toggle("open", open);
-      head.setAttribute("aria-expanded", open ? "true" : "false");
-    }
-
     head.addEventListener("click", function () {
-      set(!item.classList.contains("open"));
+      var open = !item.classList.contains("open");
+      /* one category at a time keeps the two-column grid balanced */
+      Array.prototype.forEach.call(items, function (other) {
+        if (other !== item) setOpen(other, false);
+      });
+      setOpen(item, open);
     });
 
-    set(item.classList.contains("open"));
+    setOpen(item, item.classList.contains("open"));
   });
 })();
 </script>
 <script src="../js/service-enquiry.js"></script>
 <script src="../js/enquiry-web.js"></script>
 <script src="../js/enquiry-software.js"></script>
+<script src="../js/enquiry-marketing.js"></script>
 </body>
 </html>

@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>06 · Analytics Dashboard — RJ Web Faces</title>
-  <meta name="description" content="Pulse — a soft-UI team analytics workspace: collapsible sidebar, live KPI cards, switchable revenue/users chart and a time filter that really updates the numbers. Face 06 of the RJ Web Faces Gallery — Intermediate level." />
+  <title>06 · Analytics Dashboard - RJ Web Faces</title>
+  <meta name="description" content="Pulse - a soft-UI team analytics workspace: collapsible sidebar, live KPI cards, switchable revenue/users chart and a time filter that really updates the numbers. Face 06 of the RJ Web Faces Gallery - Intermediate level." />
   <link rel="icon" type="image/png" href="../assets/RJ_Logo.png" />
   <link rel="apple-touch-icon" href="../assets/RJ_Logo.png" />
   <link rel="stylesheet" href="../css/fonts.css" />
@@ -224,14 +224,14 @@
 
   <link rel="canonical" href="https://www.heyraunak.site/facesgallery/face-6.html" />
   <meta property="og:type" content="website" />
-  <meta property="og:site_name" content="RJ — Design &amp; Development Studio" />
-  <meta property="og:title" content="06 · Analytics Dashboard — RJ Web Faces" />
-  <meta property="og:description" content="Pulse — a soft-UI team analytics workspace: collapsible sidebar, live KPI cards, switchable revenue/users chart and a time filter that really updates the numbers. Face 06 of the RJ Web Faces Gallery — Intermediate level." />
+  <meta property="og:site_name" content="RJ - Design &amp; Development Studio" />
+  <meta property="og:title" content="06 · Analytics Dashboard - RJ Web Faces" />
+  <meta property="og:description" content="Pulse - a soft-UI team analytics workspace: collapsible sidebar, live KPI cards, switchable revenue/users chart and a time filter that really updates the numbers. Face 06 of the RJ Web Faces Gallery - Intermediate level." />
   <meta property="og:url" content="https://www.heyraunak.site/facesgallery/face-6.html" />
   <meta property="og:image" content="https://www.heyraunak.site/assets/og-image.png" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="06 · Analytics Dashboard — RJ Web Faces" />
-  <meta name="twitter:description" content="Pulse — a soft-UI team analytics workspace: collapsible sidebar, live KPI cards, switchable revenue/users chart and a time filter that really updates the numbers. Face 06 of the RJ Web Faces Gallery — Intermediate level." />
+  <meta name="twitter:title" content="06 · Analytics Dashboard - RJ Web Faces" />
+  <meta name="twitter:description" content="Pulse - a soft-UI team analytics workspace: collapsible sidebar, live KPI cards, switchable revenue/users chart and a time filter that really updates the numbers. Face 06 of the RJ Web Faces Gallery - Intermediate level." />
   <meta name="twitter:image" content="https://www.heyraunak.site/assets/og-image.png" />
 </head>
 <body>
@@ -324,22 +324,22 @@
         <div class="kpis">
           <article class="card kpi" data-k="revenue">
             <div class="k-top"><span class="k-dot" style="background:#4F7DF9"></span><span class="k-label">Revenue</span><span class="trend" id="t-revenue"></span></div>
-            <div class="big num" id="v-revenue">—</div>
+            <div class="big num" id="v-revenue">-</div>
             <svg class="spark" id="s-revenue" preserveAspectRatio="none" viewBox="0 0 100 30" aria-hidden="true"></svg>
           </article>
           <article class="card kpi" data-k="users">
             <div class="k-top"><span class="k-dot" style="background:#2FB57A"></span><span class="k-label">Active users</span><span class="trend" id="t-users"></span></div>
-            <div class="big num" id="v-users">—</div>
+            <div class="big num" id="v-users">-</div>
             <svg class="spark" id="s-users" preserveAspectRatio="none" viewBox="0 0 100 30" aria-hidden="true"></svg>
           </article>
           <article class="card kpi" data-k="conv">
             <div class="k-top"><span class="k-dot" style="background:#F2B24B"></span><span class="k-label">Conversion rate</span><span class="trend" id="t-conv"></span></div>
-            <div class="big num" id="v-conv">—</div>
+            <div class="big num" id="v-conv">-</div>
             <svg class="spark" id="s-conv" preserveAspectRatio="none" viewBox="0 0 100 30" aria-hidden="true"></svg>
           </article>
           <article class="card kpi" data-k="churn">
             <div class="k-top"><span class="k-dot" style="background:#7A8699"></span><span class="k-label">Churn rate</span><span class="trend" id="t-churn"></span></div>
-            <div class="big num" id="v-churn">—</div>
+            <div class="big num" id="v-churn">-</div>
             <svg class="spark" id="s-churn" preserveAspectRatio="none" viewBox="0 0 100 30" aria-hidden="true"></svg>
           </article>
         </div>
@@ -360,7 +360,7 @@
               <div class="gl" style="top:25%"></div>
               <div class="gl" style="top:50%"></div>
               <div class="gl" style="top:75%"></div>
-              <span class="axis-max" id="axisMax">—</span>
+              <span class="axis-max" id="axisMax">-</span>
               <div class="bwrap" id="bwrap"></div>
             </div>
             <div class="xlab" id="xlab"></div>
@@ -437,7 +437,7 @@
               </li>
               <li>
                 <span class="f-dot" style="background:#7A8699"></span>
-                <div class="f-txt">Invoice <b>#INV-2048</b> paid — $240.00<span class="f-time">3 hours ago</span></div>
+                <div class="f-txt">Invoice <b>#INV-2048</b> paid - $240.00<span class="f-time">3 hours ago</span></div>
               </li>
             </ul>
           </section>
@@ -454,7 +454,7 @@
   <script src="js/common.js"></script>
   <script>
     // ============================================================
-    // DATA — every number below is deliberately consistent:
+    // DATA - every number below is deliberately consistent:
     // bar weights per range sum to 1.000, donut segments sum to 100.
     // ============================================================
     const TOTALS = {
@@ -533,18 +533,18 @@
         link.classList.add("active");
         closeDrawer();
         const view = link.dataset.view;
-        if (view !== "Overview") showToast("✳️ " + view + " opens in the full app — this face demos Overview.");
+        if (view !== "Overview") showToast("✳️ " + view + " opens in the full app - this face demos Overview.");
       });
     });
 
     // ============================================================
     // TOP BAR
     // ============================================================
-    document.getElementById("exportBtn").addEventListener("click", () => showToast("✅ Export ready — report.csv queued"));
-    document.getElementById("bellBtn").addEventListener("click", () => showToast("🔔 3 unread notifications — 2 mentions, 1 deploy"));
+    document.getElementById("exportBtn").addEventListener("click", () => showToast("✅ Export ready - report.csv queued"));
+    document.getElementById("bellBtn").addEventListener("click", () => showToast("🔔 3 unread notifications - 2 mentions, 1 deploy"));
     document.getElementById("searchIn").addEventListener("keydown", (e) => {
       if (e.key === "Enter" && e.target.value.trim()) {
-        showToast("🔍 “" + e.target.value.trim() + "” — demo search across the workspace");
+        showToast("🔍 “" + e.target.value.trim() + "” - demo search across the workspace");
       }
     });
 
@@ -580,7 +580,7 @@
     }
 
     // ============================================================
-    // RANGE FILTER — genuinely swaps KPI values, trends & sparks
+    // RANGE FILTER - genuinely swaps KPI values, trends & sparks
     // ============================================================
     function applyRange(r) {
       range = r;
@@ -598,7 +598,7 @@
     document.getElementById("rangeSel").addEventListener("change", (e) => applyRange(e.target.value));
 
     // ============================================================
-    // CHART — bar heights animate on every metric/range change
+    // CHART - bar heights animate on every metric/range change
     // ============================================================
     function fmtAxis(v, isMoney) {
       if (v >= 1000) {
@@ -656,7 +656,7 @@
     });
 
     // ============================================================
-    // DONUT — drawn from SEGMENTS (sums to 100%)
+    // DONUT - drawn from SEGMENTS (sums to 100%)
     // ============================================================
     function renderDonut() {
       const svg = document.getElementById("donut");
@@ -689,7 +689,7 @@
     }
 
     // ============================================================
-    // PROGRESS BARS — animate to their target width on load
+    // PROGRESS BARS - animate to their target width on load
     // ============================================================
     const bars = document.querySelectorAll(".pbar i");
     requestAnimationFrame(() => requestAnimationFrame(() => {

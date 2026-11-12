@@ -1,8 +1,8 @@
 /* ============================================================
-   RJ — Services enquiry engine (shared by every service category)
+   RJ - Services enquiry engine (shared by every service category)
    ------------------------------------------------------------
    This file holds no content. Categories register themselves via
-   RJEnquiry.define({...}) — see enquiry-web.js and
+   RJEnquiry.define({...}) - see enquiry-web.js and
    enquiry-software.js. The engine then builds the category's
    service dropdown, its multi-step modal, validation and payload.
 
@@ -39,7 +39,7 @@
    Set ENQUIRY_ENDPOINT to a URL and enquiries POST there as JSON;
    a success screen then appears only when the server answers OK.
    With no endpoint configured the enquiry is handed to the
-   visitor's email app instead — never reported as "sent".
+   visitor's email app instead - never reported as "sent".
    ============================================================ */
 (function () {
   "use strict";
@@ -150,7 +150,7 @@
   }
 
   /* ============================================================
-     Category controls — dropdown + Let's Connect
+     Category controls - dropdown + Let's Connect
      ============================================================ */
 
   function buildControls() {
@@ -400,7 +400,7 @@
     var note = (want === 1 && s.note) ? '<p class="f-note">' + esc(s.note) + "</p>" : "";
 
     if (!list.length) {
-      return note + '<p class="f-empty">Nothing else needed here — continue to the next step.</p>';
+      return note + '<p class="f-empty">Nothing else needed here - continue to the next step.</p>';
     }
     return note + '<div class="f-grid">' + list.map(function (f) {
       return fieldHTML(f, s.id);
@@ -710,17 +710,17 @@
   }
 
   function summaryText(d) {
-    var lines = ["New project enquiry — RJ", "", "Category: " + d.category, "Service: " + d.service, ""];
-    lines.push("— Project details —");
+    var lines = ["New project enquiry - RJ", "", "Category: " + d.category, "Service: " + d.service, ""];
+    lines.push("- Project details -");
     Object.keys(d.project_details).forEach(function (k) {
       lines.push(k + ": " + d.project_details[k]);
     });
-    lines.push("", "— Platforms —");
+    lines.push("", "- Platforms -");
     lines.push(d.platforms.length ? d.platforms.join(", ") : "Not specified");
-    lines.push("", "— Budget & timeline —");
+    lines.push("", "- Budget & timeline -");
     lines.push("Estimated Project Budget: " + (d.budget_usd == null ? "Not specified" : money(d.budget_usd) + " USD"));
     lines.push("Expected Project Timeline: " + (d.timeline || "Not specified"));
-    lines.push("", "— Contact —");
+    lines.push("", "- Contact -");
     Object.keys(d.contact).forEach(function (k) { lines.push(k + ": " + d.contact[k]); });
     lines.push("", "Submitted: " + d.submitted_at);
     return lines.join("\n");
@@ -729,10 +729,10 @@
   function handoff(d) {
     var body = summaryText(d);
     var truncated = body.length > MAX_MAILTO;
-    if (truncated) body = body.slice(0, MAX_MAILTO) + "\n\n[Truncated — full details available on request]";
+    if (truncated) body = body.slice(0, MAX_MAILTO) + "\n\n[Truncated - full details available on request]";
 
     var href = "mailto:" + CONTACT_EMAIL +
-      "?subject=" + encodeURIComponent("Project enquiry — " + d.service) +
+      "?subject=" + encodeURIComponent("Project enquiry - " + d.service) +
       "&body=" + encodeURIComponent(body);
 
     setBusy(false);
@@ -742,7 +742,7 @@
 
   function failed(msg) {
     bodyEl.insertAdjacentHTML("afterbegin",
-      '<div class="f-alert" role="alert">Couldn’t send your enquiry — ' + esc(msg) +
+      '<div class="f-alert" role="alert">Couldn’t send your enquiry - ' + esc(msg) +
       ". Please try again, or email <a href=\"mailto:" + CONTACT_EMAIL + "\">" + CONTACT_EMAIL + "</a>.</div>");
   }
 
@@ -760,7 +760,7 @@
         '<div class="f-done">' +
         '<span class="f-done-ico">✓</span>' +
         "<h3>Enquiry sent</h3>" +
-        "<p>Thanks — your enquiry for <b>" + esc(d.service) + "</b> has reached us. We usually reply within one to two business days.</p>" +
+        "<p>Thanks - your enquiry for <b>" + esc(d.service) + "</b> has reached us. We usually reply within one to two business days.</p>" +
         '<p class="f-hint">Reference: ' + esc(d.submitted_at) + "</p>" +
         "</div>";
       statusEl.textContent = "Enquiry sent successfully.";
@@ -771,8 +771,8 @@
       '<div class="f-done">' +
       '<span class="f-done-ico">✉</span>' +
       "<h3>Your enquiry is ready</h3>" +
-      "<p>Online submission isn’t connected on this site yet, so we’ll hand your enquiry to your email app — it’s already filled in and addressed to <b>" + CONTACT_EMAIL + "</b>. Just press send.</p>" +
-      (opts.truncated ? '<p class="f-hint">The summary was shortened to fit an email link — reply and we’ll ask for anything missing.</p>' : "") +
+      "<p>Online submission isn’t connected on this site yet, so we’ll hand your enquiry to your email app - it’s already filled in and addressed to <b>" + CONTACT_EMAIL + "</b>. Just press send.</p>" +
+      (opts.truncated ? '<p class="f-hint">The summary was shortened to fit an email link - reply and we’ll ask for anything missing.</p>' : "") +
       '<div class="f-done-actions">' +
       '<a class="soft-btn" href="' + esc(opts.mailto) + '">Open in email app</a>' +
       '<button class="soft-btn ghost" type="button" id="f-copy">Copy enquiry</button>' +
@@ -810,7 +810,7 @@
   }
   ready(boot);
 
-  /* public API — categories register themselves against this */
+  /* public API - categories register themselves against this */
   window.RJEnquiry = {
     define: define,
     categories: CATEGORIES,

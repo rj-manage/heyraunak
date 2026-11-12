@@ -1,5 +1,5 @@
 /* ============================================================
-   RJ — Category 02 data · Software & Product Development
+   RJ - Category 02 data · Software & Product Development
    Registers with the shared enquiry engine (service-enquiry.js).
    30 services in four groups. Every form carries the same
    platform-selection step (Android / Windows / Linux / iOS, plus
@@ -413,7 +413,7 @@
         id: "sw-healthcare",
         name: "Healthcare Management Software",
         group: "C. Industry-Specific Software",
-        note: "Health data is sensitive and regulated — a privacy and regulatory compliance review is required before implementation.",
+        note: "Health data is sensitive and regulated - a privacy and regulatory compliance review is required before implementation.",
         fields: [
           { k: "healthcare_org", l: "Healthcare Organization", t: "text", req: true },
           { k: "facility_type", l: "Facility Type", t: "text" },
@@ -579,7 +579,7 @@
         id: "sw-ai",
         name: "AI-Powered Software Solutions",
         group: "D. Application & Technical Development",
-        note: "AI capabilities are assessed for technical feasibility before any commitment — we will confirm what is realistically achievable.",
+        note: "AI capabilities are assessed for technical feasibility before any commitment - we will confirm what is realistically achievable.",
         fields: [
           { k: "company_name", l: "Company / Product Name", t: "text", req: true },
           { k: "ai_type", l: "AI Solution Type", t: "text" },

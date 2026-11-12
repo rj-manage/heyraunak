@@ -1,5 +1,5 @@
 /* ============================================================
-   RJ Motion Gallery — Shared helpers for all cursor demos
+   RJ Motion Gallery - Shared helpers for all cursor demos
    ============================================================ */
 
 /** Clamp a number into a range. */

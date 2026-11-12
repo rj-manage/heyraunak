@@ -1,5 +1,5 @@
 /* ============================================================
-   Rj_Manage — Shared form helpers
+   Rj_Manage - Shared form helpers
    ============================================================ */
 
 /** Collect visible [data-field] inputs inside a form into an object. */

@@ -1,5 +1,5 @@
 # ---------------------------------------------------------------
-# Local tooling / session data — never part of the published site
+# Local tooling / session data - never part of the published site
 # ---------------------------------------------------------------
 .commandcode/
 .vscode/
@@ -20,5 +20,5 @@ Thumbs.db
 /formsgallery/assets/Frame_Fin_Video_WEBP_500_frames.zip
 /formsgallery/assets/videos/
 
-# Internal audit evidence — never published
+# Internal audit evidence - never published
 /AUDIT/

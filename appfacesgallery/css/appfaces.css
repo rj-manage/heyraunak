@@ -1,15 +1,15 @@
 /* ============================================================
-   RJ App Faces Gallery — shared styles
+   RJ App Faces Gallery - shared styles
    Twenty apps. Each one has its own FRONT screen and its own
    set of INSIDE screens, built from components that belong to
-   that app — a map canvas for Maps, a viewfinder for Camera,
+   that app - a map canvas for Maps, a viewfinder for Camera,
    a vinyl for Podcast, a month grid for Calendar, and so on.
    Nothing is shared between apps but the bezel and status bar.
    Loaded after ../css/site.css (soft-UI tokens + nav + footer).
    ============================================================ */
 
 /* ============================================================
-   DEVICE — bezel, screen, status bar, home bar
+   DEVICE - bezel, screen, status bar, home bar
    ============================================================ */
 .app{margin:0;--bz1:#eef2f7;--bz2:#c9d1de;cursor:pointer}
 .app[data-dark] .device,.device[data-dark]{--bz1:#3b4353;--bz2:#1a1f28}
@@ -88,7 +88,7 @@
 [data-app="analytics"]{--bg:linear-gradient(170deg,#12171e,#0d1117);--fg:#e7eef7;--mut:#6c7c92;--ac:#3f7fd6;--ac2:#5aa2ff;--onac:#fff;--line:#202832;--rad:10px}
 
 /* ============================================================
-   01 · WALLET — dark glass banking
+   01 · WALLET - dark glass banking
    ============================================================ */
 [data-app="wallet"] .bd{padding:10px 14px}
 [data-app="wallet"] .hd b{display:block;font-size:11.5px}
@@ -120,7 +120,7 @@
 .wl-mini b{position:absolute;left:11px;bottom:7px;font-size:7.5px;letter-spacing:.1em;text-transform:uppercase;opacity:.75}
 
 /* ============================================================
-   02 · MUSIC — neon synthwave
+   02 · MUSIC - neon synthwave
    ============================================================ */
 [data-app="music"] .bd{padding:9px 14px}
 .mu-art{position:relative;width:100%;aspect-ratio:1/.82;border-radius:16px;overflow:hidden;flex:none;
@@ -143,7 +143,7 @@
 .mu-tile span{font-size:7px;color:var(--mut)}
 
 /* ============================================================
-   03 · FITNESS — brutalist
+   03 · FITNESS - brutalist
    ============================================================ */
 [data-app="fitness"] .scr{border-radius:26px}
 [data-app="fitness"] .bd{padding:10px 13px}
@@ -161,7 +161,7 @@
 .ft-card span{font-size:7px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:#6f6b60}
 
 /* ============================================================
-   04 · FOOD DELIVERY — warm playful
+   04 · FOOD DELIVERY - warm playful
    ============================================================ */
 [data-app="food"] .bd{padding:10px 13px}
 .fo-top b{display:block;font-size:12px;font-family:var(--font-display)}
@@ -184,7 +184,7 @@
 .fo-st span{display:block;font-size:7px;color:var(--mut);font-weight:700}
 
 /* ============================================================
-   05 · MESSAGES — clean light chat
+   05 · MESSAGES - clean light chat
    ============================================================ */
 [data-app="messages"] .bd{padding:0;gap:0}
 .ms-top{display:flex;align-items:center;gap:8px;padding:6px 14px 10px;border-bottom:1px solid var(--line);flex:none}
@@ -206,7 +206,7 @@
 .ms-snd svg{width:13px;height:13px}
 
 /* ============================================================
-   06 · WEATHER — sky gradient
+   06 · WEATHER - sky gradient
    ============================================================ */
 [data-app="weather"] .bd{padding:6px 15px}
 .we-big{text-align:center;font-family:var(--font-display);font-size:58px;font-weight:700;line-height:1;letter-spacing:-.06em;text-shadow:0 8px 24px rgba(0,60,120,.28)}
@@ -224,7 +224,7 @@
 .we-row i{flex:1;height:4px;border-radius:999px;background:rgba(255,255,255,.5)}
 
 /* ============================================================
-   07 · TRAVEL — editorial serif
+   07 · TRAVEL - editorial serif
    ============================================================ */
 [data-app="travel"] .bd{padding:9px 14px}
 .tr-mast{display:flex;justify-content:space-between;align-items:baseline;border-bottom:1px solid var(--line);padding-bottom:6px;flex:none}
@@ -245,7 +245,7 @@
 .tr-trip span{font-size:7px;letter-spacing:.18em;text-transform:uppercase;color:var(--mut)}
 
 /* ============================================================
-   08 · SHOP — minimal monochrome
+   08 · SHOP - minimal monochrome
    ============================================================ */
 [data-app="shop"] .bd{padding:9px 14px}
 .sh-top{display:flex;justify-content:space-between;align-items:center;font-size:8.5px;letter-spacing:.36em;text-transform:uppercase;font-weight:600;border-bottom:1px solid var(--line);padding-bottom:7px;flex:none}
@@ -264,7 +264,7 @@
 .sh-line em{font-style:normal;font-family:ui-monospace,Menlo,monospace}
 
 /* ============================================================
-   09 · CRYPTO — terminal
+   09 · CRYPTO - terminal
    ============================================================ */
 [data-app="crypto"] .bd{padding:9px 13px}
 .cr-head{display:flex;justify-content:space-between;font-size:7px;letter-spacing:.2em;text-transform:uppercase;flex:none}
@@ -284,7 +284,7 @@
 .cr-seg span.on{background:#16a34a;color:#04150b}
 
 /* ============================================================
-   10 · MEDITATION — pastel calm
+   10 · MEDITATION - pastel calm
    ============================================================ */
 [data-app="meditation"] .bd{padding:8px 14px;position:relative}
 .md-blob{position:absolute;border-radius:50%;filter:blur(16px);opacity:.75}
@@ -304,7 +304,7 @@
 .md-dots i.on{background:linear-gradient(145deg,#b79cff,#8b5cf6)}
 
 /* ============================================================
-   11 · PODCAST — retro warm
+   11 · PODCAST - retro warm
    ============================================================ */
 [data-app="podcast"] .bd{padding:9px 14px}
 .pd-kick{font-size:7px;letter-spacing:.26em;text-transform:uppercase;color:var(--mut);font-weight:800}
@@ -329,7 +329,7 @@
 .pd-ep em{font-style:normal;margin-left:auto;color:var(--mut);font-size:7.5px}
 
 /* ============================================================
-   12 · MAPS — map-first
+   12 · MAPS - map-first
    ============================================================ */
 [data-app="maps"] .bd{padding:0;position:relative;z-index:2;gap:0}
 .mp-canvas{position:absolute;inset:0;overflow:hidden;background:linear-gradient(160deg,#f0f3ea,#e2e7dd)}
@@ -352,7 +352,7 @@
 .mp-opt.on{background:#fff}
 
 /* ============================================================
-   13 · CALENDAR — paper planner
+   13 · CALENDAR - paper planner
    ============================================================ */
 [data-app="calendar"] .bd{padding:9px 14px}
 .cd-head{display:flex;justify-content:space-between;align-items:baseline;border-bottom:1px solid var(--line);padding-bottom:7px;flex:none}
@@ -371,7 +371,7 @@
 .cd-ev em{font-style:normal;font-size:7px;color:var(--mut)}
 
 /* ============================================================
-   14 · CAMERA — pro black
+   14 · CAMERA - pro black
    ============================================================ */
 [data-app="camera"] .bd{padding:0;position:relative;z-index:2;gap:0}
 .cm-vf{position:absolute;inset:0;background:radial-gradient(120% 90% at 50% 18%,#2a3140 0%,#0b0e13 62%,#000 100%)}
@@ -403,7 +403,7 @@
 .cm-row em{font-style:normal;color:var(--mut)}
 
 /* ============================================================
-   15 · HEALTH — clinical
+   15 · HEALTH - clinical
    ============================================================ */
 [data-app="health"] .bd{padding:9px 13px}
 .hl-card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:9px;display:grid;gap:5px}
@@ -422,7 +422,7 @@
 .hl-rec span{display:block;font-size:7px;color:var(--mut)}
 
 /* ============================================================
-   16 · SOCIAL — story rings
+   16 · SOCIAL - story rings
    ============================================================ */
 [data-app="social"] .bd{padding:0;gap:0}
 .so-top{display:flex;align-items:center;justify-content:space-between;padding:5px 14px 9px;flex:none}
@@ -453,7 +453,7 @@
 .so-notif span{display:block;font-size:7px;color:var(--mut)}
 
 /* ============================================================
-   17 · NOTES — legal pad
+   17 · NOTES - legal pad
    ============================================================ */
 [data-app="notes"] .scr{background:repeating-linear-gradient(#fffbe8 0 15px,#ffe9a8 15px 16px)}
 [data-app="notes"] .bd{position:relative;padding:10px 12px 8px 30px;gap:0}
@@ -471,7 +471,7 @@
 .nt-tags span{font-size:8px;font-weight:700;padding:6px 11px;border:1px solid var(--line);border-radius:999px;background:rgba(255,255,255,.6)}
 
 /* ============================================================
-   18 · RIDE — night sheet
+   18 · RIDE - night sheet
    ============================================================ */
 [data-app="ride"] .bd{padding:0;position:relative;z-index:2;gap:0}
 .rd-map{position:absolute;inset:0;overflow:hidden;background:linear-gradient(160deg,#cdd6d2,#b9c4c0)}
@@ -495,7 +495,7 @@
 .rd-trip em{font-style:normal;margin-left:auto;font-size:9px;font-weight:800}
 
 /* ============================================================
-   19 · COFFEE — kraft café
+   19 · COFFEE - kraft café
    ============================================================ */
 [data-app="coffee"] .bd{padding:9px 13px}
 .cf-head{display:flex;justify-content:space-between;align-items:center;flex:none}
@@ -518,7 +518,7 @@
 .cf-reward em{font-style:normal;margin-left:auto;font-size:7px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--mut)}
 
 /* ============================================================
-   20 · ANALYTICS — dark dashboard
+   20 · ANALYTICS - dark dashboard
    ============================================================ */
 [data-app="analytics"] .bd{padding:9px 13px}
 .an-kpi{display:grid;grid-template-columns:1fr 1fr;gap:8px}
@@ -556,7 +556,7 @@
 [data-app="messages"] .ms-row .g{min-width:0}
 
 /* ============================================================
-   LEVEL BADGES — shared by the gallery and every face page
+   LEVEL BADGES - shared by the gallery and every face page
    ============================================================ */
 .lv{display:inline-flex;align-items:center;font-size:10.5px;font-weight:800;letter-spacing:.1em;
   text-transform:uppercase;padding:6px 13px;border-radius:999px;background:var(--canvas);box-shadow:var(--sh-in-s)}
@@ -567,7 +567,7 @@
 .lv-x{color:#e11d48}
 
 /* ============================================================
-   GALLERY INDEX — page head, rail, cards
+   GALLERY INDEX - page head, rail, cards
    ============================================================ */
 .appfaces{padding-top:8px}
 .appfaces .grid-note{margin-top:22px;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
@@ -595,7 +595,7 @@
 .cat-life .ico{color:#0ea5e9}
 .cat-health .ico{color:var(--coral-2)}
 
-/* gallery card — the face itself is the thumbnail */
+/* gallery card - the face itself is the thumbnail */
 .card-app{display:flex;flex-direction:column;text-decoration:none;color:inherit;border-radius:26px;
   padding:16px 16px 20px;background:var(--canvas);box-shadow:var(--sh-r);
   transition:transform .25s var(--ease),box-shadow .25s var(--ease)}
@@ -627,7 +627,7 @@
 #toTop:hover{color:var(--ink)}
 
 /* ============================================================
-   FACE PAGE — stage, side panel, screens rail
+   FACE PAGE - stage, side panel, screens rail
    ============================================================ */
 .face{padding-bottom:10px}
 .face .face-kicker{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:16px}
@@ -719,7 +719,7 @@
   .app .cap .n{width:26px;height:26px;font-size:10px}
   .face-next{flex-direction:column;align-items:flex-start}
   .face-next .side{text-align:left}
-  /* four phones side by side stop being legible this small — go one up */
+  /* four phones side by side stop being legible this small - go one up */
   .face-screens .four{grid-template-columns:minmax(0,1fr);gap:30px}
   .face-screens figure{max-width:250px;margin:0 auto;width:100%}
   .face-screens .device{border-radius:32px;padding:8px}
