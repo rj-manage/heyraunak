@@ -1,5 +1,5 @@
 import "server-only";
-import * as archiverNamespace from "archiver";
+import { ZipArchive } from "archiver";
 import { Readable } from "node:stream";
 import { MAX_ZIP_FILES, MAX_ZIP_TOTAL_BYTES, humanFileSize, sanitizeFilename } from "./storage";
 import type { HandoverFileRow } from "./service";
@@ -9,14 +9,8 @@ export interface ZipEntry {
   entryName: string;
 }
 
-// archiver ships CommonJS (`export =`); this keeps a callable reference while
-// staying ESM-safe under the bundler module resolution.
-type ArchiverFactory = (
-  format: string,
-  options?: { zlib?: { level?: number } }
-) => import("archiver").Archiver;
-
-const archiver = archiverNamespace as unknown as ArchiverFactory;
+// archiver v8 exports named archive classes (Archiver, ZipArchive, ...); the
+// callable factory from v7 no longer exists. Construct ZipArchive directly.
 
 export type ZipPlan =
   | { ok: true; entries: ZipEntry[]; totalBytes: number }
@@ -66,7 +60,7 @@ export function streamArchive(
   entries: ZipEntry[],
   signedUrlFor: (file: HandoverFileRow) => Promise<string | null>
 ): ReadableStream<Uint8Array> {
-  const archive = archiver("zip", { zlib: { level: 6 } });
+  const archive = new ZipArchive({ zlib: { level: 6 } });
 
   const body = Readable.toWeb(archive as unknown as Readable) as ReadableStream<Uint8Array>;
 
