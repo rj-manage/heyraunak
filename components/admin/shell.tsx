@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import LogoutButton from "./logout-button";
 
 const LINKS = [
   { href: "/admin/project-vault", label: "Handovers" },
@@ -28,6 +29,7 @@ export default function AdminShell({ active, children }: { active: string; child
             </a>
           ))}
         </nav>
+        <LogoutButton />
       </aside>
       <div className="app-main">{children}</div>
     </div>

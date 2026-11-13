@@ -6,7 +6,7 @@ export const metadata = { title: "Sign in - RJ Studio" };
 export default async function SignInPage({
   searchParams
 }: {
-  searchParams: Promise<{ next?: string; error?: string }>;
+  searchParams: Promise<{ next?: string; error?: string; loggedOut?: string }>;
 }) {
   const params = await searchParams;
   const next = params.next && params.next.startsWith("/") ? params.next : "/portal";
@@ -27,6 +27,12 @@ export default async function SignInPage({
 
         <h1>Sign in to RJ Studio</h1>
         <p>Sign in to save services, submit an enquiry and track your projects.</p>
+
+        {params.loggedOut ? (
+          <p className="auth-note" data-tone="ok" role="status">
+            You have been logged out. Sign in again to continue.
+          </p>
+        ) : null}
 
         {params.error && (
           <p className="auth-note" data-tone="error" role="alert">
