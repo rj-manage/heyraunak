@@ -19,6 +19,9 @@ export const STAFF_ROLES: readonly Role[] = ["owner", "admin", "project_manager"
 /** Roles allowed to see every customer's records. */
 export const CUSTOMER_VIEWER_ROLES: readonly Role[] = STAFF_ROLES;
 
+/** Roles that may operate the Project Vault admin area. */
+export const VAULT_ADMIN_ROLES: readonly Role[] = ["owner", "admin", "project_manager"];
+
 export function isRole(value: unknown): value is Role {
   return typeof value === "string" && (ROLES as readonly string[]).includes(value);
 }
@@ -50,6 +53,11 @@ export function canViewCustomer(roles: readonly Role[], ownUserId: string, targe
 /** Only staff may issue or revise proposals. */
 export function canManageProposals(roles: readonly Role[]): boolean {
   return isStaff(roles);
+}
+
+/** Only owner/admin/project_manager may operate Project Vault admin. */
+export function canManageVault(roles: readonly Role[]): boolean {
+  return hasRole(roles, ...VAULT_ADMIN_ROLES);
 }
 
 /** Only owner/admin/finance may touch money. */
