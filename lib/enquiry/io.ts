@@ -5,8 +5,7 @@
 
 import { MIN_SECRET_LENGTH, SHEET_TIMEOUT_MS, adminHtml, adminText, ackHtml, ACK_TEXT } from "./core";
 import type { EnquiryData } from "./core";
-
-const RESEND_URL = "https://api.resend.com/emails";
+import { sendTransactional } from "../email/send";
 
 export interface EnquiryConfig {
   scriptUrl: string;
@@ -100,17 +99,21 @@ interface EmailPayload {
   reply_to?: string;
 }
 
+// Delegates to the shared transactional sender so Project Vault and the enquiry
+// form use one implementation. Keeps the original contract: throws
+// `email_<status>` on failure, which notify() catches.
 export async function sendEmail(cfg: EnquiryConfig, payload: EmailPayload): Promise<unknown> {
-  const res = await fetch(RESEND_URL, {
-    method: "POST",
-    headers: {
-      Authorization: "Bearer " + cfg.emailKey,
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify(payload)
+  const result = await sendTransactional({
+    to: payload.to,
+    subject: payload.subject,
+    html: payload.html,
+    text: payload.text,
+    replyTo: payload.reply_to,
+    apiKey: cfg.emailKey,
+    from: cfg.sender
   });
-  if (!res.ok) throw new Error("email_" + res.status);
-  return res.json().catch(() => ({}));
+  if (!result.ok) throw new Error("email_" + result.status);
+  return {};
 }
 
 export interface NotifyState {
