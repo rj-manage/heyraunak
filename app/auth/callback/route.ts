@@ -3,23 +3,67 @@ import { createSupabaseServerClient } from "@/lib/supabase/server";
 
 export const dynamic = "force-dynamic";
 
-// OAuth / email-link callback: exchanges the code for a session, then returns
-// the visitor to where they were headed.
+const STAFF_ROLES = ["owner", "admin", "project_manager"];
+
+// OAuth / email-link callback.
+//
+// Destination resolution: explicit `next` query, then the short-lived `rj_next`
+// cookie set before sign-in, then a role-based default (staff -> admin console,
+// everyone else -> portal). Every failure path becomes an explicit sign-in
+// redirect with a reason code, never a dead end.
 export async function GET(request: Request) {
   const url = new URL(request.url);
   const code = url.searchParams.get("code");
+
   const nextParam = url.searchParams.get("next");
-  const next = nextParam && nextParam.startsWith("/") ? nextParam : "/portal";
+  const cookieNext = readCookie(request, "rj_next");
+  const explicit = [nextParam, cookieNext].find((v): v is string => !!v && v.startsWith("/"));
 
-  if (code) {
-    try {
-      const supabase = await createSupabaseServerClient();
-      const { error } = await supabase.auth.exchangeCodeForSession(code);
-      if (!error) return NextResponse.redirect(new URL(next, url.origin));
-    } catch {
-      // fall through to the error redirect
+  if (!code) return finish(url, "/sign-in?error=missing_code");
+
+  try {
+    const supabase = await createSupabaseServerClient();
+    const { error } = await supabase.auth.exchangeCodeForSession(code);
+
+    if (error) return finish(url, "/sign-in?error=exchange");
+    if (explicit) return finish(url, explicit);
+
+    const {
+      data: { user }
+    } = await supabase.auth.getUser();
+
+    if (user) {
+      const { data: roles } = await supabase.from("user_roles").select("role").eq("user_id", user.id);
+      const list = (roles ?? []).map((r: { role: string }) => r.role);
+      if (list.some((role) => STAFF_ROLES.includes(role))) {
+        return finish(url, "/admin/project-vault");
+      }
     }
-  }
 
-  return NextResponse.redirect(new URL("/sign-in?error=auth", url.origin));
+    return finish(url, "/portal");
+  } catch {
+    return finish(url, "/sign-in?error=exchange");
+  }
+}
+
+function readCookie(request: Request, name: string): string | null {
+  const raw = request.headers.get("cookie");
+  if (!raw) return null;
+  const hit = raw
+    .split(";")
+    .map((c) => c.trim())
+    .find((c) => c.startsWith(name + "="));
+  if (!hit) return null;
+  const value = hit.slice(name.length + 1);
+  try {
+    return decodeURIComponent(value);
+  } catch {
+    return value;
+  }
+}
+
+function finish(origin: URL, path: string): NextResponse {
+  const res = NextResponse.redirect(new URL(path, origin.origin));
+  res.cookies.set("rj_next", "", { path: "/", maxAge: 0 });
+  return res;
 }

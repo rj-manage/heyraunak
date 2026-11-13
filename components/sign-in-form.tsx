@@ -14,14 +14,22 @@ export default function SignInForm({ next }: { next: string }) {
   const [busy, setBusy] = useState(false);
   const [state, setState] = useState<State>({ tone: "idle", message: "" });
 
+  // Keep redirect_to as a clean path (no query string) so it matches the
+  // Supabase redirect allow-list without ambiguity; the intended destination
+  // travels in a short-lived cookie instead.
   function redirectUrl() {
-    const params = new URLSearchParams({ next });
-    return `${window.location.origin}/auth/callback?${params.toString()}`;
+    return `${window.location.origin}/auth/callback`;
+  }
+
+  function rememberNext() {
+    const secure = window.location.protocol === "https:" ? "; Secure" : "";
+    document.cookie = `rj_next=${encodeURIComponent(next)}; Path=/; Max-Age=600; SameSite=Lax${secure}`;
   }
 
   async function oauth(provider: "google" | "github") {
     setBusy(true);
     setState({ tone: "idle", message: "" });
+    rememberNext();
     const supabase = createSupabaseBrowserClient();
     const { error } = await supabase.auth.signInWithOAuth({
       provider,
@@ -37,6 +45,7 @@ export default function SignInForm({ next }: { next: string }) {
     e.preventDefault();
     setBusy(true);
     setState({ tone: "idle", message: "" });
+    rememberNext();
     const supabase = createSupabaseBrowserClient();
     const { error } = await supabase.auth.signInWithOtp({
       email,
