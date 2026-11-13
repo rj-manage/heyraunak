@@ -1,4 +1,4 @@
-import { GENERIC_ERROR, fail, json, sameOrigin, tooMany } from "@/lib/vault/http";
+import { GENERIC_ERROR, fail, json, sameOrigin, tooMany, vaultReady, notConfigured } from "@/lib/vault/http";
 import { fieldErrors, verifyOtpSchema } from "@/lib/vault/validation";
 import { createRateLimiter } from "@/lib/vault/rate-limit";
 import { verifyOtp } from "@/lib/vault/service";
@@ -11,6 +11,7 @@ export const dynamic = "force-dynamic";
 const limiter = createRateLimiter({ windowMs: 60_000, max: 10 });
 
 export async function POST(request: Request): Promise<Response> {
+  if (!vaultReady()) return notConfigured();
   if (!sameOrigin(request)) return fail(403);
 
   const ip = clientIpFrom(request.headers);

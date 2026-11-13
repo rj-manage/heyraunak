@@ -1,4 +1,4 @@
-import { json } from "@/lib/vault/http";
+import { json, vaultReady, notConfigured } from "@/lib/vault/http";
 import { readSessionCookie } from "@/lib/vault/cookies";
 import { listHandoverFiles, resolveSession } from "@/lib/vault/service";
 import { humanFileSize } from "@/lib/vault/storage";
@@ -8,6 +8,8 @@ export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 export async function GET(): Promise<Response> {
+  if (!vaultReady()) return notConfigured();
+
   const token = await readSessionCookie();
   if (!token) return json({ ok: false }, 401);
 

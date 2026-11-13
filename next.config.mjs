@@ -16,7 +16,6 @@ const nextConfig = {
   skipTrailingSlashRedirect: true,
   async rewrites() {
     const legacyDirs = [
-      "about",
       "services",
       "works",
       "portfolio",
@@ -24,7 +23,8 @@ const nextConfig = {
       "facesgallery",
       "appfacesgallery",
       "formsgallery",
-      "mousemotionsgallery"
+      "mousemotionsgallery",
+      "contact"
     ];
 
     const beforeFiles = [{ source: "/", destination: "/index.html" }];

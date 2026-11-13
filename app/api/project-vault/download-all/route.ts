@@ -1,4 +1,4 @@
-import { fail, json, sameOrigin } from "@/lib/vault/http";
+import { fail, json, sameOrigin, vaultReady, notConfigured } from "@/lib/vault/http";
 import { readSessionCookie } from "@/lib/vault/cookies";
 import { listHandoverFiles, resolveSession } from "@/lib/vault/service";
 import { createSignedDownloadUrl } from "@/lib/vault/signed";
@@ -14,6 +14,7 @@ export const dynamic = "force-dynamic";
 const INTERNAL_TTL_SECONDS = 300;
 
 export async function POST(request: Request): Promise<Response> {
+  if (!vaultReady()) return notConfigured();
   if (!sameOrigin(request)) return fail(403);
 
   const token = await readSessionCookie();

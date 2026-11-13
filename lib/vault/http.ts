@@ -1,5 +1,8 @@
 // Shared response + CSRF helpers for the Project Vault endpoints.
 
+import { supabaseConfigured } from "../supabase/env";
+import { vaultSecretConfigured } from "./secret";
+
 /**
  * One message for every failure mode. Callers must never learn whether a code,
  * email or handover exists.
@@ -7,6 +10,16 @@
 export const GENERIC_ERROR = "We couldn't verify those details. Please check and try again.";
 export const LOCKED_ERROR = "Too many attempts. Please wait a few minutes and try again.";
 export const BUSY_ERROR = "Please wait a moment before requesting another code.";
+export const NOT_CONFIGURED = "The Project Vault is not configured yet.";
+
+/** True only when both the database/storage and the hashing pepper exist. */
+export function vaultReady(): boolean {
+  return supabaseConfigured() && vaultSecretConfigured();
+}
+
+export function notConfigured(): Response {
+  return json({ ok: false, message: NOT_CONFIGURED }, 503);
+}
 
 export function json(body: unknown, status = 200): Response {
   return new Response(JSON.stringify(body), {

@@ -1,4 +1,4 @@
-import { fail } from "@/lib/vault/http";
+import { fail, vaultReady, notConfigured } from "@/lib/vault/http";
 import { readSessionCookie } from "@/lib/vault/cookies";
 import { getHandoverFile, resolveSession } from "@/lib/vault/service";
 import { createSignedDownloadUrl } from "@/lib/vault/signed";
@@ -13,6 +13,8 @@ export async function GET(
   context: { params: Promise<{ id: string }> }
 ): Promise<Response> {
   const { id } = await context.params;
+
+  if (!vaultReady()) return notConfigured();
 
   const token = await readSessionCookie();
   if (!token) return fail(401);
