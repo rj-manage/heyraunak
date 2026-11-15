@@ -9,7 +9,10 @@ export default async function SignInPage({
   searchParams: Promise<{ next?: string; error?: string; loggedOut?: string }>;
 }) {
   const params = await searchParams;
-  const next = params.next && params.next.startsWith("/") ? params.next : "/portal";
+  // No default destination: the callback decides by role (/admin/project-vault
+  // for staff, /project-vault otherwise). Defaulting to a route that does not
+  // exist yet (/portal) caused a 404 after OAuth.
+  const next = params.next && params.next.startsWith("/") ? params.next : "";
 
   return (
     <main className="auth-wrap">

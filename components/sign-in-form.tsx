@@ -22,6 +22,7 @@ export default function SignInForm({ next }: { next: string }) {
   }
 
   function rememberNext() {
+    if (!next) return; // let the callback pick the role-based default
     const secure = window.location.protocol === "https:" ? "; Secure" : "";
     document.cookie = `rj_next=${encodeURIComponent(next)}; Path=/; Max-Age=600; SameSite=Lax${secure}`;
   }

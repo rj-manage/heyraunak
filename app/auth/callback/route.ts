@@ -17,7 +17,10 @@ export async function GET(request: Request) {
 
   const nextParam = url.searchParams.get("next");
   const cookieNext = readCookie(request, "rj_next");
-  const explicit = [nextParam, cookieNext].find((v): v is string => !!v && v.startsWith("/"));
+  // Only honour destinations that actually exist in this phase. "/portal" is
+  // reserved for the customer portal and would 404 today.
+  const usable = (v: string | null): v is string => !!v && v.startsWith("/") && v !== "/portal";
+  const explicit = [nextParam, cookieNext].find(usable);
 
   if (!code) return finish(url, "/sign-in?error=missing_code");
 
@@ -40,7 +43,8 @@ export async function GET(request: Request) {
       }
     }
 
-    return finish(url, "/portal");
+    // Everyone else lands on the public Project Vault (portal is not live yet).
+    return finish(url, "/project-vault");
   } catch {
     return finish(url, "/sign-in?error=exchange");
   }
