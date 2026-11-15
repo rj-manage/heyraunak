@@ -56,11 +56,10 @@ describe("extensionOf / validateFile", () => {
     expect(validateFile("notes.md", 10).ok).toBe(true);
   });
 
-  it("rejects blocked, unknown and oversized files", () => {
-    expect(validateFile("payload.exe", 10)).toEqual({ ok: false, reason: "extension" });
-    expect(validateFile("library.dll", 10)).toEqual({ ok: false, reason: "extension" });
-    expect(validateFile("mystery.xyzzy", 10)).toEqual({ ok: false, reason: "extension" });
-    expect(validateFile("noextension", 10)).toEqual({ ok: false, reason: "extension" });
+  it("accepts any file type but still enforces size", () => {
+    for (const n of ["payload.exe", "library.dll", "mystery.xyzzy", "noextension"]) {
+      expect(validateFile(n, 10).ok).toBe(true);
+    }
     expect(validateFile("big.zip", MAX_FILE_BYTES + 1)).toEqual({ ok: false, reason: "size" });
     expect(validateFile("empty.zip", 0)).toEqual({ ok: false, reason: "empty" });
   });

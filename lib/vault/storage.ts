@@ -44,11 +44,9 @@ export interface FileValidation {
   reason?: "extension" | "size" | "empty";
 }
 
-export function validateFile(filename: string, size: number): FileValidation {
-  const ext = extensionOf(filename);
-  if (!ext || BLOCKED_EXTENSIONS.has(ext) || !ALLOWED_EXTENSIONS.has(ext)) {
-    return { ok: false, reason: "extension" };
-  }
+export function validateFile(_filename: string, size: number): FileValidation {
+  // Any file type is allowed for admin handover uploads (including .exe, .dll,
+  // archives and extensionless files). Size is still capped.
   if (!Number.isFinite(size) || size <= 0) return { ok: false, reason: "empty" };
   if (size > MAX_FILE_BYTES) return { ok: false, reason: "size" };
   return { ok: true };

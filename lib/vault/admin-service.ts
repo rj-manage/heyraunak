@@ -142,7 +142,7 @@ export async function setHandoverStatus(id: string, status: HandoverStatus) {
   }
 }
 
-export async function addFile(handoverId: string, file: File) {
+export async function addFile(handoverId: string, file: File, title?: string | null) {
   const check = validateFile(file.name, file.size);
   if (!check.ok) throw new Error("file_" + check.reason);
 
@@ -163,7 +163,7 @@ export async function addFile(handoverId: string, file: File) {
     storage_bucket: VAULT_BUCKET,
     storage_path: path,
     original_filename: file.name,
-    display_name: file.name,
+    display_name: (title && title.trim()) || file.name,
     category: "main",
     mime_type: file.type || "application/octet-stream",
     file_size: file.size,

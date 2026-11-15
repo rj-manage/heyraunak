@@ -31,6 +31,7 @@ export default function HandoverDetail({ id }: { id: string }) {
   const [newCode, setNewCode] = useState("");
   const [busy, setBusy] = useState(false);
   const fileInput = useRef<HTMLInputElement | null>(null);
+  const [uploadTitle, setUploadTitle] = useState("");
 
   const load = useCallback(async () => {
     const res = await fetch(`/api/admin/project-vault/${id}`, { cache: "no-store" });
@@ -85,13 +86,28 @@ export default function HandoverDetail({ id }: { id: string }) {
   }
 
   async function upload(e: React.ChangeEvent<HTMLInputElement>) {
-    const file = e.target.files?.[0];
-    if (!file) return;
-    const fd = new FormData();
-    fd.append("file", file);
-    const ok = await act(`/api/admin/project-vault/${id}/files`, { method: "POST", body: fd }, "File uploaded.");
+    const files = Array.from(e.target.files || []);
+    if (!files.length) return;
+    setBusy(true); setTone("idle"); setMessage("");
+    let uploaded = 0;
+    for (const file of files) {
+      const fd = new FormData();
+      fd.append("file", file);
+      if (files.length === 1 && uploadTitle.trim()) fd.append("title", uploadTitle.trim());
+      try {
+        const res = await fetch(`/api/admin/project-vault/${id}/files`, { method: "POST", body: fd });
+        if (res.ok) uploaded++;
+      } catch {
+        /* continue with the rest */
+      }
+    }
     if (fileInput.current) fileInput.current.value = "";
-    if (ok) await load();
+    e.target.value = "";
+    setUploadTitle("");
+    setBusy(false);
+    setTone(uploaded === files.length ? "ok" : "error");
+    setMessage(`${uploaded} of ${files.length} file(s) uploaded.`);
+    await load();
   }
 
   async function toggleVisibility(f: FileRow) {
@@ -106,6 +122,25 @@ export default function HandoverDetail({ id }: { id: string }) {
     if (!confirm("Delete this handover permanently? Its files are removed and the client loses access.")) return;
     const ok = await act(`/api/admin/project-vault/${id}`, { method: "DELETE" }, "Handover deleted.");
     if (ok) router.replace("/admin/project-vault");
+  }
+
+  async function removeAllFiles() {
+    if (!files.length) return;
+    if (!confirm(`Delete all ${files.length} file(s) from this handover? This cannot be undone.`)) return;
+    setBusy(true); setTone("idle"); setMessage("");
+    let removed = 0;
+    for (const f of files) {
+      try {
+        const res = await fetch(`/api/admin/project-vault/${id}/files/${f.id}`, { method: "DELETE" });
+        if (res.ok) removed++;
+      } catch {
+        /* keep going */
+      }
+    }
+    setBusy(false);
+    setTone(removed === files.length ? "ok" : "error");
+    setMessage(`${removed} of ${files.length} file(s) deleted.`);
+    await load();
   }
 
   async function removeFile(f: FileRow) {
@@ -173,9 +208,36 @@ export default function HandoverDetail({ id }: { id: string }) {
       <div className="app-card">
         <h2 style={{ fontSize: 18, marginBottom: 14 }}>Files</h2>
         <div className="f-field">
-          <label htmlFor="vault-upload">Upload a deliverable</label>
-          <input className="f-input" id="vault-upload" type="file" ref={fileInput} onChange={upload} disabled={busy} />
-          <p className="f-hint">ZIP, PDF, documents, images and source archives up to 100 MB.</p>
+          <label htmlFor="vault-title">
+            Title <span className="opt">(optional — applied to single uploads)</span>
+          </label>
+          <input
+            className="f-input"
+            id="vault-title"
+            value={uploadTitle}
+            onChange={(e) => setUploadTitle(e.target.value)}
+            placeholder="e.g. Source code (v1.0)"
+            disabled={busy}
+          />
+        </div>
+
+        <div className="f-field">
+          <label htmlFor="vault-upload">Upload files</label>
+          <input className="f-input" id="vault-upload" type="file" multiple ref={fileInput} onChange={upload} disabled={busy} />
+          <p className="f-hint">Any file type — archives, PDFs, source, installers (.exe/.dll), assets. Up to 100 MB each.</p>
+        </div>
+
+        <div className="f-field">
+          <label htmlFor="vault-folder">Or upload a folder</label>
+          <input
+            className="f-input"
+            id="vault-folder"
+            type="file"
+            onChange={upload}
+            disabled={busy}
+            {...({ webkitdirectory: "true" } as any)}
+          />
+          <p className="f-hint">Every file inside the folder is uploaded and listed separately.</p>
         </div>
         {files.length === 0 ? <p className="vault-empty">No files yet.</p> : null}
         {files.map((f) => (
@@ -190,6 +252,20 @@ export default function HandoverDetail({ id }: { id: string }) {
             <button className="soft-btn sm ghost" type="button" disabled={busy} onClick={() => removeFile(f)}>Remove</button>
           </div>
         ))}
+
+        {files.length > 0 ? (
+          <div className="vault-actions">
+            <button
+              className="soft-btn ghost sm"
+              type="button"
+              disabled={busy}
+              onClick={removeAllFiles}
+              style={{ color: "#a63d33" }}
+            >
+              Delete all files
+            </button>
+          </div>
+        ) : null}
       </div>
 
       <div className="app-card">

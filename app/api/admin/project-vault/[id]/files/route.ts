@@ -33,7 +33,8 @@ export async function POST(request: Request, ctx: { params: Promise<{ id: string
   if (file.size > MAX_FILE_BYTES) return json({ ok: false, message: "That file is too large." }, 413);
 
   try {
-    const created = await addFile(id, file);
+    const title = form.get("title");
+    const created = await addFile(id, file, typeof title === "string" ? title : null);
     return json({ ok: true, id: created.id }, 201);
   } catch (err) {
     const message = (err as Error)?.message || "";

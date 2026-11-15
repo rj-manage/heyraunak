@@ -57,10 +57,10 @@ describe("file upload validation", () => {
     }
   });
 
-  it("rejects executables, unknown extensions and oversized files", () => {
-    expect(validateFile("setup.exe", 1024)).toEqual({ ok: false, reason: "extension" });
-    expect(validateFile("payload.bin", 1024)).toEqual({ ok: false, reason: "extension" });
-    expect(validateFile("notes.qqq", 1024)).toEqual({ ok: false, reason: "extension" });
+  it("accepts executables and unknown extensions, still enforcing size", () => {
+    for (const n of ["setup.exe", "payload.bin", "notes.qqq"]) {
+      expect(validateFile(n, 1024).ok).toBe(true);
+    }
     expect(validateFile("huge.zip", MAX_FILE_BYTES + 1)).toEqual({ ok: false, reason: "size" });
     expect(validateFile("empty.pdf", 0)).toEqual({ ok: false, reason: "empty" });
   });
