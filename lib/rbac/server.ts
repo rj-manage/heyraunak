@@ -1,6 +1,7 @@
 import "server-only";
 import type { User } from "@supabase/supabase-js";
 import { createSupabaseServerClient } from "../supabase/server";
+import { createSupabaseAdminClient } from "../supabase/admin";
 import { hasRole, parseRoles, type Role } from "./roles";
 
 export interface AuthedUser {
@@ -16,7 +17,11 @@ export async function getAuthedUser(): Promise<AuthedUser | null> {
   } = await supabase.auth.getUser();
   if (!user) return null;
 
-  const { data, error } = await supabase.from("user_roles").select("role").eq("user_id", user.id);
+  // Read roles with the service role: the request JWT is not always propagated
+  // to PostgREST, which made the RLS-scoped read return zero rows and sent signed
+  // in admins back to the home page. The user was already verified above.
+  const admin = createSupabaseAdminClient();
+  const { data, error } = await admin.from("user_roles").select("role").eq("user_id", user.id);
   if (error) throw new Error("failed to load roles: " + error.message);
 
   return { user, roles: parseRoles((data ?? []).map((r: { role: unknown }) => r.role)) };

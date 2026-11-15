@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { defaultLandingFor, usableDestination } from "@/lib/auth/destination";
+import { createSupabaseAdminClient } from "@/lib/supabase/admin";
 
 export const dynamic = "force-dynamic";
 
@@ -34,7 +35,8 @@ export async function GET(request: Request) {
     } = await supabase.auth.getUser();
 
     if (user) {
-      const { data: roles } = await supabase.from("user_roles").select("role").eq("user_id", user.id);
+      const admin = createSupabaseAdminClient();
+      const { data: roles } = await admin.from("user_roles").select("role").eq("user_id", user.id);
       const list = (roles ?? []).map((r: { role: string }) => r.role);
       return finish(url, defaultLandingFor(list));
     }
