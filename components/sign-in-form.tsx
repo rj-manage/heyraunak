@@ -72,7 +72,8 @@ export default function SignInForm({ next }: { next: string }) {
       setState({ tone: "error", message: error.message });
       return;
     }
-    window.location.assign(next || "/portal");
+    // Staff land in the admin console; the server guard redirects anyone else.
+    window.location.assign(next || "/admin/project-vault");
   }
 
   if (!configured) {
