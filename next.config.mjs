@@ -11,8 +11,7 @@ const nextConfig = {
   poweredByHeader: false,
   // The public site's canonical URLs end in "/" (see sitemap.xml) and the live
   // static host served both "/services" and "/services/". Disable Next's
-  // trailing-slash redirect so the rewrites below can serve both shapes - and
-  // so API paths such as /api/enquiry are never redirected.
+  // trailing-slash redirect so the rewrites below can serve both shapes.
   skipTrailingSlashRedirect: true,
   async rewrites() {
     const legacyDirs = [

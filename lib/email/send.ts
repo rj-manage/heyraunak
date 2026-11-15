@@ -1,7 +1,6 @@
 // Shared transactional email sender (Resend).
 //
-// Extracted from lib/enquiry/io.ts so Project Vault and the enquiry form use one
-// implementation. Env-driven; never logs message bodies.
+// Used by Project Vault. Env-driven; never logs message bodies.
 
 const RESEND_URL = "https://api.resend.com/emails";
 
