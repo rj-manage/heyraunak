@@ -1,9 +1,8 @@
 import { NextResponse } from "next/server";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
+import { defaultLandingFor, usableDestination } from "@/lib/auth/destination";
 
 export const dynamic = "force-dynamic";
-
-const STAFF_ROLES = ["owner", "admin", "project_manager"];
 
 // OAuth / email-link callback.
 //
@@ -17,10 +16,9 @@ export async function GET(request: Request) {
 
   const nextParam = url.searchParams.get("next");
   const cookieNext = readCookie(request, "rj_next");
-  // Only honour destinations that actually exist in this phase. "/portal" is
-  // reserved for the customer portal and would 404 today.
-  const usable = (v: string | null): v is string => !!v && v.startsWith("/") && v !== "/portal";
-  const explicit = [nextParam, cookieNext].find(usable);
+  // Only honour destinations that actually exist in this phase ("/portal" is
+  // reserved for the customer portal and would 404 today).
+  const explicit = usableDestination(nextParam) ?? usableDestination(cookieNext);
 
   if (!code) return finish(url, "/sign-in?error=missing_code");
 
@@ -38,12 +36,9 @@ export async function GET(request: Request) {
     if (user) {
       const { data: roles } = await supabase.from("user_roles").select("role").eq("user_id", user.id);
       const list = (roles ?? []).map((r: { role: string }) => r.role);
-      if (list.some((role) => STAFF_ROLES.includes(role))) {
-        return finish(url, "/admin/project-vault");
-      }
+      return finish(url, defaultLandingFor(list));
     }
 
-    // Everyone else lands on the public Project Vault (portal is not live yet).
     return finish(url, "/project-vault");
   } catch {
     return finish(url, "/sign-in?error=exchange");
