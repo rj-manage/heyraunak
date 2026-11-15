@@ -122,8 +122,9 @@ export default function SignInForm({ next }: { next: string }) {
               inputMode="numeric"
               autoComplete="one-time-code"
               value={code}
-              onChange={(e) => setCode(e.target.value)}
-              placeholder="6-digit code"
+              onChange={(e) => setCode(e.target.value.replace(/\D/g, ""))}
+              placeholder="Code from your email"
+              maxLength={10}
             />
           </div>
         )}
