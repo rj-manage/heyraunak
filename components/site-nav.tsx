@@ -43,8 +43,8 @@ export default function SiteNav({ active }: { active?: string }) {
         ))}
       </div>
 
-      <a className="soft-btn cta" href="/gallery/">
-        Explore Designs
+      <a className="soft-btn cta" href="/services/">
+        Get Started
       </a>
 
       <button
