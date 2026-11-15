@@ -8,52 +8,43 @@ export const metadata = {
   robots: { index: true, follow: true }
 };
 
+// Layout mirrors the reference Project Vault page: no page header, straight into
+// the two-column card grid plus a full-width contact card. The site nav is
+// untouched.
 export default function ProjectVaultPage() {
   return (
     <>
       <SiteNav active="/project-vault" />
 
       <main>
-        <header className="page-head">
-          <div className="sec-head reveal" style={{ maxWidth: 700 }}>
-            <div className="kicker">Project Vault</div>
-            <h1>Project Vault</h1>
-            <p>
-              Your completed project, documents and deliverables - securely organised in one place.
-            </p>
-            <div className="soft-chip" style={{ marginTop: 20 }}>
-              <span className="dot" /> Two-step access · Private files
-            </div>
-          </div>
-        </header>
-
         <section className="vault-section">
           <div className="wrap">
+            <h1 className="sr-only">Project Vault</h1>
+
             <div className="vault-grid">
               <AccessForm />
 
               <aside className="vault-card">
                 <h2>How access works</h2>
-                <p>Two independent checks protect every handover.</p>
+                <p>One code unlocks your private handover.</p>
 
                 <div className="vault-meta" style={{ marginTop: 4 }}>
                   <div>
-                    <b>1. Access code</b>
+                    <b>Access code</b>
                     <span>Unique to your project</span>
                   </div>
                   <div>
-                    <b>2. Email check</b>
+                    <b>Email check</b>
                     <span>Sent to your registered inbox</span>
                   </div>
                 </div>
 
                 <ul className="bullets" style={{ marginTop: 22 }}>
                   <li>
-                    <span className="tic">✓</span> Files are private and only shared with your verified
-                    session.
+                    <span className="tic">✓</span> Files are private to your verified session.
                   </li>
                   <li>
-                    <span className="tic">✓</span> Downloads are signed links that expire after a minute.
+                    <span className="tic">✓</span> Download links are signed and short-lived.
                   </li>
                   <li>
                     <span className="tic">✓</span> We never confirm whether a code belongs to anyone.
@@ -64,10 +55,46 @@ export default function ProjectVaultPage() {
                 </ul>
 
                 <p className="vault-note">
-                  Access codes are sent to the registered client email only. If you have changed address,
-                  contact RJ Studio before your handover is due.
+                  Access codes are shared only with the client. If you have changed address, contact RJ
+                  Studio before your handover is due.
                 </p>
               </aside>
+
+              <article className="vault-card" style={{ gridColumn: "1 / -1" }}>
+                <h2>Ready to talk about your next project?</h2>
+                <p>Planning something new, or need a hand with this one? We&rsquo;re happy to help.</p>
+
+                <div className="vault-meta">
+                  <div>
+                    <b>theprofessionalrj@gmail.com</b>
+                    <span>Email</span>
+                  </div>
+                  <div>
+                    <b>+91 77008 87944</b>
+                    <span>Phone &amp; WhatsApp</span>
+                  </div>
+                  <div>
+                    <b>Bengaluru, India</b>
+                    <span>Studio</span>
+                  </div>
+                  <div>
+                    <b>Mon&ndash;Sat</b>
+                    <span>Working hours</span>
+                  </div>
+                </div>
+
+                <div className="vault-actions" style={{ marginTop: 20 }}>
+                  <a
+                    className="soft-btn"
+                    href="mailto:theprofessionalrj@gmail.com?subject=Project%20Vault%20enquiry"
+                  >
+                    Send an email
+                  </a>
+                  <a className="soft-btn ghost" href="tel:+917700887944">
+                    Call now
+                  </a>
+                </div>
+              </article>
             </div>
           </div>
         </section>
