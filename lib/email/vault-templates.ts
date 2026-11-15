@@ -24,6 +24,7 @@ function shell(heading: string, bodyHtml: string, footerNote?: string): string {
       ? `<p style="margin:22px 0 0;color:${MUTED};font-size:13px;line-height:1.6">${footerNote}</p>`
       : "") +
     `<p style="margin:20px 0 0;color:${MUTED};font-size:13px">Regards,<br />RJ Studio</p>` +
+    `<p style="margin:16px 0 0;padding-top:14px;border-top:1px solid rgba(60,80,110,.14);color:${MUTED};font-size:12px;line-height:1.6">RJ Studio · Bengaluru, India<br />This is a transactional message about your project. You can reply to it directly.</p>` +
     `</div></div>`
   );
 }
