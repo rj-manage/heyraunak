@@ -1144,6 +1144,235 @@ section {
 }
 
 /* ============================================================
+   SERVICE PICKER + SELECTION POPUP (service category sub-pages)
+   ============================================================ */
+.svc-picker {
+  margin-top: 34px;
+}
+.svc-picker-label {
+  display: block;
+  font-family: var(--font-display);
+  font-size: clamp(20px, 2.6vw, 27px);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin-bottom: 14px;
+}
+.svc-combo {
+  position: relative;
+  max-width: 560px;
+}
+.svc-combo-input {
+  width: 100%;
+  font: inherit;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--ink);
+  background: var(--canvas);
+  border: none;
+  border-radius: 999px;
+  padding: 16px 62px 16px 52px;
+  box-shadow: var(--sh-in-s);
+}
+.svc-combo-input::placeholder {
+  color: var(--muted);
+  font-weight: 500;
+}
+.svc-combo-ico {
+  position: absolute;
+  left: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 20px;
+  height: 20px;
+  color: var(--muted);
+  pointer-events: none;
+}
+.svc-combo-ico svg {
+  width: 20px;
+  height: 20px;
+}
+.svc-combo-toggle {
+  position: absolute;
+  right: 9px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  color: var(--ink);
+  background: var(--canvas);
+  box-shadow: var(--sh-s);
+  transition: transform 0.18s var(--ease);
+}
+.svc-combo.open .svc-combo-toggle {
+  transform: translateY(-50%) rotate(180deg);
+}
+.svc-combo-toggle svg {
+  width: 18px;
+  height: 18px;
+}
+.svc-combo-list {
+  position: absolute;
+  z-index: 45;
+  left: 0;
+  right: 0;
+  top: calc(100% + 10px);
+  margin: 0;
+  padding: 8px;
+  list-style: none;
+  max-height: 320px;
+  overflow-y: auto;
+  background: var(--canvas);
+  border-radius: 20px;
+  box-shadow: var(--sh-r);
+}
+.svc-combo-opt {
+  padding: 11px 14px;
+  border-radius: 12px;
+  cursor: pointer;
+  font-size: 14.5px;
+  font-weight: 600;
+  color: var(--ink);
+}
+.svc-combo-opt.is-active {
+  background: var(--canvas);
+  box-shadow: var(--sh-in-s);
+  color: var(--mint-ink);
+}
+.svc-combo-opt mark {
+  background: transparent;
+  color: var(--mint-ink);
+  font-weight: 800;
+}
+.svc-combo-empty {
+  padding: 12px 14px;
+  font-size: 14px;
+  color: var(--muted);
+}
+.svc-combo-empty a {
+  color: var(--mint-ink);
+  font-weight: 700;
+}
+
+/* "not mentioned" helper card */
+.svc-note {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  margin-top: 22px;
+  padding: 20px 22px;
+  border-radius: 20px;
+  background: var(--canvas);
+  box-shadow: var(--sh-s);
+  max-width: 720px;
+}
+.svc-note-ico {
+  flex: none;
+  width: 42px;
+  height: 42px;
+  border-radius: 14px;
+  display: grid;
+  place-items: center;
+  color: var(--mint-ink);
+  background: var(--canvas);
+  box-shadow: var(--sh-in-s);
+}
+.svc-note-ico svg {
+  width: 20px;
+  height: 20px;
+}
+.svc-note p {
+  font-size: 14.5px;
+  color: var(--muted);
+}
+.svc-note b {
+  color: var(--ink);
+}
+.svc-note a {
+  color: var(--mint-ink);
+  font-weight: 700;
+}
+
+/* the grid cards are now selectable */
+.svc-card {
+  cursor: pointer;
+  transition: transform 0.18s var(--ease), box-shadow 0.18s var(--ease);
+}
+.svc-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--sh-r);
+}
+
+/* selection popup (enquiry form to come) */
+.svc-locked {
+  overflow: hidden;
+}
+.svc-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+}
+.svc-modal[hidden] {
+  display: none;
+}
+.svc-modal-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(42, 52, 68, 0.42);
+}
+.svc-modal-card {
+  position: relative;
+  z-index: 1;
+  width: min(520px, 100%);
+  border-radius: 26px;
+  padding: 36px 32px 32px;
+  background: var(--canvas);
+  box-shadow: var(--sh-r);
+}
+.svc-modal-x {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  font-size: 22px;
+  line-height: 1;
+  color: var(--ink);
+  background: var(--canvas);
+  box-shadow: var(--sh-s);
+}
+.svc-modal-card h2 {
+  font-size: clamp(21px, 2.6vw, 27px);
+  margin-bottom: 12px;
+}
+.svc-modal-note {
+  color: var(--muted);
+  font-size: 15px;
+}
+.svc-modal-note a {
+  color: var(--mint-ink);
+  font-weight: 700;
+}
+.svc-modal-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 26px;
+}
+
+/* ============================================================
    FOOTER
    ============================================================ */
 footer {
