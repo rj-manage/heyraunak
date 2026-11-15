@@ -16,6 +16,10 @@ const nextConfig = {
   async rewrites() {
     const legacyDirs = [
       "services",
+      "services/website-development",
+      "services/software-app-development",
+      "services/digital-marketing",
+      "services/social-media-marketing",
       "works",
       "portfolio",
       "gallery",

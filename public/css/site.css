@@ -1097,6 +1097,53 @@ section {
 }
 
 /* ============================================================
+   SERVICE OPTIONS (service category sub-pages)
+   ============================================================ */
+.svc-grid {
+  list-style: none;
+  margin: 40px 0 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(248px, 1fr));
+  gap: 16px;
+}
+.svc-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 18px 20px;
+  border-radius: 18px;
+  background: var(--canvas);
+  box-shadow: var(--sh-s);
+}
+.svc-card .n {
+  flex: none;
+  width: 36px;
+  height: 36px;
+  border-radius: 12px;
+  display: grid;
+  place-items: center;
+  font-family: var(--font-display);
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  color: var(--mint-ink);
+  background: var(--canvas);
+  box-shadow: var(--sh-in-s);
+}
+.svc-card .t {
+  font-size: 14.5px;
+  font-weight: 600;
+  color: var(--ink);
+  line-height: 1.35;
+}
+@media (max-width: 560px) {
+  .svc-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ============================================================
    FOOTER
    ============================================================ */
 footer {
