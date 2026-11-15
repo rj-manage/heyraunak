@@ -239,7 +239,7 @@ export default function HandoverDetail({ id }: { id: string }) {
       {newCode ? (
         <div className="app-card">
           <p className="muted">New access code — shown once:</p>
-          <p className="vault-note" style={{ fontSize: 20, fontWeight: 700, letterSpacing: "0.1em", color: "var(--mint-ink)" }}>{newCode}</p>
+          <p className="code-pill">{newCode}</p>
         </div>
       ) : null}
 

@@ -64,9 +64,7 @@ export default function HandoverForm() {
       <div className="app-card">
         <h2 style={{ fontSize: 20, marginBottom: 8 }}>Handover created</h2>
         <p className="muted">Share this access code with the client. It is shown only once.</p>
-        <p className="vault-note" style={{ fontSize: 20, fontWeight: 700, letterSpacing: "0.1em", color: "var(--mint-ink)" }}>
-          {created.accessCode}
-        </p>
+        <p className="code-pill">{created.accessCode}</p>
         <p className="muted" style={{ marginTop: 8 }}>
           Only a hash is stored — regenerate the code if you lose it.
         </p>
