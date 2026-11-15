@@ -98,9 +98,13 @@ export async function POST(request: Request): Promise<Response> {
   }
 
   if (result.notify) {
-    notifyAdminEnquiry(result.notify).catch((err) => {
+    // Must be awaited: on serverless runtimes any promise left pending after the
+    // response is returned may never run, which silently dropped the email.
+    try {
+      await notifyAdminEnquiry(result.notify);
+    } catch (err) {
       console.error("enquiry: admin email failed -", (err as Error)?.message);
-    });
+    }
   }
 
   return json({ ok: true, ref: result.ref });

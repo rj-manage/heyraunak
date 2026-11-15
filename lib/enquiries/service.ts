@@ -152,11 +152,17 @@ async function saveAttachments(supabase: SupabaseAdmin, enquiryId: string, files
 /** Best-effort admin notification - a mail failure never fails the submission. */
 export async function notifyAdminEnquiry(summary: EnquirySummary): Promise<void> {
   const to = (process.env.ADMIN_NOTIFICATION_EMAIL || "").trim();
-  if (!to || !emailConfigured()) return;
-  await sendTransactional({
+  if (!to || !emailConfigured()) {
+    console.warn("enquiry: admin email skipped - not configured");
+    return;
+  }
+  const result = await sendTransactional({
     to: [to],
     subject: enquiryAdminSubject(summary),
     html: enquiryAdminHtml(summary),
     text: enquiryAdminText(summary)
   });
+  if (!result.ok) {
+    console.error("enquiry: admin email rejected by provider - status " + result.status);
+  }
 }
