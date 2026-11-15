@@ -219,6 +219,19 @@
     document.documentElement.classList.add("svc-locked");
     var x = modal.querySelector(".svc-modal-x");
     if (x) x.focus();
+
+    // hand off to the enquiry form when it is present; otherwise fall back to
+    // the plain "coming soon" note
+    var host = modal.querySelector("#svc-form-host");
+    var note = modal.querySelector("#svc-modal-note");
+    if (host && window.RJEnquiry && window.RJEnquiry.mount) {
+      if (note) note.hidden = true;
+      host.hidden = false;
+      window.RJEnquiry.mount(name);
+    } else {
+      if (host) host.hidden = true;
+      if (note) note.hidden = false;
+    }
   }
 
   function closeModal() {

@@ -4,6 +4,7 @@ import LogoutButton from "./logout-button";
 const LINKS = [
   { href: "/admin/project-vault", label: "Handovers" },
   { href: "/admin/project-vault/new", label: "New handover" },
+  { href: "/admin/enquiries", label: "Enquiries" },
   { href: "/project-vault", label: "Public vault" },
   { href: "/", label: "Website" }
 ];
