@@ -451,3 +451,135 @@
     width: 100%;
   }
 }
+
+/* ============================================================
+   Form primitives for the app pages.
+   These live inline on the services page; the React admin/vault pages need
+   them too, otherwise inputs fall back to unstyled browser defaults.
+   Values are identical to the ones used on the services page.
+   ============================================================ */
+.f-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0 20px;
+}
+.f-field {
+  margin-bottom: 18px;
+  min-width: 0;
+}
+.f-field.wide {
+  grid-column: 1 / -1;
+}
+.f-field > label,
+.f-lbl {
+  display: block;
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 8px;
+}
+.f-field .opt {
+  font-weight: 600;
+  color: var(--muted);
+}
+.f-hint {
+  font-size: 12.5px;
+  color: var(--muted);
+  margin: -2px 0 10px;
+}
+.f-hint-gap {
+  margin-top: 16px;
+}
+.f-input {
+  display: block;
+  width: 100%;
+  font: inherit;
+  font-size: 14.5px;
+  color: var(--ink);
+  background: var(--canvas);
+  border: 0;
+  border-radius: 16px;
+  box-shadow: var(--sh-in-s);
+  padding: 13px 16px;
+  transition: box-shadow 0.18s ease;
+}
+textarea.f-input {
+  resize: vertical;
+  min-height: 84px;
+  line-height: 1.5;
+}
+.f-input::placeholder {
+  color: var(--muted);
+  opacity: 1;
+}
+.f-input:focus-visible {
+  outline: 3px solid var(--mint-ink);
+  outline-offset: 2px;
+}
+.f-err {
+  margin-top: 7px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #a63d33;
+}
+
+/* native selects in the same soft-UI shell */
+select.f-input {
+  -webkit-appearance: none;
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%235b6675' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 16px center;
+  background-size: 15px;
+  padding-right: 44px;
+  cursor: pointer;
+}
+
+/* date fields keep the RJ surface; just harmonise the native affordance */
+input.f-input[type="date"] {
+  min-height: 47px;
+  color-scheme: light;
+  cursor: pointer;
+}
+input.f-input[type="date"]::-webkit-calendar-picker-indicator {
+  opacity: 0.55;
+  cursor: pointer;
+}
+
+/* file pickers: theme the browser's button instead of showing a raw control */
+input.f-input[type="file"] {
+  padding: 9px 12px;
+  font-size: 13px;
+  color: var(--muted);
+  cursor: pointer;
+}
+input.f-input[type="file"]::file-selector-button {
+  -webkit-appearance: none;
+  appearance: none;
+  margin-right: 12px;
+  border: 0;
+  cursor: pointer;
+  font: inherit;
+  font-size: 12.5px;
+  font-weight: 700;
+  color: #fff;
+  padding: 9px 16px;
+  border-radius: 999px;
+  background: linear-gradient(145deg, var(--mint-3), var(--mint-2));
+  box-shadow: var(--sh-s);
+  transition: filter 0.15s ease;
+}
+input.f-input[type="file"]::file-selector-button:hover {
+  filter: brightness(1.03);
+}
+
+/* search field used by the handover list */
+input.f-input[type="search"]::-webkit-search-cancel-button {
+  cursor: pointer;
+}
+
+@media (max-width: 700px) {
+  .f-grid {
+    grid-template-columns: 1fr;
+  }
+}
