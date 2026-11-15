@@ -20,6 +20,14 @@ interface Handover {
   handover_message: string | null; delivery_date: string | null; expires_at: string | null; status: string;
 }
 
+function formatEta(seconds: number): string {
+  if (!Number.isFinite(seconds) || seconds <= 0) return "";
+  const total = Math.round(seconds);
+  if (total < 60) return `${total}s`;
+  const mins = Math.floor(total / 60);
+  return `${mins}m ${total % 60}s`;
+}
+
 export default function HandoverDetail({ id }: { id: string }) {
   const router = useRouter();
   const [state, setState] = useState<"loading" | "ready" | "error">("loading");
@@ -32,7 +40,14 @@ export default function HandoverDetail({ id }: { id: string }) {
   const [busy, setBusy] = useState(false);
   const fileInput = useRef<HTMLInputElement | null>(null);
   const [uploadTitle, setUploadTitle] = useState("");
-  const [progress, setProgress] = useState<{ label: string; pct: number } | null>(null);
+  const [progress, setProgress] = useState<{
+    label: string;
+    pct: number;
+    eta?: number;
+    cancellable?: boolean;
+  } | null>(null);
+  const xhrRef = useRef<XMLHttpRequest | null>(null);
+  const cancelledRef = useRef(false);
 
   const load = useCallback(async () => {
     const res = await fetch(`/api/admin/project-vault/${id}`, { cache: "no-store" });
@@ -86,41 +101,87 @@ export default function HandoverDetail({ id }: { id: string }) {
     if (data) setNewCode(data.accessCode);
   }
 
+  function cancelUpload() {
+    cancelledRef.current = true;
+    xhrRef.current?.abort();
+  }
+
   async function upload(e: React.ChangeEvent<HTMLInputElement>) {
     const files = Array.from(e.target.files || []);
     if (!files.length) return;
-    setBusy(true); setTone("idle"); setMessage("");
+
+    const totalBytes = files.reduce((sum, f) => sum + f.size, 0);
+    const title = files.length === 1 ? uploadTitle.trim() : "";
+    const startedAt = performance.now();
+    let sentBytes = 0;
     let uploaded = 0;
-    for (let i = 0; i < files.length; i++) {
-      const file = files[i];
-      setProgress({
-        label: `Uploading ${i + 1} of ${files.length}`,
-        pct: Math.round((i / files.length) * 100)
-      });
+    let cancelled = false;
+
+    cancelledRef.current = false;
+    setBusy(true);
+    setTone("idle");
+    setMessage("");
+    setProgress({ label: files[0].name, pct: 0, eta: 0, cancellable: true });
+
+    for (const file of files) {
+      if (cancelledRef.current) { cancelled = true; break; }
+
       const fd = new FormData();
       fd.append("file", file);
-      if (files.length === 1 && uploadTitle.trim()) fd.append("title", uploadTitle.trim());
-      try {
-        const res = await fetch(`/api/admin/project-vault/${id}/files`, { method: "POST", body: fd });
-        if (res.ok) uploaded++;
-      } catch {
-        /* continue with the rest */
-      }
+      if (title) fd.append("title", title);
+
+      const result = await sendWithBody(fd, file, sentBytes, totalBytes, startedAt);
+      if (result === "cancelled") { cancelled = true; break; }
+      if (result === "ok") uploaded++;
+      sentBytes += file.size;
     }
+
+    xhrRef.current = null;
     if (fileInput.current) fileInput.current.value = "";
     e.target.value = "";
     setUploadTitle("");
     setBusy(false);
-    setProgress({ label: "Finishing…", pct: 100 });
-    setTone(uploaded === files.length ? "ok" : "error");
-    setMessage(`${uploaded} of ${files.length} file(s) uploaded.`);
+
+    if (cancelled) {
+      setProgress(null);
+      setTone("error");
+      setMessage(`Upload cancelled. ${uploaded} file(s) were uploaded before cancelling.`);
+    } else {
+      setProgress({ label: "Finishing…", pct: 100, eta: 0 });
+      setTone(uploaded === files.length ? "ok" : "error");
+      setMessage(`${uploaded} of ${files.length} file(s) uploaded.`);
+      setTimeout(() => setProgress(null), 800);
+    }
     await load();
-    setTimeout(() => setProgress(null), 700);
+  }
+
+  function sendWithBody(fd: FormData, file: File, baseBytes: number, totalBytes: number, startedAt: number): Promise<"ok" | "error" | "cancelled"> {
+    return new Promise((resolve) => {
+      const xhr = new XMLHttpRequest();
+      xhrRef.current = xhr;
+      xhr.open("POST", `/api/admin/project-vault/${id}/files`);
+
+      xhr.upload.onprogress = (ev) => {
+        if (!ev.lengthComputable) return;
+        const sent = baseBytes + ev.loaded;
+        const pct = Math.min(100, Math.round((sent / Math.max(1, totalBytes)) * 100));
+        const elapsed = Math.max(0.15, (performance.now() - startedAt) / 1000);
+        const speed = sent / elapsed;
+        const eta = speed > 0 ? (totalBytes - sent) / speed : 0;
+        setProgress({ label: file.name, pct, eta, cancellable: true });
+      };
+
+      xhr.onload = () => resolve(xhr.status >= 200 && xhr.status < 300 ? "ok" : "error");
+      xhr.onerror = () => resolve("error");
+      xhr.onabort = () => resolve("cancelled");
+      xhr.send(fd);
+    });
   }
 
   async function toggleVisibility(f: FileRow) {
     const ok = await act(`/api/admin/project-vault/${id}/files/${f.id}`, {
-      method: "PATCH", headers: { "Content-Type": "application/json" },
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ isVisible: !f.is_visible, isDownloadable: !f.is_visible })
     }, "File updated.");
     if (ok) await load();
@@ -236,7 +297,20 @@ export default function HandoverDetail({ id }: { id: string }) {
             </div>
             <p className="vault-progress">
               {progress.label} — {progress.pct}%
+              {formatEta(progress.eta || 0) ? ` · ${formatEta(progress.eta || 0)} left` : ""}
             </p>
+            {progress.cancellable ? (
+              <div className="vault-actions" style={{ marginTop: 6 }}>
+                <button
+                  className="soft-btn ghost sm"
+                  type="button"
+                  onClick={cancelUpload}
+                  style={{ color: "#a63d33" }}
+                >
+                  Cancel upload
+                </button>
+              </div>
+            ) : null}
           </>
         ) : null}
         <div className="f-field">
