@@ -43,8 +43,14 @@ export async function proxy(request: NextRequest) {
   }
 
   if (user && path === "/sign-in") {
+    // Already signed in: honour an explicit destination, else go to the admin
+    // console. "/portal" is reserved but not live yet, so never send anyone there.
+    const wanted = request.nextUrl.searchParams.get("next");
     const redirect = request.nextUrl.clone();
-    redirect.pathname = "/portal";
+    redirect.pathname =
+      wanted && wanted.startsWith("/") && !wanted.startsWith("//") && wanted !== "/portal"
+        ? wanted
+        : "/admin/project-vault";
     redirect.search = "";
     return NextResponse.redirect(redirect);
   }
