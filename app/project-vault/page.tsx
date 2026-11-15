@@ -60,41 +60,6 @@ export default function ProjectVaultPage() {
                 </p>
               </aside>
 
-              <article className="vault-card" style={{ gridColumn: "1 / -1" }}>
-                <h2>Ready to talk about your next project?</h2>
-                <p>Planning something new, or need a hand with this one? We&rsquo;re happy to help.</p>
-
-                <div className="vault-meta">
-                  <div>
-                    <b>theprofessionalrj@gmail.com</b>
-                    <span>Email</span>
-                  </div>
-                  <div>
-                    <b>+91 77008 87944</b>
-                    <span>Phone &amp; WhatsApp</span>
-                  </div>
-                  <div>
-                    <b>Bengaluru, India</b>
-                    <span>Studio</span>
-                  </div>
-                  <div>
-                    <b>Mon&ndash;Sat</b>
-                    <span>Working hours</span>
-                  </div>
-                </div>
-
-                <div className="vault-actions" style={{ marginTop: 20 }}>
-                  <a
-                    className="soft-btn"
-                    href="mailto:theprofessionalrj@gmail.com?subject=Project%20Vault%20enquiry"
-                  >
-                    Send an email
-                  </a>
-                  <a className="soft-btn ghost" href="tel:+917700887944">
-                    Call now
-                  </a>
-                </div>
-              </article>
             </div>
           </div>
         </section>

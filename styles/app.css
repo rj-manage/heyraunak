@@ -196,7 +196,8 @@
   display: grid;
   grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
   gap: 22px;
-  align-items: start;
+  /* stretch so both cards share the row height */
+  align-items: stretch;
 }
 
 .vault-card {

@@ -214,6 +214,15 @@ export default function AccessForm() {
         </>
       )}
 
+      <div style={{ marginTop: 18 }}>
+        <div className="soft-chip" style={{ marginBottom: 10 }}>
+          <span className="dot" /> Welcome to RJ Studio
+        </div>
+        <p className="vault-note" style={{ fontSize: 14 }}>
+          Your handover is ready and waiting for you &mdash; enter your code to open it.
+        </p>
+      </div>
+
       {message ? (
         <p className="vault-note" data-tone={tone} role="status" aria-live="polite">
           {message}
