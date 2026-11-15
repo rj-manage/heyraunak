@@ -583,3 +583,20 @@ input.f-input[type="search"]::-webkit-search-cancel-button {
     grid-template-columns: 1fr;
   }
 }
+
+/* progress feedback for admin file uploads / deletes */
+.vault-progressbar {
+  height: 10px;
+  border-radius: 999px;
+  background: var(--dark);
+  box-shadow: var(--sh-in-s);
+  overflow: hidden;
+  margin: 4px 0 8px;
+}
+.vault-progressbar > span {
+  display: block;
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(145deg, var(--mint-3), var(--mint-2));
+  transition: width 0.2s var(--ease);
+}

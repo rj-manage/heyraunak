@@ -32,6 +32,7 @@ export default function HandoverDetail({ id }: { id: string }) {
   const [busy, setBusy] = useState(false);
   const fileInput = useRef<HTMLInputElement | null>(null);
   const [uploadTitle, setUploadTitle] = useState("");
+  const [progress, setProgress] = useState<{ label: string; pct: number } | null>(null);
 
   const load = useCallback(async () => {
     const res = await fetch(`/api/admin/project-vault/${id}`, { cache: "no-store" });
@@ -90,7 +91,12 @@ export default function HandoverDetail({ id }: { id: string }) {
     if (!files.length) return;
     setBusy(true); setTone("idle"); setMessage("");
     let uploaded = 0;
-    for (const file of files) {
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
+      setProgress({
+        label: `Uploading ${i + 1} of ${files.length}`,
+        pct: Math.round((i / files.length) * 100)
+      });
       const fd = new FormData();
       fd.append("file", file);
       if (files.length === 1 && uploadTitle.trim()) fd.append("title", uploadTitle.trim());
@@ -105,9 +111,11 @@ export default function HandoverDetail({ id }: { id: string }) {
     e.target.value = "";
     setUploadTitle("");
     setBusy(false);
+    setProgress({ label: "Finishing…", pct: 100 });
     setTone(uploaded === files.length ? "ok" : "error");
     setMessage(`${uploaded} of ${files.length} file(s) uploaded.`);
     await load();
+    setTimeout(() => setProgress(null), 700);
   }
 
   async function toggleVisibility(f: FileRow) {
@@ -129,7 +137,9 @@ export default function HandoverDetail({ id }: { id: string }) {
     if (!confirm(`Delete all ${files.length} file(s) from this handover? This cannot be undone.`)) return;
     setBusy(true); setTone("idle"); setMessage("");
     let removed = 0;
-    for (const f of files) {
+    for (let i = 0; i < files.length; i++) {
+      const f = files[i];
+      setProgress({ label: `Deleting ${i + 1} of ${files.length}`, pct: Math.round((i / files.length) * 100) });
       try {
         const res = await fetch(`/api/admin/project-vault/${id}/files/${f.id}`, { method: "DELETE" });
         if (res.ok) removed++;
@@ -138,14 +148,18 @@ export default function HandoverDetail({ id }: { id: string }) {
       }
     }
     setBusy(false);
+    setProgress({ label: "Finishing…", pct: 100 });
     setTone(removed === files.length ? "ok" : "error");
     setMessage(`${removed} of ${files.length} file(s) deleted.`);
     await load();
+    setTimeout(() => setProgress(null), 700);
   }
 
   async function removeFile(f: FileRow) {
     if (!confirm(`Remove “${f.display_name || f.original_filename}” from this handover?`)) return;
-    const ok = await act(`/api/admin/project-vault/${id}/files/${f.id}`, { method: "DELETE" }, "File removed.");
+    setProgress({ label: "Deleting file…", pct: 60 });
+    const ok = await act(`/api/admin/project-vault/${id}/files/${f.id}`, { method: "DELETE" }, "File deleted.");
+    setProgress(null);
     if (ok) await load();
   }
 
@@ -207,6 +221,24 @@ export default function HandoverDetail({ id }: { id: string }) {
 
       <div className="app-card">
         <h2 style={{ fontSize: 18, marginBottom: 14 }}>Files</h2>
+
+        {progress ? (
+          <>
+            <div
+              className="vault-progressbar"
+              role="progressbar"
+              aria-valuenow={progress.pct}
+              aria-valuemin={0}
+              aria-valuemax={100}
+              aria-label={progress.label}
+            >
+              <span style={{ width: `${progress.pct}%` }} />
+            </div>
+            <p className="vault-progress">
+              {progress.label} — {progress.pct}%
+            </p>
+          </>
+        ) : null}
         <div className="f-field">
           <label htmlFor="vault-title">
             Title <span className="opt">(optional — applied to single uploads)</span>
