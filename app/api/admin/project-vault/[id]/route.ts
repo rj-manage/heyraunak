@@ -1,7 +1,7 @@
 import { json, sameOrigin } from "@/lib/vault/http";
 import { vaultAdminUser } from "@/lib/rbac/guard";
 import { fieldErrors, updateHandoverSchema } from "@/lib/vault/validation";
-import { getHandoverDetail, updateHandover } from "@/lib/vault/admin-service";
+import { deleteHandover, getHandoverDetail, updateHandover } from "@/lib/vault/admin-service";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -40,5 +40,22 @@ export async function PATCH(request: Request, ctx: { params: Promise<{ id: strin
     return json({ ok: true });
   } catch {
     return json({ ok: false, message: "Could not update the handover." }, 500);
+  }
+}
+
+export async function DELETE(request: Request, ctx: { params: Promise<{ id: string }> }): Promise<Response> {
+  if (!sameOrigin(request)) return json({ ok: false }, 403);
+  const guard = await vaultAdminUser();
+  if (!guard.ok) return guard.response;
+
+  const allowed = guard.authed.roles.some((r) => r === "owner" || r === "admin");
+  if (!allowed) return json({ ok: false, message: "Only an owner or admin can delete a handover." }, 403);
+
+  const { id } = await ctx.params;
+  try {
+    const result = await deleteHandover(id);
+    return json({ ok: true, filesRemoved: result.filesRemoved });
+  } catch {
+    return json({ ok: false, message: "Could not delete the handover." }, 500);
   }
 }

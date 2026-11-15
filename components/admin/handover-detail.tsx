@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import { useRouter } from "next/navigation";
 import { humanFileSize } from "@/lib/vault/storage";
 
 const STATUS_LABEL: Record<string, string> = {
@@ -20,6 +21,7 @@ interface Handover {
 }
 
 export default function HandoverDetail({ id }: { id: string }) {
+  const router = useRouter();
   const [state, setState] = useState<"loading" | "ready" | "error">("loading");
   const [h, setH] = useState<Handover | null>(null);
   const [files, setFiles] = useState<FileRow[]>([]);
@@ -98,6 +100,12 @@ export default function HandoverDetail({ id }: { id: string }) {
       body: JSON.stringify({ isVisible: !f.is_visible, isDownloadable: !f.is_visible })
     }, "File updated.");
     if (ok) await load();
+  }
+
+  async function removeHandover() {
+    if (!confirm("Delete this handover permanently? Its files are removed and the client loses access.")) return;
+    const ok = await act(`/api/admin/project-vault/${id}`, { method: "DELETE" }, "Handover deleted.");
+    if (ok) router.replace("/admin/project-vault");
   }
 
   async function removeFile(f: FileRow) {
@@ -182,6 +190,18 @@ export default function HandoverDetail({ id }: { id: string }) {
             <button className="soft-btn sm ghost" type="button" disabled={busy} onClick={() => removeFile(f)}>Remove</button>
           </div>
         ))}
+      </div>
+
+      <div className="app-card">
+        <h2 style={{ fontSize: 18, marginBottom: 14 }}>Danger zone</h2>
+        <p className="muted" style={{ fontSize: 13.5 }}>
+          Permanently delete this handover, its files and its activity. This cannot be undone.
+        </p>
+        <div className="vault-actions" style={{ marginTop: 14 }}>
+          <button className="soft-btn ghost sm" type="button" disabled={busy} onClick={removeHandover} style={{ color: "#a63d33" }}>
+            Delete handover
+          </button>
+        </div>
       </div>
 
       <div className="app-card">

@@ -235,3 +235,20 @@ export async function listActivity(handoverId: string) {
     .limit(100);
   return data ?? [];
 }
+
+/** Permanently removes a handover: storage objects first, then the row (cascade). */
+export async function deleteHandover(id: string) {
+  const db = createSupabaseAdminClient();
+  const { data: files } = await db
+    .from("project_handover_files")
+    .select("storage_path")
+    .eq("handover_id", id);
+  const paths = (files ?? [])
+    .map((f: { storage_path: string }) => f.storage_path)
+    .filter(Boolean);
+  if (paths.length) await db.storage.from(VAULT_BUCKET).remove(paths);
+
+  const { error } = await db.from("project_handovers").delete().eq("id", id);
+  if (error) throw new Error("could not delete handover");
+  return { filesRemoved: paths.length };
+}
