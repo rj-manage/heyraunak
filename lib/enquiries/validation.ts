@@ -88,7 +88,8 @@ function fieldSchema(f: EnquiryField): z.ZodTypeAny {
     }
     case "select":
     case "radio":
-    case "budget": {
+    case "budget":
+    case "slider": {
       const options = f.options ?? [];
       if (options.length) {
         const allowed = f.allowOther ? [...options, "Other"] : options;

@@ -17,6 +17,7 @@
   var PHONE_RE = /^\+?[0-9][0-9 ()-]{6,19}$/;
   var EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   var URL_RE = /^https?:\/\/[^\s]+$/i;
+  var NOT_SURE = "Not sure yet";
   var SCHEMA_CACHE = {};
 
   var COUNTRY_CODES = [
@@ -56,6 +57,10 @@
     return f.type === "textarea" || f.type === "multi" || f.type === "file";
   }
 
+  function tiersOf(f) {
+    return (f.options || []).filter(function (o) { return o !== NOT_SURE; });
+  }
+
   /* ---------- field rendering ---------- */
 
   function controlHTML(f) {
@@ -74,6 +79,26 @@
           opts += '<option value="' + esc(o) + '">' + esc(o) + "</option>";
         });
         return '<select class="enq-input" id="' + id + '"' + req + ">" + opts + "</select>";
+      }
+
+      case "slider": {
+        var tiers = tiersOf(f);
+        var max = Math.max(0, tiers.length - 1);
+        var ends =
+          '<div class="enq-slider-ends"><span>' + esc(tiers[0] || "") + "</span><span>" +
+          esc(tiers[tiers.length - 1] || "") + "</span></div>";
+        var notSure = (f.options || []).indexOf(NOT_SURE) !== -1
+          ? '<label class="enq-ns"><input type="checkbox" class="enq-notsure" /> <span>' + esc(NOT_SURE) + "</span></label>"
+          : "";
+        return (
+          '<div class="enq-slider">' +
+          '<input class="enq-range" id="' + id + '" type="range" min="0" max="' + max + '" step="1" value="0" aria-label="' +
+          esc(f.label) + '" />' +
+          ends +
+          '<output class="enq-slider-out">Drag to choose</output>' +
+          notSure +
+          "</div>"
+        );
       }
 
       case "radio": {
@@ -162,6 +187,47 @@
     });
   }
 
+  /* ---------- budget slider ---------- */
+
+  function syncSlider(row, f) {
+    var range = row.querySelector(".enq-range");
+    var out = row.querySelector(".enq-slider-out");
+    if (!range || !out) return;
+    var box = row.querySelector(".enq-notsure");
+    if (box && box.checked) {
+      range.disabled = true;
+      out.textContent = NOT_SURE;
+      return;
+    }
+    range.disabled = false;
+    var tiers = tiersOf(f);
+    var idx = parseInt(range.value, 10);
+    out.textContent = row.getAttribute("data-touched") ? tiers[idx] || "" : "Drag to choose";
+  }
+
+  function syncSliders() {
+    current.fields.forEach(function (f) {
+      if (f.type !== "slider") return;
+      var row = rowEl(f.id);
+      if (row) syncSlider(row, f);
+    });
+  }
+
+  function onSliderChange(ev) {
+    var t = ev.target;
+    if (!t || !t.closest) return;
+    var row = t.closest(".enq-row");
+    if (!row || !row.querySelector(".enq-range")) return;
+    if (t.classList.contains("enq-range")) {
+      row.setAttribute("data-touched", "1");
+      var box = row.querySelector(".enq-notsure");
+      if (box) box.checked = false;
+    }
+    var id = row.getAttribute("data-row");
+    var field = current.fields.filter(function (f) { return f.id === id; })[0];
+    if (field) syncSlider(row, field);
+  }
+
   /* ---------- reading, validating, submitting ---------- */
 
   function readField(f) {
@@ -180,6 +246,15 @@
       var num = row.querySelector('input[type="tel"]');
       var n = num ? num.value.trim() : "";
       return n ? ((cc ? cc.value : "") + " " + n).trim() : "";
+    }
+    if (f.type === "slider") {
+      var nsBox = row.querySelector(".enq-notsure");
+      if (nsBox && nsBox.checked) return NOT_SURE;
+      var range = row.querySelector(".enq-range");
+      var tiers = tiersOf(f);
+      var idx = range ? parseInt(range.value, 10) : 0;
+      if (!Number.isFinite(idx) || idx < 0 || idx >= tiers.length) idx = 0;
+      return tiers[idx] || "";
     }
     if (f.type === "file") return undefined;
     var ctrl = row.querySelector(".enq-input");
@@ -230,6 +305,18 @@
       var v = readField(f);
       var str = v == null ? "" : String(v).trim();
 
+      // a slider always carries a value, so require an actual choice
+      if (f.type === "slider" && f.required) {
+        var nsBox = row.querySelector(".enq-notsure");
+        var chosen = (nsBox && nsBox.checked) || row.getAttribute("data-touched");
+        if (!chosen) {
+          setError(f.id, "Please choose an estimated budget.");
+          ok = false;
+          if (!firstBad) firstBad = row;
+          return;
+        }
+      }
+
       if (f.required && (str === "" || (Array.isArray(v) && !v.length))) {
         setError(f.id, "This field is required.");
         ok = false;
@@ -264,7 +351,7 @@
 
     if (firstBad) {
       firstBad.scrollIntoView({ block: "center" });
-      var input = firstBad.querySelector(".enq-input");
+      var input = firstBad.querySelector(".enq-input, .enq-range");
       if (input) input.focus();
     }
     return ok;
@@ -370,7 +457,10 @@
     form.addEventListener("submit", submit);
     form.addEventListener("input", applyConditionals);
     form.addEventListener("change", applyConditionals);
+    form.addEventListener("input", onSliderChange);
+    form.addEventListener("change", onSliderChange);
     applyConditionals();
+    syncSliders();
 
     var first = host.querySelector(".enq-input");
     if (first && first.focus) first.focus();

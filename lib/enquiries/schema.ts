@@ -22,6 +22,7 @@ export type FieldType =
   | "radio"
   | "date"
   | "budget"
+  | "slider"
   | "file";
 
 export interface EnquiryField {
@@ -154,6 +155,11 @@ function num(id: string, label: string, opt: Partial<EnquiryField> = {}): Enquir
 function sel(id: string, label: string, options: string[], opt: Partial<EnquiryField> = {}): EnquiryField {
   return { id, label, type: "select", options, ...opt };
 }
+/** Slider over ordered options. Every option except the trailing "Not sure yet"
+ *  becomes a stop on the bar; the client renders that last one as a toggle. */
+function sld(id: string, label: string, options: string[], opt: Partial<EnquiryField> = {}): EnquiryField {
+  return { id, label, type: "slider", options, ...opt };
+}
 function multi(id: string, label: string, options: string[], opt: Partial<EnquiryField> = {}): EnquiryField {
   return { id, label, type: "multi", options, ...opt };
 }
@@ -167,7 +173,7 @@ function yn(id: string, label: string, opt: Partial<EnquiryField> = {}): Enquiry
 /** Budget / timeline / reference / attachments block every form ends with. */
 function tail(budgetOptions: string[]): EnquiryField[] {
   return [
-    sel("budget", "Estimated Budget", budgetOptions, { required: true }),
+    sld("budget", "Estimated Budget", budgetOptions, { required: true }),
     sel("timeline", "Expected Timeline", TIMELINE, { help: "Optional" }),
     { id: "start_date", label: "Preferred Start Date", type: "date", help: "Optional" },
     url("reference_link", "Reference Link", {

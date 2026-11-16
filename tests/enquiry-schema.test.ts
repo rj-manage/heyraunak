@@ -20,10 +20,11 @@ const VALID_TYPES = new Set([
   "radio",
   "date",
   "budget",
+  "slider",
   "file"
 ]);
 
-const OPTION_TYPES = new Set(["select", "multi", "radio", "budget"]);
+const OPTION_TYPES = new Set(["select", "multi", "radio", "budget", "slider"]);
 
 describe("enquiry schema", () => {
   it("defines exactly 60 services across the three categories", () => {
@@ -66,11 +67,13 @@ describe("enquiry schema", () => {
     expect(byId.company?.required).toBeFalsy();
   });
 
-  it("makes the budget field mandatory on every service", () => {
+  it("renders the estimated budget as a mandatory slider on every service", () => {
     for (const form of ALL_FORMS) {
       const budget = form.fields.find((f) => f.id === "budget");
       expect(budget, form.service).toBeTruthy();
       expect(budget?.required, form.service).toBe(true);
+      expect(budget?.type, form.service).toBe("slider");
+      expect((budget?.options || []).length, form.service).toBeGreaterThan(1);
     }
   });
 

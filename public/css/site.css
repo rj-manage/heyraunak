@@ -1481,6 +1481,50 @@ textarea.enq-input {
   padding: 12px 14px;
   box-shadow: var(--sh-in-s);
 }
+.enq-slider {
+  display: grid;
+  gap: 8px;
+  background: var(--canvas);
+  border-radius: 14px;
+  padding: 14px 16px 12px;
+  box-shadow: var(--sh-in-s);
+}
+.enq-row.invalid .enq-slider {
+  box-shadow: inset 0 0 0 2px var(--coral-2);
+}
+.enq-range {
+  width: 100%;
+  height: 22px;
+  margin: 0;
+  accent-color: var(--mint-2);
+}
+.enq-range:disabled {
+  opacity: 0.4;
+}
+.enq-slider-ends {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 11.5px;
+  color: var(--muted);
+}
+.enq-slider-out {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--mint-ink);
+}
+.enq-ns {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--muted);
+  cursor: pointer;
+}
+.enq-ns input {
+  accent-color: var(--mint-2);
+}
 .enq-hp {
   position: absolute;
   left: -9999px;
