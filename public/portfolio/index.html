@@ -14,20 +14,10 @@
     --ink:#111827;
     --ink-70:#3f4756;
     --muted:#575f6d;
-    /* site soft-UI palette - mirrors public/css/site.css */
-    --canvas:#e3e9f0;
-    --light:#f7fafe;
-    --dark:#c3cdda;
-    --mint-ink:#156a47;
-    --mint-2:#2bb87e;
-    --mint-3:#4ed7a0;
-    --sh-r:10px 10px 22px var(--dark), -10px -10px 22px var(--light);
-    --sh-s:5px 5px 9px var(--dark), -5px -5px 9px var(--light);
-    --sh-btn:7px 7px 16px var(--dark), -7px -7px 16px var(--light);
-    --accent:#156a47;
-    --accent-2:#2bb87e;
-    --card:#e3e9f0;
-    --line:rgba(60,80,110,.14);
+    --accent:#4338ca;
+    --accent-2:#0e7490;
+    --card:rgba(255,255,255,.82);
+    --line:rgba(17,24,39,.12);
     --stage-w:min(56.25vh, 100vw);   /* frame is 540x960 => width = height*0.5625 */
     --ease:cubic-bezier(.22,.9,.24,1);
   }
@@ -185,10 +175,14 @@
 
   .card{
     background:var(--card);
-    border:none;
-    border-radius:26px;
+    border:1px solid var(--line);
+    border-radius:22px;
     padding:clamp(24px,2.4vw,38px);
-    box-shadow:var(--sh-r);
+    box-shadow:0 24px 50px -30px rgba(17,24,39,.35);
+    /* The walker repaints behind these cards on every scroll step, so a
+       backdrop-filter here had to re-blur its whole backdrop each frame -
+       the single biggest source of desktop scroll jank. The frosted look is
+       kept with a slightly more opaque translucent fill instead. */
     max-width:min(500px,calc(100% - 6vw));
   }
   .kicker{
@@ -214,27 +208,27 @@
   .chips{ display:flex; flex-wrap:wrap; gap:8px; margin:18px 0 4px; }
   .chip{
     display:inline-flex; align-items:center; gap:7px;
-    background:var(--canvas); border:none; border-radius:999px; box-shadow:var(--sh-s);
-    padding:7px 13px; font-size:.8rem; font-weight:600; color:var(--muted); white-space:nowrap;
+    background:rgba(255,255,255,.8); border:1px solid var(--line); border-radius:999px;
+    padding:7px 13px; font-size:.8rem; font-weight:500; color:var(--ink-70); white-space:nowrap;
   }
   .chip svg{ width:14px; height:14px; color:var(--accent); flex:none; }
   .chip a{ color:var(--ink-70); }
   .chip a:hover{ color:var(--accent); text-decoration:none; }
   .cta-row{ display:flex; flex-wrap:wrap; gap:12px; margin-top:26px; }
   .btn{
-    display:inline-flex; align-items:center; gap:9px; padding:12px 22px; border-radius:999px;
-    font-weight:700; font-size:.9rem; transition:transform .25s var(--ease), box-shadow .25s var(--ease);
+    display:inline-flex; align-items:center; gap:9px; padding:12px 20px; border-radius:12px;
+    font-weight:600; font-size:.9rem; transition:transform .25s var(--ease), box-shadow .25s var(--ease);
   }
   .btn svg{ width:16px; height:16px; }
-  .btn.primary{ background:linear-gradient(145deg,var(--mint-3),var(--mint-2)); color:#fff; box-shadow:var(--sh-btn); }
-  .btn.primary:hover{ transform:translateY(-2px); filter:brightness(1.03); box-shadow:9px 9px 20px var(--dark), -9px -9px 20px var(--light); text-decoration:none; }
-  .btn.ghost{ background:var(--canvas); color:var(--ink); box-shadow:var(--sh-s); }
-  .btn.ghost:hover{ transform:translateY(-2px); color:var(--mint-ink); text-decoration:none; }
+  .btn.primary{ background:var(--ink); color:#fff; }
+  .btn.primary:hover{ transform:translateY(-2px); box-shadow:0 14px 26px -14px rgba(17,24,39,.6); text-decoration:none; }
+  .btn.ghost{ border:1px solid var(--line); background:rgba(255,255,255,.7); color:var(--ink); }
+  .btn.ghost:hover{ transform:translateY(-2px); border-color:var(--accent); color:var(--accent); text-decoration:none; }
 
   /* status card (hero right) */
   .status-pill{
     display:inline-flex; align-items:center; gap:9px; border-radius:999px; padding:8px 15px;
-    background:var(--canvas); border:none; box-shadow:var(--sh-s); color:var(--mint-ink); font-weight:700; font-size:.8rem;
+    background:rgba(255,255,255,.85); border:1px solid var(--line); font-weight:600; font-size:.8rem;
   }
   .status-pill .pulse{ width:9px; height:9px; border-radius:50%; background:#059669; box-shadow:0 0 0 0 rgba(5,150,105,.6); animation:pulse 1.8s infinite; }
   @keyframes pulse{ 0%{ box-shadow:0 0 0 0 rgba(5,150,105,.55);} 70%{ box-shadow:0 0 0 9px rgba(5,150,105,0);} 100%{ box-shadow:0 0 0 0 rgba(5,150,105,0);} }
@@ -264,16 +258,16 @@
   .project .when{ font-size:.76rem; font-weight:600; color:var(--muted); letter-spacing:.05em; }
   .project p{ color:var(--ink-70); font-size:.9rem; line-height:1.6; margin-top:5px; }
   .project .tags{ display:flex; flex-wrap:wrap; gap:6px; margin-top:9px; }
-  .project .tags span{ font-size:.72rem; font-weight:700; color:var(--mint-ink);
-    background:var(--canvas); box-shadow:var(--sh-s); padding:3px 10px; border-radius:999px; }
+  .project .tags span{ font-size:.72rem; font-weight:600; color:var(--accent);
+    background:rgba(255,255,255,.75); border:1px solid var(--line); padding:3px 10px; border-radius:999px; }
 
   /* skills */
   .skill-group{ margin-bottom:16px; }
   .skill-group:last-child{ margin-bottom:0; }
   .skill-group .gname{ font-size:.72rem; font-weight:700; letter-spacing:.16em; text-transform:uppercase; color:var(--muted); margin-bottom:9px; }
   .skill-group .tags{ display:flex; flex-wrap:wrap; gap:7px; }
-  .skill-group .tags span{ font-size:.82rem; font-weight:600; color:var(--muted);
-    background:var(--canvas); box-shadow:var(--sh-s); padding:6px 13px; border-radius:999px; }
+  .skill-group .tags span{ font-size:.82rem; font-weight:500; color:var(--ink-70);
+    background:rgba(255,255,255,.8); border:1px solid var(--line); padding:6px 13px; border-radius:999px; }
 
   .cert{ display:flex; justify-content:space-between; align-items:baseline; gap:14px; padding:13px 0; border-bottom:1px dashed var(--line); font-size:.92rem; }
   .cert:last-of-type{ border-bottom:none; }
@@ -281,7 +275,7 @@
   .cert small{ color:var(--muted); font-size:.8rem; }
   .cert .year{ flex:none; font-size:.78rem; font-weight:700; color:var(--accent); white-space:nowrap; }
   .two-col{ display:grid; grid-template-columns:1fr 1fr; gap:18px; margin-top:14px; }
-  .two-col .box{ background:var(--canvas); border:none; box-shadow:var(--sh-s); border-radius:16px; padding:18px; }
+  .two-col .box{ background:rgba(255,255,255,.55); border:1px solid var(--line); border-radius:16px; padding:18px; }
   .two-col h4{ font-size:.76rem; letter-spacing:.14em; text-transform:uppercase; color:var(--accent); margin-bottom:10px; }
   .two-col ul{ list-style:none; }
   .two-col li{ font-size:.86rem; color:var(--ink-70); line-height:1.6; padding:3px 0; }
@@ -293,13 +287,13 @@
     display:flex; flex-direction:column; gap:14px; margin-top:22px;
   }
   .big-cta a{
-    display:flex; align-items:center; gap:14px; padding:15px 18px; border-radius:16px;
-    background:var(--canvas); box-shadow:var(--sh-s); color:var(--ink);
-    font-weight:600; font-size:.95rem; transition:transform .25s var(--ease), box-shadow .25s var(--ease);
+    display:flex; align-items:center; gap:14px; padding:15px 18px; border-radius:14px;
+    background:rgba(255,255,255,.75); border:1px solid var(--line); color:var(--ink);
+    font-weight:600; font-size:.95rem; transition:transform .25s var(--ease), border-color .25s var(--ease);
   }
   .big-cta a svg{ width:19px; height:19px; color:var(--accent); flex:none; }
   .big-cta a small{ display:block; font-weight:400; color:var(--muted); font-size:.8rem; }
-  .big-cta a:hover{ transform:translateY(-2px); box-shadow:var(--sh-r); text-decoration:none; }
+  .big-cta a:hover{ transform:translateY(-2px); border-color:var(--accent); text-decoration:none; }
 
   footer{
     position:relative; z-index:2; text-align:center; padding:0 20px 34px;
@@ -352,7 +346,9 @@
       padding:0; width:100%; display:flex; justify-content:center;
       --x:0px; --y:56px;
     }
-    .card{ max-width:620px; width:100%; }
+    /* the walker sits directly behind these cards on phones, so keep them a
+       little more see-through than the desktop default */
+    .card{ max-width:620px; width:100%; background:rgba(255,255,255,.75); }
     .hero{ text-align:center; }
     .hero .kicker{ justify-content:center; }
     .hero .chips, .hero .cta-row{ justify-content:center; }
