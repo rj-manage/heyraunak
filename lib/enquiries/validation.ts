@@ -12,6 +12,7 @@ import type { EnquiryField } from "./schema";
 
 const PHONE_RE = /^\+?[0-9][0-9 ()-]{6,19}$/;
 const URL_RE = /^https?:\/\/[^\s]+$/i;
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
 
 export const enquiryStatusSchema = z.enum([
@@ -76,6 +77,15 @@ function fieldSchema(f: EnquiryField): z.ZodTypeAny {
         .refine((v) => PHONE_RE.test(v), "Enter a valid phone number with country code.");
       return req ? p : p.optional();
     }
+    case "email": {
+      const e = z
+        .string()
+        .trim()
+        .min(1, "This field is required.")
+        .max(MAX_TEXT)
+        .refine((v) => EMAIL_RE.test(v), "Enter a valid email address.");
+      return req ? e : e.optional();
+    }
     case "select":
     case "radio":
     case "budget": {
@@ -86,10 +96,9 @@ function fieldSchema(f: EnquiryField): z.ZodTypeAny {
           .string()
           .trim()
           .refine((v) => allowed.includes(v), "Choose one of the options.");
-        const optional = f.type === "budget" || !req;
-        return optional ? z.preprocess(emptyToUndefined, one.optional()) : one;
+        return req ? one : z.preprocess(emptyToUndefined, one.optional());
       }
-      return f.type === "budget" || !req ? z.string().trim().max(MAX_TEXT).optional() : text;
+      return req ? text : z.string().trim().max(MAX_TEXT).optional();
     }
     case "file":
       return z.unknown().optional();

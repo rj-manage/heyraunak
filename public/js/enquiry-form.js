@@ -13,8 +13,9 @@
   var host = document.getElementById("svc-form-host");
   if (!modal || !host) return;
 
-  var CONTACT_IDS = ["full_name", "whatsapp", "company"];
+  var CONTACT_IDS = ["full_name", "whatsapp", "email", "company"];
   var PHONE_RE = /^\+?[0-9][0-9 ()-]{6,19}$/;
+  var EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   var URL_RE = /^https?:\/\/[^\s]+$/i;
   var SCHEMA_CACHE = {};
 
@@ -107,6 +108,9 @@
 
       case "date":
         return '<input class="enq-input" id="' + id + '" type="date"' + req + " />";
+
+      case "email":
+        return '<input class="enq-input" id="' + id + '" type="email" inputmode="email"' + ph + req + " />";
 
       case "url":
         return '<input class="enq-input" id="' + id + '" type="url" inputmode="url"' + ph + req + " />";
@@ -239,6 +243,11 @@
       }
       if (str && f.type === "phone" && !PHONE_RE.test(str)) {
         setError(f.id, "Enter a valid phone number with country code.");
+        ok = false;
+        if (!firstBad) firstBad = row;
+      }
+      if (str && f.type === "email" && !EMAIL_RE.test(str)) {
+        setError(f.id, "Enter a valid email address.");
         ok = false;
         if (!firstBad) firstBad = row;
       }

@@ -16,13 +16,13 @@ import { enquiryAdminHtml, enquiryAdminSubject, enquiryAdminText } from "../emai
 
 type SupabaseAdmin = ReturnType<typeof createSupabaseAdminClient>;
 
-const CONTACT_IDS = new Set(["full_name", "whatsapp", "company"]);
+const CONTACT_IDS = new Set(["full_name", "whatsapp", "email", "company"]);
 
 export interface EnquirySummary {
   ref: string;
   category: string;
   service: string;
-  contact: { fullName: string; whatsapp: string; company: string };
+  contact: { fullName: string; email: string; whatsapp: string; company: string };
   details: { label: string; value: unknown }[];
   submittedAt: string;
 }
@@ -52,6 +52,7 @@ export async function createEnquiry(input: CreateEnquiryInput): Promise<CreateEn
   const contact = {
     fullName: clean(answers.full_name, 200),
     whatsapp: clean(answers.whatsapp, 40),
+    email: clean(answers.email, 320),
     company: clean(answers.company, 200)
   };
 

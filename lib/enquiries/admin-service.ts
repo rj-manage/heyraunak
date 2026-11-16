@@ -14,7 +14,7 @@ export interface EnquiryListRow {
   category_name: string;
   service_name: string;
   status: string;
-  contact: { fullName?: string; whatsapp?: string; company?: string };
+  contact: { fullName?: string; email?: string; whatsapp?: string; company?: string };
   submitted_at: string;
 }
 
@@ -102,5 +102,21 @@ export async function getEnquiryDetail(id: string): Promise<EnquiryDetail | null
 export async function setEnquiryStatus(id: string, status: EnquiryStatus): Promise<void> {
   const supabase = createSupabaseAdminClient();
   const { error } = await supabase.from("enquiries").update({ status }).eq("id", id);
+  if (error) throw error;
+}
+
+/** Permanently removes an enquiry: storage objects first, then the row (attachments cascade). */
+export async function deleteEnquiry(id: string): Promise<void> {
+  const supabase = createSupabaseAdminClient();
+  const { data: files } = await supabase
+    .from("enquiry_attachments")
+    .select("storage_path")
+    .eq("enquiry_id", id);
+  const paths = (files ?? [])
+    .map((f: { storage_path: string }) => f.storage_path)
+    .filter(Boolean);
+  if (paths.length) await supabase.storage.from(ENQUIRY_BUCKET).remove(paths);
+
+  const { error } = await supabase.from("enquiries").delete().eq("id", id);
   if (error) throw error;
 }

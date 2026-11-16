@@ -277,6 +277,23 @@
   flex: 1 1 180px;
 }
 
+/* ---------- status filter (admin lists) ---------- */
+.filter-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 18px;
+}
+
+.filter-row .soft-btn {
+  flex: none;
+}
+
+.filter-row .soft-btn.on {
+  color: var(--mint-ink);
+  box-shadow: var(--sh-in-s);
+}
+
 .vault-note {
   margin-top: 16px;
   font-size: 12.5px;

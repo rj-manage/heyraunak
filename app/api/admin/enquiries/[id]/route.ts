@@ -1,9 +1,10 @@
-// GET   /api/admin/enquiries/[id] - full enquiry detail (staff only)
-// PATCH /api/admin/enquiries/[id] - change status
+// GET    /api/admin/enquiries/[id] - full enquiry detail (staff only)
+// PATCH  /api/admin/enquiries/[id] - change status
+// DELETE /api/admin/enquiries/[id] - permanently remove an enquiry (owner/admin)
 
 import { vaultAdminUser } from "@/lib/rbac/guard";
 import { json, sameOrigin } from "@/lib/vault/http";
-import { getEnquiryDetail, setEnquiryStatus } from "@/lib/enquiries/admin-service";
+import { deleteEnquiry, getEnquiryDetail, setEnquiryStatus } from "@/lib/enquiries/admin-service";
 import { enquiryStatusSchema } from "@/lib/enquiries/validation";
 
 export const runtime = "nodejs";
@@ -46,5 +47,26 @@ export async function PATCH(
   } catch (err) {
     console.error("admin enquiries: status failed -", (err as Error)?.message);
     return json({ ok: false, message: "Could not update the status." }, 500);
+  }
+}
+
+export async function DELETE(
+  request: Request,
+  ctx: { params: Promise<{ id: string }> }
+): Promise<Response> {
+  if (!sameOrigin(request)) return json({ ok: false, message: "Forbidden." }, 403);
+  const guard = await vaultAdminUser();
+  if (!guard.ok) return guard.response;
+
+  const allowed = guard.authed.roles.some((r) => r === "owner" || r === "admin");
+  if (!allowed) return json({ ok: false, message: "Only an owner or admin can delete an enquiry." }, 403);
+
+  const { id } = await ctx.params;
+  try {
+    await deleteEnquiry(id);
+    return json({ ok: true });
+  } catch (err) {
+    console.error("admin enquiries: delete failed -", (err as Error)?.message);
+    return json({ ok: false, message: "Could not delete the enquiry." }, 500);
   }
 }

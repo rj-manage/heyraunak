@@ -14,6 +14,7 @@ export type FieldType =
   | "text"
   | "textarea"
   | "phone"
+  | "email"
   | "url"
   | "number"
   | "select"
@@ -45,7 +46,7 @@ export interface ServiceForm {
 
 export const CATEGORIES = ["Website Development", "Software & App Development", "Digital Marketing"] as const;
 
-/** Fields every service form carries. Name + WhatsApp are mandatory. */
+/** Fields every service form carries. Name, WhatsApp and email are mandatory. */
 export const COMMON_FIELDS: EnquiryField[] = [
   { id: "full_name", label: "Full Name", type: "text", required: true, placeholder: "Your full name" },
   {
@@ -56,6 +57,7 @@ export const COMMON_FIELDS: EnquiryField[] = [
     placeholder: "98765 43210",
     help: "Include your country code"
   },
+  { id: "email", label: "Email Address", type: "email", required: true, placeholder: "you@company.com" },
   { id: "company", label: "Company Name", type: "text", placeholder: "Optional", help: "Optional" }
 ];
 
@@ -162,10 +164,10 @@ function yn(id: string, label: string, opt: Partial<EnquiryField> = {}): Enquiry
   return { id, label, type: "radio", options: ["Yes", "No"], ...opt };
 }
 
-/** Optional budget / timeline / reference / attachments block every form ends with. */
+/** Budget / timeline / reference / attachments block every form ends with. */
 function tail(budgetOptions: string[]): EnquiryField[] {
   return [
-    sel("budget", "Estimated Budget", budgetOptions, { help: "Optional — skip if you are not sure yet" }),
+    sel("budget", "Estimated Budget", budgetOptions, { required: true }),
     sel("timeline", "Expected Timeline", TIMELINE, { help: "Optional" }),
     { id: "start_date", label: "Preferred Start Date", type: "date", help: "Optional" },
     url("reference_link", "Reference Link", {
@@ -927,7 +929,7 @@ const MARKETING: ServiceForm[] = [
     multi("platforms", "Target Social Media Platforms", PLATFORMS_SOCIAL),
     t("audience", "Target Audience"),
     multi("goals", "Marketing Goals", ["Brand awareness", "Engagement", "Follower growth", "Lead generation", "Sales"]),
-    { id: "ad_budget", label: "Monthly Advertising Budget", type: "budget", options: BUDGET_MKT, help: "Optional" }
+    { id: "ad_budget", label: "Monthly Advertising Budget", type: "budget", options: BUDGET_MKT, required: true }
   ]),
 
   mkt("Social Media Management", [
@@ -949,7 +951,7 @@ const MARKETING: ServiceForm[] = [
     url("site_url", "Website URL", { placeholder: "https://example.com" }),
     t("products", "Products or Services to Advertise"),
     t("locations", "Target Locations"),
-    { id: "ad_budget", label: "Monthly Advertising Budget", type: "budget", options: BUDGET_MKT, help: "Optional" },
+    { id: "ad_budget", label: "Monthly Advertising Budget", type: "budget", options: BUDGET_MKT, required: true },
     multi("goals", "Campaign Goals", ["Leads", "Sales", "Traffic", "Calls", "App installs"])
   ]),
 
@@ -958,7 +960,7 @@ const MARKETING: ServiceForm[] = [
     t("page_links", "Facebook or Instagram Page Links"),
     t("products", "Products or Services to Promote"),
     t("audience", "Target Audience"),
-    { id: "ad_budget", label: "Monthly Advertising Budget", type: "budget", options: BUDGET_MKT, help: "Optional" }
+    { id: "ad_budget", label: "Monthly Advertising Budget", type: "budget", options: BUDGET_MKT, required: true }
   ]),
 
   mkt("YouTube Marketing", [
@@ -1034,7 +1036,7 @@ const MARKETING: ServiceForm[] = [
       "Lifestyle",
       "Gaming"
     ]),
-    { id: "campaign_budget", label: "Campaign Budget", type: "budget", options: BUDGET_MKT, help: "Optional" }
+    { id: "campaign_budget", label: "Campaign Budget", type: "budget", options: BUDGET_MKT, required: true }
   ]),
 
   mkt("Affiliate Marketing", [
@@ -1062,7 +1064,7 @@ const MARKETING: ServiceForm[] = [
       "Display"
     ]),
     t("locations", "Target Locations"),
-    { id: "ad_budget", label: "Monthly Advertising Budget", type: "budget", options: BUDGET_MKT, help: "Optional" }
+    { id: "ad_budget", label: "Monthly Advertising Budget", type: "budget", options: BUDGET_MKT, required: true }
   ]),
 
   mkt("Search Engine Marketing (SEM)", [
@@ -1070,7 +1072,7 @@ const MARKETING: ServiceForm[] = [
     sel("industry", "Business Industry", INDUSTRY, { allowOther: true }),
     ta("keywords", "Target Keywords"),
     t("locations", "Target Locations"),
-    { id: "ad_budget", label: "Advertising Budget", type: "budget", options: BUDGET_MKT, help: "Optional" }
+    { id: "ad_budget", label: "Advertising Budget", type: "budget", options: BUDGET_MKT, required: true }
   ]),
 
   mkt("Online Brand Management", [

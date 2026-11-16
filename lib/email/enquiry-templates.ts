@@ -6,7 +6,7 @@ export interface EnquiryEmailData {
   ref: string;
   category: string;
   service: string;
-  contact: { fullName: string; whatsapp: string; company: string };
+  contact: { fullName: string; email: string; whatsapp: string; company: string };
   details: { label: string; value: unknown }[];
   submittedAt: string;
 }
@@ -38,6 +38,7 @@ export function enquiryAdminText(d: EnquiryEmailData): string {
     "- Contact -",
     `Name:     ${d.contact.fullName || "-"}`,
     `WhatsApp: ${d.contact.whatsapp || "-"}`,
+    `Email:    ${d.contact.email || "-"}`,
     `Company:  ${d.contact.company || "-"}`,
     "",
     "- Requirements -"
@@ -70,6 +71,9 @@ export function enquiryAdminHtml(d: EnquiryEmailData): string {
     "</td></tr>" +
     '<tr><td style="padding:6px 12px;color:#5b6675">WhatsApp</td><td style="padding:6px 12px;color:#2a3444">' +
     esc(d.contact.whatsapp || "-") +
+    "</td></tr>" +
+    '<tr><td style="padding:6px 12px;color:#5b6675">Email</td><td style="padding:6px 12px;color:#2a3444">' +
+    esc(d.contact.email || "-") +
     "</td></tr>" +
     '<tr><td style="padding:6px 12px;color:#5b6675">Company</td><td style="padding:6px 12px;color:#2a3444">' +
     esc(d.contact.company || "-") +

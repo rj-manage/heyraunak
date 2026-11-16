@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 
 const STATUS_OPTIONS: [string, string][] = [
   ["submitted", "New"],
@@ -21,7 +22,7 @@ interface Detail {
     category_name: string;
     service_name: string;
     status: string;
-    contact: { fullName?: string; whatsapp?: string; company?: string };
+    contact: { fullName?: string; email?: string; whatsapp?: string; company?: string };
     project_details: { label: string; value: unknown }[];
     timeline: string | null;
     source: string | null;
@@ -54,6 +55,7 @@ function waLink(raw?: string): string | null {
 }
 
 export default function EnquiryDetail({ id }: { id: string }) {
+  const router = useRouter();
   const [state, setState] = useState<"loading" | "ready" | "error">("loading");
   const [data, setData] = useState<Detail | null>(null);
   const [saving, setSaving] = useState(false);
@@ -100,6 +102,25 @@ export default function EnquiryDetail({ id }: { id: string }) {
     setSaving(false);
   }
 
+  async function remove() {
+    if (!confirm("Delete this enquiry permanently? Its attachments are removed and this cannot be undone.")) return;
+    setSaving(true);
+    setMsg("");
+    try {
+      const res = await fetch(`/api/admin/enquiries/${id}`, { method: "DELETE" });
+      const body = await res.json().catch(() => ({}));
+      if (!res.ok || !body.ok) {
+        setMsg(body.message || "Could not delete the enquiry.");
+        setSaving(false);
+        return;
+      }
+      router.replace("/admin/enquiries");
+    } catch {
+      setMsg("Could not delete the enquiry.");
+      setSaving(false);
+    }
+  }
+
   if (state === "loading") return <p className="muted">Loading enquiry…</p>;
   if (state === "error" || !data) {
     return <p className="vault-note" data-tone="error">Could not load this enquiry.</p>;
@@ -122,6 +143,10 @@ export default function EnquiryDetail({ id }: { id: string }) {
           <div>
             <b>{wa ? <a href={wa} target="_blank" rel="noopener">{e.contact?.whatsapp}</a> : e.contact?.whatsapp || "-"}</b>
             <span>WhatsApp</span>
+          </div>
+          <div>
+            <b>{e.contact?.email ? <a href={"mailto:" + e.contact.email}>{e.contact.email}</a> : "-"}</b>
+            <span>Email</span>
           </div>
         </div>
         <p className="muted" style={{ marginTop: 12 }}>
@@ -179,6 +204,18 @@ export default function EnquiryDetail({ id }: { id: string }) {
           ))}
         </select>
         {msg ? <p className="muted" style={{ marginTop: 10 }}>{msg}</p> : null}
+      </div>
+
+      <div className="app-card">
+        <h2 style={{ fontSize: 18, marginBottom: 14 }}>Danger zone</h2>
+        <p className="muted" style={{ fontSize: 13.5 }}>
+          Permanently delete this enquiry and its attachments. This cannot be undone.
+        </p>
+        <div className="vault-actions" style={{ marginTop: 14 }}>
+          <button className="soft-btn ghost sm" type="button" disabled={saving} onClick={remove} style={{ color: "#a63d33" }}>
+            Delete enquiry
+          </button>
+        </div>
       </div>
     </>
   );

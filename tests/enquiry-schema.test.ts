@@ -12,6 +12,7 @@ const VALID_TYPES = new Set([
   "text",
   "textarea",
   "phone",
+  "email",
   "url",
   "number",
   "select",
@@ -57,11 +58,20 @@ describe("enquiry schema", () => {
     }
   });
 
-  it("always has required Full Name and WhatsApp, optional Company", () => {
+  it("always has required Full Name, WhatsApp and Email, optional Company", () => {
     const byId = Object.fromEntries(COMMON_FIELDS.map((f) => [f.id, f]));
     expect(byId.full_name?.required).toBe(true);
     expect(byId.whatsapp?.required).toBe(true);
+    expect(byId.email?.required).toBe(true);
     expect(byId.company?.required).toBeFalsy();
+  });
+
+  it("makes the budget field mandatory on every service", () => {
+    for (const form of ALL_FORMS) {
+      const budget = form.fields.find((f) => f.id === "budget");
+      expect(budget, form.service).toBeTruthy();
+      expect(budget?.required, form.service).toBe(true);
+    }
   });
 
   it("expands allowOther select fields into a companion field", () => {
@@ -73,7 +83,7 @@ describe("enquiry schema", () => {
 
   it("prepends the common fields to every service form", () => {
     const fields = fieldsForService("Search Engine Optimization (SEO)");
-    expect(fields!.slice(0, 3).map((f) => f.id)).toEqual(["full_name", "whatsapp", "company"]);
+    expect(fields!.slice(0, 4).map((f) => f.id)).toEqual(["full_name", "whatsapp", "email", "company"]);
   });
 });
 
@@ -81,17 +91,35 @@ describe("answers validation", () => {
   const fields = fieldsForService("Landing Page Development")!;
   const schema = buildAnswersSchema(fields);
 
-  it("requires name and whatsapp", () => {
+  it("requires name, whatsapp, email and budget", () => {
     expect(schema.safeParse({}).success).toBe(false);
+    expect(
+      schema.safeParse({ full_name: "Ada", whatsapp: "+91 98765 43210", email: "ada@example.com" }).success
+    ).toBe(false);
   });
 
   it("accepts a minimal valid submission", () => {
-    const res = schema.safeParse({ full_name: "Ada Lovelace", whatsapp: "+91 98765 43210" });
+    const res = schema.safeParse({
+      full_name: "Ada Lovelace",
+      whatsapp: "+91 98765 43210",
+      email: "ada@example.com",
+      budget: "$500–$1,000"
+    });
     expect(res.success).toBe(true);
   });
 
+  it("rejects an invalid email address", () => {
+    const res = schema.safeParse({
+      full_name: "Ada",
+      whatsapp: "+91 98765 43210",
+      email: "not-an-email",
+      budget: "$500–$1,000"
+    });
+    expect(res.success).toBe(false);
+  });
+
   it("rejects an invalid whatsapp number", () => {
-    const res = schema.safeParse({ full_name: "Ada", whatsapp: "abc" });
+    const res = schema.safeParse({ full_name: "Ada", whatsapp: "abc", email: "ada@example.com", budget: "$500–$1,000" });
     expect(res.success).toBe(false);
   });
 
@@ -99,6 +127,8 @@ describe("answers validation", () => {
     const res = schema.safeParse({
       full_name: "Ada",
       whatsapp: "+91 98765 43210",
+      email: "ada@example.com",
+      budget: "$500–$1,000",
       purpose: "Nonsense"
     });
     expect(res.success).toBe(false);
