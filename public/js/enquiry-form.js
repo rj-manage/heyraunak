@@ -2,9 +2,10 @@
    RJ - dynamic service enquiry form
    ------------------------------------------------------------
    Fetches the field list for the chosen service from
-   /api/enquiry/schema, renders it inside the service popup, validates
-   it and posts the submission to /api/enquiry. Opened by services.js
-   via window.RJEnquiry.mount(name, host).
+   /api/enquiry/schema, renders it inside the service popup as a
+   three-step wizard (contact -> requirements -> budget), validates
+   each step and posts the submission to /api/enquiry. Opened by
+   services.js via window.RJEnquiry.mount(name, host).
    ============================================================ */
 (function () {
   "use strict";
@@ -13,11 +14,11 @@
   var host = document.getElementById("svc-form-host");
   if (!modal || !host) return;
 
-  var CONTACT_IDS = ["full_name", "whatsapp", "email", "company"];
   var PHONE_RE = /^\+?[0-9][0-9 ()-]{6,19}$/;
   var EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   var URL_RE = /^https?:\/\/[^\s]+$/i;
   var NOT_SURE = "Not sure yet";
+  var STEP_TITLES = { 1: "Your details", 2: "Requirements", 3: "Budget & timeline" };
   var SCHEMA_CACHE = {};
 
   var COUNTRY_CODES = [
@@ -34,7 +35,7 @@
     ["+64", "New Zealand +64"], ["+353", "Ireland +353"]
   ];
 
-  var current = null; // { name, fields, idem, startedAt }
+  var current = null; // { name, fields, steps, step, idem, startedAt }
 
   /* ---------- helpers ---------- */
 
@@ -59,6 +60,26 @@
 
   function tiersOf(f) {
     return (f.options || []).filter(function (o) { return o !== NOT_SURE; });
+  }
+
+  function stepIndex(n) {
+    for (var i = 0; i < current.steps.length; i++) {
+      if (current.steps[i].step === n) return i;
+    }
+    return 0;
+  }
+
+  /* group the ordered field list into the wizard steps (empty steps dropped) */
+  function groupSteps(fields) {
+    var byStep = {};
+    fields.forEach(function (f) {
+      var s = f.step || 2;
+      (byStep[s] = byStep[s] || []).push(f);
+    });
+    var order = Object.keys(byStep).map(Number).sort(function (a, b) { return a - b; });
+    return order.map(function (s) {
+      return { step: s, title: STEP_TITLES[s] || "Step " + s, fields: byStep[s] };
+    });
   }
 
   /* ---------- field rendering ---------- */
@@ -159,6 +180,52 @@
       '<p class="enq-err" hidden></p>' +
       "</div>"
     );
+  }
+
+  /* ---------- wizard chrome ---------- */
+
+  function stepperItems(steps, activeStep) {
+    return steps.map(function (s, i) {
+      var state = s.step === activeStep ? " on" : (s.step < activeStep ? " done" : "");
+      return (
+        '<li class="enq-stepdot' + state + '"' + (s.step === activeStep ? ' aria-current="step"' : "") + ">" +
+        "<i>" + (i + 1) + "</i><span>" + esc(s.title) + "</span></li>"
+      );
+    }).join("");
+  }
+
+  function showStep(n) {
+    if (!current) return;
+    var idx = stepIndex(n);
+    var s = current.steps[idx];
+    if (!s) return;
+    current.step = s.step;
+
+    Array.prototype.forEach.call(host.querySelectorAll(".enq-step"), function (el) {
+      el.hidden = Number(el.getAttribute("data-step")) !== s.step;
+    });
+
+    var dots = host.querySelector(".enq-steps");
+    if (dots) dots.innerHTML = stepperItems(current.steps, s.step);
+
+    var back = host.querySelector(".enq-back");
+    if (back) back.hidden = idx === 0;
+
+    var next = host.querySelector(".enq-next");
+    if (next) next.textContent = idx === current.steps.length - 1 ? "Submit Enquiry" : "Next";
+
+    var card = host.closest ? host.closest(".svc-modal-card") : null;
+    if (card) card.scrollTop = 0;
+
+    syncSliders();
+  }
+
+  function gotoPrev() {
+    var idx = stepIndex(current.step);
+    if (idx > 0) {
+      clearErrors();
+      showStep(current.steps[idx - 1].step);
+    }
   }
 
   /* ---------- conditional visibility ---------- */
@@ -279,6 +346,13 @@
     });
   }
 
+  function focusRow(row) {
+    if (!row) return;
+    row.scrollIntoView({ block: "center" });
+    var input = row.querySelector(".enq-input, .enq-range, .enq-file");
+    if (input && input.focus) input.focus();
+  }
+
   function collectFiles() {
     var out = [];
     current.fields.forEach(function (f) {
@@ -292,13 +366,12 @@
     return out;
   }
 
-  function validate() {
-    clearErrors();
+  /* validates one group of fields; returns { ok, firstBad } (no clear/focus here) */
+  function validateFields(fields) {
     var ok = true;
     var firstBad = null;
-    var files = collectFiles();
 
-    current.fields.forEach(function (f) {
+    fields.forEach(function (f) {
       if (f.type === "file") return;
       var row = rowEl(f.id);
       if (!row || row.hidden) return;
@@ -340,37 +413,39 @@
       }
     });
 
-    // client-side attachment checks
-    var tooBig = files.some(function (fi) { return fi.size > 10 * 1024 * 1024; });
-    var wrongType = files.some(function (fi) {
-      return !/\.(pdf|doc|docx|xls|xlsx)$/i.test(fi.name);
-    });
-    if (files.length > 5) { alertFile("You can attach up to 5 files."); ok = false; }
-    else if (tooBig) { alertFile("Each file must be 10 MB or smaller."); ok = false; }
-    else if (wrongType) { alertFile("Only PDF, Word and Excel files are allowed."); ok = false; }
-
-    if (firstBad) {
-      firstBad.scrollIntoView({ block: "center" });
-      var input = firstBad.querySelector(".enq-input, .enq-range");
-      if (input) input.focus();
-    }
-    return ok;
+    return { ok: ok, firstBad: firstBad };
   }
 
-  function alertFile(message) {
-    // attach the message to the file field itself
+  function checkFiles() {
+    var files = collectFiles();
+    var msg = null;
+    if (files.length > 5) msg = "You can attach up to 5 files.";
+    else if (files.some(function (fi) { return fi.size > 10 * 1024 * 1024; })) msg = "Each file must be 10 MB or smaller.";
+    else if (files.some(function (fi) { return !/\.(pdf|doc|docx|xls|xlsx)$/i.test(fi.name); })) {
+      msg = "Only PDF, Word and Excel files are allowed.";
+    }
+    if (!msg) return { ok: true };
+
+    var firstBad = null;
+    var fileField = null;
     current.fields.forEach(function (f) {
-      if (f.type === "file") setError(f.id, message);
+      if (f.type !== "file") return;
+      if (!fileField) fileField = f;
+      setError(f.id, msg);
+      if (!firstBad) firstBad = rowEl(f.id);
     });
+    return { ok: false, firstBad: firstBad, step: fileField ? fileField.step || 3 : 3 };
   }
 
   function showAlert(message) {
+    var form = host.querySelector(".enq-form");
+    if (!form) return;
     var box = host.querySelector(".enq-alert");
     if (!box) {
       box = document.createElement("div");
       box.className = "enq-alert";
       box.setAttribute("role", "alert");
-      host.querySelector(".enq-form").insertBefore(box, host.querySelector(".enq-form").firstChild);
+      form.insertBefore(box, form.firstChild);
     }
     box.textContent = message;
   }
@@ -387,7 +462,31 @@
 
   function submit(ev) {
     ev.preventDefault();
-    if (!current || !validate()) return;
+    if (!current) return;
+
+    var idx = stepIndex(current.step);
+    var last = current.steps.length - 1;
+
+    // mid-wizard: validate just this step, then advance
+    if (idx < last) {
+      clearErrors();
+      var stepRes = validateFields(current.steps[idx].fields);
+      if (!stepRes.ok) { focusRow(stepRes.firstBad); return; }
+      showStep(current.steps[idx + 1].step);
+      return;
+    }
+
+    // final step: validate every step + attachments, jump to the first problem
+    clearErrors();
+    var bad = null;
+    var badStep = null;
+    current.steps.forEach(function (s) {
+      var res = validateFields(s.fields);
+      if (!res.ok && !bad) { bad = res.firstBad; badStep = s.step; }
+    });
+    var fileRes = checkFiles();
+    if (!fileRes.ok && !bad) { bad = fileRes.firstBad; badStep = fileRes.step; }
+    if (bad) { showStep(badStep || current.step); focusRow(bad); return; }
 
     var answers = {};
     current.fields.forEach(function (f) {
@@ -420,7 +519,17 @@
         if (res.ok && res.json.ok) { success(res.json.ref); return; }
         if (res.json && res.json.errors) {
           clearErrors();
-          Object.keys(res.json.errors).forEach(function (key) { setError(key, res.json.errors[key]); });
+          var errors = res.json.errors;
+          Object.keys(errors).forEach(function (key) { setError(key, errors[key]); });
+          // jump to the lowest step carrying an error
+          var jump = null;
+          current.steps.forEach(function (s) {
+            if (jump !== null) return;
+            var has = false;
+            s.fields.forEach(function (f) { if (errors[f.id]) has = true; });
+            if (has) jump = s.step;
+          });
+          if (jump !== null) showStep(jump);
           showAlert(res.json.message || "Please check the highlighted fields.");
           return;
         }
@@ -434,35 +543,56 @@
 
   function setBusy(on) {
     var btn = host.querySelector(".enq-submit");
-    if (!btn) return;
-    btn.disabled = on;
-    btn.textContent = on ? "Sending…" : "Submit Enquiry";
+    var back = host.querySelector(".enq-back");
+    if (btn) {
+      btn.disabled = on;
+      var lastIdx = current ? current.steps.length - 1 : 0;
+      btn.textContent = on ? "Sending…" : (stepIndex(current.step) === lastIdx ? "Submit Enquiry" : "Next");
+    }
+    if (back) back.disabled = on;
   }
 
   /* ---------- bootstrap ---------- */
 
   function render(name, fields) {
-    current = { name: name, fields: fields, idem: uuid(), startedAt: Date.now() };
+    current = { name: name, fields: fields, steps: groupSteps(fields), step: null, idem: uuid(), startedAt: Date.now() };
 
     var html = '<form class="enq-form" novalidate>';
-    html += fields.map(fieldHTML).join("");
+    html += '<ol class="enq-steps" aria-label="Form progress"></ol>';
+    html += current.steps.map(function (s, i) {
+      return (
+        '<div class="enq-step" data-step="' + s.step + '"' + (i === 0 ? "" : " hidden") + ">" +
+        s.fields.map(fieldHTML).join("") +
+        "</div>"
+      );
+    }).join("");
     html += '<div class="enq-hp" aria-hidden="true"><label for="enq-hp">Leave this field empty</label>' +
       '<input id="enq-hp" type="text" class="enq-hp-input" name="website" tabindex="-1" autocomplete="off" /></div>';
-    html += '<div class="enq-actions"><button class="soft-btn enq-submit" type="submit">Submit Enquiry</button>' +
-      '<button class="soft-btn ghost" type="button" data-svc-close>Cancel</button></div>';
+    html += '<div class="enq-actions">' +
+      '<button class="soft-btn ghost enq-back" type="button" hidden>Back</button>' +
+      '<button class="soft-btn enq-next enq-submit" type="submit">Next</button>' +
+      '<button class="soft-btn ghost" type="button" data-svc-close>Cancel</button>' +
+      "</div>";
     html += "</form>";
 
     host.innerHTML = html;
     var form = host.querySelector(".enq-form");
     form.addEventListener("submit", submit);
+    form.addEventListener("click", function (ev) {
+      var t = ev.target;
+      if (t && t.closest && t.closest(".enq-back")) {
+        ev.preventDefault();
+        gotoPrev();
+      }
+    });
     form.addEventListener("input", applyConditionals);
     form.addEventListener("change", applyConditionals);
     form.addEventListener("input", onSliderChange);
     form.addEventListener("change", onSliderChange);
     applyConditionals();
-    syncSliders();
+    showStep(current.steps[0].step);
 
-    var first = host.querySelector(".enq-input");
+    var first = host.querySelector('.enq-step:not([hidden]) .enq-input');
     if (first && first.focus) first.focus();
   }
 

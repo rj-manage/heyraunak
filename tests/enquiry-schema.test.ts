@@ -3,6 +3,7 @@ import {
   ALL_FORMS,
   CATEGORIES,
   COMMON_FIELDS,
+  FORM_STEPS,
   fieldsForService,
   serviceNames
 } from "@/lib/enquiries/schema";
@@ -87,6 +88,23 @@ describe("enquiry schema", () => {
   it("prepends the common fields to every service form", () => {
     const fields = fieldsForService("Search Engine Optimization (SEO)");
     expect(fields!.slice(0, 4).map((f) => f.id)).toEqual(["full_name", "whatsapp", "email", "company"]);
+  });
+
+  it("splits every service form into the three wizard steps", () => {
+    expect(FORM_STEPS.map((s) => s.step)).toEqual([1, 2, 3]);
+    for (const form of ALL_FORMS) {
+      const fields = fieldsForService(form.service)!;
+      const steps = Array.from(new Set(fields.map((f) => f.step))).sort();
+      expect(steps, form.service).toEqual([1, 2, 3]);
+      expect(fields.filter((f) => f.step === 1).map((f) => f.id), form.service).toEqual([
+        "full_name",
+        "whatsapp",
+        "email",
+        "company"
+      ]);
+      expect(fields.find((f) => f.id === "budget")?.step, form.service).toBe(3);
+      expect(fields.some((f) => f.step === 2), form.service).toBe(true);
+    }
   });
 });
 

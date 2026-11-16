@@ -15,6 +15,8 @@ const STATUS_OPTIONS: [string, string][] = [
   ["cancelled", "Cancelled"]
 ];
 
+const STATUS_LABEL: Record<string, string> = Object.fromEntries(STATUS_OPTIONS);
+
 interface Detail {
   enquiry: {
     id: string;
@@ -59,7 +61,9 @@ export default function EnquiryDetail({ id }: { id: string }) {
   const [state, setState] = useState<"loading" | "ready" | "error">("loading");
   const [data, setData] = useState<Detail | null>(null);
   const [saving, setSaving] = useState(false);
+  const [sending, setSending] = useState(false);
   const [msg, setMsg] = useState("");
+  const [whatsappHref, setWhatsappHref] = useState("");
 
   const load = useCallback(async () => {
     try {
@@ -100,6 +104,45 @@ export default function EnquiryDetail({ id }: { id: string }) {
       setMsg("Could not update the status.");
     }
     setSaving(false);
+  }
+
+  async function sendUpdate() {
+    if (!data) return;
+    setSending(true);
+    setMsg("");
+    setWhatsappHref("");
+    try {
+      const res = await fetch(`/api/admin/enquiries/${id}/update`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ status: data.enquiry.status })
+      });
+      const body = await res.json().catch(() => ({}));
+      if (!res.ok || !body.ok) {
+        setMsg(body.message || "Could not send the update.");
+        setSending(false);
+        return;
+      }
+      const parts: string[] = [];
+      if (body.email?.sent) parts.push("Email sent");
+      else if (body.email?.reason === "no_email") parts.push("No email on file");
+      else if (body.email?.reason === "not_configured") parts.push("Email not configured");
+      else parts.push("Email failed");
+      if (body.whatsappUrl) {
+        const opened = window.open(body.whatsappUrl, "_blank", "noopener");
+        if (opened) parts.push("WhatsApp opened — press send");
+        else {
+          setWhatsappHref(body.whatsappUrl);
+          parts.push("WhatsApp ready — open below");
+        }
+      } else {
+        parts.push("No WhatsApp number on file");
+      }
+      setMsg(parts.join(" · "));
+    } catch {
+      setMsg("Could not send the update.");
+    }
+    setSending(false);
   }
 
   async function remove() {
@@ -203,6 +246,19 @@ export default function EnquiryDetail({ id }: { id: string }) {
             <option key={value} value={value}>{label}</option>
           ))}
         </select>
+        <p className="muted" style={{ marginTop: 10, fontSize: 13 }}>
+          Sends the &ldquo;{STATUS_LABEL[e.status] || e.status}&rdquo; update to the customer by email and WhatsApp.
+        </p>
+        <div className="vault-actions" style={{ marginTop: 12 }}>
+          <button className="soft-btn" type="button" disabled={sending || saving} onClick={sendUpdate}>
+            {sending ? "Sending…" : "Send Update"}
+          </button>
+        </div>
+        {whatsappHref ? (
+          <p style={{ marginTop: 10 }}>
+            <a className="soft-btn sm ghost" href={whatsappHref} target="_blank" rel="noopener">Open WhatsApp</a>
+          </p>
+        ) : null}
         {msg ? <p className="muted" style={{ marginTop: 10 }}>{msg}</p> : null}
       </div>
 

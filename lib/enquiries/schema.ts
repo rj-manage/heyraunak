@@ -37,6 +37,8 @@ export interface EnquiryField {
   max?: number;
   allowOther?: boolean;
   showIf?: { field: string; equals: string };
+  /** Wizard step (1-3). 1 contact, 2 requirements, 3 budget & extras. */
+  step?: number;
 }
 
 export interface ServiceForm {
@@ -49,17 +51,18 @@ export const CATEGORIES = ["Website Development", "Software & App Development", 
 
 /** Fields every service form carries. Name, WhatsApp and email are mandatory. */
 export const COMMON_FIELDS: EnquiryField[] = [
-  { id: "full_name", label: "Full Name", type: "text", required: true, placeholder: "Your full name" },
+  { id: "full_name", label: "Full Name", type: "text", required: true, placeholder: "Your full name", step: 1 },
   {
     id: "whatsapp",
     label: "WhatsApp Number",
     type: "phone",
     required: true,
     placeholder: "98765 43210",
-    help: "Include your country code"
+    help: "Include your country code",
+    step: 1
   },
-  { id: "email", label: "Email Address", type: "email", required: true, placeholder: "you@company.com" },
-  { id: "company", label: "Company Name", type: "text", placeholder: "Optional", help: "Optional" }
+  { id: "email", label: "Email Address", type: "email", required: true, placeholder: "you@company.com", step: 1 },
+  { id: "company", label: "Company Name", type: "text", placeholder: "Optional", help: "Optional", step: 1 }
 ];
 
 /* ---------- shared option sets ---------- */
@@ -173,20 +176,22 @@ function yn(id: string, label: string, opt: Partial<EnquiryField> = {}): Enquiry
 /** Budget / timeline / reference / attachments block every form ends with. */
 function tail(budgetOptions: string[]): EnquiryField[] {
   return [
-    sld("budget", "Estimated Budget", budgetOptions, { required: true }),
-    sel("timeline", "Expected Timeline", TIMELINE, { help: "Optional" }),
-    { id: "start_date", label: "Preferred Start Date", type: "date", help: "Optional" },
+    sld("budget", "Estimated Budget", budgetOptions, { required: true, step: 3 }),
+    sel("timeline", "Expected Timeline", TIMELINE, { help: "Optional", step: 3 }),
+    { id: "start_date", label: "Preferred Start Date", type: "date", help: "Optional", step: 3 },
     url("reference_link", "Reference Link", {
       placeholder: "https://example.com",
-      help: "Optional — a site or example you like"
+      help: "Optional — a site or example you like",
+      step: 3
     }),
     {
       id: "attachments",
       label: "Reference Documents",
       type: "file",
-      help: "Optional — PDF, Word or Excel. Up to 5 files, 10 MB each."
+      help: "Optional — PDF, Word or Excel. Up to 5 files, 10 MB each.",
+      step: 3
     },
-    ta("additional_notes", "Anything Else?", { placeholder: "Optional", help: "Optional" })
+    ta("additional_notes", "Anything Else?", { placeholder: "Optional", help: "Optional", step: 3 })
   ];
 }
 
@@ -1200,6 +1205,7 @@ function expandOther(fields: EnquiryField[]): EnquiryField[] {
         label: `${f.label} — please specify`,
         type: "text",
         help: "Optional",
+        step: f.step,
         showIf: { field: f.id, equals: "Other" }
       });
     }
@@ -1208,9 +1214,17 @@ function expandOther(fields: EnquiryField[]): EnquiryField[] {
 }
 
 /** Full ordered field list for a service: common contact fields first, then the
- *  service-specific questions and the shared optional tail. */
+ *  service-specific questions and the shared optional tail. Fields without an
+ *  explicit step fall in the middle step (the service-specific requirements). */
 export function fieldsForService(name: string): EnquiryField[] | null {
   const form = getServiceForm(name);
   if (!form) return null;
-  return expandOther([...COMMON_FIELDS, ...form.fields]);
+  return expandOther([...COMMON_FIELDS, ...form.fields]).map((f) => ({ ...f, step: f.step ?? 2 }));
 }
+
+/** Wizard step ids + display titles, shared by the client and tests. */
+export const FORM_STEPS = [
+  { step: 1, title: "Your details" },
+  { step: 2, title: "Requirements" },
+  { step: 3, title: "Budget & timeline" }
+] as const;

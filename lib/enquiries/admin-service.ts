@@ -99,6 +99,26 @@ export async function getEnquiryDetail(id: string): Promise<EnquiryDetail | null
   return { enquiry: data as EnquiryDetail["enquiry"], attachments };
 }
 
+export interface EnquiryUpdateTarget {
+  id: string;
+  enquiry_ref: string;
+  service_name: string;
+  category_name: string;
+  contact: { fullName?: string; email?: string; whatsapp?: string; company?: string };
+}
+
+/** Lean lookup for the "Send Update" action - contact + ref only. */
+export async function getEnquiryUpdateTarget(id: string): Promise<EnquiryUpdateTarget | null> {
+  const supabase = createSupabaseAdminClient();
+  const { data, error } = await supabase
+    .from("enquiries")
+    .select("id, enquiry_ref, service_name, category_name, contact")
+    .eq("id", id)
+    .maybeSingle();
+  if (error) throw error;
+  return (data as EnquiryUpdateTarget | null) ?? null;
+}
+
 export async function setEnquiryStatus(id: string, status: EnquiryStatus): Promise<void> {
   const supabase = createSupabaseAdminClient();
   const { error } = await supabase.from("enquiries").update({ status }).eq("id", id);
