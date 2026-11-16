@@ -8,19 +8,30 @@ export const metadata = {
   robots: { index: true, follow: true }
 };
 
-// Layout mirrors the reference Project Vault page: no page header, straight into
-// the two-column card grid plus a full-width contact card. The site nav is
-// untouched.
+// Page header mirrors the Contact page (kicker, heading, intro, chip), then the
+// two-column card grid. The site nav is untouched.
 export default function ProjectVaultPage() {
   return (
     <>
       <SiteNav active="/project-vault" />
 
       <main>
+        <header className="page-head">
+          <div className="sec-head" style={{ maxWidth: 660 }}>
+            <div className="kicker">Project Vault</div>
+            <h1>Your project, delivered.</h1>
+            <p>
+              Enter your access code to open your private handover — files, documents and deliverables, all
+              in one place.
+            </p>
+            <div className="soft-chip" style={{ marginTop: 20 }}>
+              <span className="dot" /> Private &amp; secure · Access code + email check
+            </div>
+          </div>
+        </header>
+
         <section className="vault-section">
           <div className="wrap">
-            <h1 className="sr-only">Project Vault</h1>
-
             <div className="vault-grid">
               <AccessForm />
 
