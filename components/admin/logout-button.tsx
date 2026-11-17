@@ -31,7 +31,7 @@ export default function LogoutButton() {
   }
 
   return (
-    <div style={{ marginTop: 12 }}>
+    <div>
       <button className="soft-btn ghost sm" type="button" onClick={onClick} disabled={busy}>
         {busy ? "Signing out…" : "Log out"}
       </button>

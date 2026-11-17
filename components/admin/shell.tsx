@@ -12,7 +12,7 @@ const LINKS = [
 export default function AdminShell({ active, children }: { active: string; children: ReactNode }) {
   return (
     <div className="app-shell">
-      <aside className="app-side">
+      <header className="app-nav">
         <a className="brand" href="/">
           <span className="logo">
             {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -30,8 +30,10 @@ export default function AdminShell({ active, children }: { active: string; child
             </a>
           ))}
         </nav>
-        <LogoutButton />
-      </aside>
+        <div className="app-nav-end">
+          <LogoutButton />
+        </div>
+      </header>
       <div className="app-main">{children}</div>
     </div>
   );
