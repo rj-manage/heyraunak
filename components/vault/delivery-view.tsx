@@ -193,7 +193,7 @@ export default function DeliveryView() {
           >
             {preparing ? "Preparing…" : "Download all files"}
           </button>
-          <a className="soft-btn ghost" href="mailto:theprofessionalrj@gmail.com?subject=Project%20Vault%20question">
+          <a className="soft-btn ghost" href="mailto:heyraunak.rjstudio@gmail.com?subject=Project%20Vault%20question">
             Report an issue
           </a>
           <button className="soft-btn ghost" type="button" onClick={signOut}>

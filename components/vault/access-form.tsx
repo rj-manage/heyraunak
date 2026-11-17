@@ -231,7 +231,7 @@ export default function AccessForm() {
 
       <div className="vault-help">
         Lost your access code?{" "}
-        <a href="mailto:theprofessionalrj@gmail.com?subject=Project%20Vault%20access%20code">Email RJ Studio</a>{" "}
+        <a href="mailto:heyraunak.rjstudio@gmail.com?subject=Project%20Vault%20access%20code">Email RJ Studio</a>{" "}
         or <a href="/contact/">contact us</a> from your registered address.
       </div>
     </div>

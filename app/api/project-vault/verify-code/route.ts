@@ -71,7 +71,7 @@ export async function POST(request: Request): Promise<Response> {
     subject: mail.subject,
     html: mail.html,
     text: mail.text,
-    replyTo: process.env.ADMIN_NOTIFICATION_EMAIL || "theprofessionalrj@gmail.com"
+    replyTo: process.env.ADMIN_NOTIFICATION_EMAIL || "heyraunak.rjstudio@gmail.com"
   });
 
   if (!sent.ok) {
