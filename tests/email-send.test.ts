@@ -28,9 +28,26 @@ describe("sendTransactional", () => {
 
     expect(res).toEqual({ ok: true, status: 200 });
     expect(sent.from).toBe("RJ Studio <enquiries@heyraunak.site>");
-    expect(sent.reply_to).toBe("admin@example.com");
+    // defaults to the sending domain, not the free-mail admin address
+    expect(sent.reply_to).toBe("enquiries@heyraunak.site");
     expect(String(sent.html)).toContain("<!DOCTYPE html>");
     expect(String(sent.html)).toContain("<p>hey</p>");
+  });
+
+  it("honours EMAIL_REPLY_TO when set", async () => {
+    stubEnv();
+    vi.stubEnv("EMAIL_REPLY_TO", "support@heyraunak.site");
+    let sent: Record<string, unknown> = {};
+    vi.stubGlobal(
+      "fetch",
+      vi.fn(async (_url: string, init: RequestInit) => {
+        sent = JSON.parse(String(init.body));
+        return { ok: true, status: 200 } as Response;
+      })
+    );
+
+    await sendTransactional({ to: ["a@b.com"], subject: "Hi", html: "<p>x</p>", text: "x" });
+    expect(sent.reply_to).toBe("support@heyraunak.site");
   });
 
   it("keeps an explicit reply-to and does not double-wrap a full document", async () => {

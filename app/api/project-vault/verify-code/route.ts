@@ -70,8 +70,7 @@ export async function POST(request: Request): Promise<Response> {
     to: [handover.client_email],
     subject: mail.subject,
     html: mail.html,
-    text: mail.text,
-    replyTo: process.env.ADMIN_NOTIFICATION_EMAIL || "heyraunak.rjstudio@gmail.com"
+    text: mail.text
   });
 
   if (!sent.ok) {

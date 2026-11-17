@@ -45,11 +45,19 @@ function asFrom(from: string): string {
   return `RJ Studio <${from}>`;
 }
 
+/** The bare address inside a "Name <addr>" string. */
+function emailOf(from: string): string {
+  const m = from.match(/<([^>]+)>/);
+  return (m ? m[1] : from).trim();
+}
+
 /** Sends one transactional email. Returns a result; never throws for HTTP errors. */
 export async function sendTransactional(msg: TransactionalEmail): Promise<SendResult> {
   const apiKey = msg.apiKey || env("EMAIL_PROVIDER_API_KEY");
   const from = asFrom(msg.from || env("EMAIL_SENDER_ADDRESS"));
-  const replyTo = msg.replyTo || env("EMAIL_REPLY_TO") || env("ADMIN_NOTIFICATION_EMAIL");
+  // Keep Reply-To on the sending domain so From and Reply-To match - Gmail
+  // treats a free-mail Reply-To on a domain From as a phishing signal.
+  const replyTo = msg.replyTo || env("EMAIL_REPLY_TO") || emailOf(from);
 
   if (!apiKey || !from) return { ok: false, status: 0 };
 
