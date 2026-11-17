@@ -1,5 +1,5 @@
 // Post-authentication destination rules, shared by the OAuth callback and the
-// email-OTP flow. Kept pure so they can be unit tested — the "/portal" bug that
+// email-OTP flow. Kept pure so they can be unit tested - the "/portal" bug that
 // caused a 404 after sign-in twice is guarded here.
 
 /** Roles that may enter the admin console. */

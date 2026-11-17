@@ -68,7 +68,7 @@ export default function HandoverForm() {
           {created.accessCode}
         </p>
         <p className="muted" style={{ marginTop: 8 }}>
-          Only a hash is stored — regenerate the code if you lose it.
+          Only a hash is stored - regenerate the code if you lose it.
         </p>
         <div className="vault-actions" style={{ marginTop: 18 }}>
           <a className="soft-btn" href={`/admin/project-vault/${created.id}`}>

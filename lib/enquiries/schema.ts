@@ -99,44 +99,44 @@ const GENERIC_FEATURES = [
 
 const OS_TARGETS = ["Windows", "macOS", "Linux", "Android", "iOS", "Web browser"];
 
-const RANGE_USERS = ["1–10", "11–50", "51–200", "201–1,000", "1,000+"];
-const RANGE_SMALL = ["Under 50", "50–200", "200–1,000", "1,000–10,000", "10,000+"];
-const RANGE_DOCS = ["Under 1,000", "1,000–10,000", "10,000–100,000", "100,000+"];
+const RANGE_USERS = ["1-10", "11-50", "51-200", "201-1,000", "1,000+"];
+const RANGE_SMALL = ["Under 50", "50-200", "200-1,000", "1,000-10,000", "10,000+"];
+const RANGE_DOCS = ["Under 1,000", "1,000-10,000", "10,000-100,000", "100,000+"];
 
 const TIMELINE = [
   "As soon as possible",
   "Within 2 weeks",
   "Within 1 month",
-  "1–3 months",
-  "3–6 months",
+  "1-3 months",
+  "3-6 months",
   "Flexible / no fixed deadline"
 ];
 
 const BUDGET_WEB = [
   "Under $500",
-  "$500–$1,000",
-  "$1,000–$2,500",
-  "$2,500–$5,000",
-  "$5,000–$10,000",
-  "$10,000–$25,000",
+  "$500-$1,000",
+  "$1,000-$2,500",
+  "$2,500-$5,000",
+  "$5,000-$10,000",
+  "$10,000-$25,000",
   "$25,000+",
   "Not sure yet"
 ];
 const BUDGET_SOFT = [
   "Under $1,000",
-  "$1,000–$5,000",
-  "$5,000–$10,000",
-  "$10,000–$25,000",
-  "$25,000–$50,000",
+  "$1,000-$5,000",
+  "$5,000-$10,000",
+  "$10,000-$25,000",
+  "$25,000-$50,000",
   "$50,000+",
   "Not sure yet"
 ];
 const BUDGET_MKT = [
   "Under $250 / month",
-  "$250–$500 / month",
-  "$500–$1,000 / month",
-  "$1,000–$2,500 / month",
-  "$2,500–$5,000 / month",
+  "$250-$500 / month",
+  "$500-$1,000 / month",
+  "$1,000-$2,500 / month",
+  "$2,500-$5,000 / month",
   "$5,000+ / month",
   "Not sure yet"
 ];
@@ -181,14 +181,14 @@ function tail(budgetOptions: string[]): EnquiryField[] {
     { id: "start_date", label: "Preferred Start Date", type: "date", help: "Optional", step: 3 },
     url("reference_link", "Reference Link", {
       placeholder: "https://example.com",
-      help: "Optional — a site or example you like",
+      help: "Optional - a site or example you like",
       step: 3
     }),
     {
       id: "attachments",
       label: "Reference Documents",
       type: "file",
-      help: "Optional — PDF, Word or Excel. Up to 5 files, 10 MB each.",
+      help: "Optional - PDF, Word or Excel. Up to 5 files, 10 MB each.",
       step: 3
     },
     ta("additional_notes", "Anything Else?", { placeholder: "Optional", help: "Optional", step: 3 })
@@ -857,7 +857,7 @@ const SOFTWARE: ServiceForm[] = [
       "Oracle",
       "Not sure"
     ], { allowOther: true }),
-    sel("volume", "Estimated Data Volume", ["Under 1 GB", "1–10 GB", "10–100 GB", "100 GB+", "Not sure"]),
+    sel("volume", "Estimated Data Volume", ["Under 1 GB", "1-10 GB", "10-100 GB", "100 GB+", "Not sure"]),
     multi("operations", "Required Database Operations", [
       "CRUD",
       "Search",
@@ -955,7 +955,7 @@ const MARKETING: ServiceForm[] = [
       "Carousels",
       "Not sure"
     ]),
-    sel("frequency", "Posting Frequency", ["Daily", "3–4 per week", "Weekly", "Bi-weekly"])
+    sel("frequency", "Posting Frequency", ["Daily", "3-4 per week", "Weekly", "Bi-weekly"])
   ]),
 
   mkt("Google Ads Campaign Management", [
@@ -1008,8 +1008,8 @@ const MARKETING: ServiceForm[] = [
     url("site_url", "Business Website", { placeholder: "https://example.com" }),
     sel("subscribers", "Existing Email Subscriber Count", [
       "Under 500",
-      "500–2,000",
-      "2,000–10,000",
+      "500-2,000",
+      "2,000-10,000",
       "10,000+",
       "None yet"
     ]),
@@ -1028,7 +1028,7 @@ const MARKETING: ServiceForm[] = [
   mkt("WhatsApp Marketing", [
     t("business_name", "Business Name"),
     sel("account_status", "WhatsApp Business Account Status", ["Active", "Not set up yet", "Not sure"]),
-    sel("contacts", "Approximate Customer Contact Count", ["Under 500", "500–2,000", "2,000–10,000", "10,000+"]),
+    sel("contacts", "Approximate Customer Contact Count", ["Under 500", "500-2,000", "2,000-10,000", "10,000+"]),
     ta("campaign", "Campaign Requirements"),
     yn("automation", "Automation Requirements")
   ]),
@@ -1124,7 +1124,7 @@ const MARKETING: ServiceForm[] = [
     t("products", "Products or Services"),
     sel("customer_type", "Target Customer Type", ["B2C", "B2B", "Both", "Government"]),
     t("locations", "Target Locations"),
-    sel("leads", "Expected Number of Leads", ["Under 50 / month", "50–200 / month", "200–500 / month", "500+ / month"])
+    sel("leads", "Expected Number of Leads", ["Under 50 / month", "50-200 / month", "200-500 / month", "500+ / month"])
   ]),
 
   mkt("Conversion Rate Optimization (CRO)", [
@@ -1202,7 +1202,7 @@ function expandOther(fields: EnquiryField[]): EnquiryField[] {
     if (f.allowOther && (f.type === "select" || f.type === "radio")) {
       out.push({
         id: `${f.id}_other`,
-        label: `${f.label} — please specify`,
+        label: `${f.label} - please specify`,
         type: "text",
         help: "Optional",
         step: f.step,

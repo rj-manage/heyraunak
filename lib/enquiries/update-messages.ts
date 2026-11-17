@@ -26,12 +26,12 @@ const STATUS_LINE: Record<EnquiryStatus, string> = {
   submitted: "We have received your enquiry and will review it shortly",
   under_review: "Your enquiry is now under review by our team",
   more_info_required:
-    "We need a little more information to move your enquiry forward — please reply with the details you can share",
-  qualified: "Good news — your enquiry has been qualified and we will be in touch about the next steps",
+    "We need a little more information to move your enquiry forward - please reply with the details you can share",
+  qualified: "Good news - your enquiry has been qualified and we will be in touch about the next steps",
   not_qualified: "After reviewing your enquiry, we are unable to take it forward at this time",
   proposal_preparation: "We are preparing a proposal for your enquiry",
-  proposal_sent: "We have sent you a proposal — please review it and let us know if you have any questions",
-  closed: "Your enquiry has been closed — thank you for reaching out",
+  proposal_sent: "We have sent you a proposal - please review it and let us know if you have any questions",
+  closed: "Your enquiry has been closed - thank you for reaching out",
   cancelled: "Your enquiry has been cancelled"
 };
 
@@ -106,7 +106,7 @@ export function buildUpdateMessages(status: EnquiryStatus, ctx: UpdateContext): 
     `${line}.`,
     "",
     `Ref: ${ctx.ref} · ${ctx.service}`,
-    "— RJ Studio"
+    "- RJ Studio"
   ].join("\n");
 
   return { status, label, line, subject, emailText, emailHtml, whatsapp };

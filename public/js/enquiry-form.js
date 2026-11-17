@@ -455,7 +455,7 @@
       '<div class="enq-done">' +
       '<span class="enq-done-ico">✓</span>' +
       "<h3>Your enquiry has been received</h3>" +
-      "<p>Thank you — we&rsquo;ve got your requirements and will get back to you on WhatsApp soon.</p>" +
+      "<p>Thank you - we&rsquo;ve got your requirements and will get back to you on WhatsApp soon.</p>" +
       (ref ? '<p class="enq-help">Reference: <b>' + esc(ref) + "</b></p>" : "") +
       "</div>";
   }
@@ -603,7 +603,7 @@
       loadSchema(name)
         .then(function (fields) { render(name, fields); })
         .catch(function () {
-          host.innerHTML = '<p class="enq-alert">Sorry — we could not load the form right now. Please use the contact page.</p>';
+          host.innerHTML = '<p class="enq-alert">Sorry - we could not load the form right now. Please use the contact page.</p>';
         });
     }
   }

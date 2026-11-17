@@ -130,10 +130,10 @@ export default function EnquiryDetail({ id }: { id: string }) {
       else parts.push("Email failed");
       if (body.whatsappUrl) {
         const opened = window.open(body.whatsappUrl, "_blank", "noopener");
-        if (opened) parts.push("WhatsApp opened — press send");
+        if (opened) parts.push("WhatsApp opened - press send");
         else {
           setWhatsappHref(body.whatsappUrl);
-          parts.push("WhatsApp ready — open below");
+          parts.push("WhatsApp ready - open below");
         }
       } else {
         parts.push("No WhatsApp number on file");

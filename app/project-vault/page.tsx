@@ -21,7 +21,7 @@ export default function ProjectVaultPage() {
             <div className="kicker">Project Vault</div>
             <h1>Your project, delivered.</h1>
             <p>
-              Enter your access code to open your private handover — files, documents and deliverables, all
+              Enter your access code to open your private handover - files, documents and deliverables, all
               in one place.
             </p>
             <div className="soft-chip" style={{ marginTop: 20 }}>

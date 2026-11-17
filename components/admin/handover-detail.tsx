@@ -235,7 +235,7 @@ export default function HandoverDetail({ id }: { id: string }) {
 
       {newCode ? (
         <div className="app-card">
-          <p className="muted">New access code — shown once:</p>
+          <p className="muted">New access code - shown once:</p>
           <p className="vault-note" style={{ fontSize: 20, fontWeight: 700, letterSpacing: "0.1em", color: "var(--mint-ink)" }}>{newCode}</p>
         </div>
       ) : null}
@@ -293,7 +293,7 @@ export default function HandoverDetail({ id }: { id: string }) {
               <span style={{ width: `${progress.pct}%` }} />
             </div>
             <p className="vault-progress">
-              {progress.label} — {progress.pct}%
+              {progress.label} - {progress.pct}%
               {formatEta(progress.eta || 0) ? ` · ${formatEta(progress.eta || 0)} left` : ""}
             </p>
             {progress.cancellable ? (
@@ -312,7 +312,7 @@ export default function HandoverDetail({ id }: { id: string }) {
         ) : null}
         <div className="f-field">
           <label htmlFor="vault-title">
-            Title <span className="opt">(optional — applied to single uploads)</span>
+            Title <span className="opt">(optional - applied to single uploads)</span>
           </label>
           <input
             className="f-input"
@@ -327,7 +327,7 @@ export default function HandoverDetail({ id }: { id: string }) {
         <div className="f-field">
           <label htmlFor="vault-upload">Upload files</label>
           <input className="f-input" id="vault-upload" type="file" multiple ref={fileInput} onChange={upload} disabled={busy} />
-          <p className="f-hint">Any file type — archives, PDFs, source, installers (.exe/.dll), assets. Up to 100 MB each.</p>
+          <p className="f-hint">Any file type - archives, PDFs, source, installers (.exe/.dll), assets. Up to 100 MB each.</p>
         </div>
 
         <div className="f-field">

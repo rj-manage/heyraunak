@@ -219,7 +219,7 @@ export default function AccessForm() {
           <span className="dot" /> Welcome to RJ Studio
         </div>
         <p className="vault-note" style={{ fontSize: 14 }}>
-          Your handover is ready and waiting for you &mdash; enter your code to open it.
+          Your handover is ready and waiting for you - enter your code to open it.
         </p>
       </div>
 

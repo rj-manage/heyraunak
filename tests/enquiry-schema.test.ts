@@ -124,7 +124,7 @@ describe("answers validation", () => {
       full_name: "Ada Lovelace",
       whatsapp: "+91 98765 43210",
       email: "ada@example.com",
-      budget: "$500–$1,000"
+      budget: "$500-$1,000"
     });
     expect(res.success).toBe(true);
   });
@@ -134,13 +134,13 @@ describe("answers validation", () => {
       full_name: "Ada",
       whatsapp: "+91 98765 43210",
       email: "not-an-email",
-      budget: "$500–$1,000"
+      budget: "$500-$1,000"
     });
     expect(res.success).toBe(false);
   });
 
   it("rejects an invalid whatsapp number", () => {
-    const res = schema.safeParse({ full_name: "Ada", whatsapp: "abc", email: "ada@example.com", budget: "$500–$1,000" });
+    const res = schema.safeParse({ full_name: "Ada", whatsapp: "abc", email: "ada@example.com", budget: "$500-$1,000" });
     expect(res.success).toBe(false);
   });
 
@@ -149,7 +149,7 @@ describe("answers validation", () => {
       full_name: "Ada",
       whatsapp: "+91 98765 43210",
       email: "ada@example.com",
-      budget: "$500–$1,000",
+      budget: "$500-$1,000",
       purpose: "Nonsense"
     });
     expect(res.success).toBe(false);

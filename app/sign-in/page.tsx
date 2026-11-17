@@ -40,7 +40,7 @@ export default async function SignInPage({
         {params.error && (
           <p className="auth-note" data-tone="error" role="alert">
             {params.error === "exchange"
-              ? "We could not complete that sign-in. The link may have expired — please try again."
+              ? "We could not complete that sign-in. The link may have expired - please try again."
               : params.error === "missing_code"
                 ? "That sign-in link was incomplete. Please start again."
                 : "We could not complete that sign-in. Please try again."}

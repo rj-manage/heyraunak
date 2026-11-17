@@ -38,7 +38,7 @@ export function signInEmail(input: { code: string; minutes: number }): AuthEmail
       `<p style="margin:18px 0;padding:16px;border-radius:14px;background:${CANVAS};box-shadow:inset 3px 3px 6px #c3cdda, inset -3px -3px 6px #f7fafe;` +
       `color:${INK};font-size:24px;font-weight:700;letter-spacing:.12em;text-align:center;font-family:ui-monospace,Menlo,Consolas,monospace">${code}</p>` +
       `<p style="margin:0 0 12px;color:${INK};font-size:14px;line-height:1.6">Enter it on the sign-in page to continue.</p>` +
-      `<p style="margin:20px 0 0;color:${MUTED};font-size:13px">If you did not request this, you can safely ignore this email — no one can sign in without the code.</p>` +
+      `<p style="margin:20px 0 0;color:${MUTED};font-size:13px">If you did not request this, you can safely ignore this email - no one can sign in without the code.</p>` +
       `<p style="margin:16px 0 0;padding-top:14px;border-top:1px solid rgba(60,80,110,.14);color:${MUTED};font-size:12px;line-height:1.6">RJ Studio · Bengaluru, India<br />This is a transactional message about your account.</p>` +
       `</div></div>`,
     text:
