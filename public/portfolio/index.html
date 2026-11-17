@@ -366,13 +366,21 @@
     /* finale: keep the walker fully visible at the very end of the page
        instead of hiding it behind the last (contact) card */
     footer{ min-height:82vh; display:flex; flex-direction:column; justify-content:flex-end; }
-    /* nav collapses to a menu button; the links drop down as a panel so the
-       fixed bar keeps its height and never overlaps the first card */
-    .site-nav{ flex-wrap:wrap; border-radius:28px; padding:12px 16px; }
+    /* Mobile: the bar collapses to just the logo (left) and menu button
+       (right) - no pill, no line. The links drop down as their own floating
+       panel so they stay readable over the page. */
+    .site-nav{
+      flex-wrap:nowrap;
+      padding:0;
+      border-radius:0;
+      background:transparent;
+      box-shadow:none;
+    }
     .site-nav .nav-links{
-      order:3; width:100%;
+      position:absolute; top:calc(100% + 10px); left:0; right:0;
       display:none; flex-direction:column; align-items:stretch; gap:2px;
-      padding:10px 4px 6px; border-top:1px solid rgba(60,80,110,.14);
+      padding:10px; border-radius:20px;
+      background:var(--canvas); box-shadow:var(--sh-r);
     }
     .site-nav .nav-links.open{ display:flex; }
     .site-nav .nav-links a{ padding:11px 14px; border-radius:14px; }
@@ -386,6 +394,23 @@
   }
   @media (max-width:420px){
     .site-nav .nav-brand small{ display:none; }
+  }
+  /* mobile "swipe down" hint (phones only) */
+  @media (max-width:640px){
+    body::after{
+      content:""; position:fixed; left:50%; bottom:18px; margin-left:-21px;
+      width:42px; height:42px; border-radius:50%;
+      background-color:var(--canvas);
+      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23156a47' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+      background-repeat:no-repeat; background-position:center; background-size:20px 20px;
+      box-shadow:var(--sh-s); z-index:70; pointer-events:none;
+      animation:scrollHint 1.8s ease-in-out infinite, scrollHintOut .6s ease 8s forwards;
+    }
+  }
+  @keyframes scrollHint{ 0%,100%{ transform:translateY(0);} 50%{ transform:translateY(6px);} }
+  @keyframes scrollHintOut{ to{ opacity:0; visibility:hidden; } }
+  @media (prefers-reduced-motion:reduce){
+    body::after{ animation:scrollHintOut .6s ease 8s forwards; }
   }
 </style>
 
