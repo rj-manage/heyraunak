@@ -47,18 +47,26 @@ export default function SignInForm({ next }: { next: string }) {
     setBusy(true);
     setState({ tone: "idle", message: "" });
     rememberNext();
-    const supabase = createSupabaseBrowserClient();
-    const { error } = await supabase.auth.signInWithOtp({
-      email,
-      options: { emailRedirectTo: redirectUrl() }
-    });
-    setBusy(false);
-    if (error) {
-      setState({ tone: "error", message: error.message });
+    try {
+      const res = await fetch("/api/auth/send-link", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email })
+      });
+      const body = await res.json().catch(() => ({}));
+      if (!res.ok || body.ok === false) {
+        setBusy(false);
+        setState({ tone: "error", message: body.message || "We couldn't send the code. Please try again." });
+        return;
+      }
+    } catch {
+      setBusy(false);
+      setState({ tone: "error", message: "Could not reach the server. Please try again." });
       return;
     }
+    setBusy(false);
     setSent(true);
-    setState({ tone: "ok", message: "Check your inbox - we sent you a sign-in link and code." });
+    setState({ tone: "ok", message: "Check your inbox - we emailed you a sign-in code." });
   }
 
   async function verifyCode(e: React.FormEvent) {
@@ -131,7 +139,7 @@ export default function SignInForm({ next }: { next: string }) {
         )}
 
         <button className="soft-btn" type="submit" disabled={busy || !email}>
-          {busy ? "Working…" : sent ? "Verify code" : "Email me a sign-in link"}
+          {busy ? "Working…" : sent ? "Verify code" : "Email me a sign-in code"}
         </button>
       </form>
 
