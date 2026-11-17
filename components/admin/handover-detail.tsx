@@ -13,7 +13,6 @@ interface FileRow {
   id: string; display_name: string | null; original_filename: string; category: string;
   file_size: number | null; is_visible: boolean; is_downloadable: boolean; created_at: string;
 }
-interface EventRow { id: string; event_type: string; created_at: string }
 interface Handover {
   id: string; client_name: string; client_email: string; project_name: string;
   project_reference: string | null; service_category: string | null; description: string | null;
@@ -33,7 +32,6 @@ export default function HandoverDetail({ id }: { id: string }) {
   const [state, setState] = useState<"loading" | "ready" | "error">("loading");
   const [h, setH] = useState<Handover | null>(null);
   const [files, setFiles] = useState<FileRow[]>([]);
-  const [events, setEvents] = useState<EventRow[]>([]);
   const [message, setMessage] = useState("");
   const [tone, setTone] = useState<"idle" | "ok" | "error">("idle");
   const [newCode, setNewCode] = useState("");
@@ -55,7 +53,6 @@ export default function HandoverDetail({ id }: { id: string }) {
     const data = await res.json();
     setH(data.handover);
     setFiles(data.files || []);
-    setEvents(data.events || []);
     setState("ready");
   }, [id]);
 
@@ -384,16 +381,6 @@ export default function HandoverDetail({ id }: { id: string }) {
             Delete handover
           </button>
         </div>
-      </div>
-
-      <div className="app-card">
-        <h2 style={{ fontSize: 18, marginBottom: 14 }}>Activity</h2>
-        {events.length === 0 ? <p className="vault-empty">No activity yet.</p> : null}
-        {events.map((ev) => (
-          <div className="vault-file" key={ev.id}>
-            <div className="vault-file-main"><b>{ev.event_type}</b><span>{new Date(ev.created_at).toLocaleString()}</span></div>
-          </div>
-        ))}
       </div>
     </>
   );
