@@ -50,6 +50,21 @@
     if (best) best.classList.add("active");
   })();
 
+  /* ---------------- mobile jump-to-end arrow ---------------- */
+  (function scrollEnd() {
+    var btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "scroll-end";
+    btn.setAttribute("aria-label", "Scroll to the end of the page");
+    btn.innerHTML =
+      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" ' +
+      'stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>';
+    btn.addEventListener("click", function () {
+      window.scrollTo({ top: document.documentElement.scrollHeight, behavior: "smooth" });
+    });
+    document.body.appendChild(btn);
+  })();
+
   /* ---------------- reveal on scroll ---------------- */
   var revealEls = document.querySelectorAll(".reveal");
   if ("IntersectionObserver" in window) {

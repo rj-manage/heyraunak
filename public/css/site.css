@@ -66,42 +66,45 @@ body {
   height: 0;
 }
 
-/* ---------- mobile "swipe down" hint (phones only) ---------- */
+/* ---------- mobile "jump to the end" arrow (phones only) ----------
+   Injected by js/site.js; sits bottom-left and scrolls the page to the end. */
+.scroll-end {
+  display: none;
+}
 @media (max-width: 640px) {
-  body::after {
-    content: "";
+  .scroll-end {
+    display: grid;
+    place-items: center;
     position: fixed;
-    left: 50%;
+    left: 18px;
     bottom: 18px;
-    width: 42px;
-    height: 42px;
-    margin-left: -21px;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    border: 0;
     border-radius: 50%;
-    background-color: var(--canvas);
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23156a47' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: 20px 20px;
+    background: var(--canvas);
+    color: var(--mint-ink);
     box-shadow: var(--sh-s);
+    cursor: pointer;
     z-index: 70;
-    pointer-events: none;
-    animation: scrollHint 1.8s ease-in-out infinite, scrollHintOut 0.6s ease 8s forwards;
+    animation: scrollHint 1.8s ease-in-out infinite;
   }
-  /* the admin console has its own layout - no hint there */
-  body:has(.app-shell)::after {
-    display: none;
+  .scroll-end:active {
+    box-shadow: var(--sh-in-s);
+  }
+  .scroll-end svg {
+    width: 20px;
+    height: 20px;
   }
 }
 @keyframes scrollHint {
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(6px); }
 }
-@keyframes scrollHintOut {
-  to { opacity: 0; visibility: hidden; }
-}
 @media (prefers-reduced-motion: reduce) {
-  body::after {
-    animation: scrollHintOut 0.6s ease 8s forwards;
+  .scroll-end {
+    animation: none;
   }
 }
 

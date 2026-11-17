@@ -395,23 +395,6 @@
   @media (max-width:420px){
     .site-nav .nav-brand small{ display:none; }
   }
-  /* mobile "swipe down" hint (phones only) */
-  @media (max-width:640px){
-    body::after{
-      content:""; position:fixed; left:50%; bottom:18px; margin-left:-21px;
-      width:42px; height:42px; border-radius:50%;
-      background-color:var(--canvas);
-      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23156a47' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
-      background-repeat:no-repeat; background-position:center; background-size:20px 20px;
-      box-shadow:var(--sh-s); z-index:70; pointer-events:none;
-      animation:scrollHint 1.8s ease-in-out infinite, scrollHintOut .6s ease 8s forwards;
-    }
-  }
-  @keyframes scrollHint{ 0%,100%{ transform:translateY(0);} 50%{ transform:translateY(6px);} }
-  @keyframes scrollHintOut{ to{ opacity:0; visibility:hidden; } }
-  @media (prefers-reduced-motion:reduce){
-    body::after{ animation:scrollHintOut .6s ease 8s forwards; }
-  }
 </style>
 
   <link rel="canonical" href="https://www.heyraunak.site/portfolio/" />
@@ -565,32 +548,47 @@
         <h2>Things I've built</h2>
 
         <div class="project">
+          <h3>AR Mobile Application</h3>
+          <div class="tags"><span>AR</span><span>Mobile</span><span>3D</span></div>
+        </div>
+
+        <div class="project">
+          <h3>Web AR Experience</h3>
+          <div class="tags"><span>Web AR</span><span>Web</span><span>3D</span></div>
+        </div>
+
+        <div class="project">
+          <h3>POS System</h3>
+          <div class="tags"><span>POS</span><span>Web</span><span>Billing</span></div>
+        </div>
+
+        <div class="project">
+          <h3>CRM System</h3>
+          <div class="tags"><span>CRM</span><span>Web</span><span>Dashboard</span></div>
+        </div>
+
+        <div class="project">
           <h3>Web Scrapper<span class="when">Jan 2026</span></h3>
-          <p>The automated process of extracting specific data from websites and converting it into a structured format like a spreadsheet, database, or JSON file</p>
           <div class="tags"><span>Python</span><span>ML logic</span><span>Web</span></div>
         </div>
 
         <div class="project">
           <h3>Learn MySQL Web Application <span class="when">Dec 2025</span></h3>
-          <p>Flask platform for learning and running SQL queries live with explanations, plus role-based logins with controlled database access.</p>
           <div class="tags"><span>Flask</span><span>MySQL</span><span>Python</span></div>
         </div>
 
         <div class="project">
           <h3>Inventory &amp; Sales Management System</h3>
-          <p>Database-driven system for stock, sales transactions and automated financial / profit analysis reports.</p>
           <div class="tags"><span>Java</span><span>MySQL</span><span>JSP</span></div>
         </div>
 
         <div class="project">
           <h3>Event Management System <span class="when">Apr 2025</span></h3>
-          <p>JSP &amp; Servlet web app for event management and ticket booking with search, availability tracking and MySQL persistence.</p>
           <div class="tags"><span>Java</span><span>Servlets</span><span>MySQL</span></div>
         </div>
 
         <div class="project">
           <h3>Full-Stack Web Application</h3>
-          <p>Responsive web app with authentication and full CRUD, integrating a backend database with the frontend interface.</p>
           <div class="tags"><span>HTML/CSS/JS</span><span>Auth</span><span>CRUD</span></div>
         </div>
       </div>
