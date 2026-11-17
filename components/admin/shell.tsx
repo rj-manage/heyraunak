@@ -19,7 +19,7 @@ export default function AdminShell({ active, children }: { active: string; child
             <img src="/assets/RJ_Logo_Black.png" alt="RJ logo" width={30} height={30} />
           </span>
           <span>
-            <b>RJ</b>
+            <b>RJ Studio</b>
             <small>Project Vault</small>
           </span>
         </a>

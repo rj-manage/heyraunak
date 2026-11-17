@@ -38,7 +38,7 @@ export default function DeliveryPage() {
                 <img src="/assets/RJ_Logo_Black.png" alt="RJ logo" width={30} height={30} />
               </span>
               <span>
-                <b>RJ</b>
+                <b>RJ Studio</b>
                 <small>Design &amp; Development</small>
               </span>
             </a>
