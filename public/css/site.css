@@ -93,6 +93,9 @@ body {
   .scroll-end:active {
     box-shadow: var(--sh-in-s);
   }
+  .scroll-end.is-hidden {
+    display: none;
+  }
   .scroll-end svg {
     width: 20px;
     height: 20px;

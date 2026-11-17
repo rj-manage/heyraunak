@@ -63,6 +63,26 @@
       window.scrollTo({ top: document.documentElement.scrollHeight, behavior: "smooth" });
     });
     document.body.appendChild(btn);
+
+    /* hide it once the reader has reached the very bottom (and on pages that
+       cannot scroll at all) */
+    function update() {
+      var max = document.documentElement.scrollHeight - window.innerHeight;
+      var atBottom = max <= 8 || window.scrollY >= max - 8;
+      btn.classList.toggle("is-hidden", atBottom);
+    }
+    var ticking = false;
+    function onScroll() {
+      if (ticking) return;
+      ticking = true;
+      window.requestAnimationFrame(function () {
+        ticking = false;
+        update();
+      });
+    }
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    update();
   })();
 
   /* ---------------- reveal on scroll ---------------- */
