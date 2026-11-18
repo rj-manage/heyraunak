@@ -47,7 +47,12 @@ export interface ServiceForm {
   fields: EnquiryField[];
 }
 
-export const CATEGORIES = ["Website Development", "Software & App Development", "Digital Marketing"] as const;
+export const CATEGORIES = [
+  "Website Development",
+  "Software & App Development",
+  "Digital Marketing",
+  "Student Projects"
+] as const;
 
 /** Fields every service form carries. Name, WhatsApp and email are mandatory. */
 export const COMMON_FIELDS: EnquiryField[] = [
@@ -140,6 +145,16 @@ const BUDGET_MKT = [
   "$5,000+ / month",
   "Not sure yet"
 ];
+const BUDGET_STUDENT = [
+  "Under $100",
+  "$100-$250",
+  "$250-$500",
+  "$500-$1,000",
+  "$1,000-$2,500",
+  "$2,500-$5,000",
+  "$5,000+",
+  "Not sure yet"
+];
 
 /* ---------- field builders ---------- */
 
@@ -209,6 +224,11 @@ const mkt = (service: string, fields: EnquiryField[]): ServiceForm => ({
   category: "Digital Marketing",
   service,
   fields: [...fields, ...tail(BUDGET_MKT)]
+});
+const stud = (service: string, fields: EnquiryField[]): ServiceForm => ({
+  category: "Student Projects",
+  service,
+  fields: [...fields, ...tail(BUDGET_STUDENT)]
 });
 
 /* ============================================================
@@ -1179,7 +1199,183 @@ const MARKETING: ServiceForm[] = [
   ])
 ];
 
-export const ALL_FORMS: ServiceForm[] = [...WEBSITE, ...SOFTWARE, ...MARKETING];
+/* ============================================================
+   CATEGORY 4 · STUDENT PROJECTS (5)
+   ------------------------------------------------------------
+   Mini and major academic projects. The project kinds below match
+   the ones on the student banner (websites, Android/iOS apps,
+   Windows/Linux software, IoT, AR/VR).
+   ============================================================ */
+
+const PROJECT_KIND = ["Mini project", "Major project", "Final year project", "Other"];
+
+const STUDENT_DELIVERABLES = [
+  "Source code",
+  "Report / documentation",
+  "PPT / presentation",
+  "Demo video",
+  "Deployment / setup help"
+];
+
+const STUDENT: ServiceForm[] = [
+  stud("Student Website Project", [
+    sel("project_kind", "Project Type", PROJECT_KIND, { allowOther: true }),
+    t("institution", "College / University Name", { placeholder: "e.g. RV College of Engineering" }),
+    t("course", "Course & Branch", { placeholder: "e.g. B.Tech, Computer Science" }),
+    multi("technology", "Preferred Technology", [
+      "HTML / CSS / JavaScript",
+      "React",
+      "Next.js",
+      "Node.js",
+      "PHP",
+      "Python (Django / Flask)",
+      "Java (Spring)",
+      "WordPress",
+      "Other"
+    ]),
+    multi("features", "Required Website Features", [
+      "Login / signup",
+      "Admin panel",
+      "Database",
+      "Payments",
+      "Search",
+      "Chatbot",
+      "Reports / dashboard",
+      "Other"
+    ]),
+    multi("deliverables", "Expected Deliverables", STUDENT_DELIVERABLES),
+    { id: "submission_deadline", label: "Submission Deadline", type: "date", help: "Optional", step: 2 }
+  ]),
+
+  stud("Student Android & iOS App Project", [
+    sel("project_kind", "Project Type", PROJECT_KIND, { allowOther: true }),
+    t("institution", "College / University Name", { placeholder: "e.g. RV College of Engineering" }),
+    t("course", "Course & Branch", { placeholder: "e.g. B.Tech, Computer Science" }),
+    rdo("platform", "Target Platform", ["Android", "iOS", "Both"]),
+    multi("technology", "Preferred Technology", [
+      "Java",
+      "Kotlin",
+      "Flutter",
+      "React Native",
+      "Swift",
+      "Other"
+    ]),
+    multi("features", "Required App Features", [
+      "Login / signup",
+      "Backend / database",
+      "Push notifications",
+      "Maps",
+      "Chat",
+      "Payments",
+      "Camera / sensors",
+      "Other"
+    ]),
+    multi("deliverables", "Expected Deliverables", STUDENT_DELIVERABLES),
+    { id: "submission_deadline", label: "Submission Deadline", type: "date", help: "Optional", step: 2 }
+  ]),
+
+  stud("Student Windows & Linux Software Project", [
+    sel("project_kind", "Project Type", PROJECT_KIND, { allowOther: true }),
+    t("institution", "College / University Name", { placeholder: "e.g. RV College of Engineering" }),
+    t("course", "Course & Branch", { placeholder: "e.g. B.Tech, Computer Science" }),
+    multi("os", "Target Operating System", ["Windows", "Linux", "Both"]),
+    multi("technology", "Preferred Technology", [
+      "Java",
+      "Python",
+      "C# / .NET",
+      "C / C++",
+      "Electron",
+      "Other"
+    ]),
+    multi("features", "Required Software Features", [
+      "Login / users",
+      "Database",
+      "File handling",
+      "Reports",
+      "Charts / dashboard",
+      "Hardware / serial port",
+      "Other"
+    ]),
+    multi("deliverables", "Expected Deliverables", STUDENT_DELIVERABLES),
+    { id: "submission_deadline", label: "Submission Deadline", type: "date", help: "Optional", step: 2 }
+  ]),
+
+  stud("Student IoT Project", [
+    sel("project_kind", "Project Type", PROJECT_KIND, { allowOther: true }),
+    t("institution", "College / University Name", { placeholder: "e.g. RV College of Engineering" }),
+    t("course", "Course & Branch", { placeholder: "e.g. B.Tech, Electronics" }),
+    multi("board", "Target Board / Controller", [
+      "Arduino",
+      "Raspberry Pi",
+      "ESP32 / ESP8266",
+      "NodeMCU",
+      "Not sure yet"
+    ]),
+    multi("sensors", "Sensors & Modules", [
+      "Temperature / humidity",
+      "Motion / PIR",
+      "Ultrasonic distance",
+      "Gas / smoke",
+      "Light / LDR",
+      "GPS",
+      "RFID",
+      "Heart rate",
+      "Not sure yet"
+    ]),
+    multi("connectivity", "Connectivity", ["Wi-Fi", "Bluetooth", "GSM / 4G", "LoRa", "Zigbee", "None (offline)"]),
+    rdo("interface", "Monitoring Interface", [
+      "Cloud dashboard",
+      "Mobile app",
+      "Both",
+      "Local display only"
+    ]),
+    multi("deliverables", "Expected Deliverables", STUDENT_DELIVERABLES),
+    { id: "submission_deadline", label: "Submission Deadline", type: "date", help: "Optional", step: 2 }
+  ]),
+
+  stud("Student AR & VR Project", [
+    sel("project_kind", "Project Type", PROJECT_KIND, { allowOther: true }),
+    t("institution", "College / University Name", { placeholder: "e.g. RV College of Engineering" }),
+    t("course", "Course & Branch", { placeholder: "e.g. B.Tech, Computer Science" }),
+    multi("platform", "Target Platform", [
+      "Android",
+      "iOS",
+      "Windows PC",
+      "Web (browser)",
+      "Meta Quest",
+      "Other"
+    ]),
+    sel("technology", "Preferred Engine / Technology", [
+      "Unity",
+      "Unreal Engine",
+      "WebXR",
+      "ARCore",
+      "ARKit",
+      "Not sure yet"
+    ], { allowOther: true }),
+    ta("use_case", "Project Use Case", {
+      placeholder: "e.g. education, training simulation, virtual tour, game"
+    }),
+    multi("features", "Required Features", [
+      "3D models",
+      "360° scenes",
+      "Hand / gaze interaction",
+      "Voice / audio",
+      "Multiplayer",
+      "Animations",
+      "Other"
+    ]),
+    sel("assets_ready", "Do You Have 3D Assets and Content?", [
+      "Yes, ready",
+      "Some of it",
+      "No, need help creating"
+    ]),
+    multi("deliverables", "Expected Deliverables", STUDENT_DELIVERABLES),
+    { id: "submission_deadline", label: "Submission Deadline", type: "date", help: "Optional", step: 2 }
+  ])
+];
+
+export const ALL_FORMS: ServiceForm[] = [...WEBSITE, ...SOFTWARE, ...MARKETING, ...STUDENT];
 
 export const SERVICE_FORMS: Record<string, ServiceForm> = Object.fromEntries(
   ALL_FORMS.map((f) => [f.service, f])

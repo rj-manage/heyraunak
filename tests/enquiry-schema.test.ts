@@ -28,8 +28,8 @@ const VALID_TYPES = new Set([
 const OPTION_TYPES = new Set(["select", "multi", "radio", "budget", "slider"]);
 
 describe("enquiry schema", () => {
-  it("defines exactly 60 services across the three categories", () => {
-    expect(ALL_FORMS).toHaveLength(60);
+  it("defines exactly 65 services across the four categories", () => {
+    expect(ALL_FORMS).toHaveLength(65);
     const cats = Array.from(new Set(ALL_FORMS.map((f) => f.category))).sort();
     expect(cats).toEqual([...CATEGORIES].sort());
   });

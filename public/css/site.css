@@ -669,6 +669,9 @@ section {
 .panel-ico.indigo {
   color: var(--indigo);
 }
+.panel-ico.amber {
+  color: var(--amber);
+}
 .panel-num {
   margin-left: auto;
   font-family: var(--font-display);
@@ -1813,5 +1816,98 @@ footer {
 .shot,
 .shot .frame {
   min-width: 0;
+}
+
+/* ============================================================
+   HOME POPUP - student projects ad (home page only)
+   ------------------------------------------------------------
+   Injected markup lives in index.html; js/home-popup.js opens it.
+   ============================================================ */
+.pop-locked {
+  overflow: hidden;
+}
+.home-pop {
+  position: fixed;
+  inset: 0;
+  z-index: 95;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+}
+.home-pop[hidden] {
+  display: none;
+}
+.home-pop-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(42, 52, 68, 0.5);
+}
+.home-pop-card {
+  position: relative;
+  z-index: 1;
+  width: min(540px, 100%);
+  max-height: 90vh;
+  overflow-y: auto;
+  border-radius: 26px;
+  padding: 26px 26px 28px;
+  background: var(--canvas);
+  box-shadow: var(--sh-r);
+  animation: popIn 0.28s var(--ease);
+}
+@keyframes popIn {
+  from {
+    opacity: 0;
+    transform: translateY(14px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .home-pop-card {
+    animation: none;
+  }
+}
+.home-pop-x {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  z-index: 2;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  font-size: 22px;
+  line-height: 1;
+  color: var(--ink);
+  background: var(--canvas);
+  box-shadow: var(--sh-s);
+}
+.home-pop-img {
+  display: block;
+  width: 100%;
+  border-radius: 18px;
+  box-shadow: var(--sh-s);
+}
+.home-pop-body {
+  margin-top: 20px;
+}
+.home-pop-body h2 {
+  font-size: clamp(21px, 3vw, 27px);
+  margin: 8px 0 10px;
+}
+.home-pop-body p {
+  color: var(--muted);
+  font-size: 14.5px;
+}
+.home-pop-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 22px;
 }
 

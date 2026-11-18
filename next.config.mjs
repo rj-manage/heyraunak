@@ -20,6 +20,7 @@ const nextConfig = {
       "services/software-app-development",
       "services/digital-marketing",
       "services/social-media-marketing",
+      "services/student-projects",
       "works",
       "portfolio",
       "gallery",
