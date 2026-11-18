@@ -145,16 +145,6 @@ const BUDGET_MKT = [
   "$5,000+ / month",
   "Not sure yet"
 ];
-const BUDGET_STUDENT = [
-  "Under $100",
-  "$100-$250",
-  "$250-$500",
-  "$500-$1,000",
-  "$1,000-$2,500",
-  "$2,500-$5,000",
-  "$5,000+",
-  "Not sure yet"
-];
 
 /* ---------- field builders ---------- */
 
@@ -188,10 +178,9 @@ function yn(id: string, label: string, opt: Partial<EnquiryField> = {}): Enquiry
   return { id, label, type: "radio", options: ["Yes", "No"], ...opt };
 }
 
-/** Budget / timeline / reference / attachments block every form ends with. */
-function tail(budgetOptions: string[]): EnquiryField[] {
+/** Timeline / reference / attachments block every form ends with. */
+function tailRest(): EnquiryField[] {
   return [
-    sld("budget", "Estimated Budget", budgetOptions, { required: true, step: 3 }),
     sel("timeline", "Expected Timeline", TIMELINE, { help: "Optional", step: 3 }),
     { id: "start_date", label: "Preferred Start Date", type: "date", help: "Optional", step: 3 },
     url("reference_link", "Reference Link", {
@@ -208,6 +197,11 @@ function tail(budgetOptions: string[]): EnquiryField[] {
     },
     ta("additional_notes", "Anything Else?", { placeholder: "Optional", help: "Optional", step: 3 })
   ];
+}
+
+/** Budget / timeline / reference / attachments block most forms end with. */
+function tail(budgetOptions: string[]): EnquiryField[] {
+  return [sld("budget", "Estimated Budget", budgetOptions, { required: true, step: 3 }), ...tailRest()];
 }
 
 const web = (service: string, fields: EnquiryField[]): ServiceForm => ({
@@ -228,7 +222,7 @@ const mkt = (service: string, fields: EnquiryField[]): ServiceForm => ({
 const stud = (service: string, fields: EnquiryField[]): ServiceForm => ({
   category: "Student Projects",
   service,
-  fields: [...fields, ...tail(BUDGET_STUDENT)]
+  fields: [...fields, ...tailRest()]
 });
 
 /* ============================================================
@@ -1220,7 +1214,7 @@ const STUDENT_DELIVERABLES = [
 const STUDENT: ServiceForm[] = [
   stud("Student Website Project", [
     sel("project_kind", "Project Type", PROJECT_KIND, { allowOther: true }),
-    t("institution", "College / University Name", { placeholder: "e.g. RV College of Engineering" }),
+    t("institution", "College / University Name", { required: true, placeholder: "e.g. RV College of Engineering" }),
     t("course", "Course & Branch", { placeholder: "e.g. B.Tech, Computer Science" }),
     multi("technology", "Preferred Technology", [
       "HTML / CSS / JavaScript",
@@ -1249,7 +1243,7 @@ const STUDENT: ServiceForm[] = [
 
   stud("Student Android & iOS App Project", [
     sel("project_kind", "Project Type", PROJECT_KIND, { allowOther: true }),
-    t("institution", "College / University Name", { placeholder: "e.g. RV College of Engineering" }),
+    t("institution", "College / University Name", { required: true, placeholder: "e.g. RV College of Engineering" }),
     t("course", "Course & Branch", { placeholder: "e.g. B.Tech, Computer Science" }),
     rdo("platform", "Target Platform", ["Android", "iOS", "Both"]),
     multi("technology", "Preferred Technology", [
@@ -1276,7 +1270,7 @@ const STUDENT: ServiceForm[] = [
 
   stud("Student Windows & Linux Software Project", [
     sel("project_kind", "Project Type", PROJECT_KIND, { allowOther: true }),
-    t("institution", "College / University Name", { placeholder: "e.g. RV College of Engineering" }),
+    t("institution", "College / University Name", { required: true, placeholder: "e.g. RV College of Engineering" }),
     t("course", "Course & Branch", { placeholder: "e.g. B.Tech, Computer Science" }),
     multi("os", "Target Operating System", ["Windows", "Linux", "Both"]),
     multi("technology", "Preferred Technology", [
@@ -1302,7 +1296,7 @@ const STUDENT: ServiceForm[] = [
 
   stud("Student IoT Project", [
     sel("project_kind", "Project Type", PROJECT_KIND, { allowOther: true }),
-    t("institution", "College / University Name", { placeholder: "e.g. RV College of Engineering" }),
+    t("institution", "College / University Name", { required: true, placeholder: "e.g. RV College of Engineering" }),
     t("course", "Course & Branch", { placeholder: "e.g. B.Tech, Electronics" }),
     multi("board", "Target Board / Controller", [
       "Arduino",
@@ -1335,7 +1329,7 @@ const STUDENT: ServiceForm[] = [
 
   stud("Student AR & VR Project", [
     sel("project_kind", "Project Type", PROJECT_KIND, { allowOther: true }),
-    t("institution", "College / University Name", { placeholder: "e.g. RV College of Engineering" }),
+    t("institution", "College / University Name", { required: true, placeholder: "e.g. RV College of Engineering" }),
     t("course", "Course & Branch", { placeholder: "e.g. B.Tech, Computer Science" }),
     multi("platform", "Target Platform", [
       "Android",
@@ -1411,11 +1405,14 @@ function expandOther(fields: EnquiryField[]): EnquiryField[] {
 
 /** Full ordered field list for a service: common contact fields first, then the
  *  service-specific questions and the shared optional tail. Fields without an
- *  explicit step fall in the middle step (the service-specific requirements). */
+ *  explicit step fall in the middle step (the service-specific requirements).
+ *  Student forms drop the shared "Company Name" - a student has no company. */
 export function fieldsForService(name: string): EnquiryField[] | null {
   const form = getServiceForm(name);
   if (!form) return null;
-  return expandOther([...COMMON_FIELDS, ...form.fields]).map((f) => ({ ...f, step: f.step ?? 2 }));
+  const common =
+    form.category === "Student Projects" ? COMMON_FIELDS.filter((f) => f.id !== "company") : COMMON_FIELDS;
+  return expandOther([...common, ...form.fields]).map((f) => ({ ...f, step: f.step ?? 2 }));
 }
 
 /** Wizard step ids + display titles, shared by the client and tests. */

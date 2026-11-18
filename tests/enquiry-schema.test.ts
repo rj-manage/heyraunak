@@ -68,13 +68,28 @@ describe("enquiry schema", () => {
     expect(byId.company?.required).toBeFalsy();
   });
 
-  it("renders the estimated budget as a mandatory slider on every service", () => {
+  it("renders the estimated budget as a mandatory slider on every non-student service", () => {
     for (const form of ALL_FORMS) {
       const budget = form.fields.find((f) => f.id === "budget");
+      if (form.category === "Student Projects") {
+        expect(budget, form.service).toBeUndefined();
+        continue;
+      }
       expect(budget, form.service).toBeTruthy();
       expect(budget?.required, form.service).toBe(true);
       expect(budget?.type, form.service).toBe("slider");
       expect((budget?.options || []).length, form.service).toBeGreaterThan(1);
+    }
+  });
+
+  it("student forms drop Company Name and budget and require the college name", () => {
+    for (const form of ALL_FORMS) {
+      if (form.category !== "Student Projects") continue;
+      const fields = fieldsForService(form.service)!;
+      const ids = fields.map((f) => f.id);
+      expect(ids, form.service).not.toContain("company");
+      expect(ids, form.service).not.toContain("budget");
+      expect(fields.find((f) => f.id === "institution")?.required, form.service).toBe(true);
     }
   });
 
@@ -96,13 +111,17 @@ describe("enquiry schema", () => {
       const fields = fieldsForService(form.service)!;
       const steps = Array.from(new Set(fields.map((f) => f.step))).sort();
       expect(steps, form.service).toEqual([1, 2, 3]);
-      expect(fields.filter((f) => f.step === 1).map((f) => f.id), form.service).toEqual([
-        "full_name",
-        "whatsapp",
-        "email",
-        "company"
-      ]);
-      expect(fields.find((f) => f.id === "budget")?.step, form.service).toBe(3);
+
+      const stepOne = fields.filter((f) => f.step === 1).map((f) => f.id);
+      const expectedStepOne =
+        form.category === "Student Projects"
+          ? ["full_name", "whatsapp", "email"]
+          : ["full_name", "whatsapp", "email", "company"];
+      expect(stepOne, form.service).toEqual(expectedStepOne);
+
+      const budget = fields.find((f) => f.id === "budget");
+      if (form.category === "Student Projects") expect(budget, form.service).toBeUndefined();
+      else expect(budget?.step, form.service).toBe(3);
       expect(fields.some((f) => f.step === 2), form.service).toBe(true);
     }
   });
