@@ -1896,10 +1896,6 @@ footer {
 .home-pop-body {
   margin-top: 20px;
 }
-.home-pop-body h2 {
-  font-size: clamp(21px, 3vw, 27px);
-  margin: 8px 0 10px;
-}
 .home-pop-body p {
   color: var(--muted);
   font-size: 14.5px;
