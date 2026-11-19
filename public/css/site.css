@@ -56,6 +56,17 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+/* the home page sits on a fixed watercolour backdrop; every other page
+   keeps the plain canvas. The layer is painted behind the content. */
+body.home::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: var(--canvas) url("../img/home-bg.jpg") center / cover no-repeat;
+}
+
 /* no visible scrollbars anywhere on the site */
 * {
   scrollbar-width: none; /* Firefox */
