@@ -1409,37 +1409,112 @@ section {
   border-radius: 999px;
   padding: 7px 13px;
 }
-.shot-strip {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 18px;
-}
-.shot.sm {
-  margin: 0;
-  padding: 11px;
+/* the swipeable screenshot slider inside each row */
+.shot-slider {
+  position: relative;
   border-radius: 20px;
+  overflow: hidden;
+  background: var(--canvas);
+  box-shadow: var(--sh-in-s);
+  touch-action: pan-y;
+  cursor: grab;
+}
+.shot-slider.is-dragging {
+  cursor: grabbing;
+}
+.shot-track {
+  display: flex;
+  transition: transform 0.55s var(--ease);
+  will-change: transform;
+}
+.shot-slider.is-dragging .shot-track {
+  transition: none;
+}
+.shot-slide {
+  position: relative;
+  flex: 0 0 100%;
+  margin: 0;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  background: #d9e1ec;
+}
+.shot-slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+.shot-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 2;
+  width: 46px;
+  height: 46px;
+  display: grid;
+  place-items: center;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  color: var(--ink);
+  background: rgba(247, 250, 254, 0.86);
   box-shadow: var(--sh-s);
+  transition: transform 0.18s var(--ease), background 0.18s var(--ease);
 }
-.shot.sm .chrome {
-  padding: 2px 4px 10px;
+.shot-nav:hover {
+  background: #ffffff;
 }
-.shot.sm .chrome .url {
-  font-size: 10px;
-  padding: 5px 11px;
+.shot-nav:active {
+  transform: translateY(-50%) scale(0.93);
 }
-.shot.sm .frame {
-  border-radius: 13px;
+.shot-nav.prev {
+  left: 14px;
 }
-.shot-strip figcaption {
-  margin-top: 11px;
-  padding: 0 4px;
-  font-size: 12px;
-  font-weight: 700;
-  color: var(--muted);
+.shot-nav.next {
+  right: 14px;
 }
-@media (max-width: 680px) {
-  .shot-strip {
-    grid-template-columns: 1fr;
+.shot-nav svg {
+  width: 20px;
+  height: 20px;
+}
+.shot-dots {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 15px;
+}
+.shot-dot {
+  width: 9px;
+  height: 9px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  background: var(--dark);
+  transition: width 0.25s var(--ease), background 0.25s var(--ease);
+}
+.shot-dot.is-active {
+  width: 26px;
+  border-radius: 999px;
+  background: var(--mint-2);
+}
+@media (prefers-reduced-motion: reduce) {
+  .shot-track {
+    transition: none;
+  }
+}
+@media (max-width: 560px) {
+  .shot-nav {
+    width: 38px;
+    height: 38px;
+  }
+  .shot-nav.prev {
+    left: 8px;
+  }
+  .shot-nav.next {
+    right: 8px;
   }
 }
 
