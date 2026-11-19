@@ -702,6 +702,9 @@ section {
 .panel p {
   color: var(--muted);
   font-size: 14.5px;
+  /* absorb the extra height of the taller card so the tag rows of the
+     Services and Works panels line up */
+  flex: 1 1 auto;
 }
 .panel .tags {
   display: flex;
