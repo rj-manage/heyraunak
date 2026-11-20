@@ -635,9 +635,10 @@ section {
   flex-direction: column;
   padding: 32px 30px;
   border-radius: 26px;
-  /* the remaining cards carry the watercolour backdrop */
+  /* the remaining cards carry the watercolour backdrop, faded 10% */
   background-color: var(--canvas);
-  background-image: url("../img/home-bg.jpg");
+  background-image: linear-gradient(rgba(227, 233, 240, 0.1), rgba(227, 233, 240, 0.1)),
+    url("../img/home-bg.jpg");
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
@@ -655,11 +656,13 @@ section {
   background-position: center;
 }
 .panel-media.media-services {
-  background-image: linear-gradient(180deg, rgba(227, 233, 240, 0.62), rgba(227, 233, 240, 0.88)),
+  background-image: linear-gradient(rgba(227, 233, 240, 0.1), rgba(227, 233, 240, 0.1)),
+    linear-gradient(180deg, rgba(227, 233, 240, 0.62), rgba(227, 233, 240, 0.88)),
     url("../img/panel-services.jpg");
 }
 .panel-media.media-works {
-  background-image: linear-gradient(180deg, rgba(227, 233, 240, 0.62), rgba(227, 233, 240, 0.88)),
+  background-image: linear-gradient(rgba(227, 233, 240, 0.1), rgba(227, 233, 240, 0.1)),
+    linear-gradient(180deg, rgba(227, 233, 240, 0.62), rgba(227, 233, 240, 0.88)),
     url("../img/panel-works.jpg");
 }
 /* the Services and Works copy reads black over its photo */
@@ -1735,14 +1738,22 @@ footer {
   box-shadow: var(--sh-r);
 }
 /* the nav bar and the footer card carry the floral pattern; the asset is
-   blended toward white so the copy keeps AA contrast on it */
+   blended toward white so the copy keeps AA contrast on it. The nav bar is
+   faded by 40%, the footer card by 10% like the other cards. */
 .nav,
 .foot-main {
   background-color: var(--canvas);
-  background-image: url("../img/floral-pattern.jpg");
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
+}
+.nav {
+  background-image: linear-gradient(rgba(227, 233, 240, 0.4), rgba(227, 233, 240, 0.4)),
+    url("../img/floral-pattern.jpg");
+}
+.foot-main {
+  background-image: linear-gradient(rgba(227, 233, 240, 0.1), rgba(227, 233, 240, 0.1)),
+    url("../img/floral-pattern.jpg");
 }
 .foot-main .flinks {
   display: flex;
