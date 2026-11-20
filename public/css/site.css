@@ -56,17 +56,6 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* the home page sits on a fixed watercolour backdrop; every other page
-   keeps the plain canvas. The layer is painted behind the content. */
-body.home::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  z-index: -1;
-  pointer-events: none;
-  background: var(--canvas) url("../img/home-bg.jpg") center / cover no-repeat;
-}
-
 /* no visible scrollbars anywhere on the site */
 * {
   scrollbar-width: none; /* Firefox */
@@ -646,15 +635,20 @@ section {
   flex-direction: column;
   padding: 32px 30px;
   border-radius: 26px;
-  background: var(--canvas);
+  /* the remaining cards carry the watercolour backdrop */
+  background-color: var(--canvas);
+  background-image: url("../img/home-bg.jpg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
   box-shadow: var(--sh-r);
   transition: transform 0.22s var(--ease), box-shadow 0.22s var(--ease);
 }
 .panel:hover {
   transform: translateY(-6px);
 }
-/* home panels that carry a related photographic background (Services + Works);
-   the soft canvas scrim keeps the ink copy and the neumorphic chips legible. */
+/* the Services + Works panels swap the watercolour for their own photo and a
+   soft canvas scrim, which keeps the ink copy and neumorphic chips legible. */
 .panel-media {
   background-repeat: no-repeat;
   background-size: cover;
