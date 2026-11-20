@@ -665,30 +665,30 @@ section {
     linear-gradient(180deg, rgba(227, 233, 240, 0.62), rgba(227, 233, 240, 0.88)),
     url("../img/panel-works.jpg");
 }
-/* each service panel on /services/ carries its own illustration, faded 90% */
+/* each service panel on /services/ carries its own illustration, faded 80% */
 .panel-svc {
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
 }
 .panel-svc.svc-student {
-  background-image: linear-gradient(rgba(227, 233, 240, 0.9), rgba(227, 233, 240, 0.9)),
+  background-image: linear-gradient(rgba(227, 233, 240, 0.8), rgba(227, 233, 240, 0.8)),
     url("../img/svc-student-projects.jpg");
 }
 .panel-svc.svc-website {
-  background-image: linear-gradient(rgba(227, 233, 240, 0.9), rgba(227, 233, 240, 0.9)),
+  background-image: linear-gradient(rgba(227, 233, 240, 0.8), rgba(227, 233, 240, 0.8)),
     url("../img/svc-website-development.jpg");
 }
 .panel-svc.svc-software {
-  background-image: linear-gradient(rgba(227, 233, 240, 0.9), rgba(227, 233, 240, 0.9)),
+  background-image: linear-gradient(rgba(227, 233, 240, 0.8), rgba(227, 233, 240, 0.8)),
     url("../img/svc-software-app-development.jpg");
 }
 .panel-svc.svc-marketing {
-  background-image: linear-gradient(rgba(227, 233, 240, 0.9), rgba(227, 233, 240, 0.9)),
+  background-image: linear-gradient(rgba(227, 233, 240, 0.8), rgba(227, 233, 240, 0.8)),
     url("../img/svc-digital-marketing.jpg");
 }
 .panel-svc.svc-social {
-  background-image: linear-gradient(rgba(227, 233, 240, 0.9), rgba(227, 233, 240, 0.9)),
+  background-image: linear-gradient(rgba(227, 233, 240, 0.8), rgba(227, 233, 240, 0.8)),
     url("../img/svc-social-media-marketing.jpg");
 }
 .panel-top {
