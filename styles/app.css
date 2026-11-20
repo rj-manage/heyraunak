@@ -221,9 +221,9 @@
 .vault-card {
   padding: 28px;
   border-radius: 26px;
-  /* same card backdrop the public site's cards use, faded 40% */
+  /* same card backdrop the public site's cards use, faded 90% */
   background-color: var(--canvas);
-  background-image: linear-gradient(rgba(227, 233, 240, 0.4), rgba(227, 233, 240, 0.4)),
+  background-image: linear-gradient(rgba(227, 233, 240, 0.9), rgba(227, 233, 240, 0.9)),
     url("/img/card-bg.jpg");
   background-repeat: no-repeat;
   background-position: center;

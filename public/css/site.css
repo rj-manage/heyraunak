@@ -635,9 +635,9 @@ section {
   flex-direction: column;
   padding: 32px 30px;
   border-radius: 26px;
-  /* the remaining cards carry the card backdrop, faded 40% */
+  /* the remaining cards carry the card backdrop, faded 90% */
   background-color: var(--canvas);
-  background-image: linear-gradient(rgba(227, 233, 240, 0.4), rgba(227, 233, 240, 0.4)),
+  background-image: linear-gradient(rgba(227, 233, 240, 0.9), rgba(227, 233, 240, 0.9)),
     url("../img/card-bg.jpg");
   background-repeat: no-repeat;
   background-position: center;
@@ -656,12 +656,12 @@ section {
   background-position: center;
 }
 .panel-media.media-services {
-  background-image: linear-gradient(rgba(227, 233, 240, 0.4), rgba(227, 233, 240, 0.4)),
+  background-image: linear-gradient(rgba(227, 233, 240, 0.9), rgba(227, 233, 240, 0.9)),
     linear-gradient(180deg, rgba(227, 233, 240, 0.62), rgba(227, 233, 240, 0.88)),
     url("../img/panel-services.jpg");
 }
 .panel-media.media-works {
-  background-image: linear-gradient(rgba(227, 233, 240, 0.4), rgba(227, 233, 240, 0.4)),
+  background-image: linear-gradient(rgba(227, 233, 240, 0.9), rgba(227, 233, 240, 0.9)),
     linear-gradient(180deg, rgba(227, 233, 240, 0.62), rgba(227, 233, 240, 0.88)),
     url("../img/panel-works.jpg");
 }
@@ -1735,7 +1735,7 @@ footer {
 }
 /* the nav bar and the footer card carry the floral pattern; the asset is
    blended toward white so the copy keeps AA contrast on it. The nav bar is
-   faded by 60%, the footer card by 40% like the other cards. */
+   faded by 60%, the footer card by 90% like the other cards. */
 .nav,
 .foot-main {
   background-color: var(--canvas);
@@ -1748,7 +1748,7 @@ footer {
     url("../img/floral-pattern.jpg");
 }
 .foot-main {
-  background-image: linear-gradient(rgba(227, 233, 240, 0.4), rgba(227, 233, 240, 0.4)),
+  background-image: linear-gradient(rgba(227, 233, 240, 0.9), rgba(227, 233, 240, 0.9)),
     url("../img/floral-pattern.jpg");
 }
 .foot-main .flinks {
