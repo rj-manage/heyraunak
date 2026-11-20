@@ -539,7 +539,13 @@ section {
   width: min(430px, 100%);
   border-radius: 30px;
   padding: 16px;
-  background: var(--canvas);
+  /* the Studio card carries the card backdrop, faded like the Portfolio card */
+  background-color: var(--canvas);
+  background-image: linear-gradient(rgba(227, 233, 240, 0.9), rgba(227, 233, 240, 0.9)),
+    url("../img/card-bg.jpg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
   box-shadow: var(--sh-r);
 }
 .screen-card .bar {
