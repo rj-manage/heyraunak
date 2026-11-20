@@ -221,7 +221,12 @@
 .vault-card {
   padding: 28px;
   border-radius: 26px;
-  background: var(--canvas);
+  /* same watercolour backdrop the public site's cards use */
+  background-color: var(--canvas);
+  background-image: url("/img/home-bg.jpg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
   box-shadow: var(--sh-r);
 }
 
