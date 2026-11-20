@@ -359,7 +359,7 @@ section {
   font-weight: 700;
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: var(--muted);
+  color: var(--ink);
 }
 
 .nav-links {
@@ -371,7 +371,7 @@ section {
   position: relative;
   font-size: 13.5px;
   font-weight: 600;
-  color: var(--muted);
+  color: var(--ink);
   padding: 9px 14px;
   border-radius: 999px;
   white-space: nowrap;
@@ -1732,8 +1732,17 @@ footer {
   gap: 22px;
   padding: 28px 32px;
   border-radius: 26px;
-  background: var(--canvas);
   box-shadow: var(--sh-r);
+}
+/* the nav bar and the footer card carry the floral pattern; the asset is
+   blended toward white so the copy keeps AA contrast on it */
+.nav,
+.foot-main {
+  background-color: var(--canvas);
+  background-image: url("../img/floral-pattern.jpg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
 }
 .foot-main .flinks {
   display: flex;
@@ -1741,7 +1750,7 @@ footer {
   flex-wrap: wrap;
   font-size: 13.5px;
   font-weight: 600;
-  color: var(--muted);
+  color: var(--ink);
 }
 .foot-main .flinks a:hover {
   color: var(--ink);
