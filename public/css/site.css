@@ -635,10 +635,10 @@ section {
   flex-direction: column;
   padding: 32px 30px;
   border-radius: 26px;
-  /* the remaining cards carry the watercolour backdrop, faded 40% */
+  /* the remaining cards carry the card backdrop, faded 40% */
   background-color: var(--canvas);
   background-image: linear-gradient(rgba(227, 233, 240, 0.4), rgba(227, 233, 240, 0.4)),
-    url("../img/home-bg.jpg");
+    url("../img/card-bg.jpg");
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
@@ -664,10 +664,6 @@ section {
   background-image: linear-gradient(rgba(227, 233, 240, 0.4), rgba(227, 233, 240, 0.4)),
     linear-gradient(180deg, rgba(227, 233, 240, 0.62), rgba(227, 233, 240, 0.88)),
     url("../img/panel-works.jpg");
-}
-/* the Services and Works copy reads black over its photo */
-.panel.panel-media p {
-  color: var(--ink);
 }
 .panel-top {
   display: flex;
@@ -705,14 +701,14 @@ section {
   font-size: 12px;
   font-weight: 700;
   letter-spacing: 0.18em;
-  color: var(--muted);
+  color: var(--ink);
 }
 .panel h3 {
   font-size: 21px;
   margin-bottom: 9px;
 }
 .panel p {
-  color: var(--muted);
+  color: var(--ink);
   font-size: 14.5px;
   /* absorb the extra height of the taller card so the tag rows of the
      Services and Works panels line up */
@@ -746,7 +742,7 @@ section {
 .panel-foot .path {
   font-size: 12px;
   font-weight: 700;
-  color: var(--muted);
+  color: var(--ink);
   letter-spacing: 0.02em;
 }
 .status-pill {

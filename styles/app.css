@@ -221,10 +221,10 @@
 .vault-card {
   padding: 28px;
   border-radius: 26px;
-  /* same watercolour backdrop the public site's cards use, faded 40% */
+  /* same card backdrop the public site's cards use, faded 40% */
   background-color: var(--canvas);
   background-image: linear-gradient(rgba(227, 233, 240, 0.4), rgba(227, 233, 240, 0.4)),
-    url("/img/home-bg.jpg");
+    url("/img/card-bg.jpg");
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
@@ -237,7 +237,7 @@
 }
 
 .vault-card > p {
-  color: var(--muted);
+  color: var(--ink);
   font-size: 14.5px;
   margin-bottom: 20px;
 }
@@ -321,7 +321,7 @@
 .vault-note {
   margin-top: 16px;
   font-size: 12.5px;
-  color: var(--muted);
+  color: var(--ink);
 }
 
 .vault-note[data-tone="ok"] {
@@ -339,7 +339,7 @@
   padding-top: 18px;
   border-top: 1px solid rgba(60, 80, 110, 0.14);
   font-size: 12.5px;
-  color: var(--muted);
+  color: var(--ink);
 }
 
 .vault-help a {
