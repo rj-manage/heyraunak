@@ -656,14 +656,40 @@ section {
   background-position: center;
 }
 .panel-media.media-services {
-  background-image: linear-gradient(rgba(227, 233, 240, 0.9), rgba(227, 233, 240, 0.9)),
+  background-image: linear-gradient(rgba(227, 233, 240, 0.4), rgba(227, 233, 240, 0.4)),
     linear-gradient(180deg, rgba(227, 233, 240, 0.62), rgba(227, 233, 240, 0.88)),
     url("../img/panel-services.jpg");
 }
 .panel-media.media-works {
-  background-image: linear-gradient(rgba(227, 233, 240, 0.9), rgba(227, 233, 240, 0.9)),
+  background-image: linear-gradient(rgba(227, 233, 240, 0.4), rgba(227, 233, 240, 0.4)),
     linear-gradient(180deg, rgba(227, 233, 240, 0.62), rgba(227, 233, 240, 0.88)),
     url("../img/panel-works.jpg");
+}
+/* each service panel on /services/ carries its own illustration, faded 90% */
+.panel-svc {
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+}
+.panel-svc.svc-student {
+  background-image: linear-gradient(rgba(227, 233, 240, 0.9), rgba(227, 233, 240, 0.9)),
+    url("../img/svc-student-projects.jpg");
+}
+.panel-svc.svc-website {
+  background-image: linear-gradient(rgba(227, 233, 240, 0.9), rgba(227, 233, 240, 0.9)),
+    url("../img/svc-website-development.jpg");
+}
+.panel-svc.svc-software {
+  background-image: linear-gradient(rgba(227, 233, 240, 0.9), rgba(227, 233, 240, 0.9)),
+    url("../img/svc-software-app-development.jpg");
+}
+.panel-svc.svc-marketing {
+  background-image: linear-gradient(rgba(227, 233, 240, 0.9), rgba(227, 233, 240, 0.9)),
+    url("../img/svc-digital-marketing.jpg");
+}
+.panel-svc.svc-social {
+  background-image: linear-gradient(rgba(227, 233, 240, 0.9), rgba(227, 233, 240, 0.9)),
+    url("../img/svc-social-media-marketing.jpg");
 }
 .panel-top {
   display: flex;
@@ -1098,7 +1124,13 @@ section {
 .soon-card {
   border-radius: 34px;
   padding: 56px 6vw;
-  background: var(--canvas);
+  /* the "Updating" cards carry the card backdrop, faded 90% */
+  background-color: var(--canvas);
+  background-image: linear-gradient(rgba(227, 233, 240, 0.9), rgba(227, 233, 240, 0.9)),
+    url("../img/card-bg.jpg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
   box-shadow: var(--sh-r);
 }
 .soon-badge {
