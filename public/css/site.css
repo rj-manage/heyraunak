@@ -1772,8 +1772,8 @@ footer {
   box-shadow: var(--sh-r);
 }
 /* the nav bar and the footer card carry the floral pattern; the asset is
-   blended toward white so the copy keeps AA contrast on it. The nav bar is
-   faded by 60%, the footer card by 90% like the other cards. */
+   blended toward white so the copy keeps AA contrast on it. The nav bar and
+   the footer card are both faded by 90%. */
 .nav,
 .foot-main {
   background-color: var(--canvas);
@@ -1782,7 +1782,7 @@ footer {
   background-size: cover;
 }
 .nav {
-  background-image: linear-gradient(rgba(227, 233, 240, 0.6), rgba(227, 233, 240, 0.6)),
+  background-image: linear-gradient(rgba(227, 233, 240, 0.9), rgba(227, 233, 240, 0.9)),
     url("../img/floral-pattern.jpg");
 }
 .foot-main {
