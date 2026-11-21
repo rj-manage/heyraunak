@@ -6,7 +6,7 @@ export const metadata: Metadata = {
   title: "RJ Studio",
   description:
     "RJ Studio - design & development studio and services marketplace for web, software and digital marketing.",
-  icons: { icon: "/assets/RJ_Logo.png", apple: "/assets/RJ_Logo.png" }
+  icons: { icon: "/assets/RJ_Logo_Black.png", apple: "/assets/RJ_Logo_Black.png" }
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
