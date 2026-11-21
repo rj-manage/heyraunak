@@ -654,7 +654,7 @@ section {
 .panel:hover {
   transform: translateY(-6px);
 }
-/* the Services + Works panels swap the watercolour for their own photo and a
+/* the Services + Products panels swap the watercolour for their own photo and a
    soft canvas scrim, which keeps the ink copy and neumorphic chips legible. */
 .panel-media {
   background-repeat: no-repeat;
@@ -666,7 +666,7 @@ section {
     linear-gradient(180deg, rgba(227, 233, 240, 0.62), rgba(227, 233, 240, 0.88)),
     url("../img/panel-services.jpg");
 }
-.panel-media.media-works {
+.panel-media.media-products {
   background-image: linear-gradient(rgba(227, 233, 240, 0.4), rgba(227, 233, 240, 0.4)),
     linear-gradient(180deg, rgba(227, 233, 240, 0.62), rgba(227, 233, 240, 0.88)),
     url("../img/panel-works.jpg");
@@ -743,7 +743,7 @@ section {
   color: var(--ink);
   font-size: 14.5px;
   /* absorb the extra height of the taller card so the tag rows of the
-     Services and Works panels line up */
+     Services and Products panels line up */
   flex: 1 1 auto;
 }
 .panel .tags {

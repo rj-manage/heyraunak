@@ -46,7 +46,7 @@ export default function DeliveryPage() {
               <a href="/portfolio/">Portfolio</a>
               <a href="/services/">Services</a>
               <a href="/gallery/">Design Gallery</a>
-              <a href="/works/">Works</a>
+              <a href="/products/">Products</a>
               <a href="/contact/">Contact Us</a>
               <a href="/project-vault">Project Vault</a>
             </div>

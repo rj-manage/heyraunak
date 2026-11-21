@@ -9,7 +9,7 @@ const LINKS = [
   { href: "/portfolio/", label: "Portfolio" },
   { href: "/services/", label: "Services" },
   { href: "/gallery/", label: "Design Gallery" },
-  { href: "/works/", label: "Works" },
+  { href: "/products/", label: "Products" },
   { href: "/contact/", label: "Contact Us" },
   { href: "/project-vault", label: "Project Vault" }
 ];

@@ -13,6 +13,15 @@ const nextConfig = {
   // static host served both "/services" and "/services/". Disable Next's
   // trailing-slash redirect so the rewrites below can serve both shapes.
   skipTrailingSlashRedirect: true,
+  // The old "Works" section is now "Products". Keep every legacy /works URL
+  // working with a permanent redirect so bookmarks and search results survive.
+  async redirects() {
+    return [
+      { source: "/works", destination: "/products/", permanent: true },
+      { source: "/works/", destination: "/products/", permanent: true },
+      { source: "/works/index.html", destination: "/products/", permanent: true }
+    ];
+  },
   async rewrites() {
     const legacyDirs = [
       "services",
@@ -21,7 +30,7 @@ const nextConfig = {
       "services/digital-marketing",
       "services/social-media-marketing",
       "services/student-projects",
-      "works",
+      "products",
       "portfolio",
       "gallery",
       "facesgallery",
