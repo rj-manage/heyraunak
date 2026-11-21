@@ -34,7 +34,7 @@
     "@context": "https://schema.org",
     "@graph": [
       {
-        "@type": "Organization",
+        "@type": ["Organization", "ProfessionalService"],
         "@id": "https://www.heyraunak.site/#organization",
         "name": "RJ Studio",
         "alternateName": "RJ",
@@ -46,7 +46,22 @@
           "contentUrl": "https://www.heyraunak.site/assets/RJ_Logo.png"
         },
         "image": { "@id": "https://www.heyraunak.site/#logo" },
-        "description": "RJ Studio is a design and development studio that builds websites, custom software and mobile apps, and runs digital marketing and social media marketing campaigns for businesses."
+        "description": "RJ Studio is a design and development studio that builds websites, custom software and mobile apps, and runs digital marketing and social media marketing campaigns for businesses.",
+        "telephone": "+917700887944",
+        "email": ["theprofessionalrj@gmail.com", "heyraunak.rjstudio@gmail.com"],
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "Lane No. 7, Near Mahamaya Chauk, Sadpura",
+          "addressLocality": "Muzaffarpur",
+          "addressRegion": "Bihar",
+          "postalCode": "842002",
+          "addressCountry": "IN"
+        },
+        "areaServed": "Worldwide",
+        "sameAs": [
+          "https://www.linkedin.com/in/raunak-raj-a35b58261",
+          "https://github.com/rj-manage"
+        ]
       },
       {
         "@type": "WebSite",
