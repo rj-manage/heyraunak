@@ -387,6 +387,21 @@
     .site-nav .nav-cta{ display:none; }
     .site-nav .nav-burger{ display:grid; }
   }
+
+  /* ---------- desktop: keep the hero name inside the card ----------
+     The hero card's max-width used a percentage that resolved against this
+     shrink-to-fit column, so the card came out narrower than the "Raunak Raj"
+     heading and (because the name is non-breaking) it spilled past the edge.
+     Pin the card to its column, then size the name to fit the card's inner
+     width. Phone / tablet layouts are untouched. */
+  @media (min-width:1081px){
+    .hero .card{
+      --hero-card: min(500px, calc((100vw - min(56.25vh, 100vw)) / 2 - clamp(20px, 4.5vw, 72px)));
+      width: var(--hero-card);
+      max-width: none;
+    }
+    .hero h1{ font-size: min(5.4vw, calc((var(--hero-card) - 2 * clamp(24px, 2.4vw, 38px)) / 5.4), 4.6rem); }
+  }
   @media (max-width:640px){
     .two-col{ grid-template-columns:1fr; }
     .brand{ font-size:11px; }
