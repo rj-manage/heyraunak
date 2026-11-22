@@ -577,54 +577,17 @@ section {
   text-transform: uppercase;
   color: var(--muted);
 }
-.brand-tile {
-  display: grid;
-  justify-items: center;
-  gap: 6px;
+/* The Studio card plays its services reel where the brand tile + stats used to
+   sit. Its height matches that block exactly, so the card keeps the same size
+   and shape. */
+.studio-reel {
+  display: block;
+  width: 100%;
+  height: 353.58px;
   border-radius: 20px;
-  padding: 38px 24px 34px;
+  object-fit: cover;
   background: var(--canvas);
   box-shadow: var(--sh-in-s);
-}
-.brand-tile .brand-mark {
-  width: 116px;
-  height: 116px;
-  object-fit: contain;
-  margin-bottom: 14px;
-}
-.brand-tile span {
-  font-size: 12.5px;
-  font-weight: 600;
-  letter-spacing: 0.04em;
-  color: var(--muted);
-}
-
-.stage-meta {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 10px;
-  margin-top: 16px;
-}
-.stage-meta div {
-  border-radius: 18px;
-  padding: 14px 12px;
-  text-align: center;
-  background: var(--canvas);
-  box-shadow: var(--sh-s);
-}
-.stage-meta b {
-  display: block;
-  font-family: var(--font-display);
-  font-size: 19px;
-  font-weight: 800;
-  letter-spacing: -0.02em;
-}
-.stage-meta span {
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--muted);
 }
 
 /* ============================================================
@@ -810,11 +773,6 @@ section {
     gap: 30px;
   }
   .panels {
-    grid-template-columns: 1fr;
-  }
-}
-@media (max-width: 520px) {
-  .stage-meta {
     grid-template-columns: 1fr;
   }
 }
