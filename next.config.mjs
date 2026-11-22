@@ -15,6 +15,18 @@ const nextConfig = {
   skipTrailingSlashRedirect: true,
   // The old "Works" section is now "Products". Keep every legacy /works URL
   // working with a permanent redirect so bookmarks and search results survive.
+  async headers() {
+    return [
+      {
+        // The scroll-scrubbed walk ships ~192 content-stable frame images.
+        // Cache them hard so a return visit never revalidates them one by one.
+        source: "/portfolio/RJ_Walk_Final/:path*",
+        headers: [
+          { key: "Cache-Control", value: "public, max-age=2592000, immutable" }
+        ]
+      }
+    ];
+  },
   async redirects() {
     return [
       { source: "/works", destination: "/products/", permanent: true },

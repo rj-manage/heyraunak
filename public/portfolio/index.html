@@ -140,15 +140,12 @@
     -webkit-mask-repeat:no-repeat; mask-repeat:no-repeat;
     -webkit-mask-size:100% 100%; mask-size:100% 100%;
   }
-  /* Double buffer: two stacked frames, only one of which is opaque. A new frame
-     is promoted to the front only once its bitmap has decoded, so the walker
-     never blanks out mid-scroll and the live layer is never re-fetched. */
+  /* The walk frame is drawn onto this canvas. Drawing a decoded bitmap is
+     instant, so a frame can be shown the moment it is ready with no second
+     request and no flash. */
   #stage .walk-layer{
-    position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
-    opacity:0; user-select:none; -webkit-user-select:none;
-    transform:translateZ(0); backface-visibility:hidden;
+    position:absolute; inset:0; width:100%; height:100%;
   }
-  #stage .walk-layer.is-front{ opacity:1; }
 
   /* ---------- content slots: 3 columns with a reserved center lane ---------- */
   main{ position:relative; z-index:2; }
@@ -461,8 +458,7 @@
 
 <!-- ======================= CENTRAL WALK ======================= -->
 <div id="stage" aria-hidden="true">
-  <img class="walk-layer is-front" alt="" width="540" height="960" draggable="false">
-  <img class="walk-layer" alt="" width="540" height="960" draggable="false">
+  <canvas class="walk-layer" width="540" height="960"></canvas>
 </div>
 
 <main>
@@ -808,149 +804,167 @@
   }
 
   /* ---------- scroll-scrubbed central walk ----------
-     The walk is 450 separate frame images. They are drawn through two stacked
-     <img> layers used as a double buffer: a frame is only promoted to the front
-     once its bitmap has decoded, so the walker never blanks out mid-scroll, and
-     the visible layer is never re-fetched so a fast scrub cannot abort it. */
-  var TOTAL  = 450;                        /* frame_0000 .. frame_0449  */
+     The source walk covers 450 scroll positions, but only 192 of them are
+     distinct images - the rest repeat the frame before them. We ship just those
+     192 frames (~57% less) and SLOTS_MAP says which one each scroll position
+     shows, so the picture is identical.
+
+     Frames load through a small pool that keeps only a window around the
+     current position, so memory stays bounded. The walker always shows the
+     nearest frame that is already decoded and refines to the exact frame when
+     it lands, so a slow connection cannot leave it blank or frozen. */
+  var SLOTS  = 450;                         /* scroll positions           */
+  var FRAMES = 192;                         /* shipped images             */
   var PREFIX = "RJ_Walk_Final/webp/frame_";
+  /* SLOTS_MAP[i-1] === "1" when scroll position i shows a different frame than
+     position i-1 (generated from the source sequence) */
+  var SLOTS_MAP = "01010100101010010101001010010101001010100101010010101001010100101010010100101010010101001010100101010010101001010010101001010100101010010101001010100101010010100101010010101001010100101010010101001010100101001010100101010010101001010100101010010100101010010101001010100101010010101001010100101001010100101010010101001010100101010010101001010010101001010100101010010101001010100101001010100101010010101001010100101010010101001010010101001010100101010";
+  var MAP = new Uint16Array(SLOTS);         /* scroll position -> frame    */
+  (function(){
+    var u = -1;
+    for(var i = 0; i < SLOTS; i++){
+      if(i === 0 || SLOTS_MAP.charAt(i - 1) === "1") u++;
+      MAP[i] = u;
+    }
+  })();
+
   var stage  = document.getElementById("stage");
-  var layers = stage ? stage.querySelectorAll(".walk-layer") : [];
-  var cache  = new Array(TOTAL);            /* decoded-frame pool by index */
-  var shown  = -1;                          /* frame index on screen now  */
-  var front  = 0;                           /* which layer is visible     */
-  var target = -1;                          /* frame index we want next   */
-  var swapId = 0;                           /* discards superseded swaps  */
-  var ready  = false;                       /* at least one frame painted */
-  var warmed = {};                          /* frames already decoded     */
+  var canvas = stage ? stage.querySelector(".walk-layer") : null;
+  var ctx    = canvas ? canvas.getContext("2d") : null;
+  var CW     = 540, CH = 960;               /* frame size (see the canvas) */
+  var KEEP   = 16;                          /* decoded frames kept around  */
+  var REACH  = 12;                          /* frames preloaded each side  */
+  var pool   = new Map();                   /* frame index -> <img>        */
+  var shown  = -1;                          /* frame index drawn now       */
+  var ready  = false;                       /* at least one frame painted  */
+  var lastU  = 0;                           /* frame index for the scroll  */
 
-  function src(i){ return PREFIX + ("0000" + i).slice(-4) + ".webp"; }
+  function src(u){ return PREFIX + ("0000" + u).slice(-4) + ".webp"; }
+  function ok(im){ return !!im && im.complete && im.naturalWidth > 0; }
 
-  function clamp(i){ return i < 0 ? 0 : (i >= TOTAL ? TOTAL - 1 : i); }
-
-  function ensure(i){
-    i = clamp(i);
-    var im = cache[i];
+  /* the pooled <img> for a frame - created, and its load started, on demand */
+  function get(u){
+    var im = pool.get(u);
     if(!im){
-      im = cache[i] = new Image();
+      im = new Image();
       im.decoding = "async";
-      im.src = src(i);
+      im.__u = u;
+      /* show it when it lands if it is the frame we want, or if the walker is
+         still empty (so a slow start can never leave the stage blank) */
+      im.addEventListener("load", function(){ if(!ready || lastU === u) draw(im, u); });
+      im.src = src(u);
+      pool.set(u, im);
     }
     return im;
   }
 
-  function frameFromScroll(){
-    var max = document.documentElement.scrollHeight - window.innerHeight;
-    var p   = max > 0 ? window.scrollY / max : 0;
-    return Math.round(p * (TOTAL - 1));
+  /* closest frame to u whose bitmap is already decoded, or -1 */
+  function nearestReady(u){
+    if(ok(pool.get(u))) return u;
+    for(var d = 1; d < FRAMES; d++){
+      if(u - d >= 0 && ok(pool.get(u - d))) return u - d;
+      if(u + d < FRAMES && ok(pool.get(u + d))) return u + d;
+    }
+    return -1;
   }
 
-  /* decode a frame ahead of time so it is instant when it is finally needed */
-  function warm(i){
-    if(i < 0 || i >= TOTAL || warmed[i]) return;
-    warmed[i] = true;
-    var im = ensure(i);
-    if(im.decode) im.decode()["catch"](function(){});
+  /* drop pooled frames that have drifted out of the working window */
+  function trim(center){
+    if(pool.size <= KEEP * 2) return;
+    var far = [];
+    pool.forEach(function(v, u){ if(Math.abs(u - center) > KEEP) far.push(u); });
+    for(var i = 0; i < far.length; i++) pool.delete(far[i]);
   }
 
-  /* promote frame i to the front layer; if its bitmap is not ready yet, keep
-     the current frame on screen and retry the moment the bitmap lands */
-  function paint(i){
-    if(!layers.length || i === shown) return;
-    var im = ensure(i);
-    if(!(im.complete && im.naturalWidth > 0)){
-      if(!im.__waiting){
-        im.__waiting = true;
-        im.addEventListener("load", function(){
-          im.__waiting = false;
-          if(target === i) paint(i);
-        });
-        im.addEventListener("error", function(){ im.__waiting = false; });
-      }
-      return;
-    }
-    var next  = 1 - front;
-    var layer = layers[next];
-    var url   = im.currentSrc || im.src;
-    var id    = ++swapId;
-    function commit(){
-      if(id !== swapId || shown === i) return;
-      layer.classList.add("is-front");
-      layers[front].classList.remove("is-front");
-      front = next;
-      shown = i;
-      ready = true;
-    }
-    if(layer.getAttribute("src") === im.getAttribute("src") &&
-       layer.complete && layer.naturalWidth > 0){
-      commit();
-      return;
-    }
-    var onLoad = function(){
-      layer.removeEventListener("load", onLoad);
-      commit();
-    };
-    layer.addEventListener("load", onLoad);
-    layer.src = url;
-    if(layer.complete && layer.naturalWidth > 0) commit();
+  /* draw a decoded bitmap onto the canvas - instant, no request, no flash */
+  function draw(im, u){
+    if(!ctx || !ok(im) || u === shown) return;
+    ctx.clearRect(0, 0, CW, CH);
+    ctx.drawImage(im, 0, 0, CW, CH);
+    canvas.dataset.frame = u;
+    shown = u;
+    ready = true;
+  }
+
+  function show(u){
+    if(u < 0 || u === shown) return;
+    draw(pool.get(u), u);
   }
 
   function update(){
-    target = frameFromScroll();
-    paint(target);
-    /* keep a small neighbourhood decoded so scrubbing stays responsive */
-    for(var d = 1; d <= 10; d++){
-      warm(target + d);
-      warm(target - d);
+    var max = document.documentElement.scrollHeight - window.innerHeight;
+    var p   = max > 0 ? window.scrollY / max : 0;
+    lastU = MAP[Math.round(p * (SLOTS - 1))];
+    /* show the exact frame if it is decoded, else the nearest decoded one */
+    if(ok(pool.get(lastU))) show(lastU);
+    else show(nearestReady(lastU));
+    /* make sure the exact frame is on its way, and warm a window around it */
+    get(lastU);
+    for(var d = 1; d <= REACH; d++){
+      if(lastU - d >= 0) get(lastU - d);
+      if(lastU + d < FRAMES) get(lastU + d);
     }
+    trim(lastU);
+  }
+
+  /* Throwaway fetch so a frame's bytes are in the HTTP cache before they are
+     needed. Nothing is retained here - the working set lives in `pool`. */
+  function prefetch(u){
+    var im = new Image();
+    im.src = src(u);
+    return im;
+  }
+
+  /* Fetch the whole sequence once, a few at a time, so that by the time the
+     visitor can scroll the frames are cached and decode instantly. */
+  var preloading = false;
+  function preloadAll(){
+    if(preloading) return;
+    preloading = true;
+    var next = 0, inFlight = 0, CONC = 4;
+    function pump(){
+      while(next < FRAMES && inFlight < CONC){
+        var im = prefetch(next++);
+        if(ok(im)) continue;             /* already cached */
+        inFlight++;
+        (function(im){
+          function end(){
+            im.removeEventListener("load", end);
+            im.removeEventListener("error", end);
+            inFlight--;
+            pump();
+          }
+          im.addEventListener("load", end);
+          im.addEventListener("error", end);
+        })(im);
+      }
+    }
+    pump();
   }
 
   /* Only a failure of the very first frame means the sequence is missing on the
-     host - hide the stage then rather than show a broken image. Errors while
-     scrubbing are ignored: one dropped frame must never blank the walker. */
-  if(layers.length){
-    ensure(0).addEventListener("error", function(){
+     host - hide the stage then rather than draw nothing. */
+  if(canvas){
+    get(0).addEventListener("error", function(){
       if(!ready && stage) stage.style.display = "none";
     });
   }
 
   var ticking = false;
   function onScroll(){
-    if(!ticking){
-      ticking = true;
-      requestAnimationFrame(function(){
-        update();
-        paintBar();
-        ticking = false;
-      });
-    }
+    if(ticking) return;
+    ticking = true;
+    requestAnimationFrame(function(){
+      /* try/finally so a throw can never wedge the guard and stop all updates */
+      try { update(); paintBar(); }
+      finally { ticking = false; }
+    });
   }
   window.addEventListener("scroll", onScroll, { passive:true });
   window.addEventListener("resize", onScroll);
 
-  /* Once the intro has cleared, decode the rest of the sequence in small idle
-     batches. Idle callbacks simply do not run while the user is scrolling, so
-     the whole walk is ready without ever competing with active scrolling. */
-  var leadStarted = false;
-  function warmLead(){
-    if(leadStarted) return;
-    leadStarted = true;
-    var i = 0, BATCH = 24;
-    function step(){
-      var end = Math.min(i + BATCH, TOTAL);
-      for(; i < end; i++) warm(i);
-      if(i < TOTAL){
-        if("requestIdleCallback" in window) requestIdleCallback(step, { timeout: 1000 });
-        else setTimeout(step, 60);
-      }
-    }
-    if("requestIdleCallback" in window) requestIdleCallback(step, { timeout: 1500 });
-    else setTimeout(step, 200);
-  }
-
-  /* paint the first frame immediately so the walker is there from the start */
-  target = frameFromScroll();
-  paint(target);
+  /* paint the first frame as soon as it decodes */
+  update();
 
   /* ---------- fullscreen intro → portfolio ---------- */
   var intro      = document.getElementById("intro");
@@ -967,6 +981,15 @@
     if(!started){ ended = true; launchPortfolio(); }
   }, 6000);
 
+  /* If the video starts but then stalls without ever ending, the page would stay
+     scroll-locked forever - so keep a watchdog armed for its remaining runtime. */
+  function rearmWatchdog(){
+    clearTimeout(introWatchdog);
+    var dur = video.duration;
+    var remaining = (isFinite(dur) && dur > 0) ? Math.max(0, dur - video.currentTime) : 30;
+    introWatchdog = setTimeout(function(){ ended = true; launchPortfolio(); }, (remaining + 4) * 1000);
+  }
+
   function launchPortfolio(){
     if(launched) return;
     launched = true;
@@ -975,7 +998,7 @@
     document.documentElement.classList.remove("no-scroll");
     update();                                   /* reset the walk to frame 0 */
     paintBar();
-    warmLead();                                 /* pre-decode the sequence once idle */
+    preloadAll();                               /* warm the walk from here on */
     setTimeout(function(){ intro.classList.add("hidden"); }, 1050);
   }
 
@@ -997,9 +1020,15 @@
 
   video.addEventListener("ended", function(){ ended = true; launchPortfolio(); });
   video.addEventListener("error", launchPortfolio);   /* can't play → skip intro */
-  /* once the video has real data / is playing, cancel the skip-intro watchdog */
+  /* once the video has real data / is playing, drop the "never started" watchdog
+     but re-arm one sized to the video, and start warming the walk frames behind
+     the intro so they are ready before the visitor can scroll */
   ["loadeddata", "playing"].forEach(function(ev){
-    video.addEventListener(ev, function(){ started = true; clearTimeout(introWatchdog); });
+    video.addEventListener(ev, function(){
+      started = true;
+      rearmWatchdog();
+      preloadAll();
+    });
   });
 
   if(skipBtn){
